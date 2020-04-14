@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="第七章 可移植性缺陷《C陷阱与缺陷》学习笔记&#96;&#96;posts  第七章 可移植性缺陷 导读 7.1 应对C语言标准变更 7.2 标识符名称的限制 7.3 整数的大小 7.4 字符是有符号整数还是无符号整数 7.5 移位运算符 7.6 内存位置0 7.7 除法运算时发生的截断 7.8 随机数的大小 7.9 大小写转换 7.10 首先释放，然后重新分配 7.11 可移植性问题的一个例子    导读C语言">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第七章 可移植性缺陷">
+<meta property="og:url" content="http://yoursite.com/2018/04/28/e7-ac-ac-e4-b8-83-e7-ab-a0-e5-8f-af-e7-a7-bb-e6-a4-8d-e6-80-a7-e7-bc-ba-e9-99-b7/index.html">
+<meta property="og:site_name" content="hhyvs111">
+<meta property="og:description" content="第七章 可移植性缺陷《C陷阱与缺陷》学习笔记&#96;&#96;posts  第七章 可移植性缺陷 导读 7.1 应对C语言标准变更 7.2 标识符名称的限制 7.3 整数的大小 7.4 字符是有符号整数还是无符号整数 7.5 移位运算符 7.6 内存位置0 7.7 除法运算时发生的截断 7.8 随机数的大小 7.9 大小写转换 7.10 首先释放，然后重新分配 7.11 可移植性问题的一个例子    导读C语言">
+<meta property="article:published_time" content="2018-04-27T23:27:31.000Z">
+<meta property="article:modified_time" content="2020-04-14T06:29:36.318Z">
+<meta property="article:author" content="tanwenbo">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2018/04/28/e7-ac-ac-e4-b8-83-e7-ab-a0-e5-8f-af-e7-a7-bb-e6-a4-8d-e6-80-a7-e7-bc-ba-e9-99-b7/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
+
+  <title>第七章 可移植性缺陷 | hhyvs111</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">hhyvs111</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Be a great man</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/28/e7-ac-ac-e4-b8-83-e7-ab-a0-e5-8f-af-e7-a7-bb-e6-a4-8d-e6-80-a7-e7-bc-ba-e9-99-b7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="tanwenbo">
+      <meta itemprop="description" content="enjoy share">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hhyvs111">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          第七章 可移植性缺陷
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-04-28 07:27:31" itemprop="dateCreated datePublished" datetime="2018-04-28T07:27:31+08:00">2018-04-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="第七章-可移植性缺陷"><a href="#第七章-可移植性缺陷" class="headerlink" title="第七章 可移植性缺陷"></a>第七章 可移植性缺陷</h1><p><code>《C陷阱与缺陷》学习笔记``posts</code></p>
+<ul>
+<li><a href="#第七章-可移植性缺陷">第七章 可移植性缺陷</a><ul>
+<li><a href="#导读">导读</a></li>
+<li><a href="#71-应对c语言标准变更">7.1 应对C语言标准变更</a></li>
+<li><a href="#72-标识符名称的限制">7.2 标识符名称的限制</a></li>
+<li><a href="#73-整数的大小">7.3 整数的大小</a></li>
+<li><a href="#74-字符是有符号整数还是无符号整数">7.4 字符是有符号整数还是无符号整数</a></li>
+<li><a href="#75-移位运算符">7.5 移位运算符</a></li>
+<li><a href="#76-内存位置0">7.6 内存位置0</a></li>
+<li><a href="#77-除法运算时发生的截断">7.7 除法运算时发生的截断</a></li>
+<li><a href="#78-随机数的大小">7.8 随机数的大小</a></li>
+<li><a href="#79-大小写转换">7.9 大小写转换</a></li>
+<li><a href="#710-首先释放然后重新分配">7.10 首先释放，然后重新分配</a></li>
+<li><a href="#711-可移植性问题的一个例子">7.11 可移植性问题的一个例子</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="导读"><a href="#导读" class="headerlink" title="导读"></a>导读</h2><p>C语言编写的程序能够方便地在不同的编程环境中移植。</p>
+<h2 id="7-1-应对C语言标准变更"><a href="#7-1-应对C语言标准变更" class="headerlink" title="7.1 应对C语言标准变更"></a>7.1 应对C语言标准变更</h2><p>C语言的标准一直在变化，比如<code>ANSI C</code>标准是现在用的最多的，但是其一直在增加新的特性。有些人如果没有及时升级，那么可能新版本的代码在他的电脑上就不能运行了。 比如函数原型的概念：</p>
+<pre><code>1.double
+2.square(double x)
+3.{
+4.        return x*x;
+5.}</code></pre><p>这样写是不能通过编译的，很奇怪的写法。一般我们都是这样写：</p>
+<pre><code>1.double square(double x)
+2.{
+3.    return x*x;
+4.}
+5.main ()
+6.{
+7.    double a = square(10);
+8.}</code></pre><p>这样在square声明中表面x是double类型，而不是其他的。</p>
+<h2 id="7-2-标识符名称的限制"><a href="#7-2-标识符名称的限制" class="headerlink" title="7.2 标识符名称的限制"></a>7.2 标识符名称的限制</h2><p>目前的C语言的标识符是对大小写敏感的，但是在以前版本的ANSI C标准所能保证的是，必须能够区别前6个字符不同的外部名称。而且，这个定义中并没有区分大写字母与其对应的小写字母。 <strong>所以编译器禁止使用与库函数同名的标志，即使大小写也不行！</strong></p>
+<h2 id="7-3-整数的大小"><a href="#7-3-整数的大小" class="headerlink" title="7.3 整数的大小"></a>7.3 整数的大小</h2><p>C语言中有三种不同长度的整数：</p>
+<ul>
+<li>short</li>
+<li>int</li>
+<li>long</li>
+</ul>
+<p>C语言的定义中对各种不同类型整数的相对长度作了一些规定：</p>
+<ul>
+<li>3种类型的整数其长度是非递减的。也就是说，<code>short</code>型整数容纳的值肯定能被<code>int</code>型整数容纳；</li>
+<li>一个普通（<code>int</code>类型）整数足够大以容纳任何数组下标；</li>
+<li>字符长度由硬件特性决定（比如<code>long</code>类型在<code>32</code>位和<code>64</code>位的值可能不同，一个占<code>4</code>字节，一个占<code>8</code>字节）。</li>
+</ul>
+<h2 id="7-4-字符是有符号整数还是无符号整数"><a href="#7-4-字符是有符号整数还是无符号整数" class="headerlink" title="7.4 字符是有符号整数还是无符号整数"></a>7.4 字符是有符号整数还是无符号整数</h2><p>当要把char类型转到int类型，是要将字符作为有符号数还是应该无符号处理？正确的来说是应该作无符号处理的。但是c在转换为无符号的时候会先被转换成<code>int</code>类型，这样可能得到非预期的效果。 正确的方式是使用语句<code>(unsigned char)c</code>，因为一个unsighed char类型的字符在转换为无符号整数时无需首先转换为int类型，而是直接进行转换。</p>
+<h2 id="7-5-移位运算符"><a href="#7-5-移位运算符" class="headerlink" title="7.5 移位运算符"></a>7.5 移位运算符</h2><p>对数进行移位的时候，空出的位会背哦符号位所填充。要注意一个规则：</p>
+<blockquote>
+<p>如果被移位的对象长度是n位，那么移位计数必须大于或等于0，而严格小于n。</p>
+</blockquote>
+<p>举例来说，如果一个int型整数是32位，n是一个int型整数，那么<code>n&lt;&lt;31</code>和n<code>&lt;&lt;0</code>这样是合法的，而<code>n&lt;&lt;32</code>和<code>n&lt;&lt;-1</code>是非法的。 且可以用移位运算符代替除法运算符，但要被移位的必须是非负数。</p>
+<pre><code>mid = (low + high) &gt;&gt; 1;
+mid = (low + high ) / 2;
+
+a=a*4; 
+b=b/4; 
+//可以改为
+a=a&lt;&lt;2; 
+b=b&gt;&gt;2; </code></pre><blockquote>
+<p>说明： 除2 = 右移1位 乘2 = 左移1位 除4 = 右移2位 乘4 = 左移2位 除8 = 右移3位 乘8 = 左移3位</p>
+</blockquote>
+<h2 id="7-6-内存位置0"><a href="#7-6-内存位置0" class="headerlink" title="7.6 内存位置0"></a>7.6 内存位置0</h2><p>null指针并不指向任何对象。因此，除非是用于赋值或比较运算，出于其他任何目的使用null指针都是非法的。 不同的编译器有不同的效果，有一些对内存位置0只允许读，不允许写。要检查出这类问题的最简单的办法就是，把程序移到不允许读内存位置0的机器上运行。</p>
+<h2 id="7-7-除法运算时发生的截断"><a href="#7-7-除法运算时发生的截断" class="headerlink" title="7.7 除法运算时发生的截断"></a>7.7 除法运算时发生的截断</h2><p>假定我们让a除以b，商为q，余数为r：</p>
+<pre><code>1.q= a/b;
+2.r= a%b;</code></pre><p>我们希望a、b、q、r之间维持怎样的关系呢？</p>
+<ul>
+<li>最重要的一点，我们希望q*b+r==a，因为这是定义余数的关系。</li>
+<li>如果我们改变a的正负号，我们希望这会改变q的符号，这不会改变q的绝对值。</li>
+<li>当b&gt;0时，我们希望保证r&gt;=0且r&lt;b。例如，如果余数用于哈希表的索引，确保它是一个有效的索引值很重要。</li>
+</ul>
+<p><strong>余数与被除数的正负号要相同</strong>，否则上述条件都不能满足。所以在取余的时候尽量避免被余数为负，最好是为<strong>无符号数</strong>。</p>
+<h2 id="7-8-随机数的大小"><a href="#7-8-随机数的大小" class="headerlink" title="7.8 随机数的大小"></a>7.8 随机数的大小</h2><p>随机数其实是伪随机数，有一定规律。现在实现随机数会加上时间种子，根据时间的变化产生相应的随机数。 如果想要一定范围的随机数，可以将其对范围值取余。比如1到100的随机数：</p>
+<pre><code>1.b=rand()%100;</code></pre><h2 id="7-9-大小写转换"><a href="#7-9-大小写转换" class="headerlink" title="7.9 大小写转换"></a>7.9 大小写转换</h2><pre><code>1.#define toupper(c) ((c) + &apos;A&apos; - &apos;a&apos;)
+2.#define tolower(c) ((c) + &apos;a&apos; - &apos;A&apos;)</code></pre><p>早起的库函数toupper和tolower是这样实现的。但是有不足之处，如果输入的不是字母就会产生其他垃圾信息。</p>
+<h2 id="7-10-首先释放，然后重新分配"><a href="#7-10-首先释放，然后重新分配" class="headerlink" title="7.10 首先释放，然后重新分配"></a>7.10 首先释放，然后重新分配</h2><p>大多数c语言实现都为使用者提供了3个内存分配函数：<code>malloc</code>，<code>realloc</code>和<code>free</code>。其他的不说，这个realloc有点陌生。 调用realloc函数时，需要把指针向一块已分配内存的区域指针以及这块内存新的大小作为参数传入，就可以调整这块内存区域为新的大小，这个过程可能涉及到内存的拷贝。</p>
+<pre><code>1.free(p);
+2.p = realloc (p, newsize);</code></pre><p>先释放再分配是第七版参考手册中所规定的。</p>
+<h2 id="7-11-可移植性问题的一个例子"><a href="#7-11-可移植性问题的一个例子" class="headerlink" title="7.11 可移植性问题的一个例子"></a>7.11 可移植性问题的一个例子</h2><p>看不懂（狗头）</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/04/28/e7-ac-ac-e5-85-ad-e7-ab-a0-e9-a2-84-e5-a4-84-e7-90-86-e5-99-a8/" rel="prev" title="第六章 预处理器">
+      <i class="fa fa-chevron-left"></i> 第六章 预处理器
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/05/02/e3-80-8a-e7-bc-96-e7-a0-81checklist-e8-a7-84-e8-8c-83-e3-80-8b-e5-ad-a6-e4-b9-a0-e7-ac-94-e8-ae-b0/" rel="next" title="《编码checklist规范》学习笔记">
+      《编码checklist规范》学习笔记 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#第七章-可移植性缺陷"><span class="nav-number">1.</span> <span class="nav-text">第七章 可移植性缺陷</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#导读"><span class="nav-number">1.1.</span> <span class="nav-text">导读</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-1-应对C语言标准变更"><span class="nav-number">1.2.</span> <span class="nav-text">7.1 应对C语言标准变更</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-2-标识符名称的限制"><span class="nav-number">1.3.</span> <span class="nav-text">7.2 标识符名称的限制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-3-整数的大小"><span class="nav-number">1.4.</span> <span class="nav-text">7.3 整数的大小</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-4-字符是有符号整数还是无符号整数"><span class="nav-number">1.5.</span> <span class="nav-text">7.4 字符是有符号整数还是无符号整数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-5-移位运算符"><span class="nav-number">1.6.</span> <span class="nav-text">7.5 移位运算符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-6-内存位置0"><span class="nav-number">1.7.</span> <span class="nav-text">7.6 内存位置0</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-7-除法运算时发生的截断"><span class="nav-number">1.8.</span> <span class="nav-text">7.7 除法运算时发生的截断</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-8-随机数的大小"><span class="nav-number">1.9.</span> <span class="nav-text">7.8 随机数的大小</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-9-大小写转换"><span class="nav-number">1.10.</span> <span class="nav-text">7.9 大小写转换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-10-首先释放，然后重新分配"><span class="nav-number">1.11.</span> <span class="nav-text">7.10 首先释放，然后重新分配</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-11-可移植性问题的一个例子"><span class="nav-number">1.12.</span> <span class="nav-text">7.11 可移植性问题的一个例子</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">tanwenbo</p>
+  <div class="site-description" itemprop="description">enjoy share</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">111</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">70</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">tanwenbo</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="匿名管道管道文件的大小始终是为0，更多的时候，它只是起一个标识作用，标识内核中的那块缓存区。就会出现所谓的匿名管道（比如父子进程之间的通信）。 使用pipe创建匿名管道，看不到pipe文件。 pipe(int fds[2]); &#x2F;&#x2F; fds[0] 读，fds[1]写 返回2个文件描述符，一个读文件描述符，一个写文件描述符。 匿名管道只适用于父子进程案例： 使用2个子进程，分别计算1-5000的素数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux管道通信之匿名管道">
+<meta property="og:url" content="http://yoursite.com/2018/04/12/linux-e7-ae-a1-e9-81-93-e9-80-9a-e4-bf-a1-e4-b9-8b-e5-8c-bf-e5-90-8d-e7-ae-a1-e9-81-93/index.html">
+<meta property="og:site_name" content="hhyvs111">
+<meta property="og:description" content="匿名管道管道文件的大小始终是为0，更多的时候，它只是起一个标识作用，标识内核中的那块缓存区。就会出现所谓的匿名管道（比如父子进程之间的通信）。 使用pipe创建匿名管道，看不到pipe文件。 pipe(int fds[2]); &#x2F;&#x2F; fds[0] 读，fds[1]写 返回2个文件描述符，一个读文件描述符，一个写文件描述符。 匿名管道只适用于父子进程案例： 使用2个子进程，分别计算1-5000的素数">
+<meta property="article:published_time" content="2018-04-12T03:01:51.000Z">
+<meta property="article:modified_time" content="2020-04-14T06:29:36.317Z">
+<meta property="article:author" content="tanwenbo">
+<meta property="article:tag" content="上课笔记">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2018/04/12/linux-e7-ae-a1-e9-81-93-e9-80-9a-e4-bf-a1-e4-b9-8b-e5-8c-bf-e5-90-8d-e7-ae-a1-e9-81-93/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
+
+  <title>linux管道通信之匿名管道 | hhyvs111</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">hhyvs111</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Be a great man</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/12/linux-e7-ae-a1-e9-81-93-e9-80-9a-e4-bf-a1-e4-b9-8b-e5-8c-bf-e5-90-8d-e7-ae-a1-e9-81-93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="tanwenbo">
+      <meta itemprop="description" content="enjoy share">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hhyvs111">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          linux管道通信之匿名管道
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-04-12 11:01:51" itemprop="dateCreated datePublished" datetime="2018-04-12T11:01:51+08:00">2018-04-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="匿名管道"><a href="#匿名管道" class="headerlink" title="匿名管道"></a>匿名管道</h3><p>管道文件的大小始终是为0，更多的时候，它只是起一个标识作用，标识内核中的那块缓存区。就会出现所谓的匿名管道（比如父子进程之间的通信）。 使用pipe创建匿名管道，看不到pipe文件。 pipe(int fds[2]); // fds[0] 读，fds[1]写 返回2个文件描述符，一个读文件描述符，一个写文件描述符。</p>
+<h4 id="匿名管道只适用于父子进程"><a href="#匿名管道只适用于父子进程" class="headerlink" title="匿名管道只适用于父子进程"></a>匿名管道只适用于父子进程</h4><p>案例： 使用2个子进程，分别计算1-5000的素数，5001-10000的素数。主进程负责保存数据到文件。</p>
+<h4 id="pipe-c"><a href="#pipe-c" class="headerlink" title="pipe.c"></a>pipe.c</h4><p>#include&lt;stdio.h&gt; #include&lt;unistd.h&gt; #include&lt;stdlib.h&gt; #include&lt;sys/stat.h&gt; #include&lt;sys/wait.h&gt; #include&lt;sys/types.h&gt; #include&lt;fcntl.h&gt; #include&lt;signal.h&gt; int numChild = 0; //子进程数全局变量 void childProcEnd(int s) {     int status;     if(s == SIGCHLD)     {         printf(“delete child%d\n”,numChild);         numChild++;         wait(&amp;status);     }     if(numChild == 2)     {         printf(“all child delete\n”);         exit(0);     } } int isSushu(int num) {     int tp = num;     for(int i = 2;i &lt; tp;i++)     {         if(num%i == 0) return 0;     }     return 1; } int main() { // int fd = mkfifo(“num.pipe”,0666);     int numProc = 2;     int fds[2];    //fds[0]是读，fds[1]是写     pipe(fds);     int a,b;     signal(SIGCHLD,childProcEnd);    /<em>在一个进程终止或者停止时，将SIGCHLD信号发送给其父进程， 按系统默认将忽略此信号，如果父进程希望被告知其子系统的这种状态，则应捕捉此信号。</em>/       printf(“father id:%d\n”,getpid());     while(1)     {         if(numProc == 2)         {             a = 2;             b = 100;         }         if(numProc == 1)         {             a = 101;             b = 200;         }         if(fork() &gt; 0)//在主进程里创建         {             if(–numProc == 0)             break;         }         else         {             close(fds[0]);             for(int i = a;i &lt;= b;i++)             {                 if(isSushu(i) == 1)                 write(fds[1] ,&amp;i, 4);             }             exit(0);//当子进程事情做完后退出,是退出的子进程而不是父进程             //子进程退出，等待主进程的回收，以防僵死进程             //break;         }     } {     close(fds[1]); //把写关闭     //写入到文件里面     int wfd = open(“result.txt”,O_RDWR | O_CREAT);     while(1)     {         int num = 0;         int ret = read(fds[0],&amp;num, 4);         if(ret == 4)         write(wfd,&amp;num,4);         // printf(“%d\n”,num);         } }     return 0; }</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E4%B8%8A%E8%AF%BE%E7%AC%94%E8%AE%B0/" rel="tag"># 上课笔记</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/04/12/linux-e7-ae-a1-e9-81-93-e9-80-9a-e4-bf-a1-e4-b9-8b-e5-91-bd-e5-90-8d-e7-ae-a1-e9-81-93-2/" rel="prev" title="linux管道通信之命名管道">
+      <i class="fa fa-chevron-left"></i> linux管道通信之命名管道
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/04/13/linux-e7-ae-a1-e9-81-93-e9-80-9a-e4-bf-a1-e4-b9-8b-e5-91-bd-e5-90-8d-e7-ae-a1-e9-81-93/" rel="next" title="linux管道通信之命名管道">
+      linux管道通信之命名管道 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#匿名管道"><span class="nav-number">1.</span> <span class="nav-text">匿名管道</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#匿名管道只适用于父子进程"><span class="nav-number">1.1.</span> <span class="nav-text">匿名管道只适用于父子进程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#pipe-c"><span class="nav-number">1.2.</span> <span class="nav-text">pipe.c</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">tanwenbo</p>
+  <div class="site-description" itemprop="description">enjoy share</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">111</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">70</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">tanwenbo</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

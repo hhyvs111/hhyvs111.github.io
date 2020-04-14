@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Golang学习第二章 Golang学习第二章 指针 定义 指向 解引用   结构体 定义 访问 结构体指针   数组 定义   切片 范围 容量 扩容方式   函数 make函数 append range   返回值   map 修改map   函数闭包    指针 这里的指针和C里的很像，无论是定义还是使用，但是要注意的是Go里没有指针运算。  Go 具有指针。 指针保存了变量的内存地址。 定">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Golang学习第二章">
+<meta property="og:url" content="http://yoursite.com/2019/04/10/golang-e5-ad-a6-e4-b9-a0-e7-ac-ac-e4-ba-8c-e7-ab-a0/index.html">
+<meta property="og:site_name" content="hhyvs111">
+<meta property="og:description" content="Golang学习第二章 Golang学习第二章 指针 定义 指向 解引用   结构体 定义 访问 结构体指针   数组 定义   切片 范围 容量 扩容方式   函数 make函数 append range   返回值   map 修改map   函数闭包    指针 这里的指针和C里的很像，无论是定义还是使用，但是要注意的是Go里没有指针运算。  Go 具有指针。 指针保存了变量的内存地址。 定">
+<meta property="og:image" content="https://tanwenbo.top/wp-content/uploads/2019/04/b3c911ef41c5b2ee22ee1f11fff8b79f.png">
+<meta property="article:published_time" content="2019-04-09T23:19:27.000Z">
+<meta property="article:modified_time" content="2020-04-14T06:29:36.321Z">
+<meta property="article:author" content="tanwenbo">
+<meta property="article:tag" content="数组">
+<meta property="article:tag" content="指针">
+<meta property="article:tag" content="切片">
+<meta property="article:tag" content="结构体">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tanwenbo.top/wp-content/uploads/2019/04/b3c911ef41c5b2ee22ee1f11fff8b79f.png">
+
+<link rel="canonical" href="http://yoursite.com/2019/04/10/golang-e5-ad-a6-e4-b9-a0-e7-ac-ac-e4-ba-8c-e7-ab-a0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
+
+  <title>Golang学习第二章 | hhyvs111</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">hhyvs111</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Be a great man</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/10/golang-e5-ad-a6-e4-b9-a0-e7-ac-ac-e4-ba-8c-e7-ab-a0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="tanwenbo">
+      <meta itemprop="description" content="enjoy share">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hhyvs111">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Golang学习第二章
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-04-10 07:19:27" itemprop="dateCreated datePublished" datetime="2019-04-10T07:19:27+08:00">2019-04-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Go/" itemprop="url" rel="index"><span itemprop="name">Go</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Golang学习第二章"><a href="#Golang学习第二章" class="headerlink" title="Golang学习第二章"></a>Golang学习第二章</h1><ul>
+<li>Golang学习第二章<ul>
+<li>指针<ul>
+<li>定义</li>
+<li>指向</li>
+<li>解引用</li>
+</ul>
+</li>
+<li>结构体<ul>
+<li>定义</li>
+<li>访问</li>
+<li>结构体指针</li>
+</ul>
+</li>
+<li>数组<ul>
+<li>定义</li>
+</ul>
+</li>
+<li>切片<ul>
+<li>范围</li>
+<li>容量<ul>
+<li>扩容方式</li>
+</ul>
+</li>
+<li>函数<ul>
+<li>make函数</li>
+<li>append</li>
+<li>range</li>
+</ul>
+</li>
+<li>返回值</li>
+</ul>
+</li>
+<li>map<ul>
+<li>修改map</li>
+</ul>
+</li>
+<li>函数闭包</li>
+</ul>
+</li>
+</ul>
+<h2 id="指针"><a href="#指针" class="headerlink" title="指针"></a>指针</h2><blockquote>
+<p>这里的指针和C里的很像，无论是定义还是使用，但是要注意的是Go里没有指针运算。</p>
+</blockquote>
+<p>Go 具有指针。 指针保存了变量的内存地址。</p>
+<h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p>类型 *T 是指向类型 T 的值的指针。其零值是 <code>nil</code>。</p>
+<pre><code>var p *int</code></pre><h3 id="指向"><a href="#指向" class="headerlink" title="指向"></a>指向</h3><p>&amp; 符号会生成一个指向其作用对象的指针。</p>
+<pre><code>i := 42
+p = &amp;i</code></pre><p>* 符号表示指针指向的底层的值。</p>
+<h3 id="解引用"><a href="#解引用" class="headerlink" title="解引用"></a>解引用</h3><pre><code>fmt.Pjrintln(*p) // 通过指针 p 读取 i
+*p = 21         // 通过指针 p 设置 i</code></pre><p>这也就是通常所说的“间接引用”或“非直接引用”。</p>
+<p>反正不能进行指针运算，比如p++之类的，会提示非法操作。</p>
+<h2 id="结构体"><a href="#结构体" class="headerlink" title="结构体"></a>结构体</h2><h3 id="定义-1"><a href="#定义-1" class="headerlink" title="定义"></a>定义</h3><p>关键字type 结构体名 struct，要注意命名方式。</p>
+<pre><code>type Vertex struct {
+    X int
+    Y int
+}</code></pre><h3 id="访问"><a href="#访问" class="headerlink" title="访问"></a>访问</h3><p>结构体使用点号来访问，和C一样。</p>
+<pre><code>func main() {
+    v := Vertex{1, 2}
+    v.X = 4
+    fmt.Println(v.X)
+}</code></pre><h3 id="结构体指针"><a href="#结构体指针" class="headerlink" title="结构体指针"></a>结构体指针</h3><p>通过指针间接的访问是透明的，前面提到的定义可以像<code>auto</code>一样，直接用一个变量指向另一个变量的地址就是指针了。</p>
+<pre><code>type Vertex struct {
+    X int
+    Y int
+}
+
+func main() {
+    v := Vertex{1, 2}
+    p := &amp;v
+    p.X = 1e9
+    fmt.Println(v)
+}</code></pre><blockquote>
+<p>= 是赋值， := 是声明变量并赋值。</p>
+</blockquote>
+<h2 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h2><h3 id="定义-2"><a href="#定义-2" class="headerlink" title="定义"></a>定义</h3><p>类型 <code>[n]T</code> 是一个有<code>n</code>个类型为<code>T</code>的值的数组。</p>
+<p>注意这个格式</p>
+<p><code>var 数组名 [数量] 类型</code></p>
+<pre><code>var a [10]int</code></pre><p>定义变量 a 是一个有十个整数的数组。</p>
+<p>数组的长度是其类型的一部分，因此数组不能改变大小。</p>
+<h2 id="切片"><a href="#切片" class="headerlink" title="切片"></a>切片</h2><p>这里也可以在定义的时候初始化。 没有指定长度的数组就是切片，类似于c++里的vector。</p>
+<pre><code>func main() {
+    p := []int{2, 3, 5, 7, 11, 13}
+    fmt.Println(&quot;p ==&quot;, p)
+
+    for i := 0; i &lt; len(p); i++ {
+        fmt.Printf(&quot;p[%d] == %d\n&quot;, i, p[i])
+    }
+}</code></pre><p>用len来求切片的长度。</p>
+<h3 id="范围"><a href="#范围" class="headerlink" title="范围"></a>范围</h3><p>可以对数组进行范围取值，表达式：</p>
+<pre><code>s[low:high]</code></pre><p>表示从low到high-1的数组元素，包含两端。</p>
+<pre><code>func main() {
+    p := []int{2, 3, 5, 7, 11, 13}
+    fmt.Println(&quot;p ==&quot;, p)
+    fmt.Println(&quot;p[1:4] ==&quot;, p[1:4])
+
+    // 省略下标代表从 0 开始
+    fmt.Println(&quot;p[:3] ==&quot;, p[:3])
+
+    // 省略上标代表到 len(s) 结束
+    fmt.Println(&quot;p[4:] ==&quot;, p[4:])
+}</code></pre><h3 id="容量"><a href="#容量" class="headerlink" title="容量"></a>容量</h3><p><img src="https://tanwenbo.top/wp-content/uploads/2019/04/b3c911ef41c5b2ee22ee1f11fff8b79f.png" alt=""></p>
+<p>切片就是一个结构体，包含了三个元素：</p>
+<ol>
+<li><p>一个指向数组中切片指定的开始位置；</p>
+</li>
+<li><p>长度，即切片的长度，通过内置函数len获得；</p>
+</li>
+<li><p>最大长度，即切片的最大容量，通过内置函数cap获得。</p>
+</li>
+</ol>
+<h4 id="扩容方式"><a href="#扩容方式" class="headerlink" title="扩容方式"></a>扩容方式</h4><p>slice这种数据结构便于使用和管理数据集合，可以理解为是一种“动态数组”，slice也是围绕动态数组的概念来构建的。既然是动态数组，那么slice是如何扩容的呢？</p>
+<p>请记住以下两条规则：</p>
+<ul>
+<li>如果切片的容量小于1024个元素，那么扩容的时候slice的cap就翻番，乘以2；一旦元素个数超过1024个元素，增长因子就变成1.25，即每次增加原来容量的四分之一。</li>
+<li>如果扩容之后，还没有触及原数组的容量，那么，切片中的指针指向的位置，就还是原数组，如果扩容之后，超过了原数组的容量，那么，Go就会开辟一块新的内存，把原来的值拷贝过来，这种情况丝毫不会影响到原数组。</li>
+</ul>
+<h3 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h3><h4 id="make函数"><a href="#make函数" class="headerlink" title="make函数"></a>make函数</h4><p>slice 由函数 make 创建。这会分配一个零长度的数组并且返回一个 slice 指向这个数组：</p>
+<pre><code>a := make([]int, 5)  // len(a)=5</code></pre><p>为了指定容量，可传递第三个参数到 <code>make</code>：</p>
+<pre><code>b := make([]int, 0, 5) // len(b)=0, cap(b)=5
+
+b = b[:cap(b)] // len(b)=5, cap(b)=5
+b = b[1:]      // len(b)=4, cap(b)=4</code></pre><h4 id="append"><a href="#append" class="headerlink" title="append"></a>append</h4><p>类似于vector的<code>push_back</code>，将元素添加到切片后面。</p>
+<pre><code>func main() {
+    var a []int
+    printSlice(&quot;a&quot;, a)
+    // append works on nil slices.
+    a = append(a, 0)
+    printSlice(&quot;a&quot;, a)
+    // the slice grows as needed.
+    a = append(a, 1)
+    printSlice(&quot;a&quot;, a)
+    // we can add more than one element at a time.
+    a = append(a, 2, 3, 4)
+    printSlice(&quot;a&quot;, a)
+}</code></pre><p>如果底层数组太小，不能容纳所有值时，会分配一个更大的数组，进行自动扩容。</p>
+<h4 id="range"><a href="#range" class="headerlink" title="range"></a>range</h4><p>for 循环的 range 格式可以对 slice 或者 map 进行迭代循环。</p>
+<pre><code>var pow = []int{1, 2, 4, 8, 16, 32, 64, 128}
+
+func main() {
+    for i, v := range pow {
+        fmt.Printf(&quot;2**%d = %d\n&quot;, i, v)
+    }
+}</code></pre><h3 id="返回值"><a href="#返回值" class="headerlink" title="返回值"></a>返回值</h3><p>Go</p>
+<h2 id="map"><a href="#map" class="headerlink" title="map"></a>map</h2><p>map映射键到值，必须使用make来创建；值为nil的map是空的，并且不能赋值。</p>
+<pre><code>type Vertex struct {
+    Lat, Long float64
+}
+
+var m map[string]Vertex
+
+func main() {
+    m = make(map[string]Vertex)
+    m[&quot;Bell Labs&quot;] = Vertex{
+        40.68433, -74.39967,
+    }
+    fmt.Println(m[&quot;Bell Labs&quot;])
+}</code></pre><p>这里对应的值是放在中括号后面，不是hashMap里的pair键值对。</p>
+<h3 id="修改map"><a href="#修改map" class="headerlink" title="修改map"></a>修改map</h3><p>在 map m 中插入或修改一个元素：</p>
+<pre><code>m[key] = elem</code></pre><p>获得元素：</p>
+<pre><code>elem = m[key]</code></pre><p>删除元素：</p>
+<pre><code>delete(m, key)</code></pre><p>通过双赋值检测某个键存在：</p>
+<pre><code>elem, ok = m[key]</code></pre><p>如果 key 在 m 中，<code>ok</code> 为 true 。否则， ok 为 <code>false</code>，并且 elem 是 map 的元素类型的零值。</p>
+<p>同样的，当从 map 中读取某个不存在的键时，结果是 map 的元素类型的零值。</p>
+<h2 id="函数闭包"><a href="#函数闭包" class="headerlink" title="函数闭包"></a>函数闭包</h2><p>Go 函数可以是闭包的。闭包是一个函数值，它来自函数体的外部的变量引用。 函数可以对这个引用值进行访问和赋值；换句话说这个函数被“绑定”在这个变量上。</p>
+<p>例如，函数 adder 返回一个闭包。每个闭包都被绑定到其各自的 sum 变量上。</p>
+<blockquote>
+<p>等于说是一个函数返回了另一个函数，然后可以直接将变量定义为一个函数，下面的pos就是func(x int)该函数。</p>
+</blockquote>
+<pre><code>func adder() func(int) int {
+    sum := 0
+    return func(x int) int {
+        sum += x
+        return sum
+    }
+}
+
+func main() {
+    pos, neg := adder(), adder()
+    for i := 0; i &lt; 10; i++ {
+        fmt.Println(
+            pos(i),
+            neg(-2*i),
+        )
+    }
+}</code></pre>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%95%B0%E7%BB%84/" rel="tag"># 数组</a>
+              <a href="/tags/%E6%8C%87%E9%92%88/" rel="tag"># 指针</a>
+              <a href="/tags/%E5%88%87%E7%89%87/" rel="tag"># 切片</a>
+              <a href="/tags/%E7%BB%93%E6%9E%84%E4%BD%93/" rel="tag"># 结构体</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/04/01/golang-e5-ad-a6-e4-b9-a0-e7-ac-ac-e4-b8-80-e7-ab-a0/" rel="prev" title="Golang学习第一章">
+      <i class="fa fa-chevron-left"></i> Golang学习第一章
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/04/11/golang-e5-ad-a6-e4-b9-a0-e7-ac-ac-e4-b8-89-e7-ab-a0/" rel="next" title="Golang学习第三章">
+      Golang学习第三章 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Golang学习第二章"><span class="nav-number">1.</span> <span class="nav-text">Golang学习第二章</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#指针"><span class="nav-number">1.1.</span> <span class="nav-text">指针</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#定义"><span class="nav-number">1.1.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#指向"><span class="nav-number">1.1.2.</span> <span class="nav-text">指向</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解引用"><span class="nav-number">1.1.3.</span> <span class="nav-text">解引用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结构体"><span class="nav-number">1.2.</span> <span class="nav-text">结构体</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#定义-1"><span class="nav-number">1.2.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#访问"><span class="nav-number">1.2.2.</span> <span class="nav-text">访问</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结构体指针"><span class="nav-number">1.2.3.</span> <span class="nav-text">结构体指针</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数组"><span class="nav-number">1.3.</span> <span class="nav-text">数组</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#定义-2"><span class="nav-number">1.3.1.</span> <span class="nav-text">定义</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#切片"><span class="nav-number">1.4.</span> <span class="nav-text">切片</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#范围"><span class="nav-number">1.4.1.</span> <span class="nav-text">范围</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#容量"><span class="nav-number">1.4.2.</span> <span class="nav-text">容量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#扩容方式"><span class="nav-number">1.4.2.1.</span> <span class="nav-text">扩容方式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#函数"><span class="nav-number">1.4.3.</span> <span class="nav-text">函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#make函数"><span class="nav-number">1.4.3.1.</span> <span class="nav-text">make函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#append"><span class="nav-number">1.4.3.2.</span> <span class="nav-text">append</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#range"><span class="nav-number">1.4.3.3.</span> <span class="nav-text">range</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#返回值"><span class="nav-number">1.4.4.</span> <span class="nav-text">返回值</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#map"><span class="nav-number">1.5.</span> <span class="nav-text">map</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#修改map"><span class="nav-number">1.5.1.</span> <span class="nav-text">修改map</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数闭包"><span class="nav-number">1.6.</span> <span class="nav-text">函数闭包</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">tanwenbo</p>
+  <div class="site-description" itemprop="description">enjoy share</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">111</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">70</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">tanwenbo</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

@@ -82,7 +82,7 @@
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-container">
   <div class="site-nav-toggle">
-    <div class="toggle" aria-label="Toggle navigation bar">
+    <div class="toggle" aria-label="切换导航栏">
       <span class="toggle-line toggle-line-first"></span>
       <span class="toggle-line toggle-line-middle"></span>
       <span class="toggle-line toggle-line-last"></span>
@@ -112,22 +112,22 @@
   <ul id="menu" class="main-menu menu">
         <li class="menu-item menu-item-home">
 
-    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
 
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
 
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
 
   </li>
   </ul>
@@ -157,6 +157,304 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/07/opengl-learn-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="tanwenbo">
+      <meta itemprop="description" content="enjoy share">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hhyvs111">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/09/07/opengl-learn-1/" class="post-title-link" itemprop="url">OpenGL学习笔记第1篇——准备</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-09-07 16:38:26" itemprop="dateCreated datePublished" datetime="2018-09-07T16:38:26+08:00">2018-09-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OpenGL/" itemprop="url" rel="index"><span itemprop="name">OpenGL</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>为了自己的论文现在需要从头开始学习一下OpenGL，发现了一个很好的网站<a href="https://learnopengl-cn.github.io/" target="_blank" rel="noopener">LearnOpenGL中文版</a>，其原版就是<a href="https://learnopengl.com/" target="_blank" rel="noopener">LearnOpenGL</a>。为了进度，还是选择看中文版（太菜）。</p>
+</blockquote>
+<h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0 前言"></a>0 前言</h2><p>基本的概念就不说了，做笔记也不是做教程，只写一下自己需要的东西。</p>
+<h2 id="1-对象"><a href="#1-对象" class="headerlink" title="1 对象"></a>1 对象</h2><p>这个东西有点意思，因为本来OpenGL就是用C语言写的，但是也会有个<strong>对象</strong>的概念。</p>
+<p>在OpenGL中一个对象是指一些选项的集合，它代表OpenGL状态的一个子集。比如，我们可以用一个对象来代表绘图窗口的设置，之后我们就可以设置它的大小、支持的颜色位数等等。可以把对象看做一个C风格的结构体(Struct)：</p>
+<pre><code>struct object_name {
+    float  option1;
+    int    option2;
+    char[] name;
+};</code></pre><p>然后有一些绑定对象的操作：</p>
+<pre><code>// 创建对象
+unsigned int objectId = 0;
+glGenObject(1, &amp;objectId);
+// 绑定对象至上下文
+glBindObject(GL_WINDOW_TARGET, objectId);
+// 设置当前绑定到 GL_WINDOW_TARGET 的对象的一些选项
+glSetObjectOption(GL_WINDOW_TARGET, GL_OPTION_WINDOW_WIDTH, 800);
+glSetObjectOption(GL_WINDOW_TARGET, GL_OPTION_WINDOW_HEIGHT, 600);
+// 将上下文对象设回默认
+glBindObject(GL_WINDOW_TARGET, 0);</code></pre><p>这一小段代码展现了你以后使用OpenGL时常见的工作流。我们首先创建一个对象，然后用一个id保存它的引用（实际数据被储存在后台）。然后我们将对象绑定至上下文的目标位置（例子中窗口对象目标的位置被定义成GL_WINDOW_TARGET）。接下来我们设置窗口的选项。最后我们将目标位置的对象id设回0，解绑这个对象。设置的选项将被保存在objectId所引用的对象中，一旦我们重新绑定这个对象到GL_WINDOW_TARGET位置，这些选项就会重新生效。</p>
+<h2 id="2-GLAD"><a href="#2-GLAD" class="headerlink" title="2 GLAD"></a>2 GLAD</h2><blockquote>
+<p>跟着这个网站学习的原因主要是其用的东西都是比较先进的，比如GLFW和CMake等工具，但是也有一些特别的工具。</p>
+</blockquote>
+<p>这里用到了一个工具<code>GLAD</code>，好像没听过啊，只听过GLFW和GLEW。</p>
+<p>GLAD用来解决函数位置无法再编译时确定的问题，不同驱动的位置无法确定，所以需要在运行时获取函数地址并将其保存在一个函数指针中供以后使用。</p>
+<blockquote>
+<p>具体来说就是不同的显卡驱动有不同的OpenGL实现，所以需要用GLAD来隐藏这些差别，达到无差别使用体验。</p>
+</blockquote>
+<p>而且这是一个<a href="https://glad.dav1d.de/" target="_blank" rel="noopener">在线服务</a>，也就是说需要在网上去生成，感觉有点鸡肋啊。</p>
+<h2 id="3-其他准备"><a href="#3-其他准备" class="headerlink" title="3 其他准备"></a>3 其他准备</h2><p>如果你是Mac用户，那么可以参考一下使用GLFW和GLEW的组合，再配合CLion来学习OpenGL。具体的可以参考我的博文<a href="https://tanwenbo.top/course/mac%E4%BD%BF%E7%94%A8clion%E9%85%8D%E7%BD%AEopengl-2.html" target="_blank" rel="noopener">Mac使用CLion配置OpenGL</a>。</p>
+<p>之所以不推荐用xcode，个人觉得配置过于复杂且可移植性很差。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/25/mac-e9-85-8d-e7-bd-aeiterm2-e5-ae-9e-e7-8e-b0mosh-e8-87-aa-e5-8a-a8-e8-bf-9c-e7-a8-8b-e8-bf-9e-e6-8e-a5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="tanwenbo">
+      <meta itemprop="description" content="enjoy share">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hhyvs111">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/08/25/mac-e9-85-8d-e7-bd-aeiterm2-e5-ae-9e-e7-8e-b0mosh-e8-87-aa-e5-8a-a8-e8-bf-9c-e7-a8-8b-e8-bf-9e-e6-8e-a5/" class="post-title-link" itemprop="url">Mac配置iTerm2实现mosh自动远程连接</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-08-25 01:43:20" itemprop="dateCreated datePublished" datetime="2018-08-25T01:43:20+08:00">2018-08-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">教程</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>其实网上教程也挺多的，但是用起来总是不那么方便，还遇到了一些bug。现在就总结几个问题再输出一下！</p>
+</blockquote>
+<h2 id="1-准备"><a href="#1-准备" class="headerlink" title="1 准备"></a>1 准备</h2><p>首先创建一个ssh秘钥是最方便的，这样就不用输入密码，不过用了该功能也没必要了，直接用就是的。</p>
+<h3 id="1-1-安装expect"><a href="#1-1-安装expect" class="headerlink" title="1.1 安装expect"></a>1.1 安装expect</h3><p>首先确保你的mac安装了expect，这个是一个自动化执行脚本，可以输入一些普通shell脚本做不到的东西，需要人工操作的。比如<code>回车确认</code>等等。</p>
+<pre><code>brew install expect</code></pre><p>如果你brew都没装那可以出门右转了。</p>
+<h3 id="1-2-安装mosh"><a href="#1-2-安装mosh" class="headerlink" title="1.2 安装mosh"></a>1.2 安装mosh</h3><blockquote>
+<p>你也可以不装，只使用ssh连接，那么直接跳过这里。</p>
+</blockquote>
+<p>这个是什么呢？就是用来解决ssh卡顿的，因为默认的是键盘每输入一个字符就要向服务器发送一个字节，这样就会大大增加传输次数，也会增加延迟。</p>
+<blockquote>
+<p>mosh 是一个替代SSH的免费软件，它最大的特点是支持网络漫游和间歇性连接。</p>
+<ul>
+<li>会话的中断不会导致当前正在前端执行的命令中断，相当于你所有的操作都是在screen命令中一样在后台执行</li>
+<li>会话在中断过后，不会立刻退出，而是启用一个计时器，当网络恢复后会自动重新连接，同时会延续之前的会话，不会重新开启一个</li>
+</ul>
+</blockquote>
+<pre><code>brew install mosh</code></pre><p>目前只是客户端mac安装了，服务器端也要安装。如果是Ubuntu的话用如下命令：</p>
+<pre><code>sudo apt-get install mosh</code></pre><blockquote>
+<p>看到这里你可能觉得有点复杂，但是一劳永逸，亲测延迟要降低很多！</p>
+</blockquote>
+<p>然后运行<code>mosh-server</code></p>
+<pre><code>mosh-server</code></pre><p>这个时候<code>mosh-server</code>可能绑定的是<code>60001</code>端口，可以自己看一下</p>
+<pre><code>netstat -anp | grep mosh</code></pre><p><img src="https://tanwenbo.top/wp-content/uploads/2018/08/ede2d90db1e0d03d5731a8f07f113a16.png" alt="">像我是阿里云的服务器，可能就要到安全组里开通60001的udp端口，具体怎么设置相信你可以百度得到。</p>
+<p>如果提示错误：</p>
+<pre><code>The locale requested by LC_ALL=zh_CN.UTF-8 isn&apos;t available here.Running `locale-gen zh_CN.UTF-8&apos; may be necessary.mosh-server needs a UTF-8 native locale to run.Unfortunately, the local environment (LC_ALL=zh_CN.UTF-8) specifiesthe character set &quot;US-ASCII&quot;,The client-supplied environment ([no charset variables]) specifiesthe character set &quot;US-ASCII&quot;.LANG=LANGUAGE=LC_CTYPE=&quot;POSIX&quot;LC_NUMERIC=&quot;POSIX&quot;LC_TIME=&quot;POSIX&quot;LC_COLLATE=&quot;POSIX&quot;LC_MONETARY=&quot;POSIX&quot;LC_MESSAGES=&quot;POSIX&quot;LC_PAPER=&quot;POSIX&quot;LC_NAME=&quot;POSIX&quot;LC_ADDRESS=&quot;POSIX&quot;LC_TELEPHONE=&quot;POSIX&quot;LC_MEASUREMENT=&quot;POSIX&quot;LC_IDENTIFICATION=&quot;POSIX&quot;LC_ALL=</code></pre><p>那么可能是你的服务器没有设置中文的utf-8，执行以下命令：</p>
+<pre><code>sudo apt-get -y install language-pack-zh-hans</code></pre><p>如果弹出</p>
+<pre><code>MOSH CONNECT 60001 /tnUTZ/3MIU0uF1Qlk0K6Amosh-server (mosh 1.2.5) [build mosh 1.2.5]Copyright 2012 Keith Winstein &lt;mosh-devel@mit.edu&gt;License GPLv3+: GNU GPL version 3 or later &lt;http://gnu.org/licenses/gpl.html&gt;.This is free software: you are free to change and redistribute it.There is NO WARRANTY, to the extent permitted by law.</code></pre><p>那么就意味着运行成功了。</p>
+<h2 id="2-配置"><a href="#2-配置" class="headerlink" title="2 配置"></a>2 配置</h2><p>准备操作已完成，那么就进行配置了。</p>
+<h3 id="2-1-脚本"><a href="#2-1-脚本" class="headerlink" title="2.1 脚本"></a>2.1 脚本</h3><p>首先利用expect在<code>/usr/local/bin/</code>下面写一个脚本login.exp，并加上执行权限：</p>
+<pre><code>chmod +x login.exp</code></pre><p>login.exp</p>
+<h4 id="使用mosh"><a href="#使用mosh" class="headerlink" title="使用mosh"></a>使用mosh</h4><pre><code>#!/usr/bin/expectset timeout 30spawn mosh -p 60001 [lindex $argv 0]@[lindex $argv 1]expect {    &quot;(yes/no)?&quot;    {send &quot;yes\n&quot;;exp_continue}    &quot;password:&quot;    {send &quot;[lindex $argv 2]\n&quot;}}interact</code></pre><h4 id="使用ssh"><a href="#使用ssh" class="headerlink" title="使用ssh"></a>使用ssh</h4><pre><code>#!/usr/bin/expectset timeout 30spawn ssh [lindex $argv 0]@[lindex $argv 1]expect {    &quot;(yes/no)?&quot;    {send &quot;yes\n&quot;;exp_continue}    &quot;password:&quot;    {send &quot;[lindex $argv 2]\n&quot;}}interact</code></pre><h3 id="2-2-iTerm2配置"><a href="#2-2-iTerm2配置" class="headerlink" title="2.2 iTerm2配置"></a>2.2 iTerm2配置</h3><p>可以直接按快捷键<code>command + ,</code>，或者在iTerm2设置里打开<code>preference</code>，点开Profiles，然后在<code>Genernal-&gt;Command</code>下选择 <code>Login shell</code>，在输入框里填入相关信息，用空格隔开，如果有特殊字符需要用<code>单引号</code>隔开。<img src="https://tanwenbo.top/wp-content/uploads/2018/08/d8505f803d54077b18d5081ec6e5d4fb.png" alt=""></p>
+<p>你还可以自己加一个快捷键<img src="https://tanwenbo.top/wp-content/uploads/2018/08/3bed11ccee9fdadaa9ec896542437097.png" alt=""></p>
+<h2 id="3-使用"><a href="#3-使用" class="headerlink" title="3 使用"></a>3 使用</h2><p>使用快捷键一键登录！享受mosh带来的低延迟吧！</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/22/e7-a1-ac-e9-93-be-e6-8e-a5-e5-92-8c-e8-bd-af-e8-bf-9e-e6-8e-a5-e7-9a-84-e5-8c-ba-e5-88-ab/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="tanwenbo">
+      <meta itemprop="description" content="enjoy share">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hhyvs111">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/08/22/e7-a1-ac-e9-93-be-e6-8e-a5-e5-92-8c-e8-bd-af-e8-bf-9e-e6-8e-a5-e7-9a-84-e5-8c-ba-e5-88-ab/" class="post-title-link" itemprop="url">硬链接和软连接的区别</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-08-22 04:06:38" itemprop="dateCreated datePublished" datetime="2018-08-22T04:06:38+08:00">2018-08-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <ul>
+<li><p>.</p>
+<p>在Linux的文件系统中，保存在磁盘分区中的文件不管是什么类型都给它分配一个编号，称为索引节点号inode 。<strong>软连接，其实就是新建立一个文件</strong>，这个文件就是专门用来指向别的文件的（那就和windows 下的快捷方式的那个文件有很接近的意味）。软链接产生的是一个新的文件，但这个文件的作用就是专门指向某个文件的，删了这个软连接文件，那就等于不需要这个连接，和原来的存在的实体原文件没有任何关系，但删除原来的文件，则相应的软连接不可用（cat那个软链接文件，则提示“没有该文件或目录“）</p>
+<p><strong>硬连接是不会建立inode的</strong>，他只是在文件原来的inode link count域再增加1而已，也因此<strong>硬链接是不可以跨越文件系统的</strong>。相反都是软连接会重新建立一个inode，当然inode的结构跟其他的不一样，他只是一个指明源文件的字符串信息。一旦删除源文件，那么软连接将变得毫无意义。而硬链接删除的时候，系统调用会检查inode link count的数值，如果他大于等于1，那么inode不会被回收。因此文件的内容不会被删除。</p>
+<p><strong>硬链接实际上是为文件建一个别名</strong>，链接文件和原文件实际上是同一个文件。可以通过ls -i来查看一下，这<strong>两个文件的inode号是同一个</strong>，说明它们是同一个文件；而软链接建立的是一个指向，即链接文件内的内容是指向原文件的指针，它们是两个文件。</p>
+<p>软链接可以跨文件系统，硬链接不可以；软链接可以对一个不存在的文件名(filename)进行链接（当然此时如果你vi这个软链接文件，linux会自动新建一个文件名为filename的文件）,硬链接不可以（其文件必须存在，inode必须存在）；软链接可以对目录进行连接，硬链接不可以。两种链接都可以通过命令 ln 来创建。ln 默认创建的是硬链接。使用 -s 开关可以创建软链接。</p>
+<p>.</p>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/23/chandelier/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -179,22 +477,22 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted on</span>
+              <span class="post-meta-item-text">发表于</span>
 
-              <time title="Created: 2018-07-23 23:28:40" itemprop="dateCreated datePublished" datetime="2018-07-23T23:28:40+08:00">2018-07-23</time>
+              <time title="创建时间：2018-07-23 23:28:40" itemprop="dateCreated datePublished" datetime="2018-07-23T23:28:40+08:00">2018-07-23</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
-              <span class="post-meta-item-text">In</span>
+              <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/%E5%88%86%E4%BA%AB/" itemprop="url" rel="index"><span itemprop="name">分享</span></a>
                 </span>
@@ -260,30 +558,30 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted on</span>
+              <span class="post-meta-item-text">发表于</span>
 
-              <time title="Created: 2018-07-11 03:29:47" itemprop="dateCreated datePublished" datetime="2018-07-11T03:29:47+08:00">2018-07-11</time>
+              <time title="创建时间：2018-07-11 03:29:47" itemprop="dateCreated datePublished" datetime="2018-07-11T03:29:47+08:00">2018-07-11</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
-              <span class="post-meta-item-text">In</span>
+              <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
                 </span>
-                  , 
+                  ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/Linux/%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">教程</span></a>
                 </span>
-                  , 
+                  ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/Linux/%E6%95%99%E7%A8%8B/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" itemprop="url" rel="index"><span itemprop="name">计算机网络</span></a>
                 </span>
@@ -383,22 +681,22 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted on</span>
+              <span class="post-meta-item-text">发表于</span>
 
-              <time title="Created: 2018-07-08 04:41:54" itemprop="dateCreated datePublished" datetime="2018-07-08T04:41:54+08:00">2018-07-08</time>
+              <time title="创建时间：2018-07-08 04:41:54" itemprop="dateCreated datePublished" datetime="2018-07-08T04:41:54+08:00">2018-07-08</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
-              <span class="post-meta-item-text">In</span>
+              <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">教程</span></a>
                 </span>
@@ -481,26 +779,26 @@ sudo etc/init.d/apache2 restart</code></pre><h3 id="6-备注"><a href="#6-备注
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted on</span>
+              <span class="post-meta-item-text">发表于</span>
 
-              <time title="Created: 2018-07-07 09:01:09" itemprop="dateCreated datePublished" datetime="2018-07-07T09:01:09+08:00">2018-07-07</time>
+              <time title="创建时间：2018-07-07 09:01:09" itemprop="dateCreated datePublished" datetime="2018-07-07T09:01:09+08:00">2018-07-07</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
-              <span class="post-meta-item-text">In</span>
+              <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">教程</span></a>
                 </span>
-                  , 
+                  ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/%E6%95%99%E7%A8%8B/%E9%9A%8F%E7%AC%94/" itemprop="url" rel="index"><span itemprop="name">随笔</span></a>
                 </span>
@@ -590,22 +888,22 @@ sudo etc/init.d/apache2 restart</code></pre><h3 id="6-备注"><a href="#6-备注
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted on</span>
+              <span class="post-meta-item-text">发表于</span>
 
-              <time title="Created: 2018-07-04 01:07:57" itemprop="dateCreated datePublished" datetime="2018-07-04T01:07:57+08:00">2018-07-04</time>
+              <time title="创建时间：2018-07-04 01:07:57" itemprop="dateCreated datePublished" datetime="2018-07-04T01:07:57+08:00">2018-07-04</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
-              <span class="post-meta-item-text">In</span>
+              <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
                 </span>
@@ -683,26 +981,26 @@ root@ServerA:~# source /etc/profile</code></pre><h5 id="8）在任意界面运�
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted on</span>
+              <span class="post-meta-item-text">发表于</span>
 
-              <time title="Created: 2018-06-28 01:02:47" itemprop="dateCreated datePublished" datetime="2018-06-28T01:02:47+08:00">2018-06-28</time>
+              <time title="创建时间：2018-06-28 01:02:47" itemprop="dateCreated datePublished" datetime="2018-06-28T01:02:47+08:00">2018-06-28</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
-              <span class="post-meta-item-text">In</span>
+              <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
                 </span>
-                  , 
+                  ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/Linux/%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">教程</span></a>
                 </span>
@@ -777,22 +1075,22 @@ libcrypto.so.1.1 /lib/x86_64-linux-gnu</code></pre><p>这个时候就升级成�
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted on</span>
+              <span class="post-meta-item-text">发表于</span>
 
-              <time title="Created: 2018-06-10 01:14:02" itemprop="dateCreated datePublished" datetime="2018-06-10T01:14:02+08:00">2018-06-10</time>
+              <time title="创建时间：2018-06-10 01:14:02" itemprop="dateCreated datePublished" datetime="2018-06-10T01:14:02+08:00">2018-06-10</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
-              <span class="post-meta-item-text">In</span>
+              <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
                 </span>
@@ -852,395 +1150,10 @@ int main()
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/06/e5-85-b1-e4-ba-ab-e5-86-85-e5-ad-98/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="tanwenbo">
-      <meta itemprop="description" content="enjoy share">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="hhyvs111">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/06/06/e5-85-b1-e4-ba-ab-e5-86-85-e5-ad-98/" class="post-title-link" itemprop="url">共享内存</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2018-06-06 01:57:34" itemprop="dateCreated datePublished" datetime="2018-06-06T01:57:34+08:00">2018-06-06</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="共享内存"><a href="#共享内存" class="headerlink" title="共享内存"></a>共享内存</h1><p><code>《Unix网络编程：卷2》``共享内存``posts</code></p>
-<blockquote>
-<p>这个已经在之前的代码里使用过了，的确很方便，需要认真学习。</p>
-</blockquote>
-<h2 id="1-概述"><a href="#1-概述" class="headerlink" title="1 概述"></a>1 概述</h2><p>共享内存区是IPC形式化中最快的。<strong>一旦这样的内存区映射到共享它的进程的地址空间，这些进程间数据的传递就不再涉及到内核。</strong></p>
-<p>使用共享内存可以大量减少系统开销。</p>
-<p>要注意，fork之后的子进程并不与父进程共享内存区。子进程会拷贝父进程的内存区，然后单独使用。</p>
-<h2 id="2-映射函数"><a href="#2-映射函数" class="headerlink" title="2 映射函数"></a>2 映射函数</h2><h3 id="2-1-mmap"><a href="#2-1-mmap" class="headerlink" title="2.1 mmap"></a>2.1 mmap</h3><p>mmp函数把一个<code>文件</code>或一个<code>Posix共享内存区</code>对象映射到调用进程的地址空间。</p>
-<pre><code>#include &lt;sys/mman.h&gt;
-void *mmap(void *addr, size_t length, int prot, int flags, int fd, off_t offset);</code></pre><ul>
-<li>addr指定描述符fd应被映射到的进程内空间的起始地址。通常为空，这样告诉内核自己去选择起始地址；</li>
-<li>len是映射到调用进程地址空间中的字节数。</li>
-<li>prot参数是读写权限，PORT_READ（数据可读）等等；</li>
-<li>flags参数指定改动是否对进程可见，如：<ul>
-<li>MAP_SHARED，变动是共享的；</li>
-<li>MAP_PRIVATE，变动是不共享的。</li>
-</ul>
-</li>
-</ul>
-<p><strong>父子进程之间共享内存区的方法之一是，父进程在调用fork前先指定MAP_SHARED调用mmap。</strong></p>
-<h3 id="2-2-mumap"><a href="#2-2-mumap" class="headerlink" title="2.2 mumap"></a>2.2 mumap</h3><p>从某个进程的地址空间删除一个映射关系。</p>
-<pre><code>int munmap(void *addr, size_t length);</code></pre><p>addr是mmap返回的地址，len是映射区的大小。</p>
-<h3 id="2-3-msync"><a href="#2-3-msync" class="headerlink" title="2.3 msync"></a>2.3 msync</h3><p>调用方msync实现硬盘的文件内容和内存映射区的内容一致。也就是说如果修改了内存映射到某个文件的内存区中内容，那么相应的内核会更新文件。</p>
-<pre><code>int msync(void *addr, size_t length, int flags);</code></pre><p>flags参数：</p>
-<ul>
-<li>MS_ASYNC，执行异步写，立即返回；</li>
-<li>MS_SYNC，执行同步写，要等到写操作完成后才返回；</li>
-<li>MS_INVALIDATE，最终副本不一致的文件数据的所有内存中副本都失效。</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/01/system-v-e4-bf-a1-e5-8f-b7-e9-87-8f/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="tanwenbo">
-      <meta itemprop="description" content="enjoy share">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="hhyvs111">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/06/01/system-v-e4-bf-a1-e5-8f-b7-e9-87-8f/" class="post-title-link" itemprop="url">System V信号量</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2018-06-01 06:48:27" itemprop="dateCreated datePublished" datetime="2018-06-01T06:48:27+08:00">2018-06-01</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" itemprop="url" rel="index"><span itemprop="name">计算机网络</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="System-V信号量"><a href="#System-V信号量" class="headerlink" title="System V信号量"></a>System V信号量</h1><p><code>《Unix网络编程：卷2》``信号量``posts</code></p>
-<blockquote>
-<p>System V信号量和Posix信号量表面上区分是从函数命名方式上，前者没有下划线。后面再总结具体区分。</p>
-</blockquote>
-<h2 id="1-概述"><a href="#1-概述" class="headerlink" title="1 概述"></a>1 概述</h2><p>System V信号量比Posix信号量增加了另外一级复杂度：</p>
-<ul>
-<li>计数信号量集：一个或多个信号量（构成一个集合），其中每个都是<code>计数信号量</code>。一般讨论System V的是<strong>计数信号量集</strong>，而Posix是指单个<strong>计数信号量</strong>。</li>
-</ul>
-<p>semid_ds 信号量集结构如下（Linux下没有sem参数，但其实是有的）：</p>
-<pre><code>struct semid_ds {
-       struct ipc_perm sem_perm;  /* Ownership and permissions */
-       time_t          sem_otime; /* Last semop time */
-       time_t          sem_ctime; /* Last change time */
-       unsigned long   sem_nsems; /* No. of semaphores in set */
-   };</code></pre><blockquote>
-<p>ipc_perm之前有提到是访问权限。</p>
-</blockquote>
-<h4 id="man-semop结果："><a href="#man-semop结果：" class="headerlink" title="man semop结果："></a>man semop结果：</h4><p>Each semaphore in a System V semaphore set has the following associated values:</p>
-<pre><code>struct sem{
-       unsigned short  semval;   /* semaphore value */
-       unsigned short  semzcnt;  /* # waiting for zero */
-       unsigned short  semncnt;  /* # waiting for increase */
-       pid_t           sempid;   /* ID of process that did last op */
-    };</code></pre><h2 id="2-相关函数"><a href="#2-相关函数" class="headerlink" title="2 相关函数"></a>2 相关函数</h2><h3 id="2-1-semget"><a href="#2-1-semget" class="headerlink" title="2.1 semget"></a>2.1 semget</h3><pre><code>#include &lt;sys/types.h&gt;
-#include &lt;sys/ipc.h&gt;
-#include &lt;sys/sem.h&gt;
-
-int semget(key_t key, int nsems, int semflg);</code></pre><p>返回值是一个称为<code>信号量标识符</code>的整数，后面的函数会用到。</p>
-<ul>
-<li><code>nsems</code>是指定集合中的信号量数。</li>
-<li><code>semflg</code>就是之前的oflag，权限位。</li>
-</ul>
-<p>创建新信号集的时候，相应的semid_ds结构体有些成员会被初始化：</p>
-<pre><code>sem_perm.cuid  and  sem_perm.uid  are  set to the effective user ID of thecalling process.
-
-sem_perm.cgid and sem_perm.gid are set to the effective group  ID  of  thecalling process.
-
-The least significant 9 bits of sem_perm.mode are set to the least significant 9 bits of semflg.
-
-sem_nsems is set to the value of nsems.
-
-sem_otime is set to 0.
-
-sem_ctime is set to the current time.</code></pre><h3 id="2-2-semop"><a href="#2-2-semop" class="headerlink" title="2.2 semop"></a>2.2 semop</h3><pre><code>int semop(int semid, struct sembuf *sops, size_t nsops);
-
-int semtimedop(int semid, struct sembuf *sops, size_t nsops, const struct timespec *timeout);</code></pre><ul>
-<li><code>nops</code>表明sembuf结构体的个数，因为是指针形式保存的结构体，所以需要指明<code>个数</code>；</li>
-<li><code>sops</code>指向结构体数组首地址。</li>
-</ul>
-<p>主要看一下sembuf结构体：</p>
-<pre><code>struct sembuf{
-       unsigned short sem_num;  /* semaphore number */
-       short          sem_op;   /* semaphore operation */
-       short          sem_flg;  /* operation flags */
-}</code></pre><blockquote>
-<p>与单个信号量相关的几个值： <code>semval</code>：信号量的当前值，在文章开头信号量的结构中已提到。 <code>semncnt</code>：等待semval变为大于当前值的线程数。在文章开头信号量的结构中已提到。 <code>semzcnt</code>：等待semval变为0的线程数。在文章开头信号量的结构中已提到。 <code>semadj</code> ：指定信号量针对某个特定进程的调整值。只有sembuf结构的sem_flag指定为SEM_UNDO后，semadj才会随着sem_op而更新。讲简单一点：对某个进程，在指定SEM_UNDO后，对信号量semval值的修改都会反应到semadj上，当该进程终止的时候，内核会根据semadj的值，重新恢复信号量之前的值。</p>
-</blockquote>
-<ul>
-<li><code>sem_num</code>为信号量数组下标，直到nsems-1（semget指定的参数）；</li>
-<li><code>sem_op</code>有三类值：<ul>
-<li><strong>sem_op &gt; 0</strong>，将值加到semval上（sem结构体）；</li>
-<li><strong>sem_op &lt; 0</strong>，有多种情况：<ul>
-<li>如果semval大于或等于sem_op的值，那么<code>semval - sem_op</code>；</li>
-<li>如果semval小于sem_op的值，相应的信号量<code>semncnt</code>值加1，调用线程将阻塞，直到semval大于或等于sem_op的值。到时候线程将被解除阻塞，然后还要<code>semval - sem_op</code>，semncnt 减1。</li>
-</ul>
-</li>
-<li><strong>sem_op = 0</strong>，也有多种情况：<ul>
-<li>semval为0返回；</li>
-<li>semval不为0，相应信号量的<code>semzcnt</code>加1，阻塞线程直到semval为0（<strong>如果指定了IPC_NOWAIT则调用线程不会被投入睡眠</strong>）</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<p>（详细解析参考书籍230页）</p>
-<ul>
-<li><code>sem_flag</code>，信号量操作的属性标志：<ul>
-<li>如果为0，表示正常操作；</li>
-<li>如果为IPC_WAIT，使对信号量的操作时非阻塞的。即指定了该标志，调用线程在信号量的值不满足条件的情况下不会被阻塞，而是直接返回-1，并将errno设置为EAGAIN；</li>
-<li>如果为SEM_UNDO，那么将维护进程对信号量的调整值，<strong>以便进程结束时恢复信号量的状态</strong>。</li>
-</ul>
-</li>
-</ul>
-<h3 id="2-3-semctl"><a href="#2-3-semctl" class="headerlink" title="2.3 semctl"></a>2.3 semctl</h3><pre><code>int semctl(int semid, int semnum, int cmd, ... /* union semun arg */);</code></pre><p><strong>对一个信号量执行各种控制操作。</strong></p>
-<ul>
-<li><p><code>semnum</code>为信号集内数组下标；</p>
-</li>
-<li><p><code>cmd</code>值参考书籍231页。</p>
-</li>
-<li><p><code>semun</code>，可选联合体，定义如下：</p>
-<p>union semun {</p>
-<pre><code>int              val;    /* Value for SETVAL */
-struct semid_ds *buf;    /* Buffer for IPC_STAT, IPC_SET */
-unsigned short  *array;  /* Array for GETALL, SETALL */
-struct seminfo  *__buf;  /* Buffer for IPC_INFO (Linux-specific) */</code></pre><p>};</p>
-</li>
-</ul>
-<p>seminfo具体结构在<code>man semctl</code>中有。Linux有在头文件定义该值。</p>
-<h2 id="3-区别"><a href="#3-区别" class="headerlink" title="3 区别"></a>3 区别</h2><p>主要总结一下Posix和System V信号量的区别（来自网上）。</p>
-<ul>
-<li>XSI system V的信号量是信号量集，可以包括多个信号灯（有个数组），每个操作可以同时操作多个信号灯； posix是单个信号灯，POSIX有名信号灯支持进程间通信，无名信号灯放在共享内存中时可以用于进程间通信。</li>
-<li>POSIX信号量在有些平台并没有被实现，比如：SUSE8，而SYSTEM V大多数LINUX/UNIX都已经实现。两者都可以用于进程和线程间通信。但一般来说，system v信号量用于 进程间同步、有名信号灯既可用于线程间的同步，又可以用于进程间的同步、posix无名用于同一个进程的不同线程间，如果无名信号量要用于进程间同步，信号量要放在共享内存中。</li>
-<li>POSIX有两种类型的信号量，有名信号量和无名信号量。有名信号量像system v信号量一样由一个名字标识。</li>
-<li>POSIX通过sem_open单一的调用就完成了信号量的创建、初始化和权限的设置，而system v要两步。也就是说posix 信号是多线程，多进程安全的，而system v不是，可能会出现问题。</li>
-<li>system V信号量通过一个int类型的值来标识自己（类似于调用open()返回的fd），而sem_open函数返回sem_t类型（长整形）作为posix信号量的标识值。</li>
-<li>对于System V信号量你可以控制每次自增或是自减的信号量计数，而在Posix里面，信号量计数每次只能自增或是自减1。</li>
-<li>Posix无名信号量提供一种非常驻的信号量机制。</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/31/e8-af-bb-e5-86-99-e9-94-81/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="tanwenbo">
-      <meta itemprop="description" content="enjoy share">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="hhyvs111">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/05/31/e8-af-bb-e5-86-99-e9-94-81/" class="post-title-link" itemprop="url">读写锁</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2018-05-31 07:10:12" itemprop="dateCreated datePublished" datetime="2018-05-31T07:10:12+08:00">2018-05-31</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="读写锁"><a href="#读写锁" class="headerlink" title="读写锁"></a>读写锁</h1><p><code>《Unix网络编程：卷2》``读写锁``posts</code></p>
-<blockquote>
-<p>新的概念，和之前的互斥锁有点不同。</p>
-</blockquote>
-<h2 id="1-概述"><a href="#1-概述" class="headerlink" title="1 概述"></a>1 概述</h2><p>读写锁，顾名思义。对读和写加锁，但其实不然。与互斥锁类似，不过读写锁有个特点，那就是<code>写独占</code>，<code>读共享</code>。</p>
-<p>规则如下：</p>
-<ul>
-<li>只要没有线程持有某个给定的读写锁<code>用于写</code>，那么任意数目的线程可以持有该读写锁<code>用于读</code>,也就是“写独占，读共享”；</li>
-<li>仅当没有线程持有某个给定的读写锁用于读或用于写时，才能分配该读写锁<code>用于写</code>。</li>
-</ul>
-<p>就是没有线程在修改数据，这个时候大家都可以读。只要没人在读或者在修改，那么线程才可以去修改它。</p>
-<blockquote>
-<p>个人认为读写锁在数据库的增删查改的时候很有必要！</p>
-</blockquote>
-<h2 id="2-获取与释放读写锁"><a href="#2-获取与释放读写锁" class="headerlink" title="2 获取与释放读写锁"></a>2 获取与释放读写锁</h2><h3 id="2-1-读出锁"><a href="#2-1-读出锁" class="headerlink" title="2.1 读出锁"></a>2.1 读出锁</h3><pre><code>#include &lt;pthread.h&gt;
-
-int pthread_rwlock_rdlock(pthread_rwlock_t *rwlock);</code></pre><p>如果对应的读写锁已有某个<code>写入者</code>持有，那么会阻塞调用线程。</p>
-<h3 id="2-2-写入锁"><a href="#2-2-写入锁" class="headerlink" title="2.2 写入锁"></a>2.2 写入锁</h3><pre><code>int pthread_rwlock_wrlock(pthread_rwlock_t *rwlock);</code></pre><p>如果对应的读写锁已由另一个<code>写入者</code>持有，或者已由一个或多个<code>读写者</code>持有，那就阻塞调用线程。</p>
-<p><strong>写的时候不能有人在读。</strong></p>
-<h3 id="2-3-释放锁"><a href="#2-3-释放锁" class="headerlink" title="2.3 释放锁"></a>2.3 释放锁</h3><pre><code>int pthread_rwlock_unlock(pthread_rwlock_t *rwptr);</code></pre><h3 id="2-4-尝试访问"><a href="#2-4-尝试访问" class="headerlink" title="2.4 尝试访问"></a>2.4 尝试访问</h3><p>如果不能马上取得，那么返回<code>EBUSY</code>错误。</p>
-<pre><code>int pthread_rwlock_tryrdlock(pthread_rwlock_t *rwlock);
-
-int pthread_rwlock_trywrlock(pthread_rwlock_t *rwlock);</code></pre><blockquote>
-<p>以上返回值都一样：成功返回0，失败返回错误号。</p>
-</blockquote>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1284,10 +1197,10 @@ int pthread_rwlock_trywrlock(pthread_rwlock_t *rwlock);</code></pre><blockquote>
 
       <ul class="sidebar-nav motion-element">
         <li class="sidebar-nav-toc">
-          Table of Contents
+          文章目录
         </li>
         <li class="sidebar-nav-overview">
-          Overview
+          站点概览
         </li>
       </ul>
 
@@ -1306,19 +1219,21 @@ int pthread_rwlock_trywrlock(pthread_rwlock_t *rwlock);</code></pre><blockquote>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">111</span>
-          <span class="site-state-item-name">posts</span>
+          <span class="site-state-item-count">114</span>
+          <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
         <span class="site-state-item-count">14</span>
-        <span class="site-state-item-name">categories</span></a>
+        <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">70</span>
-        <span class="site-state-item-name">tags</span>
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">71</span>
+        <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
 </div>
@@ -1350,7 +1265,7 @@ int pthread_rwlock_trywrlock(pthread_rwlock_t *rwlock);</code></pre><blockquote>
   </span>
   <span class="author" itemprop="copyrightHolder">tanwenbo</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>
 
         

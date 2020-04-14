@@ -82,7 +82,7 @@
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-container">
   <div class="site-nav-toggle">
-    <div class="toggle" aria-label="Toggle navigation bar">
+    <div class="toggle" aria-label="切换导航栏">
       <span class="toggle-line toggle-line-first"></span>
       <span class="toggle-line toggle-line-middle"></span>
       <span class="toggle-line toggle-line-last"></span>
@@ -112,22 +112,22 @@
   <ul id="menu" class="main-menu menu">
         <li class="menu-item menu-item-home">
 
-    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
 
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
 
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
 
   </li>
   </ul>
@@ -157,6 +157,396 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/12/tcp-e7-bd-91-e7-bb-9c-e7-bc-96-e7-a8-8b-e6-9c-ac-e8-b4-a8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="tanwenbo">
+      <meta itemprop="description" content="enjoy share">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hhyvs111">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/02/12/tcp-e7-bd-91-e7-bb-9c-e7-bc-96-e7-a8-8b-e6-9c-ac-e8-b4-a8/" class="post-title-link" itemprop="url">TCP网络编程本质</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-02-12 08:35:46" itemprop="dateCreated datePublished" datetime="2019-02-12T08:35:46+08:00">2019-02-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" itemprop="url" rel="index"><span itemprop="name">计算机网络</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="TCP网络编程本质"><a href="#TCP网络编程本质" class="headerlink" title="TCP网络编程本质"></a>TCP网络编程本质</h1><p>基于事件的非阻塞网络编程是编写高性能并发网络服务程序的主流模式，头一次 使用这种方式编程通常需要转换思维模式。把原来“主动调用 recv(2) 来接收数据， 主动调用 accept(2) 来接受新连接，主动调用 send(2) 来发送数据”的思路换成“注 册一个收数据的回调，网络库收到数据会调用我，直接把数据提供给我，供我消费。 注册一个接受连接的回调， 网络库接受了新连接会回调我， 直接把新的连接对象传 给我，供我使用。需要发送数据的时候，只管往连接中写，网络库会负责无阻塞地发 送。” 本质处理事件</p>
+<ol>
+<li>连接的建立， 包括服务端接受（accept）新连接和客户端成功发起（connect） 连接。TCP 连接一旦建立，客户端和服务端是平等的，可以各自收发数据。</li>
+<li>连接的断开，包括主动断开（close、shutdown）和被动断开（read(2) 返回 0）。</li>
+<li>消息到达，文件描述符可读。这是最为重要的一个事件，对它的处理方式决定 了网络编程的风格（阻塞还是非阻塞，如何处理分包，应用层的缓冲如何设计， 等等）。</li>
+</ol>
+<p>3.5 消息发送完毕，这算半个。对于低流量的服务，可以不必关心这个事件；另外， 这里的“发送完毕”是指将数据写入操作系统的缓冲区，将由 TCP 协议栈负责 数据的发送与重传，不代表对方已经收到数据。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/04/e7-ba-bf-e7-a8-8b-e5-ae-89-e5-85-a8-e7-9a-84-e5-af-b9-e8-b1-a1-e7-94-9f-e5-91-bd-e6-9c-9f-e7-ae-a1-e7-90-86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="tanwenbo">
+      <meta itemprop="description" content="enjoy share">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hhyvs111">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/02/04/e7-ba-bf-e7-a8-8b-e5-ae-89-e5-85-a8-e7-9a-84-e5-af-b9-e8-b1-a1-e7-94-9f-e5-91-bd-e6-9c-9f-e7-ae-a1-e7-90-86/" class="post-title-link" itemprop="url">线程安全的对象生命期管理</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-02-04 06:59:50" itemprop="dateCreated datePublished" datetime="2019-02-04T06:59:50+08:00">2019-02-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="线程安全的对象生命期管理"><a href="#线程安全的对象生命期管理" class="headerlink" title="线程安全的对象生命期管理"></a>线程安全的对象生命期管理</h1><ul>
+<li><p>线程安全的对象生命期管理</p>
+</li>
+<li><p>1 前言</p>
+<ul>
+<li>1.1 Observer设计模式</li>
+<li>1.2 Race Conditoin</li>
+</ul>
+</li>
+<li><p>2 析构函数遇到多线程</p>
+<ul>
+<li>2.1 线程安全的定义</li>
+<li>2.2 MutexLock与MutexLockGuard</li>
+<li>2.3 一个线程安全的Counter示例</li>
+</ul>
+</li>
+<li><p>3 使用智能指针</p>
+<ul>
+<li>3.1 内存问题</li>
+<li>3.2 线程的RAII handle</li>
+</ul>
+</li>
+</ul>
+<h2 id="1-前言"><a href="#1-前言" class="headerlink" title="1 前言"></a>1 前言</h2><p>编写线程安全的类不是难事，用同步原语（synchronization primitives）保护内部状态即可。但是对象的生与死不能由对象自身拥有的 mutex（互斥器）来保护。如何避免对象析构时可能存在的race condition（竞态条件）是 C++ 多线程编程面临的 基本问题，可以借助 Boost 库中的 <code>shared_ptr</code> 和 <code>weak_ptr</code> 完美解决。这也是实现线程安全的Observer模式的必备技术。</p>
+<h3 id="1-1-Observer设计模式"><a href="#1-1-Observer设计模式" class="headerlink" title="1.1 Observer设计模式"></a>1.1 Observer设计模式</h3><p>当对象间存在一对多关系是，则使用观察者模式。比如，当一个对象被修改时，则会自动通知它的依赖对象。</p>
+<h3 id="1-2-Race-Conditoin"><a href="#1-2-Race-Conditoin" class="headerlink" title="1.2 Race Conditoin"></a>1.2 Race Conditoin</h3><p>翻译为竞态条件，也就是资源的争夺吧。书上给出三种竞态条件：</p>
+<ul>
+<li>在即将析构一个对象时，从何而知此刻是否有别的线程正在执行该对象的成员函数？</li>
+<li>如何保证在执行成员函数期间，对象不会在另一个线程被析构？</li>
+<li>在调用某个对象的成员函数之前，如何得知这个对象还活着？它的析构函数会不会碰巧执行到一半？</li>
+</ul>
+<p>这里也是通过使用智能指针解决这个问题。</p>
+<h2 id="2-析构函数遇到多线程"><a href="#2-析构函数遇到多线程" class="headerlink" title="2 析构函数遇到多线程"></a>2 析构函数遇到多线程</h2><p>上面说的各种条件各种模式也是为了要正确释放资源，这里如何处理好多线程中析构函数的使用就是个关键。</p>
+<h3 id="2-1-线程安全的定义"><a href="#2-1-线程安全的定义" class="headerlink" title="2.1 线程安全的定义"></a>2.1 线程安全的定义</h3><p>线程安全的class应当满足以下三个条件：</p>
+<ul>
+<li>多个线程同时访问时，其表现出正确的行为。</li>
+<li>无论操作系统如何调度这些线程，无论这些线程的执行顺序如何交织；</li>
+<li>调用端代码无须额外的同步或其他协调动作。</li>
+</ul>
+<p>一般的std里的vector之类的都是需要加锁才能供多个线程同时访问！</p>
+<h3 id="2-2-MutexLock与MutexLockGuard"><a href="#2-2-MutexLock与MutexLockGuard" class="headerlink" title="2.2 MutexLock与MutexLockGuard"></a>2.2 MutexLock与MutexLockGuard</h3><p>MutexLock 封装临界区（critical section），这是一个简单的资源类在Linux下是pthread_mutex_t，默认是不可重入的。 MutexLockGuard封装临界区的进入和退出，即加锁和解锁。</p>
+<h3 id="2-3-一个线程安全的Counter示例"><a href="#2-3-一个线程安全的Counter示例" class="headerlink" title="2.3 一个线程安全的Counter示例"></a>2.3 一个线程安全的Counter示例</h3><pre><code>class Counter : boost::noncopyable {
+// copy-ctor and assignment should be private by default for a class. public:
+    Counter() : value_(0) {}
+    int64_t value() const; 
+    int64_t getAndIncrease();
+private:
+    int64_t value_; mutable MutexLock mutex_; 
+ };
+ //上面是类定义</code></pre><p>类定义，具体实现如下：</p>
+<pre><code>int64_t Counter::value() const {
+    MutexLockGuard lock(mutex_);
+    // lock 的析构会晚于返回对象的构造， // 因此有效地保护了这个共享数据。
+    return value_; 
+}
+
+int64_t Counter::getAndIncrease() {
+    MutexLockGuard lock(mutex_);
+    int64_t ret = value_++;
+    return ret; 
+} // In a real world, atomic operations are preferred.
+// 当然在实际项目中，这个 class 用原子操作更合理，这里用锁仅仅为了举例。</code></pre><h2 id="3-使用智能指针"><a href="#3-使用智能指针" class="headerlink" title="3 使用智能指针"></a>3 使用智能指针</h2><p>这里也用到了share_ptr，记录一下几关键点。</p>
+<ul>
+<li>shared_ptr 控制对象的生命期。shared_ptr 是强引用（想象成用铁丝绑住堆上 的对象）， 只要有一个指向 x 对象的 shared_ptr 存在， 该 x 对象就不会析构。 当指向对象 x 的最后一个 shared_ptr 析构或 reset() 的时候，x 保证会被销毁。</li>
+<li>weak_ptr 不控制对象的生命期，但是它知道对象是否还活着（想象成用棉线轻 轻拴住堆上的对象）。如果对象还活着，那么它可以提升（promote）为有效的 shared_ptr；如果对象已经死了，提升会失败，返回一个空的 shared_ptr。“提升/lock()”行为是线程安全的。</li>
+<li>shared_ptr/weak_ptr 的“计数”在主流平台上是原子操作，没有用锁，性能不俗。</li>
+<li>shared_ptr/weak_ptr 的线程安全级别与 std::string 和 STL 容器一样，后面还会讲。</li>
+</ul>
+<h3 id="3-1-内存问题"><a href="#3-1-内存问题" class="headerlink" title="3.1 内存问题"></a>3.1 内存问题</h3><p>没有正确处理好这个指针等资源的释放就会造成很多内存问题。 C++ 里可能出现的内存问题大致有这么几个方面：</p>
+<ol>
+<li>缓冲区溢出（buffer overrun）。</li>
+<li>空悬指针/野指针。</li>
+<li>重复释放（double delete）。</li>
+<li>内存泄漏（memory leak）。</li>
+<li>不配对的 new[]/delete。</li>
+<li>内存碎片（memory fragmentation）。</li>
+</ol>
+<p>正确使用智能指针能很轻易地解决前面 5 个问题， 解决第 6 个问题需要别的思路。</p>
+<h3 id="3-2-线程的RAII-handle"><a href="#3-2-线程的RAII-handle" class="headerlink" title="3.2 线程的RAII handle"></a>3.2 线程的RAII handle</h3><p>我认为 RAII（资源获取即初始化）是 C++ 语言区别于 其他所有编程语言的最重要的特性， 一个不懂 RAII 的 C++ 程序员不是一个合格的 C++ 程序员。初学 C++ 的教条是“new 和 delete 要配对，new 了之后要记着 delete”； 如果使用 RAII [CCS，条款 13] ，要改成“每一个明确的资源配置动作（例如 new）都应 该在单一语句中执行， 并在该语句中立刻将配置获得的资源交给 handle 对象（如 shared_ptr），程序中一般不出现 delete”。shared_ptr 是管理共享资源的利器，需要 注意避免循环引用，通常的做法是 owner 持有指向 child 的 shared_ptr，child 持有 指向 owner 的 weak_ptr。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/02/e8-99-9a-e5-87-bd-e6-95-b0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="tanwenbo">
+      <meta itemprop="description" content="enjoy share">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hhyvs111">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/02/02/e8-99-9a-e5-87-bd-e6-95-b0/" class="post-title-link" itemprop="url">虚函数</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-02-02 06:47:47" itemprop="dateCreated datePublished" datetime="2019-02-02T06:47:47+08:00">2019-02-02</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="虚函数"><a href="#虚函数" class="headerlink" title="虚函数"></a>虚函数</h1><ul>
+<li>虚函数<ul>
+<li>定义<ul>
+<li>虚函数表</li>
+<li>虚函数指针</li>
+</ul>
+</li>
+<li>final和override说明符<ul>
+<li>错误原因</li>
+<li>解决方法</li>
+</ul>
+</li>
+<li>虚函数与默认实参<ul>
+<li>回避虚函数</li>
+</ul>
+</li>
+<li>纯虚函数<ul>
+<li>应用场景</li>
+<li>抽象基类</li>
+<li>实现抽象功能</li>
+</ul>
+</li>
+<li>小结</li>
+</ul>
+</li>
+</ul>
+<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>如前所述，在C++语言中，当我们使用<strong>基类的引用或指针</strong>调用一个虚成员函数时会执行动态绑定。因为我们直到运行时才能知道到底调用了哪个版本的虚函数，所以所有虚函数都必须有定义。通常情况下，如果我们不使用某个函数，则无须为该函数提供定义。但是我们必须为每一个虚函数都提供定义，而不管它是否被用到了，这是因为连编译器也无法确定到底会使用哪个虚函数。</p>
+<blockquote>
+<p>动态绑定只有当我们通过指针或引用调用虚函数时才会发生</p>
+</blockquote>
+<h3 id="虚函数表"><a href="#虚函数表" class="headerlink" title="虚函数表"></a>虚函数表</h3><p>类的所有对象共用一张虚函数表vtable，存有类里所有的函数指针，当派生类重写了基类的虚函数，那么派生类的虚函数表会用派生类里的函数覆盖掉基类的函数，实现动态绑定。</p>
+<h3 id="虚函数指针"><a href="#虚函数指针" class="headerlink" title="虚函数指针"></a>虚函数指针</h3><p>每个对象的结构体中都会多出一个虚函数指针vptr，指向已经被覆盖了的虚函数表。</p>
+<h2 id="final和override说明符"><a href="#final和override说明符" class="headerlink" title="final和override说明符"></a>final和override说明符</h2><h3 id="错误原因"><a href="#错误原因" class="headerlink" title="错误原因"></a>错误原因</h3><p>派生类如果定义了一个函数与基类中虚函数的名字相同但是形参列表不同，这仍然是合法的行为。编译器将认为新定义的这个函数与基类中原有的函数是相互独立的。此时，派生类的函数并没有覆盖掉基类中的版本。</p>
+<h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h3><p>要想调试并发现这样的错误显然非常困难。在C++11 新标准中我们可以使用 override关键字来说明派生类中的虚函数。这么做的好处是在使得程序员的意图更加清晰的同时让编译器可以为我们发现一些错误，后者在编程实践中显得更加重要。如果我们使用override标记了某个函数，但该函数并没有覆盖已存在的虚函数，此时编译器将报错:</p>
+<pre><code>struct B {
+    virtual void f1 (int) const;
+    virtual void f2 () ;
+    void f3() ;
+};
+structD1:B{
+    void f1 (int) const override;//正确: f1与基类中的f1匹配
+    void f2 (int) override; //错误:B没有形如f2(int)的函数
+    void f3() override;  //错误:f3不是虚函数
+    void f4() override;  //错误: B没有名为f4的函数
+};</code></pre><p>在D1中，f1的override说明符是正确的，因为基类和派生类中的f1都是const成员，并且它们都接受一个int返回void,所以D1中的f1正确地覆盖了它从B中继承而来的虚函数。</p>
+<p>D1中f2的声明与B中f2的声明不匹配，显然B中定义的f2不接受任何参数而D1,的f2接受一个int。因为这两个声明不匹配，所以D1的f2不能覆盖B的f2,它是一个新函数，仅仅是名字恰好与原来的函数- -样 而已。因为我们使用override 所表达的意思是我们希望能覆盖基类中的虚函数而实际上并未做到，所以编译器会报错。</p>
+<h2 id="虚函数与默认实参"><a href="#虚函数与默认实参" class="headerlink" title="虚函数与默认实参"></a>虚函数与默认实参</h2><p>和其它函数一样，虚函数也可以拥有默认实参。如果某次函数调用了默认实参，则该实参值由本次调用的静态类型决定。</p>
+<p>如果虚函数使用默认实参，则基类和派生类中定义的默认实参最好一致。</p>
+<h3 id="回避虚函数"><a href="#回避虚函数" class="headerlink" title="回避虚函数"></a>回避虚函数</h3><p>直接使用作用域运算符禁止使用虚函数。</p>
+<pre><code>//强行调用基类中定义的函数版本而不管baseP的动态类型到底是什么
+double undiscounted = baseP-&gt;Quote::net price (42) ;</code></pre><p>该代码强行调用Quote的net_price函数，而不管baseP实际指向的对象类型到底是什么。该调用将在编译时完成解析。</p>
+<h2 id="纯虚函数"><a href="#纯虚函数" class="headerlink" title="纯虚函数"></a>纯虚函数</h2><h3 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h3><p>假设我们希望扩展书店程序并令其支持几种不同的折扣策略。除了购买量超过-一定数量享受折扣外，我们也可能提供另外一种策略,即购买量不超过某个限额时可以享受折扣，但是一旦超过限额就要按原价支付。或者折扣策略还可能是购买量超过一定数量后购买的全部书籍都享受折扣，否则全都不打折。</p>
+<p>上面的每个策略都要求一个购买量的值和一个折扣值。我们可以定义一个新的名为Disc_quote的类来支持不同的折扣策略，其中Disc_quote负责保存购买量的值和折扣值。其他的表示某种特定策略的类(如Bulk_uote) 将分别继承自Disc_quote,每个派生类通过定义自己的net_price函数来实现各自的折扣策略。</p>
+<p>在定义Disc_quote类之前，首先要确定它的net_price函数完成什么工作。显然我们的Disc_quote类与任何特定的折扣策略都无关，因此Disc_quote类中的,net_price函数是没有实际含义的。</p>
+<p>我们可以在Disc_quote类中不定义新的net_price,此时，Disc quote 将继承Quote中的net_price 函数。</p>
+<p>然而，这样的设计可能导致用户编写出一些无意义的代码。用户可能会创建一个Disc_quote对象并为其提供购买量和折扣值,如果将该对象传给一个像print_total这样的函数，则程序将调用Quote版本的net_price。显然，最终计算出的销售价格并没有考虑我们在创建对象时提供的折扣值，因此上述操作毫无意义。</p>
+<blockquote>
+<p>简单来说就是这个类是一个抽象的，是一个概念并不是某个具体的。可以用来定义接口，以实现不同的操作。</p>
+</blockquote>
+<p>认真思考上面描述的情形我们可以发现，关键问题并不仅仅是不知道应该如何定义net_price,而是我们根本就不希望用户创建一个Disc_quote 对象。Disc_quote类表示的是一本打折书籍的通用概念，而非某种具体的折扣策略。</p>
+<h3 id="抽象基类"><a href="#抽象基类" class="headerlink" title="抽象基类"></a>抽象基类</h3><p>含有纯虚函数的类是抽象基类，抽象基类负责定义接口，后续的其他类可以覆盖该接口。我们不能(直接)创建一个抽象基类的对象。因为Disc_quote将net_price定义成了纯虚函数，所以我们不能定义Disc_quote的对象。我们可以定义Disc_quote的派生类的对象，前提是这些类覆盖了net price 函数:</p>
+<pre><code>// Disc_ quote声明了纯虚函数，而Bulk_ quote将覆盖该函数
+Disc_quote discounted;  //错误:不能定义Disc_ quote的对象
+Bulk_quote bulk; //正确:Bulkquote中没有纯虚函数</code></pre><p>Disc_ quote的派生类必须给出自己的net_price定义，否则它们仍将是抽象基类。</p>
+<h3 id="实现抽象功能"><a href="#实现抽象功能" class="headerlink" title="实现抽象功能"></a>实现抽象功能</h3><p>可以重新实现Bulk_quote了，这一次让它继承Disc_quote而非Quote：</p>
+<pre><code>//当同一书籍的销售量超过某个值时启用折扣
+//折扣的值是一-个小于1的正的小数值，以此来降低正常销售价格.
+class Bulk_quote : public Disc_quote {
+public:
+    Bulk_quote() = default;
+    Bulk_quote (const std::string&amp; book, double price,
+    std::size_t qty, double disc) :
+    Disc_quote(book, price, qty, disc) { }
+    . //覆盖基类中的函数版本以实现一种新的折扣策略
+    double net_price (std::size_t) const override;
+};</code></pre><p>这个版本的Bulk_quote的直接基类是Disc_quote，间接基类是Quote。 每个Bulk_quote 对象包含三个子对象:一个(空的) Bulk_quote 部分、一个Disc_quote子对象和一个Quote子对象。</p>
+<p>如前所述，每个类各自控制其对象的初始化过程。因此，即使Bulk_quote没有自己的数据成员，它也仍然需要像原来一样提供一个接受四个参数的构造函数。该构造函数将它的实参传递给Disc_quote的构造函数，随后Disc_quote的构造函数继续调用Quote的构造函数。Quote的构造函数首先初始化bulk的bookNo和price成员，当Quote的构造函数结束后，开始运行Disc_quote 的构造函数并初始化quantity和、discount成员，最后运行Bulk_quote的构造函数，该函数无须执行实际的初始化或其他工作。</p>
+<blockquote>
+<p>这个概念有点牛批啊，一环接一环，可以用派生类的参数构造基类参数。</p>
+</blockquote>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>继承使得我们可以编写一些新的类，这些新类既能共享其基类的行为，又能根据需要覆盖或添加行为。动态绑定使得我们可以忽略类型之间的差异，其机理是在运行时根据对象的动态类型来选择运行函数的哪个版本。继承和动态绑定的结合使得我们能够编写具有特定类型行为但又独立于类型的程序。</p>
+<p>在C++语言中，动态绑定只作用于虚函数，并且需要通过指针或引用调用。</p>
+<p>在派生类对象中包含有与它的每个基类对应的子对象。因为所有派生类对象都含有基类部分，所以我们能将派生类的引用或指针转换为一个可访问的基类引用或指针。</p>
+<p>当执行派生类的构造、拷贝、移动和赋值操作时，首先构造、拷贝、移动和赋值其中的基类部分，然后才轮到派生类部分。析构函数的执行顺序则正好相反，首先销毁派生类，接下来执行基类子对象的析构函数。基类通常都应该定义一个虚析构函数，即使基类根本不需要析构函数也最好这么做。<strong>将基类的析构函数定义成虚函数的原因是为了确保当我们删除一个基类指针，而该指针实际指向一个派生类对象时，程序也能正确运行</strong>。</p>
+<p>派生类为它的每个基类提供一个保护级别。public基类的成员也是派生类接口的一部分; private基类的成员是不可访问的; protected基类的成员对于派生类的派生类是可访问的，但是对于派生类的用户不可访问。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/30/e5-8a-a8-e6-80-81-e5-86-85-e5-ad-98/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -179,22 +569,22 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted on</span>
+              <span class="post-meta-item-text">发表于</span>
 
-              <time title="Created: 2019-01-30 04:08:44" itemprop="dateCreated datePublished" datetime="2019-01-30T04:08:44+08:00">2019-01-30</time>
+              <time title="创建时间：2019-01-30 04:08:44" itemprop="dateCreated datePublished" datetime="2019-01-30T04:08:44+08:00">2019-01-30</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
-              <span class="post-meta-item-text">In</span>
+              <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
                 </span>
@@ -338,22 +728,22 @@ p = nullptr;
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted on</span>
+              <span class="post-meta-item-text">发表于</span>
 
-              <time title="Created: 2019-01-27 08:22:04" itemprop="dateCreated datePublished" datetime="2019-01-27T08:22:04+08:00">2019-01-27</time>
+              <time title="创建时间：2019-01-27 08:22:04" itemprop="dateCreated datePublished" datetime="2019-01-27T08:22:04+08:00">2019-01-27</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
-              <span class="post-meta-item-text">In</span>
+              <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
                 </span>
@@ -535,22 +925,22 @@ while (entries) {
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted on</span>
+              <span class="post-meta-item-text">发表于</span>
 
-              <time title="Created: 2019-01-23 09:16:58" itemprop="dateCreated datePublished" datetime="2019-01-23T09:16:58+08:00">2019-01-23</time>
+              <time title="创建时间：2019-01-23 09:16:58" itemprop="dateCreated datePublished" datetime="2019-01-23T09:16:58+08:00">2019-01-23</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
-              <span class="post-meta-item-text">In</span>
+              <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
                 </span>
@@ -718,22 +1108,22 @@ while (getline(cin, line) ) {
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted on</span>
+              <span class="post-meta-item-text">发表于</span>
 
-              <time title="Created: 2019-01-21 08:02:56" itemprop="dateCreated datePublished" datetime="2019-01-21T08:02:56+08:00">2019-01-21</time>
+              <time title="创建时间：2019-01-21 08:02:56" itemprop="dateCreated datePublished" datetime="2019-01-21T08:02:56+08:00">2019-01-21</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
-              <span class="post-meta-item-text">In</span>
+              <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
                 </span>
@@ -819,22 +1209,22 @@ public:
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted on</span>
+              <span class="post-meta-item-text">发表于</span>
 
-              <time title="Created: 2019-01-18 09:21:15" itemprop="dateCreated datePublished" datetime="2019-01-18T09:21:15+08:00">2019-01-18</time>
+              <time title="创建时间：2019-01-18 09:21:15" itemprop="dateCreated datePublished" datetime="2019-01-18T09:21:15+08:00">2019-01-18</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
-              <span class="post-meta-item-text">In</span>
+              <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
                 </span>
@@ -905,22 +1295,22 @@ public:
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted on</span>
+              <span class="post-meta-item-text">发表于</span>
 
-              <time title="Created: 2019-01-18 07:46:07" itemprop="dateCreated datePublished" datetime="2019-01-18T07:46:07+08:00">2019-01-18</time>
+              <time title="创建时间：2019-01-18 07:46:07" itemprop="dateCreated datePublished" datetime="2019-01-18T07:46:07+08:00">2019-01-18</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
-              <span class="post-meta-item-text">In</span>
+              <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
                 </span>
@@ -1019,22 +1409,22 @@ return ret ;
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted on</span>
+              <span class="post-meta-item-text">发表于</span>
 
-              <time title="Created: 2019-01-18 07:16:13" itemprop="dateCreated datePublished" datetime="2019-01-18T07:16:13+08:00">2019-01-18</time>
+              <time title="创建时间：2019-01-18 07:16:13" itemprop="dateCreated datePublished" datetime="2019-01-18T07:16:13+08:00">2019-01-18</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
-              <span class="post-meta-item-text">In</span>
+              <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
                 </span>
@@ -1081,391 +1471,10 @@ return O;
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/17/try-e8-af-ad-e5-8f-a5-e5-9d-97-e5-92-8c-e5-bc-82-e5-b8-b8-e5-a4-84-e7-90-86/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="tanwenbo">
-      <meta itemprop="description" content="enjoy share">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="hhyvs111">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/01/17/try-e8-af-ad-e5-8f-a5-e5-9d-97-e5-92-8c-e5-bc-82-e5-b8-b8-e5-a4-84-e7-90-86/" class="post-title-link" itemprop="url">try语句块和异常处理</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2019-01-17 08:44:02" itemprop="dateCreated datePublished" datetime="2019-01-17T08:44:02+08:00">2019-01-17</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="try语句块和异常处理"><a href="#try语句块和异常处理" class="headerlink" title="try语句块和异常处理"></a>try语句块和异常处理</h1><ul>
-<li>try语句块和异常处理<ul>
-<li>定义<ul>
-<li>异常处理方式</li>
-</ul>
-</li>
-<li>throw表达式<ul>
-<li>cerr解释</li>
-</ul>
-</li>
-<li>try-catch</li>
-<li>标准异常<ul>
-<li>定义的异常类</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<p>这个东西一般比较少用到，好像以前在Java里经常用。</p>
-<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>异常是指存在于运行时的反常行为，这些行为超出了函数正常功能的范围。典型的异常包括失去数据库连接以及遇到意外输入等。处理反常行为可能是设计所有系统最难的一部分。</p>
-<h3 id="异常处理方式"><a href="#异常处理方式" class="headerlink" title="异常处理方式"></a>异常处理方式</h3><ul>
-<li>throw表达式；</li>
-<li>try语句块，也就是try-catch。try语句块中代码抛出的异常通常会被磨具个catch子句处理。因为catch子句“处理”异常，所以它们也被称作异常处理代码；</li>
-<li>一套异常类。</li>
-</ul>
-<p>下面详细介绍一下这几种方式。</p>
-<h2 id="throw表达式"><a href="#throw表达式" class="headerlink" title="throw表达式"></a>throw表达式</h2><p>一般业务代码中都要处理错误，输出一些信息，这样才能快速定位哪里出错了。比如下面这个代码检查它读入的记录是否是关于同一种书籍，如果不是，输出一条信息然后退出。</p>
-<pre><code>Sales_ item item1, item2;
-cin &gt;&gt; item1 &gt;&gt; item2;
-// 检查 item1 和 item2 是否表示同一种书籍
-if(item1.isbn() == item2. isbn()) {
-cout &lt;&lt; item1 + item2 &lt;&lt; endl ;
-return O; // success
-} else {
-cerr &lt;&lt; &quot;Data must refer to same ISBN&quot; &lt;&lt; endl ;
-//cerr 是一个ostream对象，关联到标准错误，通常写入到与标准输出相同的设备。
-return -1; // failed
-}</code></pre><h4 id="cerr解释"><a href="#cerr解释" class="headerlink" title="cerr解释"></a>cerr解释</h4><p>cerr不经过缓冲而直接输出，一般用于迅速输出出错信息，是标准错误，默认情况下被关联到标准输出流，但它不被缓冲，也就说错误消息可以直接发送到显示器，而无需等到缓冲区或者新的换行符时，才被显示。一般情况下不被重定向。</p>
-<blockquote>
-<p>这个东西很少见啊，又学习到了新的知识了。</p>
-</blockquote>
-<p>接上述代码，在真实的程序中，应该把对象相加的代码和用户交互的代码分离开来。此例中，我们改写程序似的检查完成和惠普不再直接输出一条信息，而是<strong>抛出一个异常</strong>：</p>
-<pre><code>//首先检查两条数据是否是关于同一种书籍的
-if (iteml. isbn() != item2 . isbn() )
-throw runtime_error (&quot;Data must refer to same ISBN&quot;) ;
-//如果程序执行到了这里，表示两个ISBN是相同的
-cout &lt;&lt; item1 + item2 &lt;&lt; endl ;</code></pre><blockquote>
-<p>但是这样做有什么用呢？是给后面的try-catch使用的？</p>
-</blockquote>
-<h2 id="try-catch"><a href="#try-catch" class="headerlink" title="try-catch"></a>try-catch</h2><p>try语句块的一开始是关键字try，随后紧跟着一个块。</p>
-<p>在之前的例子里，我们使用了一个throw表达式以避免把两个代表不同书籍的 Sales_item相加。我们假设执行Sales_item 对象加法的代码是与用户交互的代码分离开来的。其中与用户交互的代码负责处理发生的异常，它的形式可能如下所示:</p>
-<pre><code>while (cin &gt;&gt; item1 &gt;&gt; item2) {
-try {
-//执行添加两个Sales_ item对象的代码
-//如果添加失败，代码抛出一个runtime_ error异常
-    if (iteml. isbn() != item2 . isbn() )
-    throw runtime_error (&quot;Data must refer to same ISBN&quot;) ;
-    //如果程序执行到了这里，表示两个ISBN是相同的
-    cout &lt;&lt; item1 + item2 &lt;&lt; endl ;
-
-} catch (runtime_error err) {
-//提醒用户两个ISBN必须一致，询问是否重新输入
-    cout &lt;&lt; err.what ()&lt;&lt; &quot;\nTry Again? Enter y or n&quot; &lt;&lt; endl ;
-    char C;
-    cin &gt;&gt; C;
-    if(!cin || c ==&apos;n&apos; )
-        break; // 跳出while循环
-      }
- }</code></pre><p>上面的<code>err.what()</code>就是这个runtime_error后面的字符串。</p>
-<p>给用户的提示信息中输出了err.what() 的返回值。我们知道err的类型是 runtime error, 因此能推断what是runtime error 类的一一个成员函数(参见1.5.2节，第20页)。每个标准库异常类都定义了名为what的成员函数，这些函数没有参数，返回值是C风格字符串(即const char*)。 其中， runtime error的what成员返回的是初始化–个具体对象时所用的string对象的副本。如果上一-节编写的代码抛出异常，则本节的catch子句输出：</p>
-<pre><code>Data must refer to same ISBN
-Try Again? Enter y or n</code></pre><h2 id="标准异常"><a href="#标准异常" class="headerlink" title="标准异常"></a>标准异常</h2><p>C++标准库定义了一-组类，用于报告标准库函数遇到的问题。这些异常类也可以在用户编写的程序中使用，它们分别定义在4个头文件中:</p>
-<ul>
-<li>exception头文件定义了最通用的异常类exception。它只报告异常的发生，不提供任何额外信息。</li>
-<li>stdexcept头文件定义了几种常用的异常类，详细信息在表5.1中列出。</li>
-<li>new头文件定义了bad_alloc异常类型，这种类型将在12.1.2节(第407页)详细介绍。</li>
-<li>type_info头文件定义了bad_cast异常类型，这种类型将在19.2节(第731页)详细介绍。</li>
-</ul>
-<h4 id="定义的异常类"><a href="#定义的异常类" class="headerlink" title="定义的异常类"></a><stdexcept>定义的异常类</h4><p>类</p>
-<p>解释</p>
-<p>exception</p>
-<p>最常见的问题</p>
-<p>runtime_error</p>
-<p>只有在运行时才能检测出的问题</p>
-<p>range_error</p>
-<p>运行时错误:生成的结果超出了有意义的值域范围</p>
-<p>overflow error</p>
-<p>运行时错误:计算上溢</p>
-<p>underflow_error</p>
-<p>运行时错误:计算下溢</p>
-<p>logic_error</p>
-<p>程序逻辑错误</p>
-<p>domain_error</p>
-<p>逻辑错误:参数对应的结果值不存在</p>
-<p>invalid_argument</p>
-<p>逻辑错误:无效参数</p>
-<p>length_error</p>
-<p>逻辑错误:试图创建一个超出该类型最大长度的对象</p>
-<p>out_of_range</p>
-<p>逻辑错误:使用一个超出有效范围的值</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/17/e8-8c-83-e5-9b-b4for-e8-af-ad-e5-8f-a5/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="tanwenbo">
-      <meta itemprop="description" content="enjoy share">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="hhyvs111">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/01/17/e8-8c-83-e5-9b-b4for-e8-af-ad-e5-8f-a5/" class="post-title-link" itemprop="url">范围for语句</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2019-01-17 08:07:07" itemprop="dateCreated datePublished" datetime="2019-01-17T08:07:07+08:00">2019-01-17</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="范围for语句"><a href="#范围for语句" class="headerlink" title="范围for语句"></a>范围for语句</h1><p>这个东西也算有点熟悉了，但是还是不是完全会用，也不知道到底什么场合适合用这个东西。</p>
-<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><pre><code>for (declaration : expression)
-    statement</code></pre><p>声明和表达式，expression必须是一个序列，比如<code>vector</code>和<code>string</code>等等。这些类型的共同特点是能返回迭代器的begin和end成员。</p>
-<h2 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h2><pre><code>vector&lt;int&gt; v = {0,1,2,3,4,5,6, 7,8,9};
-//范围变量必须是引用类型，这样才能对元素执行写操作
-for (auto &amp;r : v)
-//对于v中的每一个元素
-r *=2; //将v中每个元素的值翻倍</code></pre><p>上面的代码等价于下面的代码</p>
-<pre><code>for (auto beg = v.begin() ，end = v.end() ; beg != end; ++beg) {
-auto &amp;r = *beg; // r必须是引用类型，这样才能对元素执行写操作
-r *=2; //将v中每个元素的值翻倍
-}</code></pre><p>所以可以看到这个签名的<code>declaration</code>就是一个迭代器指针一样的东西。</p>
-<h3 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h3><p>在使用vector的时候，不能通过范围for语句增加vector对象的元素，因为一旦在序列中添加或者删除元素，end函数的值就可能变得无效。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/29/e8-bf-ad-e4-bb-a3-e5-99-a8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="tanwenbo">
-      <meta itemprop="description" content="enjoy share">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="hhyvs111">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/12/29/e8-bf-ad-e4-bb-a3-e5-99-a8/" class="post-title-link" itemprop="url">迭代器</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2018-12-29 07:23:14" itemprop="dateCreated datePublished" datetime="2018-12-29T07:23:14+08:00">2018-12-29</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>简单来说一下迭代器和其它的有什么区别？ 一般都习惯用这个数组来操作，很少用这个迭代器，但是针对stl中一切特别的容器可能就不能直接通过下标来访问容器，需要使用迭代器。</p>
-<h3 id="成员"><a href="#成员" class="headerlink" title="成员"></a>成员</h3><p>迭代器只有<code>begin</code>和<code>end</code>两个成员，其中begin是返回第一个元素，end自然是返回容器中最后一个元素。</p>
-<h3 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h3><p>如果上了C++11还是要多用这个auto，不知道面试的时候可以使用这个auto么，应该可以吧。</p>
-<pre><code>for( auto it = s.begin(); it != s.end() &amp;&amp; !isspace(*it); ++it)
-    *it = toupper(*it);
-    //将当前字符改成大写形式</code></pre><h3 id="const类型"><a href="#const类型" class="headerlink" title="const类型"></a>const类型</h3><p>迭代器也有类型，比如<code>const_iterator</code>，这种和常量指针差不多，能读取但不能修改它所指的元素值。</p>
-<pre><code>vector&lt;int&gt;::iterator it;
-//能读写
-vector&lt;int&gt;::const_iterator it3;
-
-//只能读</code></pre><h4 id="cbegin"><a href="#cbegin" class="headerlink" title="cbegin"></a>cbegin</h4><p>如果对象只需读而无需写的话最好使用常量类型。C++11中，提供了cbegin，这种无论vector是否是常量，返回值都是const。</p>
-<h3 id="解引用"><a href="#解引用" class="headerlink" title="解引用"></a>解引用</h3><p>解引用迭代器可获得迭代器所指的对象。但是如果检查是否为空，那么要对it加空格，运算符优先级规则</p>
-<pre><code>(*it).empty();</code></pre><blockquote>
-<p>这个it就是个指针，可以用箭头运算符<code>-&gt;</code>。</p>
-</blockquote>
-<p>在访问迭代器的成员时（比如这个迭代器指向一个结构体），it-&gt;mem和(*it).mem的意思是相同的。</p>
-<h3 id="vector对象操作"><a href="#vector对象操作" class="headerlink" title="vector对象操作"></a>vector对象操作</h3><p>如果对vector进行push_back等增删操作会使当前vector对象的迭代器失效。</p>
-<h3 id="迭代器移动"><a href="#迭代器移动" class="headerlink" title="迭代器移动"></a>迭代器移动</h3><p>迭代器也能直接移动，加减整数表达式可以直接跳着走，这个和指针的操作是一样的。</p>
-<h4 id="二分应用"><a href="#二分应用" class="headerlink" title="二分应用"></a>二分应用</h4><p>这个二分查找还是不要用递归了，效率实在是太低，这样栈空间消耗太大了。很多方法都是用的while循环直接查找。</p>
-<h5 id="迭代器二分查找"><a href="#迭代器二分查找" class="headerlink" title="迭代器二分查找"></a>迭代器二分查找</h5><pre><code>auto beg = text.begin(), end = text.end();
-auto mid = beg + (end - beg)/2;
-while(beg &lt; end &amp;&amp; *mid!=target){
-//目标值在mid的右边
-if(*mid &lt; target)
-//加1的原因：如果mid比tar小，则要找的元素必定出现在mid所指元素的后面，此时将beg
-    beg = mid + 1;
-else
-    end = mid;
-
-mid = beg + (end - beg)/2;
-}</code></pre><h3 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h3><p>向一个vector、string或deque插入元素会使所有指向容器的迭代器、引用和指针失效！那么删除操作呢？</p>
-<h3 id="改变容器的循环程序"><a href="#改变容器的循环程序" class="headerlink" title="改变容器的循环程序"></a>改变容器的循环程序</h3><p>添加删除vector、string或deque元素的循环程序必须考虑迭代器、引用和指针可能失效的问题。程序必须保证每个循环步中都更新迭代器、引用或指针。如果循环中调用的是insert或erase,那么更新迭代器很容易。这些操作都返回迭代器，我们可以用来更新:</p>
-<pre><code>//傻瓜循环,删除偶数元素，复制每个奇数元素
-vector&lt;int&gt; vi = {0,1,2,3,4,5,6, 7,8,9};
-auto iter = vi.begin(); //调用begin而不是cbegin, 因为我们要改变vi
-while (iter != vi.end() ) {
-    if (*iter 各2) {
-    iter = vi. insert(iter, *iter); //复制当前元素
-    iter += 2; //向前移动迭代器，跳过当前元素以及插入到它之前的元素
-} else
-    iter = vi.erase (iter) ;//删除偶数元素
-
- //不应向前移动迭代器，iter指向我们删除的元素之后的元素
-}</code></pre><p>次程序删除vector中的偶数元素，并赋值每个奇数值元素。我们在调用insert和erase后都更新迭代器，因为两者都会使迭代器失效。</p>
-<p><strong>在调用erase后，不必递增迭代器，因为erase返回的迭代器已经指向序列中的下一个元素。</strong></p>
-<h3 id="容量增长"><a href="#容量增长" class="headerlink" title="容量增长"></a>容量增长</h3><p>vector等顺序容器是自增长的，并不是每次插入元素就会更新内存。而是选择增长一定长度的容量。</p>
-<p>vector的实现采用的策略是在每次需要分配新内存空间时将当前容量翻倍。一般是存储满了才会进行容量的翻倍操作。 <img src="https://tanwenbo.top/wp-content/uploads/2019/01/90c0d4f4ccd58e56e659497b9fa71564.png" alt=""></p>
-<p>也就是size会小于capacity！但是也不一定就是翻倍，要看具体实现。</p>
-<p>虽然不同的实现可以采用不同的分配策略，但所有实现都应遵循-一个原则:确保用push_back向vector添加元素的操作有高效率。从技术角度说，就是通过在一个初始为空的vector上调用n次push_ back来创建一一个n个元素的vector,所花费的时间不能超过n的常数倍。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1509,10 +1518,10 @@ while (iter != vi.end() ) {
 
       <ul class="sidebar-nav motion-element">
         <li class="sidebar-nav-toc">
-          Table of Contents
+          文章目录
         </li>
         <li class="sidebar-nav-overview">
-          Overview
+          站点概览
         </li>
       </ul>
 
@@ -1531,19 +1540,21 @@ while (iter != vi.end() ) {
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">111</span>
-          <span class="site-state-item-name">posts</span>
+          <span class="site-state-item-count">114</span>
+          <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
         <span class="site-state-item-count">14</span>
-        <span class="site-state-item-name">categories</span></a>
+        <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">70</span>
-        <span class="site-state-item-name">tags</span>
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">71</span>
+        <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
 </div>
@@ -1575,7 +1586,7 @@ while (iter != vi.end() ) {
   </span>
   <span class="author" itemprop="copyrightHolder">tanwenbo</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>
 
         

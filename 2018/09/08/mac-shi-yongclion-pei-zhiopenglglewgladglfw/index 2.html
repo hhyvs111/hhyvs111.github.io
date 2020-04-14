@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="转载来自：https:&#x2F;&#x2F;www.cnblogs.com&#x2F;fanghao&#x2F;p&#x2F;8027627.html主要是改了几个错误的地方，其他的可以参考该博主的。然后glew和glad可以自己选一个，推荐的是glad。  之前博主是用Xcode配置的openGL，但后来因为要与非Mac队友合作，于是大家决定统一使用Clion，博主于是再次配置开发环境，这里记录一下 预先准备Mac系统自带了OpenGL和G">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mac使用Clion配置OpenGL(glew,glad,glfw)">
+<meta property="og:url" content="http://yoursite.com/2018/09/08/mac-shi-yongclion-pei-zhiopenglglewgladglfw/index.html">
+<meta property="og:site_name" content="hhyvs111">
+<meta property="og:description" content="转载来自：https:&#x2F;&#x2F;www.cnblogs.com&#x2F;fanghao&#x2F;p&#x2F;8027627.html主要是改了几个错误的地方，其他的可以参考该博主的。然后glew和glad可以自己选一个，推荐的是glad。  之前博主是用Xcode配置的openGL，但后来因为要与非Mac队友合作，于是大家决定统一使用Clion，博主于是再次配置开发环境，这里记录一下 预先准备Mac系统自带了OpenGL和G">
+<meta property="og:image" content="https://tanwenbo.top/wp-content/uploads/2018/09/15363877738992.jpg">
+<meta property="og:image" content="https://tanwenbo.top/wp-content/uploads/2018/09/15363878164832.jpg">
+<meta property="og:image" content="https://tanwenbo.top/wp-content/uploads/2018/09/15363879777641.jpg">
+<meta property="article:published_time" content="2018-09-08T06:19:14.000Z">
+<meta property="article:modified_time" content="2020-04-14T06:29:36.319Z">
+<meta property="article:author" content="tanwenbo">
+<meta property="article:tag" content="OpenGL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tanwenbo.top/wp-content/uploads/2018/09/15363877738992.jpg">
+
+<link rel="canonical" href="http://yoursite.com/2018/09/08/mac-shi-yongclion-pei-zhiopenglglewgladglfw/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
+
+  <title>Mac使用Clion配置OpenGL(glew,glad,glfw) | hhyvs111</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">hhyvs111</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Be a great man</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/08/mac-shi-yongclion-pei-zhiopenglglewgladglfw/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="tanwenbo">
+      <meta itemprop="description" content="enjoy share">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hhyvs111">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Mac使用Clion配置OpenGL(glew,glad,glfw)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-09-08 14:19:14" itemprop="dateCreated datePublished" datetime="2018-09-08T14:19:14+08:00">2018-09-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OpenGL/" itemprop="url" rel="index"><span itemprop="name">OpenGL</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OpenGL/%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">教程</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p>转载来自：<a href="https://www.cnblogs.com/fanghao/p/8027627.html" target="_blank" rel="noopener">https://www.cnblogs.com/fanghao/p/8027627.html</a><br>主要是改了几个错误的地方，其他的可以参考该博主的。然后glew和glad可以自己选一个，推荐的是glad。</p>
+</blockquote>
+<p>之前博主是用Xcode配置的openGL，但后来因为要与非Mac队友合作，于是大家决定统一使用Clion，博主于是再次配置开发环境，这里记录一下</p>
+<h3 id="预先准备"><a href="#预先准备" class="headerlink" title="预先准备"></a>预先准备</h3><p>Mac系统自带了OpenGL和GLUT，但博主想使用较为新的GLEW和GLFW。<br>安装homebrew</p>
+<pre><code>ruby -e &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;</code></pre><h4 id="安装GLEW和GLFW"><a href="#安装GLEW和GLFW" class="headerlink" title="安装GLEW和GLFW"></a>安装GLEW和GLFW</h4><pre><code>brew install glew
+brew install glfw</code></pre><p>brew安装的目录在/usr/local/Cellar下，后面会使用到路径。</p>
+<h4 id="安装GLAD"><a href="#安装GLAD" class="headerlink" title="安装GLAD"></a>安装GLAD</h4><p>GLAD是一个开源的库，它能解决我们上面提到的那个繁琐的问题。GLAD的配置与大多数的开源库有些许的不同，GLAD使用了一个在线服务。在这里我们能够告诉GLAD需要定义的OpenGL版本，并且根据这个版本加载所有相关的OpenGL函数。</p>
+<p>打开GLAD的<a href="http://glad.dav1d.de/" target="_blank" rel="noopener">在线服务</a>，将语言(Language)设置为C/C++，在API选项中，选择3.3以上的OpenGL(gl)版本。之后将模式(Profile)设置为Core，并且保证生成加载器(Generate a loader)的选项是选中的。现在可以先（暂时）忽略拓展(Extensions)中的内容。都选择完之后，点击生成(Generate)按钮来生成库文件。</p>
+<p><img src="https://tanwenbo.top/wp-content/uploads/2018/09/15363877738992.jpg" alt="">￼</p>
+<h4 id="生成文件"><a href="#生成文件" class="headerlink" title="生成文件"></a>生成文件</h4><p><img src="https://tanwenbo.top/wp-content/uploads/2018/09/15363878164832.jpg" alt="">￼</p>
+<p>GLAD现在应该提供给你了一个zip压缩文件，包含两个头文件目录，和一个glad.c文件。将两个头文件目录（glad和KHR）复制到你的Include文件夹中（或者增加一个额外的项目指向这些目录），并添加glad.c文件到你的工程中。</p>
+<h4 id="用Clion创建工程"><a href="#用Clion创建工程" class="headerlink" title="用Clion创建工程"></a>用Clion创建工程</h4><p>Clion工程管理是通过CMake的，第三方库可以通过修改CMakeLists.txt完成<br>以下是博主参考了资料后配置成功的文件</p>
+<pre><code>cmake_minimum_required(VERSION 3.12)
+project(Learn-OpenGL)
+
+set(CMAKE_CXX_STANDARD 14)
+# 添加头文件
+set(GLEW_H /usr/local/Cellar/glew/2.1.0/include/GL)
+set(GLFW_H /usr/local/Cellar/glfw/3.2.1/include/GLFW)
+set(GLAD_H /usr/local/include/glad)
+include_directories(${GLEW_H} ${GLFW_H} ${GLAD_H})
+
+# 添加目标链接
+set(GLEW_LINK /usr/local/Cellar/glew/2.1.0/lib/libGLEW.2.1.dylib)
+set(GLFW_LINK /usr/local/Cellar/glfw/3.2.1/lib/libglfw.3.dylib)
+link_libraries(${OPENGL} ${GLEW_LINK} ${GLFW_LINK})
+
+# 执行编译命令
+# 这个glad.c随意你放在哪，要注意路径就好
+set(SOURCE_FILES &quot;src/glad.c&quot; &quot;main.c&quot;)
+add_executable(Learn-OpenGL ${SOURCE_FILES})
+if (APPLE)
+    target_link_libraries(Learn-OpenGL &quot;-framework OpenGL&quot;)
+    target_link_libraries(Learn-OpenGL &quot;-framework GLUT&quot;)
+endif()</code></pre><p>测试<br>main.cpp还是使用之前的的代码测试</p>
+<blockquote>
+<p>你可以选择用glew和glad，除了头文件要替换，一些函数声明也需要替换。<br>这里还是参考博主的用的glew。</p>
+</blockquote>
+<pre><code>#include &lt;GL/glew.h&gt;
+#include &lt;GLFW/glfw3.h&gt;
+#include &lt;iostream&gt;
+using namespace std;
+
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
+{
+    //如果按下ESC，把windowShouldClose设置为True，外面的循环会关闭应用
+    if(key==GLFW_KEY_ESCAPE &amp;&amp; action == GLFW_PRESS)
+        glfwSetWindowShouldClose(window, GL_TRUE);
+    std::cout&lt;&lt;&quot;ESC&quot;&lt;&lt;mode;
+}
+
+int main(void)
+{
+    //初始化GLFW库
+    if(!glfwInit())
+        return -1;
+    //创建窗口以及上下文
+    GLFWwindow* window = glfwCreateWindow(640, 480, &quot;hello world&quot;, NULL, NULL);
+    if(!window)
+    {
+        //创建失败会返回NULL
+        glfwTerminate();
+    }
+    //建立当前窗口的上下文
+    glfwMakeContextCurrent(window);
+
+    glfwSetKeyCallback(window, key_callback); //注册回调函数
+    //循环，直到用户关闭窗口
+    while(!glfwWindowShouldClose(window))
+    {
+        /*******轮询事件*******/
+        glfwPollEvents();
+
+        /*******渲染*******/
+        //选择清空的颜色RGBA
+        glClearColor(0.2, 0.3, 0.3, 1);
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        //开始画一个三角形
+        glBegin(GL_TRIANGLES);
+        glColor3f(1, 0, 0); //Red
+        glVertex3f(0, 1, 1);
+
+        glColor3f(0, 1, 0); //Green
+        glVertex3f(-1, -1, 0);
+
+        glColor3f(0, 0, 1); //Blue
+        glVertex3f(1, -1, 0);
+        //结束一个画图步骤
+        glEnd();
+
+        glBegin(GL_POLYGON);
+        //再画个梯形，需要注意笔顺
+        glColor3f(0.5, 0.5, 0.5); //Grey
+        glVertex2d(0.5, 0.5);
+        glVertex2d(1, 1);
+        glVertex2d(1, 0);
+        glVertex2d(0.5, 0);
+        glEnd();
+
+
+        /******交换缓冲区，更新window上的内容******/
+        glfwSwapBuffers(window);
+    }
+    glfwTerminate();
+    return 0;
+}</code></pre><p>运行结果<br><img src="https://tanwenbo.top/wp-content/uploads/2018/09/15363879777641.jpg" alt="">￼</p>
+<p>再次成功！可以愉快地和队友写大程了~</p>
+<h2 id="错误的地方"><a href="#错误的地方" class="headerlink" title="错误的地方"></a>错误的地方</h2><p>主要是改了几个地方，原来该博主的文章和代码不能直接运行，会报以下错误！</p>
+<pre><code>Undefined symbols for architecture x86_64:
+  &quot;_glBegin&quot;, referenced from:
+      _main in main.cpp.o
+  &quot;_glClear&quot;, referenced from:
+      _main in main.cpp.o
+  &quot;_glClearColor&quot;, referenced from:
+      _main in main.cpp.o
+  &quot;_glColor3f&quot;, referenced from:
+      _main in main.cpp.o
+  &quot;_glEnd&quot;, referenced from:
+      _main in main.cpp.o
+  &quot;_glVertex2d&quot;, referenced from:
+      _main in main.cpp.o
+  &quot;_glVertex3f&quot;, referenced from:
+      _main in main.cpp.o
+ld: symbol(s) not found for architecture x86_64
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+make[3]: *** [OpenGL_Demo] Error 1
+make[2]: *** [CMakeFiles/OpenGL_Demo.dir/all] Error 2
+make[1]: *** [CMakeFiles/OpenGL_Demo.dir/rule] Error 2</code></pre><p>需要在CMakeLists.txt上加入上面那个：</p>
+<pre><code>if (APPLE)
+    target_link_libraries(OpenGL_Demo &quot;-framework OpenGL&quot;)
+endif()</code></pre><p>还有头文件也有问题，原来的是：</p>
+<pre><code>#include&lt;GLEW/glew.h&gt;</code></pre><p>应该改为：</p>
+<pre><code>#include &lt;GL/glew.h&gt;</code></pre><p>不得不说，这个cmake比xcode配置容易多了，学习cmake十分有必要！</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/OpenGL/" rel="tag"># OpenGL</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/09/08/opengl-learn-2/" rel="prev" title="OpenGL学习笔记第2篇——开始">
+      <i class="fa fa-chevron-left"></i> OpenGL学习笔记第2篇——开始
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/09/08/opengl-learn-3/" rel="next" title="OpenGL学习笔记第3篇——三角形">
+      OpenGL学习笔记第3篇——三角形 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#预先准备"><span class="nav-number">1.</span> <span class="nav-text">预先准备</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#安装GLEW和GLFW"><span class="nav-number">1.1.</span> <span class="nav-text">安装GLEW和GLFW</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装GLAD"><span class="nav-number">1.2.</span> <span class="nav-text">安装GLAD</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#生成文件"><span class="nav-number">1.3.</span> <span class="nav-text">生成文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#用Clion创建工程"><span class="nav-number">1.4.</span> <span class="nav-text">用Clion创建工程</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#错误的地方"><span class="nav-number"></span> <span class="nav-text">错误的地方</span></a></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">tanwenbo</p>
+  <div class="site-description" itemprop="description">enjoy share</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">111</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">70</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">tanwenbo</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

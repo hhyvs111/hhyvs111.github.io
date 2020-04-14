@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="0 前言最近在用Mac下编译OpenGL相关的Demo，但是很多麻烦。比如这个glut的库在Mac OS 10.9版本已经废弃，然后很多老代码都编译不了用不了。 后来发现了这个glew和glfw这两个库，说是可以代替这个glut和gl，但是看资料看了半天也不知道这两个库到底是干嘛的。在搜索了一些相关资料后，决定自己整理一下。 目前需要解决的几个难点： 老代码迁移以前用glut写的代码如何用glew">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OpenGL中的GLEW和GLFW简介">
+<meta property="og:url" content="http://yoursite.com/2018/09/07/opengl-glew-glfw/index.html">
+<meta property="og:site_name" content="hhyvs111">
+<meta property="og:description" content="0 前言最近在用Mac下编译OpenGL相关的Demo，但是很多麻烦。比如这个glut的库在Mac OS 10.9版本已经废弃，然后很多老代码都编译不了用不了。 后来发现了这个glew和glfw这两个库，说是可以代替这个glut和gl，但是看资料看了半天也不知道这两个库到底是干嘛的。在搜索了一些相关资料后，决定自己整理一下。 目前需要解决的几个难点： 老代码迁移以前用glut写的代码如何用glew">
+<meta property="og:image" content="https://tanwenbo.top/wp-content/uploads/2018/09/15363203630682.jpg">
+<meta property="article:published_time" content="2018-09-07T11:21:47.000Z">
+<meta property="article:modified_time" content="2020-04-14T06:29:36.319Z">
+<meta property="article:author" content="tanwenbo">
+<meta property="article:tag" content="OpenGL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tanwenbo.top/wp-content/uploads/2018/09/15363203630682.jpg">
+
+<link rel="canonical" href="http://yoursite.com/2018/09/07/opengl-glew-glfw/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
+
+  <title>OpenGL中的GLEW和GLFW简介 | hhyvs111</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">hhyvs111</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Be a great man</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/07/opengl-glew-glfw/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="tanwenbo">
+      <meta itemprop="description" content="enjoy share">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hhyvs111">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          OpenGL中的GLEW和GLFW简介
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-09-07 19:21:47" itemprop="dateCreated datePublished" datetime="2018-09-07T19:21:47+08:00">2018-09-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OpenGL/" itemprop="url" rel="index"><span itemprop="name">OpenGL</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OpenGL/%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">教程</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0 前言"></a>0 前言</h2><p>最近在用Mac下编译OpenGL相关的Demo，但是很多麻烦。比如这个glut的库在Mac OS 10.9版本已经废弃，然后很多老代码都编译不了用不了。</p>
+<p>后来发现了这个glew和glfw这两个库，说是可以代替这个glut和gl，但是看资料看了半天也不知道这两个库到底是干嘛的。在搜索了一些相关资料后，决定自己整理一下。</p>
+<p>目前需要解决的几个难点：</p>
+<h4 id="老代码迁移"><a href="#老代码迁移" class="headerlink" title="老代码迁移"></a>老代码迁移</h4><p>以前用glut写的代码如何用glew和glfw迁移，是不能直接换函数名的，有些函数不是一一对应的。</p>
+<p>比如这种：</p>
+<p><img src="https://tanwenbo.top/wp-content/uploads/2018/09/15363203630682.jpg" alt="">￼</p>
+<blockquote>
+<p>编译器用的是Mac下的CLion。</p>
+</blockquote>
+<p>有些函数是不存在的，那么现在需要将其替换成glew和glfw里的函数。</p>
+<h2 id="1-GLEW"><a href="#1-GLEW" class="headerlink" title="1 GLEW"></a>1 GLEW</h2><p>主要介绍一下这个库的作用以及相关函数。</p>
+<h3 id="1-1-简介"><a href="#1-1-简介" class="headerlink" title="1.1 简介"></a>1.1 简介</h3><blockquote>
+<p>OpenGL扩展库是个简单的工具，用于帮助C/C++开发者初始化扩展（OpenGL扩展功能）并书写可移植的应用程序。GLEW当前支持各种各样的操作系统，包含Windows，Linux，Darwin，Irix与Solaris。</p>
+<p>from 百度百科</p>
+</blockquote>
+<p>可以看到这个库主要是实现可移植性，因为不同平台的OpenGL库函数可能不一样，然后该库提供了一个功能：</p>
+<p><strong>能自动识别当前平台所支持的全部OpenGL高级扩展涵数。只要包含glew.h头文件，就能使用gl,glu,glext,wgl,glx的全部函数。</strong></p>
+<p>也就是说只要用这个库，然后你写的代码在不同平台就能直接编译，不需要再做特殊处理。</p>
+<blockquote>
+<p>具体是不是以后有待验证。</p>
+</blockquote>
+<h2 id="2-GLFW"><a href="#2-GLFW" class="headerlink" title="2 GLFW"></a>2 GLFW</h2><h3 id="2-1-简介"><a href="#2-1-简介" class="headerlink" title="2.1 简介"></a>2.1 简介</h3><blockquote>
+<p><strong>GLFW</strong> 是配合 <a href="https://zh.wikipedia.org/wiki/OpenGL" target="_blank" rel="noopener">OpenGL</a> 使用的轻量级工具程序库，缩写自 <strong>G</strong>raphics <strong>L</strong>ibrary <strong>F</strong>rame<strong>w</strong>ork（图形库框架）。GLFW 的主要功能是创建并管理窗口和 OpenGL 上下文，同时还提供了处理<a href="https://zh.wikipedia.org/wiki/%E6%89%8B%E6%9F%84" target="_blank" rel="noopener">手柄</a>、<a href="https://zh.wikipedia.org/wiki/%E9%94%AE%E7%9B%98" target="_blank" rel="noopener">键盘</a>、<a href="https://zh.wikipedia.org/wiki/%E9%BC%A0%E6%A0%87" target="_blank" rel="noopener">鼠标</a>输入的功能。</p>
+<p>from wiki</p>
+</blockquote>
+<p>看起来好像是一个框架，与上面的GLEW相辅相成。这个库也算是GLUT的新版本，这两个库之间的区别之一就在于 GLFW 更加先进而且有活力，但是GLUT则显得比较老旧，而且它的开发维护现在也基本上停滞了。所以可以直接用GLFW<strong>代替</strong>GLUT。</p>
+<h3 id="2-2-区别"><a href="#2-2-区别" class="headerlink" title="2.2 区别"></a>2.2 区别</h3><p>有些区别和GLUT不一样的地方，比如这个初始化。</p>
+<h4 id="GLUT"><a href="#GLUT" class="headerlink" title="GLUT"></a>GLUT</h4><pre><code>glutInit(&amp;argc, argv);      </code></pre><h4 id="GLFW"><a href="#GLFW" class="headerlink" title="GLFW"></a>GLFW</h4><pre><code>glfwInit();</code></pre><p>其实就是少了参数，其他的差别就不一一列举了。​</p>
+<h2 id="3-小结"><a href="#3-小结" class="headerlink" title="3 小结"></a>3 小结</h2><p>总的来说学习OpenGL使用这两个库足以满足所有需求，且可移植性也很强！</p>
+<h3 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h3><p><a href="http://wiki.jikexueyuan.com/project/modern-opengl-tutorial/tutorial44.html" target="_blank" rel="noopener">http://wiki.jikexueyuan.com/project/modern-opengl-tutorial/tutorial44.html</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/OpenGL/" rel="tag"># OpenGL</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/09/07/opengl-learn-1/" rel="prev" title="OpenGL学习笔记第1篇——准备">
+      <i class="fa fa-chevron-left"></i> OpenGL学习笔记第1篇——准备
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/09/08/opengl-learn-2/" rel="next" title="OpenGL学习笔记第2篇——开始">
+      OpenGL学习笔记第2篇——开始 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0-前言"><span class="nav-number">1.</span> <span class="nav-text">0 前言</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#老代码迁移"><span class="nav-number">1.0.1.</span> <span class="nav-text">老代码迁移</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-GLEW"><span class="nav-number">2.</span> <span class="nav-text">1 GLEW</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-简介"><span class="nav-number">2.1.</span> <span class="nav-text">1.1 简介</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-GLFW"><span class="nav-number">3.</span> <span class="nav-text">2 GLFW</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-简介"><span class="nav-number">3.1.</span> <span class="nav-text">2.1 简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-区别"><span class="nav-number">3.2.</span> <span class="nav-text">2.2 区别</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#GLUT"><span class="nav-number">3.2.1.</span> <span class="nav-text">GLUT</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GLFW"><span class="nav-number">3.2.2.</span> <span class="nav-text">GLFW</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-小结"><span class="nav-number">4.</span> <span class="nav-text">3 小结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#参考链接"><span class="nav-number">4.1.</span> <span class="nav-text">参考链接</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">tanwenbo</p>
+  <div class="site-description" itemprop="description">enjoy share</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">111</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">70</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">tanwenbo</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

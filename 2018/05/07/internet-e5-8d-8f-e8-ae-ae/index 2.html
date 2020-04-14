@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Internet 协议《TCP&#x2F;IP详解 卷1：协议》&#96;&#96;TCP&#96;&#96;posts  Internet 协议 1 引言 2 IP数据报 2.2.1 生存期TTL 2.2.2 IP Fragment 标识 标志 分片偏移 任何一片数据的丢失需要上层重传整个报文 例子        1 引言IP是TCP&#x2F;IP协议族中的核心协议。所有TCP、 UDP、 ICMP和IGMP数据都通过IP数 据报传输。 IP提">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Internet 协议">
+<meta property="og:url" content="http://yoursite.com/2018/05/07/internet-e5-8d-8f-e8-ae-ae/index.html">
+<meta property="og:site_name" content="hhyvs111">
+<meta property="og:description" content="Internet 协议《TCP&#x2F;IP详解 卷1：协议》&#96;&#96;TCP&#96;&#96;posts  Internet 协议 1 引言 2 IP数据报 2.2.1 生存期TTL 2.2.2 IP Fragment 标识 标志 分片偏移 任何一片数据的丢失需要上层重传整个报文 例子        1 引言IP是TCP&#x2F;IP协议族中的核心协议。所有TCP、 UDP、 ICMP和IGMP数据都通过IP数 据报传输。 IP提">
+<meta property="og:image" content="http://tanwenbo.top/wp-content/uploads/2018/05/79bb31093672f208d93e7b9ab4332da2.png">
+<meta property="og:image" content="http://tanwenbo.top/wp-content/uploads/2018/05/984ff4d54b80e3fc4c382edc3a1fb3dd.">
+<meta property="og:image" content="http://tanwenbo.top/wp-content/uploads/2018/05/e6c4b48b54d9485cafde9bfbad242f39.">
+<meta property="og:image" content="http://tanwenbo.top/wp-content/uploads/2018/05/30b369ac934c184e8cf9ae24d89d27b8.">
+<meta property="article:published_time" content="2018-05-06T18:32:55.000Z">
+<meta property="article:modified_time" content="2020-04-14T06:29:36.318Z">
+<meta property="article:author" content="tanwenbo">
+<meta property="article:tag" content="TCP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://tanwenbo.top/wp-content/uploads/2018/05/79bb31093672f208d93e7b9ab4332da2.png">
+
+<link rel="canonical" href="http://yoursite.com/2018/05/07/internet-e5-8d-8f-e8-ae-ae/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
+
+  <title>Internet 协议 | hhyvs111</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">hhyvs111</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Be a great man</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/07/internet-e5-8d-8f-e8-ae-ae/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="tanwenbo">
+      <meta itemprop="description" content="enjoy share">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hhyvs111">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Internet 协议
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-05-07 02:32:55" itemprop="dateCreated datePublished" datetime="2018-05-07T02:32:55+08:00">2018-05-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" itemprop="url" rel="index"><span itemprop="name">计算机网络</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Internet-协议"><a href="#Internet-协议" class="headerlink" title="Internet 协议"></a>Internet 协议</h1><p><code>《TCP/IP详解 卷1：协议》``TCP``posts</code></p>
+<ul>
+<li><a href="#internet-协议">Internet 协议</a><ul>
+<li><a href="#1-引言">1 引言</a></li>
+<li><a href="#2-ip数据报">2 IP数据报</a><ul>
+<li><a href="#221-生存期ttl">2.2.1 生存期TTL</a></li>
+<li><a href="#222-ip-fragment">2.2.2 IP Fragment</a><ul>
+<li><a href="#标识">标识</a></li>
+<li><a href="#标志">标志</a></li>
+<li><a href="#分片偏移">分片偏移</a></li>
+<li><a href="#任何一片数据的丢失需要上层重传整个报文">任何一片数据的丢失需要上层重传整个报文</a></li>
+<li><a href="#例子">例子</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="1-引言"><a href="#1-引言" class="headerlink" title="1 引言"></a>1 引言</h2><p>IP是TCP/IP协议族中的核心协议。所有TCP、 UDP、 ICMP和IGMP数据都通过IP数 据报传输。 IP提供了一种尽力而为、无连接的数据报交付服务。 “尽力而为”的含义是不保 证IP数据报能成功到达目的地。虽然IP不是简单丢弃所有不必要流量,但它也不对自已尝 试交付的数据报提供保证。当某些错误发生时,例如一台路由器临时用尽缓冲区, IP提供一 个简单的错误处理方法‥ 丢弃一些数据(通常是最后到达的数据报)。任何可靠性必须由上 层(例如TCP)提供。IPv4和IPv6都使用这种尽力而为的基本交付模式。 接下来我们了解一下IP数据报的组成和其有何作用。</p>
+<h2 id="2-IP数据报"><a href="#2-IP数据报" class="headerlink" title="2 IP数据报"></a>2 IP数据报</h2><p>数据报分为<code>IPv4</code>和<code>IPv6</code>，先看看<code>IPv4</code><strong>头部中的字段组成</strong> <img src="http://tanwenbo.top/wp-content/uploads/2018/05/79bb31093672f208d93e7b9ab4332da2.png" alt=""></p>
+<p>字段</p>
+<p>长度</p>
+<p>含义</p>
+<p>版本</p>
+<p>4比特</p>
+<p>包含IP数据报的版本号，IPv4为<code>4</code>，IPv6为<code>6</code></p>
+<p>IHL</p>
+<p>4比特</p>
+<p>Internet头部长度，也就是首部长度由于它是一个4位的字段，所以IPv4头部被限制为最多15个32位字，即64字节（为什么头部又说是20字节？）</p>
+<p>DS字段（区分服务）</p>
+<p>6比特</p>
+<p>本来这里应该是服务类型（TOS）字段，但是它们从未被广泛使用，因此最终这个8位长的字段被划分为2个部分。</p>
+<p>ECN</p>
+<p>2比特</p>
+<p>显式拥塞通知字段或指示位</p>
+<p>总长度</p>
+<p>16比特</p>
+<p>通过这个和IHL字段，我们可以知道数据报的数据部分从哪开始，以及它的长度。最大长度<code>65535字节</code></p>
+<p>标识</p>
+<p>16比特</p>
+<p>IPv4软件在存储器中维持一个计数器，每产生一个数据报，计数器就加<code>1</code>，并将此值赋给标识字段</p>
+<p>标志</p>
+<p>3比特</p>
+<p>目前只有两位有意义。<code>最低位M</code>为<code>1</code>表示后面“<code>还有分配</code>”的数据报，为<code>0</code>表示这已经是最后一个数据偏；<code>中间位</code>为<code>1</code>表示“<code>不能分片</code>”，为<code>0</code>才允许分片</p>
+<p>分片偏移</p>
+<p>13比特</p>
+<p>指出较长的分组在分片后，该片在原分组的相对位置</p>
+<p>生存期TTL</p>
+<p>8比特</p>
+<p>Time To Live，表示数据报在网络中的寿命，功能是“跳数限制”，防止分组在网络中无限期地转发</p>
+<p>协议</p>
+<p>8比特</p>
+<p>指出数据报有效荷载部分的数据类型，最常用的值为<code>17（UDP）</code>和<code>6（TCP）</code></p>
+<p>头部校验和</p>
+<p>16比特</p>
+<p>IPv4独有，数据报每经过一个设备，设备都要重新计算以下头部检验和，若头部未发生变化，则此结果必为0，于是就保留这个数据报。<strong>这个字段只检验数据报的首部，但不包括数据部分</strong></p>
+<p>源IP地址</p>
+<p>32比特</p>
+<p>报文发送方的IPv4地址</p>
+<p>目的地址</p>
+<p>32比特</p>
+<p>报文接收方的IPv4地址</p>
+<p>选项</p>
+<p>0~40字节</p>
+<p>用来支持排错、测量以及安全等措施。在必要的时候插入值为0的填充字节</p>
+<p>数据部分</p>
+<p>可变</p>
+<p>用来填充报文</p>
+<h3 id="2-2-1-生存期TTL"><a href="#2-2-1-生存期TTL" class="headerlink" title="2.2.1 生存期TTL"></a>2.2.1 生存期TTL</h3><p>生存时间字段用来标识IP数据报在网络中传输的有效期，以秒来计数，占8位。最初的设计是以秒为单位，没经过一个路由器时，就在TTL（Time To Live）中减去数据报在路由器消耗掉的一段时间。若数据报在路由器消耗的时间小于1s，就把TTL值减1。TTL的建议值是<code>32s</code>，最长是<img src="http://tanwenbo.top/wp-content/uploads/2018/05/984ff4d54b80e3fc4c382edc3a1fb3dd." alt="">−1=<code>255s</code>。现在通常认为这个TTL是指数据报允许经过的路由器数，主要有以下几个功能：</p>
+<ul>
+<li>防止数据报在网络上回环；</li>
+<li>由时间值变为为路由的跳数，跳数限制；</li>
+<li>当每经过一个路由，跳数限制减1，当为0时丢弃这个数据报，ICMP Time Exceeded Messages包发送给该数据包的源地址。</li>
+</ul>
+<h3 id="2-2-2-IP-Fragment"><a href="#2-2-2-IP-Fragment" class="headerlink" title="2.2.2 IP Fragment"></a>2.2.2 IP Fragment</h3><p>IP分片由<strong>标识</strong>、<strong>标志</strong>和<strong>分片位移</strong>组成。</p>
+<blockquote>
+<p>IP fragmentation is an Internet Protocol (IP) process that breaks datagrams into smaller pieces (fragments), so that packets may be formed that can pass through a link with a smaller maximum transmission unit (MTU) than the original datagram size. The fragments are reassembled by the receiving host. ——来自Wikipedia</p>
+</blockquote>
+<p>IP分片通过IP协议将数据分成更小的碎片，所以数据包可以由带有最大传输单元的链路形成。 在很多链路层网络（比如以太网）中，携带高层协议PDU的帧大小是有限制的。链路层的这种特征被称为_最大传输单元_（<code>MTU</code>），如果IP需要发送一个数据报，并且这个数据报比链路层MTU大，则IP通过<strong>分片</strong>将数据报分解成较小的部分，使每个分片都小于MTU。</p>
+<h4 id="标识"><a href="#标识" class="headerlink" title="标识"></a>标识</h4><p>每个IP包的唯一值，相同的分片标识相同</p>
+<h4 id="标志"><a href="#标志" class="headerlink" title="标志"></a>标志</h4><p>0</p>
+<p>DF</p>
+<p>MF</p>
+<ul>
+<li>DF：Don’t Fragment<ul>
+<li>0，可以分片</li>
+<li>1，不可分片，出错时发送ICMP</li>
+</ul>
+</li>
+<li>MF：More Fragmen<ul>
+<li>0，最后一个分片</li>
+<li>1，还有更多的分片在后面</li>
+</ul>
+</li>
+</ul>
+<h4 id="分片偏移"><a href="#分片偏移" class="headerlink" title="分片偏移"></a>分片偏移</h4><p>标识本包在整个数据包中的位置，以8字节为单位。</p>
+<h4 id="任何一片数据的丢失需要上层重传整个报文"><a href="#任何一片数据的丢失需要上层重传整个报文" class="headerlink" title="任何一片数据的丢失需要上层重传整个报文"></a>任何一片数据的丢失需要上层重传整个报文</h4><h4 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h4><p>假设MTU为1300Bytes，现在有一个数据包为3280Bytes要传输。</p>
+<p>MF</p>
+<p>Offset</p>
+<p>data</p>
+<p>0</p>
+<p>0</p>
+<p>3280B</p>
+<p>那么将会切割为3部分：</p>
+<p>MF</p>
+<p>Offset</p>
+<p>data</p>
+<p>1</p>
+<p>0</p>
+<p>1280B</p>
+<p>1</p>
+<p>160</p>
+<p>1280B</p>
+<p>0</p>
+<p>320</p>
+<p>720B</p>
+<p>之所以是1280B，因为数据头占20B；MF不解释；Offset因为占8个字节，而<img src="http://tanwenbo.top/wp-content/uploads/2018/05/e6c4b48b54d9485cafde9bfbad242f39." alt="">)，那么下一分片的位移就是<img src="http://tanwenbo.top/wp-content/uploads/2018/05/30b369ac934c184e8cf9ae24d89d27b8." alt="">，依次累加。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/TCP/" rel="tag"># TCP</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/05/02/e3-80-8a-e7-bc-96-e7-a0-81checklist-e8-a7-84-e8-8c-83-e3-80-8b-e5-ad-a6-e4-b9-a0-e7-ac-94-e8-ae-b0/" rel="prev" title="《编码checklist规范》学习笔记">
+      <i class="fa fa-chevron-left"></i> 《编码checklist规范》学习笔记
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/05/11/arp-e5-8d-8f-e8-ae-ae/" rel="next" title="ARP协议">
+      ARP协议 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Internet-协议"><span class="nav-number">1.</span> <span class="nav-text">Internet 协议</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-引言"><span class="nav-number">1.1.</span> <span class="nav-text">1 引言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-IP数据报"><span class="nav-number">1.2.</span> <span class="nav-text">2 IP数据报</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-1-生存期TTL"><span class="nav-number">1.2.1.</span> <span class="nav-text">2.2.1 生存期TTL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-2-IP-Fragment"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.2.2 IP Fragment</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#标识"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">标识</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#标志"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">标志</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分片偏移"><span class="nav-number">1.2.2.3.</span> <span class="nav-text">分片偏移</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#任何一片数据的丢失需要上层重传整个报文"><span class="nav-number">1.2.2.4.</span> <span class="nav-text">任何一片数据的丢失需要上层重传整个报文</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#例子"><span class="nav-number">1.2.2.5.</span> <span class="nav-text">例子</span></a></li></ol></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">tanwenbo</p>
+  <div class="site-description" itemprop="description">enjoy share</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">111</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">70</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">tanwenbo</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
