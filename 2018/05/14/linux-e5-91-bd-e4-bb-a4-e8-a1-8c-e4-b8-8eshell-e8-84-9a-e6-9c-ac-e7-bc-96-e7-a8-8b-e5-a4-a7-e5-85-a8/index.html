@@ -1,0 +1,2545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Linux命令行与shell脚本编程大全《Linux命令行与shell脚本编程大全》&#96;&#96;shell&#96;&#96;posts  Linux命令行与shell脚本编程大全 1 初识Linux shell 1.1 什么是Linux 1.2 GNU工具 1.3 shell 1.4 Linux发行版   2 走进shell 2.1 进入命令行 2.2 通过Linux控制台终端访问CLI   3 基本的bash she">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux命令行与shell脚本编程大全">
+<meta property="og:url" content="http://yoursite.com/2018/05/14/linux-e5-91-bd-e4-bb-a4-e8-a1-8c-e4-b8-8eshell-e8-84-9a-e6-9c-ac-e7-bc-96-e7-a8-8b-e5-a4-a7-e5-85-a8/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Linux命令行与shell脚本编程大全《Linux命令行与shell脚本编程大全》&#96;&#96;shell&#96;&#96;posts  Linux命令行与shell脚本编程大全 1 初识Linux shell 1.1 什么是Linux 1.2 GNU工具 1.3 shell 1.4 Linux发行版   2 走进shell 2.1 进入命令行 2.2 通过Linux控制台终端访问CLI   3 基本的bash she">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://tanwenbo.top/wp-content/uploads/2018/06/f8a8270008c3e268713a2cdf93fc12af.png">
+<meta property="og:image" content="https://tanwenbo.top/wp-content/uploads/2018/06/84c52f7ba0ecd37edb43515263731b61.png">
+<meta property="og:image" content="https://tanwenbo.top/wp-content/uploads/2018/06/5ed3e94b34c7fb52367fd82a93eef0fa.png">
+<meta property="og:image" content="https://tanwenbo.top/wp-content/uploads/2018/06/d79e5448951be03663c4885d0aeb4454.png">
+<meta property="og:image" content="https://tanwenbo.top/wp-content/uploads/2018/06/b0f00743914b1ceac010dc99bc915370.png">
+<meta property="og:image" content="https://tanwenbo.top/wp-content/uploads/2018/06/9abbc52455df0471a41caea66d9b4a52.png">
+<meta property="og:image" content="https://tanwenbo.top/wp-content/uploads/2018/06/0833d69721db408d097d401a16eafc94.png">
+<meta property="article:published_time" content="2018-05-13T23:06:28.000Z">
+<meta property="article:modified_time" content="2020-04-14T06:29:36.319Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="shell">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tanwenbo.top/wp-content/uploads/2018/06/f8a8270008c3e268713a2cdf93fc12af.png">
+
+<link rel="canonical" href="http://yoursite.com/2018/05/14/linux-e5-91-bd-e4-bb-a4-e8-a1-8c-e4-b8-8eshell-e8-84-9a-e6-9c-ac-e7-bc-96-e7-a8-8b-e5-a4-a7-e5-85-a8/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Linux命令行与shell脚本编程大全 | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/14/linux-e5-91-bd-e4-bb-a4-e8-a1-8c-e4-b8-8eshell-e8-84-9a-e6-9c-ac-e7-bc-96-e7-a8-8b-e5-a4-a7-e5-85-a8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Linux命令行与shell脚本编程大全
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-05-14 07:06:28" itemprop="dateCreated datePublished" datetime="2018-05-14T07:06:28+08:00">2018-05-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Linux命令行与shell脚本编程大全"><a href="#Linux命令行与shell脚本编程大全" class="headerlink" title="Linux命令行与shell脚本编程大全"></a>Linux命令行与shell脚本编程大全</h1><p><code>《Linux命令行与shell脚本编程大全》``shell``posts</code></p>
+<ul>
+<li><a href="#linux命令行与shell脚本编程大全">Linux命令行与shell脚本编程大全</a><ul>
+<li><a href="#1-初识linux-shell">1 初识Linux shell</a><ul>
+<li><a href="#11-什么是linux">1.1 什么是Linux</a></li>
+<li><a href="#12-gnu工具">1.2 GNU工具</a></li>
+<li><a href="#13-shell">1.3 shell</a></li>
+<li><a href="#14-linux发行版">1.4 Linux发行版</a></li>
+</ul>
+</li>
+<li><a href="#2-走进shell">2 走进shell</a><ul>
+<li><a href="#21-进入命令行">2.1 进入命令行</a></li>
+<li><a href="#22-通过linux控制台终端访问cli">2.2 通过Linux控制台终端访问CLI</a></li>
+</ul>
+</li>
+<li><a href="#3-基本的bash-shell命令">3 基本的bash shell命令</a><ul>
+<li><a href="#31-启动shell">3.1 启动shell</a></li>
+<li><a href="#32-shell提示符">3.2 shell提示符</a></li>
+<li><a href="#33-bash-手册">3.3 bash 手册</a><ul>
+<li><a href="#linux手册页的内容区域">Linux手册页的内容区域</a></li>
+</ul>
+</li>
+<li><a href="#34-浏览文件系统">3.4 浏览文件系统</a><ul>
+<li><a href="#常见linux目录结构">常见Linux目录结构</a></li>
+</ul>
+</li>
+<li><a href="#35-遍历目录">3.5 遍历目录</a><ul>
+<li><a href="#351-绝对文件路径">3.5.1 绝对文件路径</a></li>
+<li><a href="#352-相对文件路径">3.5.2 相对文件路径</a></li>
+</ul>
+</li>
+<li><a href="#36-文件和目录列表">3.6 文件和目录列表</a></li>
+<li><a href="#37-处理文件">3.7 处理文件</a><ul>
+<li><a href="#371-创建文件">3.7.1 创建文件</a></li>
+<li><a href="#372-复制文件">3.7.2 复制文件</a></li>
+<li><a href="#373-制表键自动补全">3.7.3 制表键自动补全</a></li>
+<li><a href="#374-链接文件">3.7.4 链接文件</a></li>
+<li><a href="#375-重命名文件">3.7.5 重命名文件</a></li>
+<li><a href="#376-删除文件">3.7.6 删除文件</a></li>
+</ul>
+</li>
+<li><a href="#38-处理目录">3.8 处理目录</a><ul>
+<li><a href="#371-创建目录">3.7.1 创建目录</a></li>
+<li><a href="#372-删除目录">3.7.2 删除目录</a></li>
+</ul>
+</li>
+<li><a href="#39-查看文件内容">3.9 查看文件内容</a><ul>
+<li><a href="#391-查看文件类型">3.9.1 查看文件类型</a></li>
+<li><a href="#392-查看整个文件">3.9.2 查看整个文件</a></li>
+<li><a href="#393-查看部分文件">3.9.3 查看部分文件</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#4-更多的bash-shell命令">4 更多的bash shell命令</a><ul>
+<li><a href="#41-监测程序">4.1 监测程序</a><ul>
+<li><a href="#411-探查进程">4.1.1 探查进程</a><ul>
+<li><a href="#unix风格的ps命令参数">Unix风格的ps命令参数</a></li>
+</ul>
+</li>
+<li><a href="#412-实时监测进程">4.1.2 实时监测进程</a></li>
+<li><a href="#413-结束进程">4.1.3 结束进程</a></li>
+</ul>
+</li>
+<li><a href="#42-检测磁盘空间">4.2 检测磁盘空间</a><ul>
+<li><a href="#421-挂在存储媒体">4.2.1 挂在存储媒体</a></li>
+<li><a href="#422-查看磁盘空间">4.2.2 查看磁盘空间</a></li>
+</ul>
+</li>
+<li><a href="#43-处理数据文件">4.3 处理数据文件</a><ul>
+<li><a href="#431-排序数据">4.3.1 排序数据</a></li>
+<li><a href="#432-搜索数据">4.3.2 搜索数据</a></li>
+<li><a href="#433-压缩数据">4.3.3 压缩数据</a></li>
+<li><a href="#434-归档数据">4.3.4 归档数据</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#5-理解shell">5 理解shell</a><ul>
+<li><a href="#51-shell的类型">5.1 shell的类型</a></li>
+<li><a href="#52-shell的父子关系">5.2 shell的父子关系</a><ul>
+<li><a href="#521-进程列表">5.2.1 进程列表</a></li>
+<li><a href="#521-牛笔的子shell用法">5.2.1 牛笔的子shell用法</a><ul>
+<li><a href="#1后台模式">1）后台模式</a></li>
+<li><a href="#2进程列表置于后台">2）进程列表置于后台</a></li>
+<li><a href="#3协程">3）协程</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#53-理解shell的内建命令">5.3 理解shell的内建命令</a><ul>
+<li><a href="#531-外部命令">5.3.1 外部命令</a></li>
+<li><a href="#532-内建命令">5.3.2 内建命令</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#6-使用linux环境变量">6 使用Linux环境变量</a><ul>
+<li><a href="#61-什么是环境变量">6.1 什么是环境变量</a><ul>
+<li><a href="#611-全局环境变量">6.1.1 全局环境变量</a></li>
+<li><a href="#612-局部环境变量">6.1.2 局部环境变量</a></li>
+</ul>
+</li>
+<li><a href="#62-设置用户定义变量">6.2 设置用户定义变量</a><ul>
+<li><a href="#621-设置局部用户定义变量">6.2.1 设置局部用户定义变量</a></li>
+<li><a href="#622-设置全局环境变量">6.2.2 设置全局环境变量</a></li>
+</ul>
+</li>
+<li><a href="#63-删除环境">6.3 删除环境</a></li>
+<li><a href="#64-默认的shell环境变量">6.4 默认的shell环境变量</a></li>
+<li><a href="#65-设置path环境变量">6.5 设置PATH环境变量</a></li>
+<li><a href="#66-环境变量持久化">6.6 环境变量持久化</a></li>
+</ul>
+</li>
+<li><a href="#7-理解linux文件权限">7 理解Linux文件权限</a><ul>
+<li><a href="#71-linux的安全性">7.1 Linux的安全性</a><ul>
+<li><a href="#711-etcpasswd文件">7.1.1 /etc/passwd文件</a></li>
+<li><a href="#712-etcshadow文件">7.1.2 /etc/shadow文件</a></li>
+<li><a href="#713-添加新用户">7.1.3 添加新用户</a></li>
+<li><a href="#714-删除用户">7.1.4 删除用户</a></li>
+<li><a href="#715-修改用户">7.1.5 修改用户</a></li>
+</ul>
+</li>
+<li><a href="#72-使用linux组">7.2 使用Linux组</a><ul>
+<li><a href="#721-etcgroup文件">7.2.1 /etc/group文件</a></li>
+</ul>
+</li>
+<li><a href="#73-理解文件权限">7.3 理解文件权限</a><ul>
+<li><a href="#731-使用文件权限符">7.3.1 使用文件权限符</a><ul>
+<li><a href="#第一个字符">第一个字符：</a></li>
+<li><a href="#3组三字符编码每一组定义了3种访问权限">3组三字符编码，每一组定义了3种访问权限：</a></li>
+<li><a href="#每一组分别是">每一组分别是：</a></li>
+</ul>
+</li>
+<li><a href="#732-默认文件权限">7.3.2 默认文件权限</a><ul>
+<li><a href="#linux文件权限码">Linux文件权限码</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#74-改变安全性设置">7.4 改变安全性设置</a><ul>
+<li><a href="#741-改变权限">7.4.1 改变权限</a></li>
+<li><a href="#742-改变所属关系">7.4.2 改变所属关系</a></li>
+</ul>
+</li>
+<li><a href="#75-共享文件">7.5 共享文件</a></li>
+</ul>
+</li>
+<li><a href="#8-管理文件系统">8 管理文件系统</a><ul>
+<li><a href="#81-探索linux文件系统">8.1 探索Linux文件系统</a><ul>
+<li><a href="#811-基本的linux文件系统">8.1.1 基本的Linux文件系统</a><ul>
+<li><a href="#1ext文件系统">1）ext文件系统</a></li>
+<li><a href="#2ext2文件系统">2）ext2文件系统</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#82-操作文件系统">8.2 操作文件系统</a><ul>
+<li><a href="#821-创建分区">8.2.1 创建分区</a></li>
+<li><a href="#822-创建文件系统">8.2.2 创建文件系统</a><ul>
+<li><a href="#创建文件系统的命令行程序">创建文件系统的命令行程序</a></li>
+</ul>
+</li>
+<li><a href="#823-文件系统的检查与修复">8.2.3 文件系统的检查与修复</a></li>
+</ul>
+</li>
+<li><a href="#83-逻辑卷管理">8.3 逻辑卷管理</a><ul>
+<li><a href="#831-逻辑卷管理布局">8.3.1 逻辑卷管理布局</a><ul>
+<li><a href="#逻辑卷管理环境的基本布局">逻辑卷管理环境的基本布局：</a></li>
+</ul>
+</li>
+<li><a href="#832-linux中的lvm">8.3.2 Linux中的LVM</a><ul>
+<li><a href="#1快照">1）快照</a></li>
+<li><a href="#2条带化">2）条带化</a></li>
+<li><a href="#3镜像">3）镜像</a></li>
+</ul>
+</li>
+<li><a href="#833-使用linux-lvm">8.3.3 使用Linux LVM</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#9-安装软件程序">9 安装软件程序</a><ul>
+<li><a href="#91-包管理基础">9.1 包管理基础</a></li>
+<li><a href="#92-基于debian的系统">9.2 基于Debian的系统</a><ul>
+<li><a href="#921-用aptitude管理软件包">9.2.1 用aptitude管理软件包</a></li>
+<li><a href="#922-用aptitude安装软件包">9.2.2 用aptitude安装软件包</a></li>
+<li><a href="#923-用aptitude更新软件">9.2.3 用aptitude更新软件</a></li>
+<li><a href="#924-用aptitude卸载软件">9.2.4 用aptitude卸载软件</a></li>
+<li><a href="#93-apt-get和aptitude的区别">9.3 apt-get和aptitude的区别</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#10-使用编辑器">10 使用编辑器</a><ul>
+<li><a href="#101-vim编辑器">10.1 vim编辑器</a><ul>
+<li><a href="#1011-检查vim软件包">10.1.1 检查vim软件包</a></li>
+<li><a href="#1012-vim基础">10.1.2 vim基础</a></li>
+<li><a href="#1013-编辑数据">10.1.3 编辑数据</a></li>
+<li><a href="#1014-复制和粘贴">10.1.4 复制和粘贴</a></li>
+<li><a href="#1015-查找和替换">10.1.5 查找和替换</a><ul>
+<li><a href="#1-查找">1） 查找</a></li>
+<li><a href="#1替换">1）替换</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#11-构建基本脚本">11 构建基本脚本</a><ul>
+<li><a href="#111-使用多个命令">11.1 使用多个命令</a></li>
+<li><a href="#112-创建shell脚本文件">11.2 创建shell脚本文件</a><ul>
+<li><a href="#1121-编写自己的脚本">11.2.1 编写自己的脚本</a><ul>
+<li><a href="#1建一个文件夹存放脚本">1）建一个文件夹存放脚本</a></li>
+<li><a href="#2将该文件添加到path里2和7选一个">2）将该文件添加到PATH里（2和7选一个）</a></li>
+<li><a href="#3新建文件">3）新建文件</a></li>
+<li><a href="#4将命令写入文件并保存">4）将命令写入文件并保存</a></li>
+<li><a href="#5更改权限">5）更改权限</a></li>
+<li><a href="#6运行脚本">6）运行脚本</a></li>
+<li><a href="#7将脚本目录加入到环境变量">7）将脚本目录加入到环境变量</a></li>
+<li><a href="#8在任意界面运行脚本">8）在任意界面运行脚本</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#113-显示消息">11.3 显示消息</a></li>
+<li><a href="#114-使用变量">11.4 使用变量</a><ul>
+<li><a href="#1141-使用环境变量">11.4.1 使用环境变量</a></li>
+<li><a href="#1142-用户变量">11.4.2 用户变量</a></li>
+<li><a href="#1143-命令替换">11.4.3 命令替换</a></li>
+</ul>
+</li>
+<li><a href="#115-重定向输入和输出">11.5 重定向输入和输出</a><ul>
+<li><a href="#1151-输出重定向">11.5.1 输出重定向</a></li>
+<li><a href="#1152-输入重定向">11.5.2 输入重定向</a><ul>
+<li><a href="#内联输入重定向符号">内联输入重定向符号</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#116-管道">11.6 管道</a></li>
+<li><a href="#117-执行数学运算">11.7 执行数学运算</a><ul>
+<li><a href="#1171-expr命令">11.7.1 expr命令</a></li>
+<li><a href="#1172-使用方括号">11.7.2 使用方括号</a></li>
+<li><a href="#1173-浮点解决方案">11.7.3 浮点解决方案</a><ul>
+<li><a href="#在脚本里使用bc">在脚本里使用bc</a></li>
+<li><a href="#使用内联输入重定向解决多个表达式的麻烦">使用内联输入重定向解决多个表达式的麻烦</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#118-退出脚本">11.8 退出脚本</a><ul>
+<li><a href="#1181-查看退出状态码">11.8.1 查看退出状态码</a></li>
+<li><a href="#1182-exit退出码">11.8.2 exit退出码</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#12-使用结构化命令">12 使用结构化命令</a><ul>
+<li><a href="#121-使用if-then语句">12.1 使用if-then语句</a></li>
+<li><a href="#122-if-then-else语句">12.2 if-then-else语句</a></li>
+<li><a href="#123-嵌套if">12.3 嵌套if</a></li>
+<li><a href="#124-test命令">12.4 test命令</a></li>
+<li><a href="#125-复合条件测试">12.5 复合条件测试</a></li>
+<li><a href="#126-if-then的高级特性">12.6 if-then的高级特性</a><ul>
+<li><a href="#1261-双括号">12.6.1 双括号</a></li>
+<li><a href="#1262-使用方括号">12.6.2 使用方括号</a></li>
+</ul>
+</li>
+<li><a href="#127-case命令">12.7 case命令</a></li>
+</ul>
+</li>
+<li><a href="#13-更多结构化命令">13 更多结构化命令</a><ul>
+<li><a href="#131-for命令">13.1 for命令</a><ul>
+<li><a href="#1311-读取列表中的值">13.1.1 读取列表中的值</a></li>
+<li><a href="#1312-读取列表中的复杂值">13.1.2 读取列表中的复杂值</a></li>
+<li><a href="#1313-从变量读取列表">13.1.3 从变量读取列表</a></li>
+<li><a href="#1314-从命令读取值">13.1.4 从命令读取值</a></li>
+<li><a href="#1315-更改字符分隔符">13.1.5 更改字符分隔符</a></li>
+<li><a href="#1316-用通配符读取目录">13.1.6 用通配符读取目录</a></li>
+</ul>
+</li>
+<li><a href="#132-c语言风格的for命令">13.2 C语言风格的for命令</a><ul>
+<li><a href="#1321-c语言的for命令">13.2.1 C语言的for命令</a></li>
+<li><a href="#1322-使用多个变量">13.2.2 使用多个变量</a></li>
+</ul>
+</li>
+<li><a href="#133-while命令">13.3 while命令</a><ul>
+<li><a href="#1331-while的基本格式">13.3.1 while的基本格式</a></li>
+<li><a href="#1332-使用多个测试命令">13.3.2 使用多个测试命令</a></li>
+</ul>
+</li>
+<li><a href="#134-until-命令">13.4 until 命令</a></li>
+<li><a href="#135-嵌套循环">13.5 嵌套循环</a></li>
+<li><a href="#136-循环处理文件数据">13.6 循环处理文件数据</a></li>
+<li><a href="#137-控制循环">13.7 控制循环</a><ul>
+<li><a href="#1371-break命令">13.7.1 break命令</a><ul>
+<li><a href="#1跳出单个循环">1）跳出单个循环</a></li>
+<li><a href="#2跳出内部循环">2）跳出内部循环</a></li>
+<li><a href="#3跳出外层循环">3）跳出外层循环</a></li>
+</ul>
+</li>
+<li><a href="#1372-continue命令">13.7.2 continue命令</a></li>
+</ul>
+</li>
+<li><a href="#138-处理循环的输出">13.8 处理循环的输出</a></li>
+</ul>
+</li>
+<li><a href="#14-处理用户输入">14 处理用户输入</a><ul>
+<li><a href="#141命令行参数">14.1命令行参数</a><ul>
+<li><a href="#1411-读取参数">14.1.1 读取参数</a></li>
+<li><a href="#1412-读取脚本名">14.1.2 读取脚本名</a></li>
+<li><a href="#1413-测试参数">14.1.3 测试参数</a></li>
+</ul>
+</li>
+<li><a href="#142-特殊参数变量">14.2 特殊参数变量</a><ul>
+<li><a href="#1421-参数统计">14.2.1 参数统计</a></li>
+<li><a href="#1422-抓取所有的数据">14.2.2 抓取所有的数据</a></li>
+</ul>
+</li>
+<li><a href="#143-移动变量">14.3 移动变量</a></li>
+<li><a href="#144-处理选项">14.4 处理选项</a><ul>
+<li><a href="#1441-查找选项">14.4.1 查找选项</a></li>
+<li><a href="#1442-使用getopt命令">14.4.2 使用getopt命令</a></li>
+<li><a href="#1443-更高级的getopts命令">14.4.3 更高级的getopts命令</a></li>
+</ul>
+</li>
+<li><a href="#145-选项标准化">14.5 选项标准化</a></li>
+<li><a href="#146-获得用户输入">14.6 获得用户输入</a><ul>
+<li><a href="#1461-基本的读取">14.6.1 基本的读取</a></li>
+<li><a href="#1462-超时">14.6.2 超时</a></li>
+<li><a href="#1463-隐藏方式读取">14.6.3 隐藏方式读取</a></li>
+<li><a href="#1464-从文件中读取">14.6.4 从文件中读取</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#15-呈现数据">15 呈现数据</a><ul>
+<li><a href="#151-理解输入和输出">15.1 理解输入和输出</a><ul>
+<li><a href="#1511-标准文件描述符">15.1.1 标准文件描述符</a><ul>
+<li><a href="#linux的标准文件描述符">Linux的标准文件描述符</a></li>
+<li><a href="#1-stdin">1) STDIN</a></li>
+<li><a href="#2-stdout">2) STDOUT</a></li>
+<li><a href="#3stderr">3）STDERR</a></li>
+</ul>
+</li>
+<li><a href="#1512-重定向错误">15.1.2 重定向错误</a></li>
+<li><a href="#1513-重定向错误和数据">15.1.3 重定向错误和数据</a></li>
+</ul>
+</li>
+<li><a href="#152-在脚本中重定向输出">15.2 在脚本中重定向输出</a><ul>
+<li><a href="#1521-临时重定向">15.2.1 临时重定向</a></li>
+<li><a href="#1522-永久重定向">15.2.2 永久重定向</a></li>
+</ul>
+</li>
+<li><a href="#153-在脚本重定向输入">15.3 在脚本重定向输入</a></li>
+<li><a href="#154-创建自己的重定向">15.4 创建自己的重定向</a></li>
+<li><a href="#155-列出打开的文件描述符">15.5 列出打开的文件描述符</a></li>
+<li><a href="#156-阻止命令输出">15.6 阻止命令输出</a></li>
+<li><a href="#157-创建临时文件">15.7 创建临时文件</a><ul>
+<li><a href="#1571-创建本地临时文件">15.7.1 创建本地临时文件</a></li>
+<li><a href="#1572-在tmp目录创建临时文件">15.7.2 在/tmp目录创建临时文件</a></li>
+<li><a href="#1573-创建临时目录">15.7.3 创建临时目录</a></li>
+</ul>
+</li>
+<li><a href="#158-记录消息">15.8 记录消息</a></li>
+</ul>
+</li>
+<li><a href="#16-控制脚本">16 控制脚本</a><ul>
+<li><a href="#161-处理信号">16.1 处理信号</a><ul>
+<li><a href="#1611-主要linux信号">16.1.1 主要Linux信号</a></li>
+<li><a href="#1612-生成信号">16.1.2 生成信号</a><ul>
+<li><a href="#1中断进程">1）中断进程</a></li>
+<li><a href="#2-暂停进程">2） 暂停进程</a></li>
+</ul>
+</li>
+<li><a href="#1613-捕获信号">16.1.3 捕获信号</a></li>
+<li><a href="#1614-捕获脚本退出">16.1.4 捕获脚本退出</a></li>
+<li><a href="#1615-修改或移除捕获">16.1.5 修改或移除捕获</a></li>
+</ul>
+</li>
+<li><a href="#162-以后台模式运行脚本">16.2 以后台模式运行脚本</a></li>
+<li><a href="#163-在非控制台下运行脚本">16.3 在非控制台下运行脚本</a></li>
+<li><a href="#164-作业控制">16.4 作业控制</a><ul>
+<li><a href="#1641-查看作业">16.4.1 查看作业</a></li>
+<li><a href="#1642-重启停止的作业">16.4.2 重启停止的作业</a></li>
+</ul>
+</li>
+<li><a href="#165-调整谦让度">16.5 调整谦让度</a><ul>
+<li><a href="#1651-nice命令">16.5.1 nice命令</a></li>
+<li><a href="#1652-renice命令">16.5.2 renice命令</a></li>
+</ul>
+</li>
+<li><a href="#166-定时运行作业">16.6 定时运行作业</a><ul>
+<li><a href="#1661-用at命令来计划执行作业">16.6.1 用at命令来计划执行作业</a></li>
+<li><a href="#1662-安排需要定期执行的脚本">16.6.2 安排需要定期执行的脚本</a><ul>
+<li><a href="#cron目录">cron目录</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#17-创建函数">17 创建函数</a><ul>
+<li><a href="#171-基本函数">17.1 基本函数</a></li>
+<li><a href="#172-返回值">17.2 返回值</a></li>
+<li><a href="#173-在函数中使用变量">17.3 在函数中使用变量</a></li>
+<li><a href="#174-数组变量和函数">17.4 数组变量和函数</a></li>
+<li><a href="#175-函数递归">17.5 函数递归</a></li>
+<li><a href="#176-创建库">17.6 创建库</a></li>
+<li><a href="#177-在命令行上使用函数">17.7 在命令行上使用函数</a></li>
+</ul>
+</li>
+<li><a href="#18-图形化桌面环境中的脚本编程">18 图形化桌面环境中的脚本编程</a></li>
+<li><a href="#19-初识sed和gawk">19 初识sed和gawk</a><ul>
+<li><a href="#191-sed编辑器">19.1 sed编辑器</a><ul>
+<li><a href="#1911-插入数据">19.1.1 插入数据</a></li>
+<li><a href="#1912-使用sed-处理文件">19.1.2 使用sed 处理文件</a></li>
+</ul>
+</li>
+<li><a href="#192-gawk程序">19.2 gawk程序</a></li>
+</ul>
+</li>
+<li><a href="#20-正则表达式">20 正则表达式</a><ul>
+<li><a href="#201-正则表达式的类型">20.1 正则表达式的类型</a></li>
+<li><a href="#202-bre模式">20.2 BRE模式</a><ul>
+<li><a href="#2021-纯文本">20.2.1 纯文本</a></li>
+<li><a href="#2022-特殊字符">20.2.2 特殊字符</a></li>
+<li><a href="#2023-锚字符">20.2.3 锚字符</a><ul>
+<li><a href="#1锁定在行首">1）锁定在行首</a></li>
+<li><a href="#2锁定在行尾">2）锁定在行尾</a></li>
+<li><a href="#3组合锚点">3）组合锚点</a></li>
+</ul>
+</li>
+<li><a href="#2024-点号字符">20.2.4 点号字符</a></li>
+<li><a href="#2025-字符组">20.2.5 字符组</a></li>
+<li><a href="#2026-排除型字符组">20.2.6 排除型字符组</a></li>
+<li><a href="#2027-区间">20.2.7 区间</a></li>
+<li><a href="#2028-特殊的字符组">20.2.8 特殊的字符组</a></li>
+<li><a href="#2029-星号">20.2.9 星号</a></li>
+</ul>
+</li>
+<li><a href="#203-扩展正则表达式">20.3 扩展正则表达式</a><ul>
+<li><a href="#2031-问号">20.3.1 问号</a></li>
+<li><a href="#2032-加号">20.3.2 加号</a></li>
+<li><a href="#2033-使用花括号">20.3.3 使用花括号</a></li>
+<li><a href="#2034-管道符号">20.3.4 管道符号</a></li>
+<li><a href="#2035-表达式分组">20.3.5 表达式分组</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#21-sed进阶">21 sed进阶</a><ul>
+<li><a href="#211-多行命令">21.1 多行命令</a><ul>
+<li><a href="#2111-next命令">21.1.1 next命令</a><ul>
+<li><a href="#1单行的next命令">1）单行的next命令</a></li>
+<li><a href="#2-合并文本行">2） 合并文本行</a></li>
+</ul>
+</li>
+<li><a href="#2112-多行删除命令">21.1.2 多行删除命令</a></li>
+<li><a href="#2113-多行打印命令">21.1.3 多行打印命令</a></li>
+</ul>
+</li>
+<li><a href="#212-保持空间">21.2 保持空间</a></li>
+<li><a href="#213-排除命令">21.3 排除命令</a></li>
+<li><a href="#214-改变流">21.4 改变流</a><ul>
+<li><a href="#2141-分支">21.4.1 分支</a></li>
+<li><a href="#2142-测试">21.4.2 测试</a></li>
+</ul>
+</li>
+<li><a href="#215-模式替代">21.5 模式替代</a><ul>
+<li><a href="#2151-符号">21.5.1 &amp;符号</a></li>
+<li><a href="#2152-替代单独的单词">21.5.2 替代单独的单词</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#22-gawk进阶">22 gawk进阶</a><ul>
+<li><a href="#221-使用变量">22.1 使用变量</a><ul>
+<li><a href="#2211-内建变量">22.1.1 内建变量</a></li>
+<li><a href="#2212-自定义变量">22.1.2 自定义变量</a></li>
+</ul>
+</li>
+<li><a href="#222-处理数组">22.2 处理数组</a><ul>
+<li><a href="#2221-定义数组变量">22.2.1 定义数组变量</a></li>
+<li><a href="#2222-遍历数组变量">22.2.2 遍历数组变量</a></li>
+<li><a href="#2223-删除数组变量">22.2.3 删除数组变量</a></li>
+</ul>
+</li>
+<li><a href="#223-使用模式">22.3 使用模式</a></li>
+<li><a href="#224-结构化命令">22.4 结构化命令</a><ul>
+<li><a href="#2241-if语句">22.4.1 if语句</a></li>
+<li><a href="#2242-while语句">22.4.2 while语句</a></li>
+<li><a href="#2243-do-while语句">22.4.3 do-while语句</a></li>
+<li><a href="#2244-for语句">22.4.4 for语句</a></li>
+</ul>
+</li>
+<li><a href="#225-格式化打印">22.5 格式化打印</a></li>
+<li><a href="#226-内建函数">22.6 内建函数</a><ul>
+<li><a href="#2261-数学函数">22.6.1 数学函数</a></li>
+<li><a href="#2262-字符串函数">22.6.2 字符串函数</a></li>
+<li><a href="#2263-时间函数">22.6.3 时间函数</a></li>
+</ul>
+</li>
+<li><a href="#227-自定义函数">22.7 自定义函数</a></li>
+</ul>
+</li>
+<li><a href="#23-总结">23 总结</a></li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>老师说只需要了解下基本命令用法和基本的shell脚本语法即可，那么快速过一遍</p>
+</blockquote>
+<h2 id="1-初识Linux-shell"><a href="#1-初识Linux-shell" class="headerlink" title="1 初识Linux shell"></a>1 初识Linux shell</h2><h3 id="1-1-什么是Linux"><a href="#1-1-什么是Linux" class="headerlink" title="1.1 什么是Linux"></a>1.1 什么是Linux</h3><p>Linux和Windows一样也是系统，是基于Unix开发的。</p>
+<blockquote>
+<p>一切皆文件</p>
+</blockquote>
+<p>Linux系统将硬件设备当成特殊的文件，称为设备文件。设备文件有3种分类：</p>
+<ul>
+<li>字符型设备文件</li>
+<li>块设备文件</li>
+<li>网络设备文件</li>
+</ul>
+<h3 id="1-2-GNU工具"><a href="#1-2-GNU工具" class="headerlink" title="1.2 GNU工具"></a>1.2 GNU工具</h3><p>GNU项目的主旨在于为Unix系统管理员设计出一套类似于Unix的环境。这个目标促使该项目 移植了很多常见的Unix系统命令行工具。</p>
+<h3 id="1-3-shell"><a href="#1-3-shell" class="headerlink" title="1.3 shell"></a>1.3 shell</h3><p>GNU/Linux shell是一种特殊的交互式工具。它为用户提供了启动程序、管理文件系统中的文 件以及运行在Linux系统上的进程的途径。shell的核心是命令行提示符。命令行提示符是shell负责 交互的部分。它允许你输入文本命令，然后解释命令，并在内核中执行。</p>
+<blockquote>
+<p>通过shell命令行界面管理Linux系统，所以习惯了图形界面的Windows用户可能对其很难上手。而且没有了图形界面，对系统的开销也变小了，所以Linux十分适合用于服务器的操作系统。因为服务器并不需要花哨的界面，只需要能稳定运行就行。</p>
+</blockquote>
+<h3 id="1-4-Linux发行版"><a href="#1-4-Linux发行版" class="headerlink" title="1.4 Linux发行版"></a>1.4 Linux发行版</h3><p>有很多发行版，比如自己经常使用的Ubuntu。</p>
+<h2 id="2-走进shell"><a href="#2-走进shell" class="headerlink" title="2 走进shell"></a>2 走进shell</h2><h3 id="2-1-进入命令行"><a href="#2-1-进入命令行" class="headerlink" title="2.1 进入命令行"></a>2.1 进入命令行</h3><p>在图形化桌面出现之前，与Unix系统进行交互的唯一方式就是借助由shell所提供的文本命令 行界面（command line interface，CLI）。CLI只能接受文本输入，也只能显示出文本和基本的图形输出。</p>
+<blockquote>
+<p>熟悉命令行后操作起来会很快</p>
+</blockquote>
+<p>shell也叫控制台终端，顾名思义<code>控制Linux</code></p>
+<h3 id="2-2-通过Linux控制台终端访问CLI"><a href="#2-2-通过Linux控制台终端访问CLI" class="headerlink" title="2.2 通过Linux控制台终端访问CLI"></a>2.2 通过Linux控制台终端访问CLI</h3><p>具体的不再赘述，Linux虚拟控制台中是无法运行任何图形化程序的。</p>
+<blockquote>
+<p>记得以前在阿里云服务器跑QT写的服务器，总是出现“图形化”之类的错误，后来通过某命令行禁用图形输出才跑起来。</p>
+</blockquote>
+<h2 id="3-基本的bash-shell命令"><a href="#3-基本的bash-shell命令" class="headerlink" title="3 基本的bash shell命令"></a>3 基本的bash shell命令</h2><h3 id="3-1-启动shell"><a href="#3-1-启动shell" class="headerlink" title="3.1 启动shell"></a>3.1 启动shell</h3><p>当用户登录Linux系统后，bash shell会自动启动。</p>
+<h3 id="3-2-shell提示符"><a href="#3-2-shell提示符" class="headerlink" title="3.2 shell提示符"></a>3.2 shell提示符</h3><p>默认bash shell提示符是美元符号（<code>$</code>），这个符号表明shell在等待用户输入。提示符中显示了当前用户ID名和系统名。</p>
+<blockquote>
+<p>超级管理员的提示符是<code>#</code></p>
+</blockquote>
+<h3 id="3-3-bash-手册"><a href="#3-3-bash-手册" class="headerlink" title="3.3 bash 手册"></a>3.3 bash 手册</h3><p>man命令用来访问存储在Linux系统上的手册页面。 man 后的数字也有特别指代，手册有对应的内容区域。每个内容区域都分配了一个数字。</p>
+<h4 id="Linux手册页的内容区域"><a href="#Linux手册页的内容区域" class="headerlink" title="Linux手册页的内容区域"></a>Linux手册页的内容区域</h4><p>区域号</p>
+<p>所涵盖的内容</p>
+<p>1</p>
+<p>可执行程序或shell命令</p>
+<p>2</p>
+<p>系统调用</p>
+<p>3</p>
+<p>库调用</p>
+<p>4</p>
+<p>特殊文件</p>
+<p>5</p>
+<p>文件格式与约定</p>
+<p>6</p>
+<p>游戏</p>
+<p>7</p>
+<p>概览、约定及杂项</p>
+<p>8</p>
+<p>超级用户和系统管理员命令</p>
+<p>9</p>
+<p>内核例程</p>
+<p>这个命令很好用，比如当你编程的时候想要了解某个函数的作用，可以在终端直接：</p>
+<pre><code>man 2 read
+//查询系统调用里的read </code></pre><h3 id="3-4-浏览文件系统"><a href="#3-4-浏览文件系统" class="headerlink" title="3.4 浏览文件系统"></a>3.4 浏览文件系统</h3><p>文件系统是Linux里很重要的内容，因为Linux所有内容都以文件存储。 Linux里没有盘符的概念，所有内容以树形结构展现。</p>
+<p><img src="https://tanwenbo.top/wp-content/uploads/2018/06/f8a8270008c3e268713a2cdf93fc12af.png" alt=""></p>
+<h4 id="常见Linux目录结构"><a href="#常见Linux目录结构" class="headerlink" title="常见Linux目录结构"></a>常见Linux目录结构</h4><p>目录</p>
+<p>用途</p>
+<p>/</p>
+<p>虚拟目录的根目录。通常不会在这里存储文件</p>
+<p>/bin</p>
+<p>二进制目录，存放许多用户级的GNU工具</p>
+<p>/boot</p>
+<p>启动目录，存放启动文件</p>
+<p>/dev</p>
+<p>设备目录，Linux在这里创建设备节点</p>
+<p>/etc</p>
+<p>系统配置文件目录</p>
+<p>/home</p>
+<p>主目录，Linux在这里创建用户目录</p>
+<p>/lib</p>
+<p>库目录，存放系统和应用程序的库文件</p>
+<p>/media</p>
+<p>媒体目录，可移动媒体设备的常用挂载点</p>
+<p>/mnt</p>
+<p>挂载目录，另一个可移动媒体设备的常用挂载点</p>
+<p>/opt</p>
+<p>可选目录，常用于存放第三方软件包和数据文件</p>
+<p>/proc</p>
+<p>进程目录，存放现有硬件及当前进程的相关信息</p>
+<p>/root</p>
+<p>root用户的主目录</p>
+<p>/sbin</p>
+<p>系统二进制目录，存放许多GNU管理员级工具</p>
+<p>/run</p>
+<p>运行目录，存放系统运作时的运行时数据</p>
+<p>/srv</p>
+<p>服务目录，存放本地服务的相关文件</p>
+<p>/sys</p>
+<p>系统目录，存放系统硬件信息的相关文件</p>
+<p>/tmp</p>
+<p>临时目录，可以在该目录中创建和删除临时工作文件</p>
+<p>/usr</p>
+<p>用户二进制目录，大量用户级的GNU工具和数据文件都存储在这里</p>
+<p>/var</p>
+<p>可变目录，用以存放经常变化的文件，比如日志文件</p>
+<h3 id="3-5-遍历目录"><a href="#3-5-遍历目录" class="headerlink" title="3.5 遍历目录"></a>3.5 遍历目录</h3><p>遍历目录基本来说是大家最熟悉的Linux命令行，<code>cd</code>。用好了可以如行云流水般行走于各个文件夹，熟悉该命令相当重要。</p>
+<h4 id="3-5-1-绝对文件路径"><a href="#3-5-1-绝对文件路径" class="headerlink" title="3.5.1 绝对文件路径"></a>3.5.1 绝对文件路径</h4><p>绝对文件路径定义了在虚拟目录结构中该目录的确切位置，以虚拟目录的<strong>根目录</strong>开始，相当于目录的<strong>全名</strong>，可以使用如下绝对文件路径：</p>
+<pre><code>cd /usr/bin </code></pre><h4 id="3-5-2-相对文件路径"><a href="#3-5-2-相对文件路径" class="headerlink" title="3.5.2 相对文件路径"></a>3.5.2 相对文件路径</h4><p>没有<code>/</code>开头的文件路径就是相对文件路径。需要注意当前目录，指令：<code>pwd</code> 有两个特殊字符可用于相对文件路径中：</p>
+<ul>
+<li>单点符（<code>.</code>），表示当前目录；</li>
+<li>双点符（<code>..</code>），表示当前目录的父目录。</li>
+</ul>
+<p>比如：</p>
+<pre><code>cd ..
+//返回上层目录 </code></pre><h3 id="3-6-文件和目录列表"><a href="#3-6-文件和目录列表" class="headerlink" title="3.6 文件和目录列表"></a>3.6 文件和目录列表</h3><p>想要知道系统中有哪些文件，可以使用列表命令（<code>ls</code>）。 <strong>命令结构：</strong> ls（选项）（参数）</p>
+<p>比如：</p>
+<pre><code>ls - l
+//显示当前目录文件详细信息，包括权限、作者和创建时间等 </code></pre><h3 id="3-7-处理文件"><a href="#3-7-处理文件" class="headerlink" title="3.7 处理文件"></a>3.7 处理文件</h3><h4 id="3-7-1-创建文件"><a href="#3-7-1-创建文件" class="headerlink" title="3.7.1 创建文件"></a>3.7.1 创建文件</h4><p><code>touch</code>命令创建空文件，比如：</p>
+<pre><code>touch test_one </code></pre><h4 id="3-7-2-复制文件"><a href="#3-7-2-复制文件" class="headerlink" title="3.7.2 复制文件"></a>3.7.2 复制文件</h4><p><code>cp</code>命令复制文件，需要两个参数——源对象和目标对象：</p>
+<pre><code>cp source destination </code></pre><h4 id="3-7-3-制表键自动补全"><a href="#3-7-3-制表键自动补全" class="headerlink" title="3.7.3 制表键自动补全"></a>3.7.3 制表键自动补全</h4><p>使用键盘的<code>Tab</code>键对命令自动补齐，前提是当前目录没有出现类似的文件或目录。</p>
+<h4 id="3-7-4-链接文件"><a href="#3-7-4-链接文件" class="headerlink" title="3.7.4 链接文件"></a>3.7.4 链接文件</h4><p>链接文件是Linux文件系统的一个优势。如需要在系统上维护同一文件的两份或多份副本，除了保存多份单独的物理文件副本之外，还可以采用保存一份物理文件副本和多个虚拟副本的方法。这种虚拟的副本就称为链接。链接是目录中指向文件真实位置的占位符。 <strong>在Linux中有两种不同类型的文件链接：</strong></p>
+<ul>
+<li><p><strong>符号链接(软链接)</strong></p>
+<p>软链接文件有类似于Windows的快捷方式，符号连接中，文件实际上是一个文本文件，其中包含的有另一文件的位置信息。</p>
+<p>   ln -s data_file sl_datafile<br>   //表明sl_datafile指向了data_file</p>
+</li>
+</ul>
+<ul>
+<li><p><strong>硬链接</strong> 硬连接指通过索引节点来进行连接。在Linux的文件系统中，保存在磁盘分区中的文件不管是什么类型都给它分配一个编号，称为索引节点号(Inode Index)。在Linux中，多个文件名指向同一索引节点是存在的。<strong>从根本上而言，他们是同一个文件，删除原文件对链接文件无影响。</strong></p>
+<p> ln code_file hl_code_file<br> //不需要加参数，ln默认为硬链接 </p>
+</li>
+</ul>
+<h4 id="3-7-5-重命名文件"><a href="#3-7-5-重命名文件" class="headerlink" title="3.7.5 重命名文件"></a>3.7.5 重命名文件</h4><p>在Linux中，重命名文件称为移动（moving）。mv命令可以将文件和目录移动到另一个位置 或重新命名。</p>
+<p><strong>移动文件：</strong> mv 文件 目录</p>
+<p><strong>重命名：</strong> mv 文件 文件名</p>
+<h4 id="3-7-6-删除文件"><a href="#3-7-6-删除文件" class="headerlink" title="3.7.6 删除文件"></a>3.7.6 删除文件</h4><p>bash shell 中删除文件的命令是rm。</p>
+<pre><code>rm file</code></pre><blockquote>
+<p>sudo rm-rf /* ，从删库到跑路（斜眼）</p>
+</blockquote>
+<h3 id="3-8-处理目录"><a href="#3-8-处理目录" class="headerlink" title="3.8 处理目录"></a>3.8 处理目录</h3><h4 id="3-7-1-创建目录"><a href="#3-7-1-创建目录" class="headerlink" title="3.7.1 创建目录"></a>3.7.1 创建目录</h4><p>使用<code>mkdir</code>命令创建目录。</p>
+<pre><code>mkdir new_dir </code></pre><h4 id="3-7-2-删除目录"><a href="#3-7-2-删除目录" class="headerlink" title="3.7.2 删除目录"></a>3.7.2 删除目录</h4><p>使用<code>rmdir</code>命令删除目录，一般只能删除空目录。</p>
+<pre><code>rmdir dir </code></pre><h3 id="3-9-查看文件内容"><a href="#3-9-查看文件内容" class="headerlink" title="3.9 查看文件内容"></a>3.9 查看文件内容</h3><h4 id="3-9-1-查看文件类型"><a href="#3-9-1-查看文件类型" class="headerlink" title="3.9.1 查看文件类型"></a>3.9.1 查看文件类型</h4><p>使用<code>file</code>命令查看文件类型。</p>
+<pre><code>file my_file
+//输出：myfile:ASCII text </code></pre><h4 id="3-9-2-查看整个文件"><a href="#3-9-2-查看整个文件" class="headerlink" title="3.9.2 查看整个文件"></a>3.9.2 查看整个文件</h4><p>Linux有3个命令可以完成这个任务。</p>
+<ul>
+<li><p><strong>cat命令</strong></p>
+<p>显示文本所有数据。但是会一直跳动，知道文件末尾，所以查看较长的文件比较麻烦。</p>
+</li>
+<li><p><strong>more命令</strong></p>
+<p>填补了cat命令的缺点，具有分页功能。</p>
+</li>
+<li><p><strong>less命令</strong></p>
+<p>more命令的加强版，提供翻页，跳转，查找等命令。</p>
+</li>
+</ul>
+<h4 id="3-9-3-查看部分文件"><a href="#3-9-3-查看部分文件" class="headerlink" title="3.9.3 查看部分文件"></a>3.9.3 查看部分文件</h4><p>通常你要查看的数据要么在文本文件的开头，要么在文本文件的末尾。如果你的需要的内容在文件末尾，你用cat或more加载完整个文件之后才能看到。Linux提供以下命令解决这个问题：</p>
+<ul>
+<li><p><strong>tail命令</strong></p>
+<p>tail命令会显示文件最后几行的内容。默认情况会显示文件的末尾10行。</p>
+</li>
+<li><p><strong>head命令</strong></p>
+<p>顾名思义，会显示文件开头那些行的内容。</p>
+</li>
+</ul>
+<h2 id="4-更多的bash-shell命令"><a href="#4-更多的bash-shell命令" class="headerlink" title="4 更多的bash shell命令"></a>4 更多的bash shell命令</h2><h3 id="4-1-监测程序"><a href="#4-1-监测程序" class="headerlink" title="4.1 监测程序"></a>4.1 监测程序</h3><h4 id="4-1-1-探查进程"><a href="#4-1-1-探查进程" class="headerlink" title="4.1.1 探查进程"></a>4.1.1 探查进程</h4><p>当程序运行在系统上，我们称之为进程（process）。需要显示这些数据，使用<code>ps</code>命令。 默认的<code>ps</code>命令只会显示运行在<strong>当前控制台下的属于当前用户的进程</strong>。 虽然有三种风格的参数，但是目前只需要熟悉Unix风格的就行。记几个常用的就行。</p>
+<h5 id="Unix风格的ps命令参数"><a href="#Unix风格的ps命令参数" class="headerlink" title="Unix风格的ps命令参数"></a>Unix风格的ps命令参数</h5><p>目录</p>
+<p>用途</p>
+<p>-A</p>
+<p>显示所有进程</p>
+<p>-N</p>
+<p>显示与指定参数不符的所有进程</p>
+<p>-a</p>
+<p>显示除控制进程（session leader①）和无终端进程外的所有进程</p>
+<p>-d</p>
+<p>显示除控制进程外的所有进程</p>
+<p>-e</p>
+<p>显示所有进程</p>
+<p>-M</p>
+<p>显示进程的安全信息</p>
+<p>-c</p>
+<p>显示进程的额外调度器信息</p>
+<p>-f</p>
+<p>显示完整格式的输出</p>
+<p>-j</p>
+<p>显示任务信息</p>
+<p>-l</p>
+<p>显示长列表</p>
+<p>命令也可以组合使用，如：</p>
+<pre><code>ps -ef </code></pre><h4 id="4-1-2-实时监测进程"><a href="#4-1-2-实时监测进程" class="headerlink" title="4.1.2 实时监测进程"></a>4.1.2 实时监测进程</h4><p>使用<code>top</code>命令实时监测进程，跟Windows任务管理器一样。</p>
+<h4 id="4-1-3-结束进程"><a href="#4-1-3-结束进程" class="headerlink" title="4.1.3 结束进程"></a>4.1.3 结束进程</h4><p>杀死进程是十分重要的命令，不能乱用。Linux里有两个命令可以杀死进程</p>
+<ul>
+<li><p><code>kill</code> 通过进程ID（<code>PID</code>）给进程发送信号。比如：</p>
+<p>kill 3940<br>//3940为将要结束进程的PID</p>
+</li>
+</ul>
+<ul>
+<li><p><code>killall</code> 可以通过进程名而不是PID来结束进程，也支持通配符。</p>
+<p>killall http*<br>//结束了所有以http开头的进程，比如httpd </p>
+</li>
+</ul>
+<h3 id="4-2-检测磁盘空间"><a href="#4-2-检测磁盘空间" class="headerlink" title="4.2 检测磁盘空间"></a>4.2 检测磁盘空间</h3><blockquote>
+<p>个人使用该命令不多，可能空间足够大，都不关心是否够用了</p>
+</blockquote>
+<h4 id="4-2-1-挂在存储媒体"><a href="#4-2-1-挂在存储媒体" class="headerlink" title="4.2.1 挂在存储媒体"></a>4.2.1 挂在存储媒体</h4><p>Linux文件系统将所有的磁盘都并入一个虚拟目录下。在使用新的存储媒体之前，需要把它放到虚拟目录下。</p>
+<ul>
+<li><code>mount</code> 显示当前系统挂载的设备列表。</li>
+<li><code>umount</code> 从Linux系统上移除一个可移动设备时，不能直接从系统上移除，而应该先卸载。</li>
+</ul>
+<blockquote>
+<p>就像使用Windows系统一样，拔U盘的时候不能直接拔，要先点“安全移除设备”。</p>
+</blockquote>
+<h4 id="4-2-2-查看磁盘空间"><a href="#4-2-2-查看磁盘空间" class="headerlink" title="4.2.2 查看磁盘空间"></a>4.2.2 查看磁盘空间</h4><ul>
+<li><p><code>df</code></p>
+<p>命令</p>
+<p>查看某个设备还有多少磁盘空间。加 <code>-h</code>参数，它会把输出的磁盘空间按照用户易读的形式显示。</p>
+</li>
+<li><p><code>du</code></p>
+<p>命令</p>
+<p>du命令可以显示某个特定目录（默认情况下是当前目录）的磁盘使用情况。这一方法可用来快速判断系统上某个目录下是不是有超大文件。</p>
+</li>
+</ul>
+<h3 id="4-3-处理数据文件"><a href="#4-3-处理数据文件" class="headerlink" title="4.3 处理数据文件"></a>4.3 处理数据文件</h3><h4 id="4-3-1-排序数据"><a href="#4-3-1-排序数据" class="headerlink" title="4.3.1 排序数据"></a>4.3.1 排序数据</h4><p>使用<code>sort</code>命令对文本中的数据排序，<strong>要注意其并不会改变文件里的数据，只是排序输出</strong>。</p>
+<pre><code>sort  -n file
+//文本里的数据识别为数字，并按值排序 </code></pre><h4 id="4-3-2-搜索数据"><a href="#4-3-2-搜索数据" class="headerlink" title="4.3.2 搜索数据"></a>4.3.2 搜索数据</h4><p>使用<code>grep</code>命令查找数据，这个命令用到的比例很高。</p>
+<pre><code>grep 1 file1
+//在file1里找three，是模糊查询，所有包含1的字符串都会显示</code></pre><p><img src="https://tanwenbo.top/wp-content/uploads/2018/06/84c52f7ba0ecd37edb43515263731b61.png" alt=""></p>
+<p><strong>更多命令参数请看书82页。</strong></p>
+<h4 id="4-3-3-压缩数据"><a href="#4-3-3-压缩数据" class="headerlink" title="4.3.3 压缩数据"></a>4.3.3 压缩数据</h4><p>这个命令很重要，一般使用GNU压缩工具。</p>
+<ul>
+<li><code>gzip</code> 压缩文件；支持通配符；</li>
+<li>,<code>zcat</code> 查看压缩过的文本文件的内容；Ubuntu中没有<code>gzcat</code>命令，使用<code>zcat</code>代替了；而且如果压缩后使用<code>cat</code>是看不到文件内容的。</li>
+<li><code>gunzip</code> 用来解压文件。</li>
+</ul>
+<h4 id="4-3-4-归档数据"><a href="#4-3-4-归档数据" class="headerlink" title="4.3.4 归档数据"></a>4.3.4 归档数据</h4><p>zip只能压缩文件而不能像Windows一样压缩文件夹，Linux提供<code>tar</code>命令来打包文件的。 <strong>下面是tar命令的格式：</strong></p>
+<pre><code>tar function [options] object1 object2 ...</code></pre><p><strong>常用命令：</strong></p>
+<ul>
+<li><code>tar -cvf test.tar test/ test2/</code> 创建名为test.tar的归档文件，含有test和test2目录；</li>
+<li><code>tar -tf test.tar</code> 列出tar文件test.tar的内容，但是不提取文件；</li>
+<li><code>tar -xvf test.tar</code> 从tar文件test.tar中提取内容。</li>
+</ul>
+<p>可以看到参数都很乱，什么xvf，tf，因为功能和选项可以拼在一起用。具体可以看书84页。</p>
+<h2 id="5-理解shell"><a href="#5-理解shell" class="headerlink" title="5 理解shell"></a>5 理解shell</h2><blockquote>
+<p>这章讲的有点迷糊，其实对实际应用不大，但是还是可以了解一下。 主要讲的如何创建子shell以及父shell与子shell之间的关系。</p>
+</blockquote>
+<h3 id="5-1-shell的类型"><a href="#5-1-shell的类型" class="headerlink" title="5.1 shell的类型"></a>5.1 shell的类型</h3><p>系统启动什么样的shell程序取决于你个人的用户ID配置。一般都是使用的<code>GNU bash shell</code>作为自己默认的shell程序。</p>
+<h3 id="5-2-shell的父子关系"><a href="#5-2-shell的父子关系" class="headerlink" title="5.2 shell的父子关系"></a>5.2 shell的父子关系</h3><blockquote>
+<p>有点类似fork创建子线程，不注意就一层套一层。</p>
+</blockquote>
+<p>在命令行输入<code>bash</code>会在当前的shell创建一个子shell，但是注意只有部分父进程的环境被复制到子shell环境中。和fork不一样，fork是赋值父进程所有环境。</p>
+<blockquote>
+<p>所以bash之后，上下键查看使用过的命令与父进程的shell不一样。</p>
+</blockquote>
+<p><img src="https://tanwenbo.top/wp-content/uploads/2018/06/5ed3e94b34c7fb52367fd82a93eef0fa.png" alt=""></p>
+<p>输入<code>exit</code>可以退出子<code>shell</code>，但是如果使用的远程<code>SSH</code>，最后一个<code>shell</code>退出后就断开链接了。</p>
+<h4 id="5-2-1-进程列表"><a href="#5-2-1-进程列表" class="headerlink" title="5.2.1 进程列表"></a>5.2.1 进程列表</h4><p>可以像编程里一样，使用分号<code>;</code>同时执行一系列命令。如：</p>
+<pre><code>$ pwd ; ls ; cd /etc ; pwd ; cd ; pwd ; ls</code></pre><p>上面的例子，命令依次执行，不存在任何问题。不过这并不是进程列表。命令列表想要成为进程列表，这些命令必须包含在括号里。</p>
+<pre><code>$ (pwd ; ls ; cd /etc ; pwd ; cd ; pwd ; ls)</code></pre><p><strong>因为加了括号会生成一个子shell来执行对应的命令。</strong></p>
+<blockquote>
+<p>看似好像用了多个子shell处理任务，但是然并卵。它并非真正的多进程处理，因为终端始终控制着子shell的I/O。</p>
+</blockquote>
+<h4 id="5-2-1-牛笔的子shell用法"><a href="#5-2-1-牛笔的子shell用法" class="headerlink" title="5.2.1 牛笔的子shell用法"></a>5.2.1 牛笔的子shell用法</h4><h5 id="1）后台模式"><a href="#1）后台模式" class="headerlink" title="1）后台模式"></a>1）后台模式</h5><p>在命令末尾加上字符<code>&amp;</code>，可以让命令在后台运行。</p>
+<blockquote>
+<p>之前写的QT服务器需要后台运行，一开始还以为要一直开着shell，后来发现可以用这个方法让其后台一直常驻。</p>
+</blockquote>
+<pre><code>sleep 3000&amp;
+//在后台睡眠3000秒</code></pre><p>使用<code>jobs</code>查看后台进程。</p>
+<h5 id="2）进程列表置于后台"><a href="#2）进程列表置于后台" class="headerlink" title="2）进程列表置于后台"></a>2）进程列表置于后台</h5><p>一样在进程列表后面加个<code>&amp;</code>，好处是既可以在子shell进行繁重的处理工作，又不会让子shell的I/O受制于终端。<strong>这个功能用来后台解压文件，压缩文件十分好用。</strong></p>
+<h5 id="3）协程"><a href="#3）协程" class="headerlink" title="3）协程"></a>3）协程</h5><p>使用coproc命令，其有两个功能：</p>
+<ul>
+<li><p>在后台生成一个子shell；</p>
+</li>
+<li><p>并在这个子shell中执行命令。</p>
+<p>coproc sleep 10</p>
+</li>
+</ul>
+<p>可以将其与进程列表结合，使用方便。</p>
+<h3 id="5-3-理解shell的内建命令"><a href="#5-3-理解shell的内建命令" class="headerlink" title="5.3 理解shell的内建命令"></a>5.3 理解shell的内建命令</h3><h4 id="5-3-1-外部命令"><a href="#5-3-1-外部命令" class="headerlink" title="5.3.1 外部命令"></a>5.3.1 外部命令</h4><p>文件系统命令，存在与bash shell之外的程序。比如<code>ps</code>。外部命令通常位于/bin、/usr/bin、/sbin或/usr/sbin中。</p>
+<h4 id="5-3-2-内建命令"><a href="#5-3-2-内建命令" class="headerlink" title="5.3.2 内建命令"></a>5.3.2 内建命令</h4><p>不同于外部命令，内建命令不需要子进程来执行。它们已经和shell编译编译成了一体，作为shell工具的组成部分存在。<code>cd</code>和<code>exit</code>都内建于bash shell。</p>
+<blockquote>
+<p>有些命令有多种实现，比如<code>echo</code>和<code>pwd</code>既有内建命令也有外部命令。</p>
+</blockquote>
+<ul>
+<li><p><code>type</code></p>
+<p>查看命令是否是内建，只有两种答案。</p>
+<ul>
+<li>xx is a shell builtin</li>
+<li>xx is /bin/echo</li>
+</ul>
+</li>
+<li><p><code>history</code> 查看最近使用过的命令（这个不错，不用之前一个个翻了），显示1000个。<strong>可以修改</strong></p>
+</li>
+<li><p><code>!!</code> 可以重用上一条命令，有点类似于<code>!cc</code>。</p>
+</li>
+<li><p><code>alias</code> 可以将命令设置一个别名，这个功能很好用，可以设置你熟悉的命令，减少输入量。</p>
+<p>alias li=’ls -li’ </p>
+</li>
+</ul>
+<h2 id="6-使用Linux环境变量"><a href="#6-使用Linux环境变量" class="headerlink" title="6 使用Linux环境变量"></a>6 使用Linux环境变量</h2><h3 id="6-1-什么是环境变量"><a href="#6-1-什么是环境变量" class="headerlink" title="6.1 什么是环境变量"></a>6.1 什么是环境变量</h3><blockquote>
+<p>配置环境变量一直是Windows用户头疼之处，新手可能为此折腾大半天。那么Linux也需要配置，但是比Windows简单很多。</p>
+</blockquote>
+<p>环境变量允许你在内存中存储数据，以便程序或shell中运行的脚本能够轻松访问到他们。</p>
+<h4 id="6-1-1-全局环境变量"><a href="#6-1-1-全局环境变量" class="headerlink" title="6.1.1 全局环境变量"></a>6.1.1 全局环境变量</h4><p><strong>全局环境变量对于shell会话和所有生成的子shell都是可见的。局部变量则只对创建它们的shell可见。</strong></p>
+<ul>
+<li><code>printenv</code> 查看全局环境变量。</li>
+</ul>
+<h4 id="6-1-2-局部环境变量"><a href="#6-1-2-局部环境变量" class="headerlink" title="6.1.2 局部环境变量"></a>6.1.2 局部环境变量</h4><p>只能在定义它们的进程中可见。</p>
+<ul>
+<li><code>set</code> 会显示某个特定进程设置的所有环境变量，包括局部变量、全局变量以及用户定义的变量。</li>
+</ul>
+<h3 id="6-2-设置用户定义变量"><a href="#6-2-设置用户定义变量" class="headerlink" title="6.2 设置用户定义变量"></a>6.2 设置用户定义变量</h3><h4 id="6-2-1-设置局部用户定义变量"><a href="#6-2-1-设置局部用户定义变量" class="headerlink" title="6.2.1 设置局部用户定义变量"></a>6.2.1 设置局部用户定义变量</h4><p>要注意，要在echo后直接用赋值，不能有别的操作。</p>
+<pre><code>echo $my_variable
+
+my_variable=hello</code></pre><blockquote>
+<p><strong>所有的环境变量名均使用大写字母</strong>，这是bash shell的标准惯例。<strong>如果是你自己创建的局部变量或是shell脚本，请使用小写字母。</strong>变量名区分大小写。在涉及用户定义的局部变量时坚持使用小写字母，这能够避免重新定义系统环境变量可能带来的灾难。</p>
+</blockquote>
+<h4 id="6-2-2-设置全局环境变量"><a href="#6-2-2-设置全局环境变量" class="headerlink" title="6.2.2 设置全局环境变量"></a>6.2.2 设置全局环境变量</h4><p>需要先创建一个局部环境变量，然后再把它导出到全局环境中。</p>
+<pre><code>echo $my_variable
+
+my_variable=hello
+export my_variable </code></pre><h3 id="6-3-删除环境"><a href="#6-3-删除环境" class="headerlink" title="6.3 删除环境"></a>6.3 删除环境</h3><pre><code>unset my_variable</code></pre><blockquote>
+<p>在涉及环境变量名时，什么时候该使用$，什么时候不该使用$，实在让人摸不着头脑。记住一点就行了：<strong>如果要用到变量，使用<code>$</code></strong>；<strong>如果要操作变量，不使用<code>$</code></strong>。这条规则的一个例外就是使用printenv显示某个变量的值。</p>
+</blockquote>
+<h3 id="6-4-默认的shell环境变量"><a href="#6-4-默认的shell环境变量" class="headerlink" title="6.4 默认的shell环境变量"></a>6.4 默认的shell环境变量</h3><p>看书110页。</p>
+<h3 id="6-5-设置PATH环境变量"><a href="#6-5-设置PATH环境变量" class="headerlink" title="6.5 设置PATH环境变量"></a>6.5 设置PATH环境变量</h3><blockquote>
+<p>有点像Windows里的PATH环境变量，都是系统必须使用的。 和Win一样，也是在PATH后面加你输入的环境变量，不同的是加冒号<code>:</code>。</p>
+</blockquote>
+<pre><code>PATH=$PATH:/home/christine/Scripts </code></pre><h3 id="6-6-环境变量持久化"><a href="#6-6-环境变量持久化" class="headerlink" title="6.6 环境变量持久化"></a>6.6 环境变量持久化</h3><p>环境变量存放在/etc/profie文件不好，因为如果升级系统这个文件也跟着升级了。最好的方法是放在在<code>$HOME/.bashrc</code>里。</p>
+<h2 id="7-理解Linux文件权限"><a href="#7-理解Linux文件权限" class="headerlink" title="7 理解Linux文件权限"></a>7 理解Linux文件权限</h2><blockquote>
+<p>Linux系统也不是完全的安全。</p>
+</blockquote>
+<h3 id="7-1-Linux的安全性"><a href="#7-1-Linux的安全性" class="headerlink" title="7.1 Linux的安全性"></a>7.1 Linux的安全性</h3><p>用户权限是通过创建用户时分配的用户ID（User ID，通常缩写为UID）来跟踪的。UID是数值，每个用户都有唯一的UID，但在登录系统时用的不是UID，而是登录名。</p>
+<h4 id="7-1-1-etc-passwd文件"><a href="#7-1-1-etc-passwd文件" class="headerlink" title="7.1.1 /etc/passwd文件"></a>7.1.1 /etc/passwd文件</h4><p>显示和用户有关的信息。</p>
+<h4 id="7-1-2-etc-shadow文件"><a href="#7-1-2-etc-shadow文件" class="headerlink" title="7.1.2 /etc/shadow文件"></a>7.1.2 /etc/shadow文件</h4><p>显示用户加密的密码，只有root才能访问。</p>
+<h4 id="7-1-3-添加新用户"><a href="#7-1-3-添加新用户" class="headerlink" title="7.1.3 添加新用户"></a>7.1.3 添加新用户</h4><ul>
+<li><code>useradd</code> 可以一次性创建新用户账户及设置用户HOME目录结构。可以通过<code>/usr/sbin/useradd -D</code>查看用户默认设置。</li>
+</ul>
+<h4 id="7-1-4-删除用户"><a href="#7-1-4-删除用户" class="headerlink" title="7.1.4 删除用户"></a>7.1.4 删除用户</h4><ul>
+<li><code>userdel</code> 只会删除/etc/passwd文件中的用户信息，而不会删除系统中属于该账户的任何文件。</li>
+</ul>
+<h4 id="7-1-5-修改用户"><a href="#7-1-5-修改用户" class="headerlink" title="7.1.5 修改用户"></a>7.1.5 修改用户</h4><p>命令</p>
+<p>描述</p>
+<p>usermod</p>
+<p>修改用户账户的字段，还可以指定主要组以及附加组的所属关系</p>
+<p>passwd</p>
+<p>修改已有用户的密码</p>
+<p>chpasswd</p>
+<p>从文件中读取登录名密码对，并更新密码</p>
+<p>chage</p>
+<p>修改密码的过期日期</p>
+<p>chfn</p>
+<p>修改用户账户的备注信息</p>
+<p>chsh</p>
+<p>修改用户账户的默认登录shell</p>
+<p>具体的可以参考书130页</p>
+<h3 id="7-2-使用Linux组"><a href="#7-2-使用Linux组" class="headerlink" title="7.2 使用Linux组"></a>7.2 使用Linux组</h3><p>组权限允许多个用户对系统中的对象（比如文件、目录或设备等）共享一组共用的权限。</p>
+<h4 id="7-2-1-etc-group文件"><a href="#7-2-1-etc-group文件" class="headerlink" title="7.2.1 /etc/group文件"></a>7.2.1 /etc/group文件</h4><p>/etc/group文件包含系统上用到的每个组的信息。</p>
+<blockquote>
+<p>其他的和用户的操作大致一样。</p>
+</blockquote>
+<h3 id="7-3-理解文件权限"><a href="#7-3-理解文件权限" class="headerlink" title="7.3 理解文件权限"></a>7.3 理解文件权限</h3><blockquote>
+<p>这个很重要，面试的时候经常问道</p>
+</blockquote>
+<h4 id="7-3-1-使用文件权限符"><a href="#7-3-1-使用文件权限符" class="headerlink" title="7.3.1 使用文件权限符"></a>7.3.1 使用文件权限符</h4><p>这是一个文件的ls信息</p>
+<pre><code>-rw-rw-r-- 1 rich rich 50 2010-09-13 07:49 file1.gz </code></pre><h5 id="第一个字符："><a href="#第一个字符：" class="headerlink" title="第一个字符："></a>第一个字符：</h5><ul>
+<li><code>-</code>代表文件</li>
+<li><code>d</code>代表目录</li>
+<li><code>l</code>代表链接</li>
+<li><code>c</code>代表字符型设备</li>
+<li><code>b</code>代表块设备</li>
+<li><code>n</code>代表网络设备</li>
+</ul>
+<h5 id="3组三字符编码，每一组定义了3种访问权限："><a href="#3组三字符编码，每一组定义了3种访问权限：" class="headerlink" title="3组三字符编码，每一组定义了3种访问权限："></a>3组三字符编码，每一组定义了3种访问权限：</h5><ul>
+<li><code>r</code>代表对象是可读的，数值<code>4</code></li>
+<li><code>w</code>代表对象是可写的，数值<code>2</code></li>
+<li><code>x</code>代表对象是可执行的，数值<code>1</code></li>
+</ul>
+<h5 id="每一组分别是："><a href="#每一组分别是：" class="headerlink" title="每一组分别是："></a>每一组分别是：</h5><ul>
+<li>对象的属主</li>
+<li>对象的属组</li>
+<li>系统其他用户</li>
+</ul>
+<p><img src="https://tanwenbo.top/wp-content/uploads/2018/06/d79e5448951be03663c4885d0aeb4454.png" alt=""> 上图的数字权限为：<code>775</code>。</p>
+<h4 id="7-3-2-默认文件权限"><a href="#7-3-2-默认文件权限" class="headerlink" title="7.3.2 默认文件权限"></a>7.3.2 默认文件权限</h4><ul>
+<li><p><code>umask</code> 设置所创建文件和目录的权限，但是显示的只是<strong>掩码</strong>，真实权限为：<strong>777-掩码</strong>。</p>
+<p>umask 026<br>//新建的文件或文件夹的权限为777-026 = 751 </p>
+</li>
+</ul>
+<h5 id="Linux文件权限码"><a href="#Linux文件权限码" class="headerlink" title="Linux文件权限码"></a>Linux文件权限码</h5><p>777是怎么计算的？其实是二进制转换成八进制了。</p>
+<p>权限</p>
+<p>二进制值</p>
+<p>八进制值</p>
+<p>描述</p>
+<p>—</p>
+<p>000</p>
+<p>0</p>
+<p>没有任何权限</p>
+<p>–x</p>
+<p>001</p>
+<p>1</p>
+<p>只有执行权限</p>
+<p>-w-</p>
+<p>010</p>
+<p>2</p>
+<p>只有写入权限</p>
+<p>-wx</p>
+<p>011</p>
+<p>3</p>
+<p>有写入和执行权限</p>
+<p>r–</p>
+<p>100</p>
+<p>4</p>
+<p>只有读取权限</p>
+<p>r-x</p>
+<p>101</p>
+<p>5</p>
+<p>有读取和执行权限</p>
+<p>rw-</p>
+<p>110</p>
+<p>6</p>
+<p>有读取和写入权限</p>
+<p>rwx</p>
+<p>111</p>
+<p>7</p>
+<p>有全部权限</p>
+<h3 id="7-4-改变安全性设置"><a href="#7-4-改变安全性设置" class="headerlink" title="7.4 改变安全性设置"></a>7.4 改变安全性设置</h3><h4 id="7-4-1-改变权限"><a href="#7-4-1-改变权限" class="headerlink" title="7.4.1 改变权限"></a>7.4.1 改变权限</h4><ul>
+<li><p><code>chmod options mode file</code> 改变文件和目录的安全性设置，命令格式如下：</p>
+<p>chmod 760 newfile</p>
+</li>
+</ul>
+<ul>
+<li><code>chmod [ugoa…][+-=][rwxXstugo…] newfile</code> 第一组字符定义了权限作用的对象：<ul>
+<li><code>u</code>代表用户</li>
+<li><code>g</code>代表组</li>
+<li><code>o</code>代表其他</li>
+<li><code>a</code>代表上述所有 后面跟着的符号表示你是想在现有权限基础上增加权限（<code>+</code>），还是在现有权限基础 上移除权限（<code>-</code>），或是将权限设置成后面的值（<code>=</code>）。 最后第三个符号代表作用到设置上的权限，不止rwx。额外的有：</li>
+<li><code>X</code>：如果对象是目录或者它已有执行权限，赋予执行权限。</li>
+<li><code>s</code>：运行时重新设置UID或GID。</li>
+<li><code>t</code>：保留文件或目录。</li>
+<li><code>u</code>：将权限设置为跟属主一样。</li>
+<li><code>g</code>：将权限设置为跟属组一样。</li>
+<li><code>o</code>：将权限设置为跟其他用户一样。</li>
+</ul>
+</li>
+</ul>
+<h4 id="7-4-2-改变所属关系"><a href="#7-4-2-改变所属关系" class="headerlink" title="7.4.2 改变所属关系"></a>7.4.2 改变所属关系</h4><ul>
+<li><p><code>chown</code> 改变文件的<strong>属主</strong>。</p>
+<p>chown dan newfile<br>// newfile文件的拥有者变为dan</p>
+</li>
+</ul>
+<ul>
+<li><p><code>chgrp</code> 改变文件的默认<strong>属组</strong>。</p>
+<p>chgrp shared newfile<br>//newfile属组为shared </p>
+</li>
+</ul>
+<h3 id="7-5-共享文件"><a href="#7-5-共享文件" class="headerlink" title="7.5 共享文件"></a>7.5 共享文件</h3><p>共享文件的方法是创建组。Linux为每个文件和目录存储了3个额外的信息位：</p>
+<ul>
+<li><p><strong>设置用户ID（SUID）</strong>：当文件被用户使用时，程序会以文件属主的权限运行。</p>
+</li>
+<li><p><strong>设置组ID（SGID）</strong>：对文件来说，程序会以文件属组的权限运行；对目录来说，目录中</p>
+<p>创建的新文件会以目录的默认属组作为默认属组。</p>
+</li>
+<li><p><strong>粘着位</strong>：进程结束后文件还驻留（粘着）在内存中。</p>
+</li>
+</ul>
+<h2 id="8-管理文件系统"><a href="#8-管理文件系统" class="headerlink" title="8 管理文件系统"></a>8 管理文件系统</h2><h3 id="8-1-探索Linux文件系统"><a href="#8-1-探索Linux文件系统" class="headerlink" title="8.1 探索Linux文件系统"></a>8.1 探索Linux文件系统</h3><h4 id="8-1-1-基本的Linux文件系统"><a href="#8-1-1-基本的Linux文件系统" class="headerlink" title="8.1.1 基本的Linux文件系统"></a>8.1.1 基本的Linux文件系统</h4><h5 id="1）ext文件系统"><a href="#1）ext文件系统" class="headerlink" title="1）ext文件系统"></a>1）ext文件系统</h5><p>Linux操作系统中引入的最早的文件系统叫作扩展文件系统（extended filesystem，简记为ext）。它为Linux提供了一个基本的类Unix文件系统：使用虚拟目录来操作硬件设备，在物理设备上按定长的块来存储数据。ext文件系统采用名为索引节点的系统来存放虚拟目录中所存储文件的信息。</p>
+<h5 id="2）ext2文件系统"><a href="#2）ext2文件系统" class="headerlink" title="2）ext2文件系统"></a>2）ext2文件系统</h5><p>ext2文件系统是ext文件系统基本功能的一个扩展，但保持了同样的结构。ext2文件系统扩展了索引节点表的格式来保存系统上每个文件的更多信息。</p>
+<blockquote>
+<p>文件系统有点繁杂，暂时可不用了解。</p>
+</blockquote>
+<h3 id="8-2-操作文件系统"><a href="#8-2-操作文件系统" class="headerlink" title="8.2 操作文件系统"></a>8.2 操作文件系统</h3><h4 id="8-2-1-创建分区"><a href="#8-2-1-创建分区" class="headerlink" title="8.2.1 创建分区"></a>8.2.1 创建分区</h4><ul>
+<li><p><code>fdisk</code> 使用fdisk工具来帮助管理安装在系统上的任何存储设备上的分区。</p>
+<p>sudo fdisk /dev/vda1</p>
+</li>
+</ul>
+<p>如果你不知道你的磁盘情况，可以用<code>df -h</code>命令查看磁盘情况。比如我的服务器的磁盘情况：</p>
+<pre><code>root@ServerA:~# df -h
+Filesystem      Size  Used Avail Use% Mounted on
+udev            479M     0  479M   0% /dev
+tmpfs           100M  2.8M   97M   3% /run
+/dev/vda1        40G   12G   27G  30% /
+tmpfs           497M     0  497M   0% /dev/shm
+tmpfs           5.0M  4.0K  5.0M   1% /run/lock
+tmpfs           497M     0  497M   0% /sys/fs/cgroup
+tmpfs           100M     0  100M   0% /run/user/0 </code></pre><h4 id="8-2-2-创建文件系统"><a href="#8-2-2-创建文件系统" class="headerlink" title="8.2.2 创建文件系统"></a>8.2.2 创建文件系统</h4><p>有很多创建工具，但是将数据存储到分区之前，你必须用某种文件系统对其进行格式化。</p>
+<h5 id="创建文件系统的命令行程序"><a href="#创建文件系统的命令行程序" class="headerlink" title="创建文件系统的命令行程序"></a>创建文件系统的命令行程序</h5><p>工具</p>
+<p>用途</p>
+<p>mkefs</p>
+<p>创建一个ext文件系统</p>
+<p>mke2fs</p>
+<p>创建一个ext2文件系统</p>
+<p>mkfs.ext3</p>
+<p>创建一个ext3文件系统</p>
+<p>用法和上面的一样，<code>sudo mkefs 盘符</code>。</p>
+<h4 id="8-2-3-文件系统的检查与修复"><a href="#8-2-3-文件系统的检查与修复" class="headerlink" title="8.2.3 文件系统的检查与修复"></a>8.2.3 文件系统的检查与修复</h4><p><code>fsck</code>命令能够检查和修复大部分类型的Linux文件系统。命令格式是：</p>
+<pre><code>fsck options filesystem </code></pre><h3 id="8-3-逻辑卷管理"><a href="#8-3-逻辑卷管理" class="headerlink" title="8.3 逻辑卷管理"></a>8.3 逻辑卷管理</h3><p>如果用标准分区在硬盘上创建了文件系统，为已有文件系统添加额外的空间多少是一种痛苦的体验。你只能在同一个物理硬盘的可用空间范围内调整分区大小。如果硬盘上没有地方了，你就必须弄一个更大的硬盘，然后手动将已有的文件系统移动到新的硬盘上。</p>
+<h4 id="8-3-1-逻辑卷管理布局"><a href="#8-3-1-逻辑卷管理布局" class="headerlink" title="8.3.1 逻辑卷管理布局"></a>8.3.1 逻辑卷管理布局</h4><p>在逻辑卷管理的世界里，硬盘称作<strong>物理卷</strong>（physical volume，PV）。每个物理卷都会映射到硬盘上特定的物理分区。</p>
+<p><strong>简单说，逻辑卷就是将卷组视为一个物理硬盘，但是这个卷组可能是由多个物理硬盘上的多个物理分区组成的。</strong></p>
+<h5 id="逻辑卷管理环境的基本布局："><a href="#逻辑卷管理环境的基本布局：" class="headerlink" title="逻辑卷管理环境的基本布局："></a>逻辑卷管理环境的基本布局：</h5><p><img src="https://tanwenbo.top/wp-content/uploads/2018/06/b0f00743914b1ceac010dc99bc915370.png" alt=""></p>
+<h4 id="8-3-2-Linux中的LVM"><a href="#8-3-2-Linux中的LVM" class="headerlink" title="8.3.2 Linux中的LVM"></a>8.3.2 Linux中的LVM</h4><p>Linux逻辑卷管理器（logical volume manager，LVM）软件包。它可以让你在无需重建整个文件系统的情况下，轻松地管理磁盘空间。</p>
+<h5 id="1）快照"><a href="#1）快照" class="headerlink" title="1）快照"></a>1）快照</h5><blockquote>
+<p>原来这就是阿里云快照的原理。</p>
+</blockquote>
+<p>最初的Linux LVM允许你在逻辑卷在线的状态下将其复制到另一个设备。这个功能叫作快照。快照允许你在复制的同时，保证运行关键任务的Web服务器或数据库服务器继续工作。</p>
+<blockquote>
+<p>快照就是一个备份，然后可以用它来回滚磁盘。</p>
+</blockquote>
+<h5 id="2）条带化"><a href="#2）条带化" class="headerlink" title="2）条带化"></a>2）条带化</h5><p>条带化有助于提高硬盘的性能，因为Linux可以将一个文件的多个数据块同时写入多个硬盘，而无需等待单个硬盘移动读写磁头到多个不同位置。</p>
+<h5 id="3）镜像"><a href="#3）镜像" class="headerlink" title="3）镜像"></a>3）镜像</h5><p>LVM快照功能提供了一些安慰，你可以随时创建逻辑卷的备份副本，但对有些环境来说可能还不够。对于涉及大量数据变动的系统，比如数据库服务器，自上次快照之后可能要存储成百上千条记录。</p>
+<p>这个问题的一个解决办法就是<strong>LVM镜像</strong>。镜像是一个实时更新的逻辑卷的完整副本。当你创建镜像逻辑卷时，LVM会将原始逻辑卷同步到镜像副本中。根据原始逻辑卷的大小，这可能需要一些时间才能完成。</p>
+<blockquote>
+<p>阿里云镜像可以提供给别人，可能是内网的原因。</p>
+</blockquote>
+<h4 id="8-3-3-使用Linux-LVM"><a href="#8-3-3-使用Linux-LVM" class="headerlink" title="8.3.3 使用Linux LVM"></a>8.3.3 使用Linux LVM</h4><blockquote>
+<p>使用的机会很少，暂时不讨论。</p>
+</blockquote>
+<h2 id="9-安装软件程序"><a href="#9-安装软件程序" class="headerlink" title="9 安装软件程序"></a>9 安装软件程序</h2><h3 id="9-1-包管理基础"><a href="#9-1-包管理基础" class="headerlink" title="9.1 包管理基础"></a>9.1 包管理基础</h3><p>各种主流Linux发行版都采用了某种形式的包管理系统来控制软件和库的安装，<strong>包管理系统</strong>（package management system，PMS）。</p>
+<blockquote>
+<p>书中给的是<code>Debian</code>和<code>Red Hat</code>，但是自己用的是<code>Ubuntu</code>（不过也是Debian系列的），所以这章就记一下Debian的就好。</p>
+</blockquote>
+<h3 id="9-2-基于Debian的系统"><a href="#9-2-基于Debian的系统" class="headerlink" title="9.2 基于Debian的系统"></a>9.2 基于Debian的系统</h3><p><code>dpkg</code>命令是基于Debian系PMS工具的核心。包含在这个PMS中的其他工具有：</p>
+<ul>
+<li>apt-get</li>
+<li>apt-cache</li>
+<li>aptitude</li>
+</ul>
+<p>到目前为止，最常用的命令行工具是<strong>aptitude</strong>，这是有原因的。<strong>aptitude</strong>工具本质上是apt工具 和dpkg的前端。dpkg是软件包管理系统工具，而<strong>aptitude</strong>则是完整的软件包管理系统。</p>
+<blockquote>
+<p>阿里云服务器没有安装aptitude，要自行安装。</p>
+</blockquote>
+<pre><code>apt install aptitude </code></pre><h4 id="9-2-1-用aptitude管理软件包"><a href="#9-2-1-用aptitude管理软件包" class="headerlink" title="9.2.1 用aptitude管理软件包"></a>9.2.1 用aptitude管理软件包</h4><p>直接输入aptitude进行管理界面。</p>
+<p><img src="https://tanwenbo.top/wp-content/uploads/2018/06/9abbc52455df0471a41caea66d9b4a52.png" alt=""></p>
+<ul>
+<li><p><code>aptitude show 包名</code> 可以显示软件包的情况，比如：</p>
+<p>aptitude show mysql-clinet </p>
+</li>
+</ul>
+<h4 id="9-2-2-用aptitude安装软件包"><a href="#9-2-2-用aptitude安装软件包" class="headerlink" title="9.2.2 用aptitude安装软件包"></a>9.2.2 用aptitude安装软件包</h4><p>先查找：</p>
+<ul>
+<li><code>aptitude search 包名</code> 支持通配符，就是会显示所有包含该包名的软件包。</li>
+<li><code>aptitude install 包名</code> <strong>可以自动解析必要的包依赖关系，并安装了需要的额外的库和软件包。</strong></li>
+</ul>
+<h4 id="9-2-3-用aptitude更新软件"><a href="#9-2-3-用aptitude更新软件" class="headerlink" title="9.2.3 用aptitude更新软件"></a>9.2.3 用aptitude更新软件</h4><ul>
+<li><code>aptitude safe-upgrade</code> 将所有已安装的包更新到软件仓库中的最新版本，有利于系统稳定。</li>
+</ul>
+<blockquote>
+<p>这个命令牛笔啊，比Windows里一个个更新好多了。apt-get也有。注意<code>apt-get update</code>是<strong>更新可用包的列表，而不是更新包。</strong></p>
+</blockquote>
+<ul>
+<li><p><code>aptitude full-upgrade</code></p>
+</li>
+<li><p><code>aptitude dist-upgrade</code> 这些选项执行相同的任务，将所有软件包升级到最新版本，不会检查包与包之间的依赖关系。建议使用<code>safe-upgrade</code>。</p>
+</li>
+</ul>
+<h4 id="9-2-4-用aptitude卸载软件"><a href="#9-2-4-用aptitude卸载软件" class="headerlink" title="9.2.4 用aptitude卸载软件"></a>9.2.4 用aptitude卸载软件</h4><p>和apt-get一样，用purge。</p>
+<ul>
+<li><code>sudo aptitude purge wine</code> 删除软件包和相关的数据和配置文件。</li>
+<li><code>sudo aptitude remove wine</code> 只删除软件包而不删除数据和配置文件。</li>
+</ul>
+<h4 id="9-3-apt-get和aptitude的区别"><a href="#9-3-apt-get和aptitude的区别" class="headerlink" title="9.3 apt-get和aptitude的区别"></a>9.3 apt-get和aptitude的区别</h4><blockquote>
+<p>这一节自己加的，需要理解二者的区别。因为之前一直用的apt-get，aptitude反而用的较少。</p>
+</blockquote>
+<ol>
+<li><p>有的问题apt-get解决不了，必须aptitude解决。有的问题aptitude解决不了，必须apt-get解决。</p>
+</li>
+<li><p>aptitude解决更好的地方：install, remove, reinstall（apt-get无此功能）, show（apt-get无此功能）, search（apt-get无此功能）, hold（apt-get无此功能）, unhold（apt-get无此功能）</p>
+</li>
+<li><p>apt-get解决更好的地方：source（aptitude无此功能）, build-dep （低版本的aptitude没有build-dep功能）</p>
+</li>
+<li><p>apt-get 跟 aptitude 没什么区别的地方：update, upgrade (apt-get upgrade=aptitude safe-upgrade, apt-get dist-upgrade=aptitude full-upgrgade)</p>
+</li>
+</ol>
+<h2 id="10-使用编辑器"><a href="#10-使用编辑器" class="headerlink" title="10 使用编辑器"></a>10 使用编辑器</h2><blockquote>
+<p>就是Linux里的IDE，熟悉了之后很强大！</p>
+</blockquote>
+<h3 id="10-1-vim编辑器"><a href="#10-1-vim编辑器" class="headerlink" title="10.1 vim编辑器"></a>10.1 vim编辑器</h3><p>基于vi的升级版，它使用控制台图形模式来模拟文本编辑窗口，允许查看文件中的行、在文件中移动、插入、编辑和替换文本。</p>
+<h4 id="10-1-1-检查vim软件包"><a href="#10-1-1-检查vim软件包" class="headerlink" title="10.1.1 检查vim软件包"></a>10.1.1 检查vim软件包</h4><p>安装就不说了，vim包Ubuntu里已经安装好了。没有安装的话可以使用以下命令：</p>
+<pre><code>sudo apt-get install vim </code></pre><h4 id="10-1-2-vim基础"><a href="#10-1-2-vim基础" class="headerlink" title="10.1.2 vim基础"></a>10.1.2 vim基础</h4><blockquote>
+<p>主要是掌握一下命令模式下各种命令，之前用的差不多了，熟悉一下就好。</p>
+</blockquote>
+<p>以下都是基于普通模式下，按<code>esc</code>进入普通模式 移动光标：</p>
+<ul>
+<li><code>h</code>：左移一个字符。</li>
+<li><code>j</code>：下移一行（文本中的下一行）。</li>
+<li><code>k</code>：上移一行（文本中的上一行）。</li>
+<li><code>l</code>：右移一个字符。</li>
+</ul>
+<p>高速移动：</p>
+<ul>
+<li><code>PageDown</code>（或Ctrl+F）：下翻一屏。</li>
+<li><code>PageUp</code>（或Ctrl+B）：上翻一屏。</li>
+<li><code>G</code>：移到缓冲区的最后一行。</li>
+<li><code>num G</code>：移动到缓冲区中的第num行。</li>
+<li><code>gg</code>：移到缓冲区的第一行。</li>
+</ul>
+<p>保存退出（<strong>需要按冒号<code>:</code></strong>）：</p>
+<ul>
+<li><code>q</code>：如果未修改缓冲区数据，退出。</li>
+<li><code>q!</code>：取消所有对缓冲区数据的修改并退出。</li>
+<li><code>w filename</code>：将文件保存到另一个文件中。</li>
+<li><code>wq</code>：将缓冲区数据保存到文件中并退出。</li>
+</ul>
+<blockquote>
+<p>一般wq命令用的多。</p>
+</blockquote>
+<h4 id="10-1-3-编辑数据"><a href="#10-1-3-编辑数据" class="headerlink" title="10.1.3 编辑数据"></a>10.1.3 编辑数据</h4><p>在普通模式下（注意区分大小写）：</p>
+<ul>
+<li><code>x</code> 删除当前光标所在位置的字符</li>
+<li><code>dd</code> 删除当前光标所在行（<strong>剪切</strong>）</li>
+<li><code>5dd</code> 删除当前光标所在<code>下面5行</code></li>
+<li><code>dw</code> 删除当前光标所在位置的单词</li>
+<li><code>d$</code> 删除当前光标所在位置至行尾的内容</li>
+<li><code>J</code>删除当前光标所在行行尾的换行符（拼接行）</li>
+<li><code>u</code> 撤销前一编辑命令</li>
+<li><code>a</code> 在当前光标后追加数据</li>
+<li><code>A</code> 在当前光标所在行行尾追加数据</li>
+<li><code>r char</code> 用char替换当前光标所在位置的单个字符</li>
+<li><code>R text</code> 用text覆盖当前光标所在位置的数据，直到按下ESC键</li>
+</ul>
+<h4 id="10-1-4-复制和粘贴"><a href="#10-1-4-复制和粘贴" class="headerlink" title="10.1.4 复制和粘贴"></a>10.1.4 复制和粘贴</h4><p>不同于dd，复制的命令是<code>yy</code>（代表yank）。</p>
+<ul>
+<li><code>yy</code> 复制光标所在行</li>
+<li><code>5yy</code> 复制光标所在行下面5行</li>
+<li><code>yw</code> 复制一个单词</li>
+<li><code>y$</code> 复制到行尾</li>
+<li><code>p</code> 粘贴赋值的内容</li>
+</ul>
+<h4 id="10-1-5-查找和替换"><a href="#10-1-5-查找和替换" class="headerlink" title="10.1.5 查找和替换"></a>10.1.5 查找和替换</h4><h5 id="1）-查找"><a href="#1）-查找" class="headerlink" title="1） 查找"></a>1） 查找</h5><p>在普通模式下按<code>:</code>进入命令模式，<code>/内容</code> 查找。光标会移动到相同的地方，按<code>n</code>查找下一处。</p>
+<h5 id="1）替换"><a href="#1）替换" class="headerlink" title="1）替换"></a>1）替换</h5><blockquote>
+<p>这个命令学习了，以前都是手动替换尴尬。</p>
+</blockquote>
+<p>替换命令允许你快速用另一个单词来替换文本中的某个单词。必须进入命令行模式才能使用 替换命令。替换命令的格式是：<code>:s/old/new/</code></p>
+<ul>
+<li><code>:s/old/new/g</code> 一行命令替换所有old（只会替换光标所在行）。</li>
+<li><code>:n,ms/old/new/g</code> 替换行号n和m之间所有old。</li>
+<li><code>:%s/old/new/g</code> 替换整个文件中的所有old。</li>
+<li><code>:%s/old/new/gc</code> 替换整个文件中的所有old，但在每次出现时提示。</li>
+</ul>
+<blockquote>
+<p>其他的编辑器就不介绍了。</p>
+</blockquote>
+<h2 id="11-构建基本脚本"><a href="#11-构建基本脚本" class="headerlink" title="11 构建基本脚本"></a>11 构建基本脚本</h2><h3 id="11-1-使用多个命令"><a href="#11-1-使用多个命令" class="headerlink" title="11.1 使用多个命令"></a>11.1 使用多个命令</h3><p>前面有提到，加个分号可以同时处理多个命令，多次进行。</p>
+<pre><code>date; who</code></pre><p>可以将这些命令组合成一个简单的文本文件，这样就不需要在命令行中手动输入了。</p>
+<h3 id="11-2-创建shell脚本文件"><a href="#11-2-创建shell脚本文件" class="headerlink" title="11.2 创建shell脚本文件"></a>11.2 创建shell脚本文件</h3><p>要创建脚本需要新建一个文件，然后将命令输入到文件中。 在创建shell脚本文件时，必须在文件的第一行指定要使用的shell。其格式为：</p>
+<pre><code>#!/bin/bash</code></pre><p>然后在后面添加命令即可。</p>
+<pre><code>#!/bin/bash
+# This script displays the date and who&apos;s logged on
+date
+who
+#可以直接换行也可以用分号。</code></pre><blockquote>
+<p>hell不会解释以#开头的行（除了以#!开头的第一行）。</p>
+</blockquote>
+<p>直接在命令行输入文件名就可以运行脚本，但是要注意：</p>
+<ul>
+<li><p>脚本目录要在PATH环境变量中；</p>
+<ul>
+<li>或在提示符中用绝对或相对文件路径来引用shell脚本文件；</li>
+</ul>
+</li>
+<li><p>解决权限问题，要给当前用户所属文件加入<code>x</code>（执行）权限。</p>
+</li>
+</ul>
+<h4 id="11-2-1-编写自己的脚本"><a href="#11-2-1-编写自己的脚本" class="headerlink" title="11.2.1 编写自己的脚本"></a>11.2.1 编写自己的脚本</h4><blockquote>
+<p>比如我经常需要重启apache2，有时候命令行记不住，总是要去百度或者用上下键翻来翻去。那么可以编写脚本解决这个问题！</p>
+</blockquote>
+<h5 id="1）建一个文件夹存放脚本"><a href="#1）建一个文件夹存放脚本" class="headerlink" title="1）建一个文件夹存放脚本"></a>1）建一个文件夹存放脚本</h5><p>root@ServerA:~# mkdir script </p>
+<h5 id="2）将该文件添加到PATH里（2和7选一个）"><a href="#2）将该文件添加到PATH里（2和7选一个）" class="headerlink" title="2）将该文件添加到PATH里（2和7选一个）"></a>2）将该文件添加到PATH里（2和7选一个）</h5><p>root@ServerA:~# PATH=$PATH:/root/script </p>
+<h5 id="3）新建文件"><a href="#3）新建文件" class="headerlink" title="3）新建文件"></a>3）新建文件</h5><p>root@ServerA:<del># cd script<br>    root@ServerA:</del>/script# vim apR </p>
+<h5 id="4）将命令写入文件并保存"><a href="#4）将命令写入文件并保存" class="headerlink" title="4）将命令写入文件并保存"></a>4）将命令写入文件并保存</h5><p> 1 #!/bin/bash<br>     2 # This script can restart the apache2 server<br>     3 sudo /etc/init.d/apache2 restart </p>
+<h5 id="5）更改权限"><a href="#5）更改权限" class="headerlink" title="5）更改权限"></a>5）更改权限</h5><p>root@ServerA:~/script# chmod u+x apR</p>
+<p>也可以更改这个文件夹的权限</p>
+<pre><code>root@ServerA:~/script# chmod -R 755 /root/script
+//—R 递归更改权限 </code></pre><h5 id="6）运行脚本"><a href="#6）运行脚本" class="headerlink" title="6）运行脚本"></a>6）运行脚本</h5><pre><code>root@ServerA:~/script# ./apR
+[ ok ] Restarting apache2 (via systemctl): apache2.service.</code></pre><blockquote>
+<p>但是有个弊端，只能在script目录下运行脚本，那么需要解决这个问题</p>
+</blockquote>
+<h5 id="7）将脚本目录加入到环境变量"><a href="#7）将脚本目录加入到环境变量" class="headerlink" title="7）将脚本目录加入到环境变量"></a>7）将脚本目录加入到环境变量</h5><p>root@ServerA:~# vim $HOME/.bashrc</p>
+<p>放在 /etc/profile随着系统更新会失效，6.6节有提到。 在里面加入：</p>
+<pre><code>export PATH=&quot;$PATH&quot;:/root/script/</code></pre><p><strong>保存，重启系统才能生效。</strong>或者 <code>source</code></p>
+<pre><code>root@ServerA:~# reboot
+root@ServerA:~# source /etc/profile </code></pre><h5 id="8）在任意界面运行脚本"><a href="#8）在任意界面运行脚本" class="headerlink" title="8）在任意界面运行脚本"></a>8）在任意界面运行脚本</h5><pre><code>root@ServerA:~# apR
+[ ok ] Restarting apache2 (via systemctl): apache2.service.</code></pre><p>还不用加<code>./</code>就能运行，很是方便。</p>
+<blockquote>
+<p>注意如果脚本里写了cd，那么脚本运行的时候会创建一个子shell然后子shell里cd到了目录。运行的时候加个<code>.</code> 即可在当前shell生效。</p>
+</blockquote>
+<h3 id="11-3-显示消息"><a href="#11-3-显示消息" class="headerlink" title="11.3 显示消息"></a>11.3 显示消息</h3><p>在脚本里用<code>echo</code>显示消息。</p>
+<pre><code>echo hello i am a shell</code></pre><p>但是要注意单词不要有单引号（比如 <strong>Let`s</strong>），如果有的话就将整个句子用双引号括起来。</p>
+<p>这个命令可以让echo接着命令输出，而不是另起一行。</p>
+<pre><code>echo -n haha </code></pre><h3 id="11-4-使用变量"><a href="#11-4-使用变量" class="headerlink" title="11.4 使用变量"></a>11.4 使用变量</h3><blockquote>
+<p>shell也是一种编程，也可以使用变量</p>
+</blockquote>
+<h4 id="11-4-1-使用环境变量"><a href="#11-4-1-使用环境变量" class="headerlink" title="11.4.1 使用环境变量"></a>11.4.1 使用环境变量</h4><p>在脚本中，你可以在环境变量名称之前加上美元符（<code>$</code>）来使用这些环境变量。</p>
+<pre><code>#!/bin/bash
+# display user information from the system.
+echo &quot;User info for userid: $USER&quot;
+echo UID: $UID
+echo HOME: $HOME</code></pre><p>如果你要用到美元符（<code>$</code>）那么要在前面加上转义字符反斜线<code>\</code>。</p>
+<h4 id="11-4-2-用户变量"><a href="#11-4-2-用户变量" class="headerlink" title="11.4.2 用户变量"></a>11.4.2 用户变量</h4><p>除了环境变量，shell脚本还允许在脚本中定义和使用自己的变量。定义变量允许临时存储数据并在整个脚本中使用，从而使shell脚本看起来更像一个真正的计算机程序。<strong>区分大小写</strong></p>
+<p>用户变量也可以通过美元符引用。要注意赋值的时候<strong>左值没有美元符，右值需要有美元符。</strong></p>
+<pre><code>$ cat test4
+#!/bin/bash
+# assigning a variable value to another variable
+value1=10
+value2=$value1
+echo The resulting value is $value2
+$ </code></pre><h4 id="11-4-3-命令替换"><a href="#11-4-3-命令替换" class="headerlink" title="11.4.3 命令替换"></a>11.4.3 命令替换</h4><p><strong>shell脚本中最有用的特性之一就是可以从命令输出中提取信息，并将其赋给变量。</strong></p>
+<p>两种方法可以将命令输出赋给变量：</p>
+<ul>
+<li>反引号字符（<code>`</code>）</li>
+<li><code>$( )</code>格式</li>
+</ul>
+<p>shell会运行命令替换符号中的命令，并将其输出赋给变量testing。注意，赋值等号和命令 替换字符之间没有空格。这里有个使用普通的shell命令输出创建变量的例子。</p>
+<pre><code>$ cat test5
+#!/bin/bash
+testing=$(date)
+echo &quot;The date and time are: &quot; $testing
+$</code></pre><p>这个功能很强大，值得学习！</p>
+<h3 id="11-5-重定向输入和输出"><a href="#11-5-重定向输入和输出" class="headerlink" title="11.5 重定向输入和输出"></a>11.5 重定向输入和输出</h3><p>有些时候你想要保存某个命令的输出而不仅仅只是让它显示在显示器上。</p>
+<h4 id="11-5-1-输出重定向"><a href="#11-5-1-输出重定向" class="headerlink" title="11.5.1 输出重定向"></a>11.5.1 输出重定向</h4><p>最基本的重定向将命令的输出发送到一个文件中。bash shell用大于号（<code>&gt;</code>）来完成这项功能：</p>
+<pre><code>command &gt; outputfile</code></pre><p>要注意，如果输出重定向到同一个文件名，那么<code>&gt;</code>会覆盖原来的内容，而<code>&gt;&gt;</code>会在原来的基础上追加。</p>
+<h4 id="11-5-2-输入重定向"><a href="#11-5-2-输入重定向" class="headerlink" title="11.5.2 输入重定向"></a>11.5.2 输入重定向</h4><p>输入重定向和输出重定向正好相反。<strong>输入重定向将文件的内容重定向到命令</strong>，而非将命令的输出重定向到文件。 输入重定向符号是小于号（<code>&lt;</code>）：</p>
+<pre><code>command &lt; inputfile</code></pre><blockquote>
+<p>一个简单的记忆方法就是：在命令行上，命令总是在左侧，而重定向符号“指向”数据流动的方向。小于号说明数据正在从输入文件流向命令。</p>
+</blockquote>
+<h5 id="内联输入重定向符号"><a href="#内联输入重定向符号" class="headerlink" title="内联输入重定向符号"></a>内联输入重定向符号</h5><p>使用<code>&lt;&lt;</code>,必须指定文本标记来划分输入数据的开始和结尾。任何字符串都可以作为文本标记，但在数据的开始和结尾文本标记必须一直。</p>
+<pre><code>$ wc &lt;&lt; EOF
+&gt; test string 1
+&gt; test string 2
+&gt; test string 3
+&gt; EOF </code></pre><h3 id="11-6-管道"><a href="#11-6-管道" class="headerlink" title="11.6 管道"></a>11.6 管道</h3><p>将一个命令的输出作为另一个命令的输入，这时候可以用到管道来处理。管道被放在命令之间，将一个命令的输出重定向到另一个命令中：</p>
+<pre><code>command1 | command2</code></pre><p>这两个命令会同时运行，而不是依次进行。会在系统内部将它们连接起来，在第一个命令产生输出的同时，输出会被立即送给第二个命令。数据传输不会用到任何中间文件或缓冲区。</p>
+<p>也可以将输出结果重定向到文件</p>
+<pre><code>$ rpm -qa | sort &gt; rpm.list
+$ more rpm.list
+abrt-1.1.14-1.fc14.i686
+abrt-addon-ccpp-1.1.14-1.fc14.i686
+abrt-addon-kerneloops-1.1.14-1.fc14.i686
+..... </code></pre><h3 id="11-7-执行数学运算"><a href="#11-7-执行数学运算" class="headerlink" title="11.7 执行数学运算"></a>11.7 执行数学运算</h3><h4 id="11-7-1-expr命令"><a href="#11-7-1-expr命令" class="headerlink" title="11.7.1 expr命令"></a>11.7.1 expr命令</h4><p>处理表达式，也可以用来判断。</p>
+<p>操 作 符</p>
+<p>描 述</p>
+<p>ARG1 | ARG2</p>
+<p>如果ARG1既不是null也不是零值，返回ARG1；否则返回ARG2</p>
+<p>ARG1 &amp; ARG2</p>
+<p>如果没有参数是null或零值，返回ARG1；否则返回0</p>
+<p>ARG1 &lt; ARG2</p>
+<p>如果ARG1小于ARG2，返回1；否则返回0</p>
+<p>ARG1 &lt;= ARG2</p>
+<p>如果ARG1小于或等于ARG2，返回1；否则返回0</p>
+<p>ARG1 = ARG2</p>
+<p>如果ARG1等于ARG2，返回1；否则返回0</p>
+<p>ARG1 != ARG2</p>
+<p>如果ARG1不等于ARG2，返回1；否则返回0</p>
+<p>ARG1 &gt;= ARG2</p>
+<p>如果ARG1大于或等于ARG2，返回1；否则返回0</p>
+<p>ARG1 &gt; ARG2</p>
+<p>如果ARG1大于ARG2，返回1；否则返回0</p>
+<p>ARG1 + ARG2</p>
+<p>返回ARG1和ARG2的算术运算和</p>
+<p>ARG1 - ARG2</p>
+<p>返回ARG1和ARG2的算术运算差</p>
+<p>ARG1 * ARG2</p>
+<p>返回ARG1和ARG2的算术乘积</p>
+<p>ARG1 / ARG2</p>
+<p>返回ARG1被ARG2除的算术商</p>
+<p>ARG1 % ARG2</p>
+<p>返回ARG1被ARG2除的算术余数</p>
+<p>STRING : REGEXP</p>
+<p>如果REGEXP匹配到了STRING中的某个模式，返回该模式匹配</p>
+<p>match STRING REGEXP</p>
+<p>如果REGEXP匹配到了STRING中的某个模式，返回该模式匹配</p>
+<p>substr STRING POS LENGTH</p>
+<p>返回起始位置为POS（从1开始计数）、长度为LENGTH个字符的子字符串</p>
+<p>index STRING CHARS</p>
+<p>返回在STRING中找到CHARS字符串的位置；否则，返回0</p>
+<p>length STRING</p>
+<p>返回字符串STRING的数值长度</p>
+<p>TOKEN</p>
+<p>将TOKEN解释成字符串，即使是个关键字</p>
+<p>(EXPRESSION)</p>
+<p>返回EXPRESSION的值</p>
+<h4 id="11-7-2-使用方括号"><a href="#11-7-2-使用方括号" class="headerlink" title="11.7.2 使用方括号"></a>11.7.2 使用方括号</h4><p>在bash中，在将一个数学运算结果赋给某个变量时，可以用美元符和方括号（$[ operation ]）将数学表达式围起来。</p>
+<pre><code>$ var1=$[1 + 5]
+$ echo $var1
+6
+$ var2=$[$var1 * 2]
+$ echo $var2
+12
+$ </code></pre><h4 id="11-7-3-浮点解决方案"><a href="#11-7-3-浮点解决方案" class="headerlink" title="11.7.3 浮点解决方案"></a>11.7.3 浮点解决方案</h4><p>使用内建的bash计算器，叫做<code>bc</code>，可以用来计算浮点数。 bash计算器能够识别：</p>
+<ul>
+<li>数字（整数和浮点数）</li>
+<li>变量（简单变量和数组）</li>
+<li>注释（以#或C语言中的/* */开始的行）</li>
+<li>表达式</li>
+<li>编程语句（例如if-then语句）</li>
+<li>函数</li>
+</ul>
+<h5 id="在脚本里使用bc"><a href="#在脚本里使用bc" class="headerlink" title="在脚本里使用bc"></a>在脚本里使用bc</h5><p>可以用命令替换运行bc命令，并将输出赋给一个变量。基本格式如下：</p>
+<pre><code>variable=$(echo &quot;options; expression&quot; | bc)</code></pre><p>第一部分options允许你设置变量。如果你需要不止一个变量，可以用分号将其分开。expression参数定义了通过bc执行的数学表达式。这里有个在脚本中这么做的例子。</p>
+<pre><code>$ cat test9
+#!/bin/bash
+var1=$(echo &quot;scale=4; 3.44 / 5&quot; | bc)
+echo The answer is $var1
+$</code></pre><p>这个<code>scale</code>是指定小数后几位。</p>
+<h5 id="使用内联输入重定向解决多个表达式的麻烦"><a href="#使用内联输入重定向解决多个表达式的麻烦" class="headerlink" title="使用内联输入重定向解决多个表达式的麻烦"></a>使用内联输入重定向解决多个表达式的麻烦</h5><p>它允许你直接在命令行中重定向数据。在shell脚本中，你可以将输出赋给一个变量。</p>
+<pre><code>$ cat test12
+#!/bin/bash
+var1=10.46
+var2=43.67
+var3=33.2
+var4=71
+var5=$(bc &lt;&lt; EOF
+scale = 4
+a1 = ( $var1 * $var2)
+b1 = ($var3 * $var4)
+a1 + b1
+EOF
+) </code></pre><h3 id="11-8-退出脚本"><a href="#11-8-退出脚本" class="headerlink" title="11.8 退出脚本"></a>11.8 退出脚本</h3><blockquote>
+<p>和c语言的return 0一样，shell也有状态返回码</p>
+</blockquote>
+<p>一个成功结束的命令的退出状态码是0。如果一个命令结束时有错误，退出状态码就是一个正数值。</p>
+<pre><code>$ asdfg
+-bash: asdfg: command not found
+$ echo $?
+127
+$ </code></pre><h4 id="11-8-1-查看退出状态码"><a href="#11-8-1-查看退出状态码" class="headerlink" title="11.8.1 查看退出状态码"></a>11.8.1 查看退出状态码</h4><p>状 态 码</p>
+<p>描 述</p>
+<p>0</p>
+<p>命令成功结束</p>
+<p>1</p>
+<p>一般性未知错误</p>
+<p>2</p>
+<p>不适合的shell命令</p>
+<p>126</p>
+<p>命令不可执行</p>
+<p>127</p>
+<p>没找到命令</p>
+<p>128</p>
+<p>无效的退出参数</p>
+<p>128+x</p>
+<p>与Linux信号x相关的严重错误</p>
+<p>130</p>
+<p>通过Ctrl+C终止的命令</p>
+<p>255</p>
+<p>正常范围之外的退出状态码</p>
+<h4 id="11-8-2-exit退出码"><a href="#11-8-2-exit退出码" class="headerlink" title="11.8.2 exit退出码"></a>11.8.2 exit退出码</h4><p>可以定义自己的退出码，在脚本最后一行加入：</p>
+<pre><code>exit 5
+#或者你自己想要的数字，最大255 </code></pre><h2 id="12-使用结构化命令"><a href="#12-使用结构化命令" class="headerlink" title="12 使用结构化命令"></a>12 使用结构化命令</h2><p>结构化命令，根据条件使脚本跳过某些命令。</p>
+<h3 id="12-1-使用if-then语句"><a href="#12-1-使用if-then语句" class="headerlink" title="12.1 使用if-then语句"></a>12.1 使用if-then语句</h3><blockquote>
+<p>和之前的if-else有点区别，要转换过来</p>
+</blockquote>
+<p>if-then语句有如下格式：</p>
+<pre><code>if command
+then
+    commands
+fi</code></pre><p>bash shell的if语句会运行<code>if</code>后面的那个命令。如果该命令的<code>退出状态码</code>（参见第11章）是<code>0</code> （该命令成功运行），位于<code>then</code>部分的命令就会被执行。</p>
+<p>如果命令是错的，返回的不是0，但是界面还是会显示命令出错的信息。</p>
+<p>then后面的<code>commands</code>说明可以放多条语句，主要是fi的位置。</p>
+<h3 id="12-2-if-then-else语句"><a href="#12-2-if-then-else语句" class="headerlink" title="12.2 if-then-else语句"></a>12.2 if-then-else语句</h3><blockquote>
+<p>我还以为没有else语句，不过要注意都没有分号。</p>
+</blockquote>
+<p>if-then-else语句在语句中提供了另外一组命令。</p>
+<pre><code>if command
+then
+    commands
+else
+    commands
+fi</code></pre><p>当if语句中的命令返回退出状态码<code>0</code>时，<code>then</code>部分中的命令会被执行，这跟普通的if-then语句一样。当<code>if</code>语句中的命令返回<code>非零</code>退出状态码时，bash shell会执行<code>else</code>部分中的命令。</p>
+<h3 id="12-3-嵌套if"><a href="#12-3-嵌套if" class="headerlink" title="12.3 嵌套if"></a>12.3 嵌套if</h3><p>多重条件判断，类似于<code>else if</code>，在脚本里用<code>elif</code>代替。</p>
+<pre><code>if command1
+then
+    commands
+elif command2
+then
+    more commands
+else
+    commands
+fi</code></pre><blockquote>
+<p>记住，在elif语句中，紧跟其后的<code>else</code>语句属于<code>elif</code>代码块。它们并不属于之前的<code>if-then</code>代码块。</p>
+</blockquote>
+<h3 id="12-4-test命令"><a href="#12-4-test命令" class="headerlink" title="12.4 test命令"></a>12.4 test命令</h3><p>本来if只能测试命令状态码，现在可以使用<code>test</code>测试状态码之外的条件，比如变量名之类的。</p>
+<pre><code>if test condition
+then
+    commands
+fi</code></pre><p>bash shell提供了另一种条件测试方法，无需在if-then语句中声明test命令。</p>
+<pre><code>if [ condition ]
+then
+    commands
+fi</code></pre><blockquote>
+<p>要注意，第一个方括号之后和第二个方括号之前必须加上一个空格。</p>
+</blockquote>
+<p>test命令可以判断三类条件：</p>
+<ul>
+<li>数值比较</li>
+<li>字符串比较</li>
+<li>文件比较</li>
+</ul>
+<p>具体比较不再介绍，可看书240页。</p>
+<h3 id="12-5-复合条件测试"><a href="#12-5-复合条件测试" class="headerlink" title="12.5 复合条件测试"></a>12.5 复合条件测试</h3><p>if-then语句允许你使用布尔逻辑来组合测试。有两种布尔运算符可用：</p>
+<ul>
+<li><strong>[ condition1 ] &amp;&amp; [ condition2 ]</strong></li>
+<li><strong>[ condition1 ] || [ condition2 ]</strong></li>
+</ul>
+<h3 id="12-6-if-then的高级特性"><a href="#12-6-if-then的高级特性" class="headerlink" title="12.6 if-then的高级特性"></a>12.6 if-then的高级特性</h3><p>bash shell提供了亮相可在if-then语句中使用的高级特性：</p>
+<ul>
+<li>用于数学表达式的双括号</li>
+<li>用于高级字符串处理功能的双方括号</li>
+</ul>
+<h4 id="12-6-1-双括号"><a href="#12-6-1-双括号" class="headerlink" title="12.6.1 双括号"></a>12.6.1 双括号</h4><p>主要是用来计算数学表达式，如val++、++val和<strong>（幂运算）。双括号命令的格式如下： **(( expression ))</strong></p>
+<pre><code>$ cat test23.sh
+#!/bin/bash
+# using double parenthesis
+#
+val1=10
+#
+if (( $val1 ** 2 &gt; 90 ))
+then
+    (( val2 = $val1 ** 2 ))
+    echo &quot;The square of $val1 is $val2&quot;
+fi
+$
+$ ./test23.sh
+The square of 10 is 100
+$</code></pre><p>可以用在if里，也可以用在普通命令里。注意：在这里不用像之前的中括号一样需要转义。</p>
+<h4 id="12-6-2-使用方括号"><a href="#12-6-2-使用方括号" class="headerlink" title="12.6.2 使用方括号"></a>12.6.2 使用方括号</h4><p>双方括号命令提供了针对字符串比较的高级特性。双方括号命令的格式如下： <strong>[[ expression ]]</strong></p>
+<p>可以比较或者判断，最重要的是可以模式匹配，如通配符<code>*</code>。</p>
+<h3 id="12-7-case命令"><a href="#12-7-case命令" class="headerlink" title="12.7 case命令"></a>12.7 case命令</h3><p>和之前的编程一样，case检查一个变量多个值的情况。</p>
+<pre><code>case variable in
+pattern1 | pattern2) commands1;;
+pattern3) commands2;;
+*) default commands;;
+esac</code></pre><p>注意那个<code>|</code>就是或标志，pattern1和pattern2都对应commands1。 <code>*</code>类似default。</p>
+<h2 id="13-更多结构化命令"><a href="#13-更多结构化命令" class="headerlink" title="13 更多结构化命令"></a>13 更多结构化命令</h2><h3 id="13-1-for命令"><a href="#13-1-for命令" class="headerlink" title="13.1 for命令"></a>13.1 for命令</h3><p>bash shell提供了for命令，允许你创建一个遍历一系列值的循环。每次迭代都使用其中一个 值来执行已定义好的一组命令。下面是bash shell中for命令的基本格式。</p>
+<pre><code>for var in list
+do
+    commands
+done</code></pre><blockquote>
+<p>有点像某个古老的语言</p>
+</blockquote>
+<p>这个list 是自己定义的，就是数组。</p>
+<h4 id="13-1-1-读取列表中的值"><a href="#13-1-1-读取列表中的值" class="headerlink" title="13.1.1 读取列表中的值"></a>13.1.1 读取列表中的值</h4><pre><code>$ cat test1
+#!/bin/bash
+# basic for command
+for test in Alabama Alaska Arizona Arkansas California Colorado
+do
+    echo The next state is $test
+done</code></pre><p>可以看到in 后面一堆的值。循环完后test的值为列表中最后一个值。</p>
+<h4 id="13-1-2-读取列表中的复杂值"><a href="#13-1-2-读取列表中的复杂值" class="headerlink" title="13.1.2 读取列表中的复杂值"></a>13.1.2 读取列表中的复杂值</h4><p>比如有单引号<code>`</code>，和之前第一样，用转义字符或者双引号括起来，有空格的也用双引号。</p>
+<h4 id="13-1-3-从变量读取列表"><a href="#13-1-3-从变量读取列表" class="headerlink" title="13.1.3 从变量读取列表"></a>13.1.3 从变量读取列表</h4><p>就像数组一样，但是不用定义长度好像。</p>
+<pre><code>$ cat test4
+#!/bin/bash
+# using a variable to hold the list
+list=&quot;Alabama Alaska Arizona Arkansas Colorado&quot;
+list=$list&quot; Connecticut&quot;
+for state in $list
+do
+    echo &quot;Have you ever visited $state?&quot;
+done
+$ ./test4
+Have you ever visited Alabama?</code></pre><p><code>list=$list&quot; Connecticut&quot;</code>，拼接一个值。 但是我想，如果list只是一个字符串呢？还有如果变量里有空格怎么处理。</p>
+<h4 id="13-1-4-从命令读取值"><a href="#13-1-4-从命令读取值" class="headerlink" title="13.1.4 从命令读取值"></a>13.1.4 从命令读取值</h4><pre><code>$ cat test5
+#!/bin/bash
+# reading values from a file
+file=&quot;states&quot;
+for state in $(cat $file)
+do
+    echo &quot;Visit beautiful $state&quot;
+done</code></pre><p>注意美元符号，引用都要加美元符号。</p>
+<h4 id="13-1-5-更改字符分隔符"><a href="#13-1-5-更改字符分隔符" class="headerlink" title="13.1.5 更改字符分隔符"></a>13.1.5 更改字符分隔符</h4><p>默认情况下，bash shell会将下列字符当作字段分隔符：</p>
+<ul>
+<li>空格</li>
+<li>制表符</li>
+<li>换行符</li>
+</ul>
+<p>使用IFS环境变量的值来忽略某些值。比如</p>
+<pre><code>IFS=$&apos;\n&apos;</code></pre><p>那么shell会忽略空格和制表符，只识别换行符，这个时候就可以使用有<code>空格</code>的变量了。</p>
+<p>如果要指定多个IFS字符，只要将它们在赋值行串起来就行。</p>
+<pre><code>IFS=$&apos;\n&apos;:;&quot;</code></pre><p>这个赋值会将换行符、冒号、分号和双引号作为字段分隔符。如何使用IFS字符解析数据没 有任何限制。</p>
+<h4 id="13-1-6-用通配符读取目录"><a href="#13-1-6-用通配符读取目录" class="headerlink" title="13.1.6 用通配符读取目录"></a>13.1.6 用通配符读取目录</h4><p>遍历的时候可以使用通配符，进行此操作时，必须在文件名或路径名中使用通配符。</p>
+<pre><code>$ cat test6
+#!/bin/bash
+for file in /home/rich/test/*
+do
+if [ -d &quot;$file&quot; ]
+then
+    echo &quot;$file is a directory&quot;
+elif [ -f &quot;$file&quot; ]
+then
+    echo &quot;$file is a file&quot;
+fi
+done
+$ ./test6 </code></pre><h3 id="13-2-C语言风格的for命令"><a href="#13-2-C语言风格的for命令" class="headerlink" title="13.2 C语言风格的for命令"></a>13.2 C语言风格的for命令</h3><blockquote>
+<p>一开始看到还很惊奇啊，我说如果要处理循环该怎么弄，不知道支不支持for val in 1..n，类似于sql存储过程的语法。</p>
+</blockquote>
+<h4 id="13-2-1-C语言的for命令"><a href="#13-2-1-C语言的for命令" class="headerlink" title="13.2.1 C语言的for命令"></a>13.2.1 C语言的for命令</h4><p>以下是bash中C语言风格的for循环的基本格式。 <strong>for (( variable assignment ; condition ; iteration process ))</strong> 其实就是多了个括号。</p>
+<h4 id="13-2-2-使用多个变量"><a href="#13-2-2-使用多个变量" class="headerlink" title="13.2.2 使用多个变量"></a>13.2.2 使用多个变量</h4><p>和C语言一样，用逗号隔开变量。</p>
+<pre><code>for (( a=1, b=10; a &lt;= 10; a++, b-- ))
+do
+    echo &quot;$a - $b&quot;
+done </code></pre><h3 id="13-3-while命令"><a href="#13-3-while命令" class="headerlink" title="13.3 while命令"></a>13.3 while命令</h3><blockquote>
+<p>好像shell里没有break语句啊。（有。。。）</p>
+</blockquote>
+<h4 id="13-3-1-while的基本格式"><a href="#13-3-1-while的基本格式" class="headerlink" title="13.3.1 while的基本格式"></a>13.3.1 while的基本格式</h4><p>while命令的格式是：</p>
+<pre><code>while test command
+do
+    other commands
+done</code></pre><p>while命令的关键在于所指定的test command的退出状态码必须随着循环中运行的命令而改变。如果退出状态码不发生变化， while循环就将一直不停地进行下去。</p>
+<h4 id="13-3-2-使用多个测试命令"><a href="#13-3-2-使用多个测试命令" class="headerlink" title="13.3.2 使用多个测试命令"></a>13.3.2 使用多个测试命令</h4><p>while命令允许你在while语句行定义多个测试命令。只有最后一个测试命令的退出状态码会被用来决定什么时候结束循环。</p>
+<h3 id="13-4-until-命令"><a href="#13-4-until-命令" class="headerlink" title="13.4 until 命令"></a>13.4 until 命令</h3><p>和while完全相反，一样理解就好。当条件为真则结束循环。</p>
+<pre><code>until test commands
+do
+    other commands
+done </code></pre><h3 id="13-5-嵌套循环"><a href="#13-5-嵌套循环" class="headerlink" title="13.5 嵌套循环"></a>13.5 嵌套循环</h3><p>学过编程的都会，就不做笔记了。</p>
+<h3 id="13-6-循环处理文件数据"><a href="#13-6-循环处理文件数据" class="headerlink" title="13.6 循环处理文件数据"></a>13.6 循环处理文件数据</h3><p>通常必须遍历存储在文件中的数据。这要求结合已经讲过的两种技术：</p>
+<ul>
+<li>使用嵌套循环</li>
+<li>修改IFS环境变量</li>
+</ul>
+<p>使用的精髓在于如何区分不同位置的IFS。</p>
+<h3 id="13-7-控制循环"><a href="#13-7-控制循环" class="headerlink" title="13.7 控制循环"></a>13.7 控制循环</h3><p>和许多编程语言一样，也有<code>break</code>和<code>continue</code>。</p>
+<h4 id="13-7-1-break命令"><a href="#13-7-1-break命令" class="headerlink" title="13.7.1 break命令"></a>13.7.1 break命令</h4><p>可以退出任意循环，但是比C语言强大之处是可以<strong>跳出外层循环</strong>。</p>
+<h5 id="1）跳出单个循环"><a href="#1）跳出单个循环" class="headerlink" title="1）跳出单个循环"></a>1）跳出单个循环</h5><p>常规的break。</p>
+<h5 id="2）跳出内部循环"><a href="#2）跳出内部循环" class="headerlink" title="2）跳出内部循环"></a>2）跳出内部循环</h5><p>一样的常规操作。</p>
+<h5 id="3）跳出外层循环"><a href="#3）跳出外层循环" class="headerlink" title="3）跳出外层循环"></a>3）跳出外层循环</h5><p>有时你在内部循环，但需要停止外部循环。break命令接受单个命令行参数值： <strong>break n</strong> 其中n指定了要跳出的循环层级。默认情况下，<strong>n为1</strong>，表明跳出的是当前的循环。如果你将<strong>n设为2</strong>，break命令就会停止下一级的外部循环。<strong>n的上限取决于你循环的层次数。</strong></p>
+<h4 id="13-7-2-continue命令"><a href="#13-7-2-continue命令" class="headerlink" title="13.7.2 continue命令"></a>13.7.2 continue命令</h4><p>一样，跳过continue命令下的命令，直接进行下一次循环。</p>
+<p>和break命令一样，continue命令也允许通过命令行参数指定要继续执行哪一级循环： <strong>continue n</strong></p>
+<h3 id="13-8-处理循环的输出"><a href="#13-8-处理循环的输出" class="headerlink" title="13.8 处理循环的输出"></a>13.8 处理循环的输出</h3><p>最后，在shell脚本中，你可以对循环的输出使用<strong>管道</strong>或进行<strong>重定向</strong>。这可以通过在done命令之后添加一个处理命令来实现。</p>
+<pre><code>for file in /home/rich/*
+do
+if [ -d &quot;$file&quot; ]
+then
+    echo &quot;$file is a directory&quot;
+elif
+    echo &quot;$file is a file&quot;
+fi
+done &gt; output.txt </code></pre><h2 id="14-处理用户输入"><a href="#14-处理用户输入" class="headerlink" title="14 处理用户输入"></a>14 处理用户输入</h2><h3 id="14-1命令行参数"><a href="#14-1命令行参数" class="headerlink" title="14.1命令行参数"></a>14.1命令行参数</h3><p>向shell脚本传递参数的最基本方法是使用命令行参数。和那个int main(int avg,char ** avgr)一样，在exe后面加入参数即可传入。</p>
+<pre><code>$ ./addem 10 30 </code></pre><h4 id="14-1-1-读取参数"><a href="#14-1-1-读取参数" class="headerlink" title="14.1.1 读取参数"></a>14.1.1 读取参数</h4><p>位置参数变量是标准的数字：<code>$0</code>是程序名，<code>$1</code>是第一个参数，<code>$2</code>是第二个参数，依次类推，直到第九个参数<code>$9</code>。所以在脚本里使用该参数名即可。</p>
+<h4 id="14-1-2-读取脚本名"><a href="#14-1-2-读取脚本名" class="headerlink" title="14.1.2 读取脚本名"></a>14.1.2 读取脚本名</h4><p>就是<code>$0</code>，其实没啥用。</p>
+<h4 id="14-1-3-测试参数"><a href="#14-1-3-测试参数" class="headerlink" title="14.1.3 测试参数"></a>14.1.3 测试参数</h4><p>和之前学过的编码规范一样，shell编程也需要注意规范。参要检查参数的有效性，否则当参数为空时会报错。</p>
+<pre><code>$ cat test7.sh
+#!/bin/bash
+# testing parameters before use
+#
+if [ -n &quot;$1&quot; ]
+then
+    echo Hello $1, glad to meet you.
+else
+    echo &quot;Sorry, you did not identify yourself. &quot;
+fi </code></pre><h3 id="14-2-特殊参数变量"><a href="#14-2-特殊参数变量" class="headerlink" title="14.2 特殊参数变量"></a>14.2 特殊参数变量</h3><h4 id="14-2-1-参数统计"><a href="#14-2-1-参数统计" class="headerlink" title="14.2.1 参数统计"></a>14.2.1 参数统计</h4><p>特殊变了<code>$#</code>含有脚本运行时携带的命令行参数的个数。可以在脚本中任何地方使用这个特殊变量，就和普通变量一样。</p>
+<h4 id="14-2-2-抓取所有的数据"><a href="#14-2-2-抓取所有的数据" class="headerlink" title="14.2.2 抓取所有的数据"></a>14.2.2 抓取所有的数据</h4><p><code>$*</code>和<code>$@</code>变量可以用来轻松访问所有的参数。这两个变量都能够在单个变量中存储所有的命令行参数。</p>
+<ul>
+<li><code>$*</code>，将参数视为一个整体；</li>
+<li><code>$@</code>，参数视为多个独立的单词。</li>
+</ul>
+<h3 id="14-3-移动变量"><a href="#14-3-移动变量" class="headerlink" title="14.3 移动变量"></a>14.3 移动变量</h3><p>通过shift命令移动参数的相对的位置，<code>$2</code>会变为<code>$1</code>。在你不知道参数的个数的时候，这个命令是个很好的方法。</p>
+<h3 id="14-4-处理选项"><a href="#14-4-处理选项" class="headerlink" title="14.4 处理选项"></a>14.4 处理选项</h3><p>你会发现很多命令都有很多选项，比如<code>ls -l -a</code>一大堆的选项，记都记不住。</p>
+<h4 id="14-4-1-查找选项"><a href="#14-4-1-查找选项" class="headerlink" title="14.4.1 查找选项"></a>14.4.1 查找选项</h4><p>用case处理选项，其实用if elif也可以吧，发现就是简单的匹配。</p>
+<pre><code>while [ -n &quot;$1&quot; ]
+do
+case &quot;$1&quot; in
+    -a) echo &quot;Found the -a option&quot; ;;
+    -b) echo &quot;Found the -b option&quot; ;;
+    -c) echo &quot;Found the -c option&quot; ;;
+    *) echo &quot;$1 is not an option&quot; ;;
+esac
+shift
+done </code></pre><h4 id="14-4-2-使用getopt命令"><a href="#14-4-2-使用getopt命令" class="headerlink" title="14.4.2 使用getopt命令"></a>14.4.2 使用getopt命令</h4><p>用于处理多个选项参数，比如<code>ls -la</code>。这个时候就要用<code>getopt</code>了，<strong>这个时候知道为什命令参数都是一个字母了。</strong></p>
+<pre><code>$ getopt ab:cd -a -b test1 -cd test2 test3
+-a -b test1 -c -d -- test2 test3
+$</code></pre><p><strong>在脚本里使用：</strong></p>
+<pre><code>set -- $(getopt -q ab:cd &quot;$@&quot;) </code></pre><h4 id="14-4-3-更高级的getopts命令"><a href="#14-4-3-更高级的getopts命令" class="headerlink" title="14.4.3 更高级的getopts命令"></a>14.4.3 更高级的getopts命令</h4><p>echo<br>    while getopts :ab:c opt<br>    do<br>    case “$opt” in<br>        a) echo “Found the -a option” ;;<br>        b) echo “Found the -b option, with value $OPTARG”;;<br>        c) echo “Found the -c option” ;;<br>        *) echo “Unknown option: $opt”;;<br>    esac<br>    done </p>
+<h3 id="14-5-选项标准化"><a href="#14-5-选项标准化" class="headerlink" title="14.5 选项标准化"></a>14.5 选项标准化</h3><p>其实没啥用，具体选项还是自己定义，不过可以尽量与其他命令差不多。</p>
+<h3 id="14-6-获得用户输入"><a href="#14-6-获得用户输入" class="headerlink" title="14.6 获得用户输入"></a>14.6 获得用户输入</h3><blockquote>
+<p>终于到了喜闻乐见的输入环节，感觉已经和C语言之类的没什么区别了。</p>
+</blockquote>
+<h4 id="14-6-1-基本的读取"><a href="#14-6-1-基本的读取" class="headerlink" title="14.6.1 基本的读取"></a>14.6.1 基本的读取</h4><p>read命令从标准输入（键盘）或另一个文件描述符中接受输入。在收到输入后，read命令会将数据放进一个变量。下面是read命令的最简单用法。</p>
+<pre><code>$ cat test21.sh
+#!/bin/bash
+# testing the read command
+#
+echo -n &quot;Enter your name: &quot;
+read name
+echo &quot;Hello $name, welcome to my program. &quot;
+#
+$
+$ ./test21.sh
+Enter your name: Rich Blum
+Hello Rich Blum, welcome to my program.
+$ </code></pre><h4 id="14-6-2-超时"><a href="#14-6-2-超时" class="headerlink" title="14.6.2 超时"></a>14.6.2 超时</h4><p>设置read读取超时，超过一定时间没有输入也要执行接下来的命令。当计时器过期后，read命令会返回一个非零退出状态码，用<code>if</code>来判断。</p>
+<h4 id="14-6-3-隐藏方式读取"><a href="#14-6-3-隐藏方式读取" class="headerlink" title="14.6.3 隐藏方式读取"></a>14.6.3 隐藏方式读取</h4><blockquote>
+<p>这不就是mysql登录的时候设置的么，密码没有显示在控制台。有时候都不知道自己是否在输入。</p>
+</blockquote>
+<pre><code>read -s -p &quot;Enter your password: &quot; pass </code></pre><h4 id="14-6-4-从文件中读取"><a href="#14-6-4-从文件中读取" class="headerlink" title="14.6.4 从文件中读取"></a>14.6.4 从文件中读取</h4><p>也可以用read命令从文件读，每次调用read命令，它都会从文件中读取一行文本。当文件中再没有内容时，read命令会退出并返回非零退出状态码。</p>
+<p><strong>对文件使用cat命令，将结果通过管道直接传给含有read命令的while命令。</strong></p>
+<pre><code>cat test | while read line
+do
+    echo &quot;Line $count: $line&quot;
+count=$[ $count + 1] </code></pre><h2 id="15-呈现数据"><a href="#15-呈现数据" class="headerlink" title="15 呈现数据"></a>15 呈现数据</h2><blockquote>
+<p>这一章主要讲如何将脚本的输出到Linux系统的不同位置。</p>
+</blockquote>
+<h3 id="15-1-理解输入和输出"><a href="#15-1-理解输入和输出" class="headerlink" title="15.1 理解输入和输出"></a>15.1 理解输入和输出</h3><p>用标准的Linux输入和输出系统来将脚本输出导向特定位置。</p>
+<h4 id="15-1-1-标准文件描述符"><a href="#15-1-1-标准文件描述符" class="headerlink" title="15.1.1 标准文件描述符"></a>15.1.1 标准文件描述符</h4><p>前面提到Linux将一切对象当作文件来处理。Linux用文件描述符来标识每个文件对象。</p>
+<h5 id="Linux的标准文件描述符"><a href="#Linux的标准文件描述符" class="headerlink" title="Linux的标准文件描述符"></a>Linux的标准文件描述符</h5><p>文件描述符</p>
+<p>缩写</p>
+<p>描述</p>
+<p>0</p>
+<p>STDIN</p>
+<p>标准输入</p>
+<p>1</p>
+<p>STDOUT</p>
+<p>标准输出</p>
+<p>2</p>
+<p>STDERR</p>
+<p>标准错误</p>
+<h5 id="1-STDIN"><a href="#1-STDIN" class="headerlink" title="1) STDIN"></a>1) STDIN</h5><p>标准输入，可以将文件里的内容输入到命令，比如：</p>
+<pre><code>cat  &lt; testfile </code></pre><h5 id="2-STDOUT"><a href="#2-STDOUT" class="headerlink" title="2) STDOUT"></a>2) STDOUT</h5><p>标准输出，可以使用<code>&gt;</code>和<code>&gt;&gt;</code>（追加模式），前面有提到的输出重定向，比如：</p>
+<pre><code>ls -l &gt; test </code></pre><h5 id="3）STDERR"><a href="#3）STDERR" class="headerlink" title="3）STDERR"></a>3）STDERR</h5><p>shell或shell中运行的程序和脚本出错时生成的错误消息都会发送到这个位置。</p>
+<h4 id="15-1-2-重定向错误"><a href="#15-1-2-重定向错误" class="headerlink" title="15.1.2 重定向错误"></a>15.1.2 重定向错误</h4><p>将文件描述符值放在重定向符号前。</p>
+<pre><code>$ ls -al badfile 2&gt; test4
+$ cat test4
+ls: cannot access badfile: No such file or directory
+$</code></pre><p>这个时候错误信息都会保存在输出文件中。</p>
+<h4 id="15-1-3-重定向错误和数据"><a href="#15-1-3-重定向错误和数据" class="headerlink" title="15.1.3 重定向错误和数据"></a>15.1.3 重定向错误和数据</h4><p>数据则在符号前加1。</p>
+<pre><code>$ ls -al test test2 test3 badtest 2&gt; test6 1&gt; test7
+$ cat test6
+ls: cannot access test: No such file or directory
+ls: cannot access badtest: No such file or directory
+$ cat test7
+-rw-rw-r-- 1 rich rich 158 2014-10-16 11:32 test2
+-rw-rw-r-- 1 rich rich 0 2014-10-16 11:33 test3
+$</code></pre><p><strong>可以用这种方法将脚本的正常输出和脚本生成的错误消息分离开来，这样就可以轻松识别出错误信息。</strong></p>
+<h3 id="15-2-在脚本中重定向输出"><a href="#15-2-在脚本中重定向输出" class="headerlink" title="15.2 在脚本中重定向输出"></a>15.2 在脚本中重定向输出</h3><p>这个功能有点用，可以将错误信息输出到文件，而正确信息则显示在屏幕。</p>
+<h4 id="15-2-1-临时重定向"><a href="#15-2-1-临时重定向" class="headerlink" title="15.2.1 临时重定向"></a>15.2.1 临时重定向</h4><p>就像15.1.2节讲的一样，把命令放在脚本里就好。</p>
+<h4 id="15-2-2-永久重定向"><a href="#15-2-2-永久重定向" class="headerlink" title="15.2.2 永久重定向"></a>15.2.2 永久重定向</h4><p>如果每个echo都加符号未免太繁琐了。使用<code>exec</code>命令设定执行期间重定向某个特定文件描述符</p>
+<pre><code>exec 2&gt;testerror
+    echo &quot;This is the start of the script&quot;
+    echo &quot;now redirecting all output to another location&quot;
+exec 1&gt;testout
+    echo &quot;This output should go to the testout file&quot;
+    echo &quot;but this should go to the testerror file&quot; &gt;&amp;2</code></pre><p>就等于模式切换吧，切换1和2。</p>
+<h3 id="15-3-在脚本重定向输入"><a href="#15-3-在脚本重定向输入" class="headerlink" title="15.3 在脚本重定向输入"></a>15.3 在脚本重定向输入</h3><p>可以在脚本里获得文件的数据。</p>
+<pre><code>exec 0&lt; testfile
+count=1
+while read line
+do
+    echo &quot;Line #$count: $line&quot;
+    count=$[ $count + 1 ]
+done </code></pre><h3 id="15-4-创建自己的重定向"><a href="#15-4-创建自己的重定向" class="headerlink" title="15.4 创建自己的重定向"></a>15.4 创建自己的重定向</h3><p>这个了解一下，就是可以从其他6个从3~8的文件描述符作为输入或者输出重定向。</p>
+<h3 id="15-5-列出打开的文件描述符"><a href="#15-5-列出打开的文件描述符" class="headerlink" title="15.5 列出打开的文件描述符"></a>15.5 列出打开的文件描述符</h3><p><code>losf</code>会列出整个Linux系统打开的所有文件描述符。</p>
+<h3 id="15-6-阻止命令输出"><a href="#15-6-阻止命令输出" class="headerlink" title="15.6 阻止命令输出"></a>15.6 阻止命令输出</h3><p>有时候脚本在后台运行，但是可能会出现错误消息，这个时候shell会将错误信息显示到主shell。避免这个问题就是将<code>STDERR</code>重定向到一个叫做null文件的特殊文件。</p>
+<p>在Linux系统上null文件的标准位置是<code>/dev/null</code>。你重定向到该位置的任何数据都会被丢掉，不会显示。</p>
+<pre><code>$ ls -al &gt; /dev/null
+$ cat /dev/null
+$ </code></pre><h3 id="15-7-创建临时文件"><a href="#15-7-创建临时文件" class="headerlink" title="15.7 创建临时文件"></a>15.7 创建临时文件</h3><p>Linux有特殊的目录<code>/tmp</code>，专供临时文件使用。</p>
+<h4 id="15-7-1-创建本地临时文件"><a href="#15-7-1-创建本地临时文件" class="headerlink" title="15.7.1 创建本地临时文件"></a>15.7.1 创建本地临时文件</h4><pre><code>$ mktemp testing.XXXXXX
+$ ls -al testing*
+-rw------- 1 rich rich 0 Oct 17 21:30 testing.UfIi13
+$</code></pre><p>这个XXXXXX会用6个字符码替换这6个X，从而保证文件名在目录中是唯一的。</p>
+<h4 id="15-7-2-在-tmp目录创建临时文件"><a href="#15-7-2-在-tmp目录创建临时文件" class="headerlink" title="15.7.2 在/tmp目录创建临时文件"></a>15.7.2 在/tmp目录创建临时文件</h4><p>使用<code>mktemp -t</code>可以在`/tmp目录中创建一个唯一的临时文件。</p>
+<h4 id="15-7-3-创建临时目录"><a href="#15-7-3-创建临时目录" class="headerlink" title="15.7.3 创建临时目录"></a>15.7.3 创建临时目录</h4><p>使用<code>mktemp -d</code>创建临时目录</p>
+<h3 id="15-8-记录消息"><a href="#15-8-记录消息" class="headerlink" title="15.8 记录消息"></a>15.8 记录消息</h3><p>既想要将消息重定向到文件，也想显示在屏幕上，那么使用<code>tee</code>命令。</p>
+<p>由于tee会重定向来自<code>STDIN</code>的数据，你可以用它配合管道命令来重定向命令输出。</p>
+<pre><code>$ date | tee testfile
+Sun Oct 19 18:56:21 EDT 2014
+$ cat testfile
+Sun Oct 19 18:56:21 EDT 2014
+$ </code></pre><h2 id="16-控制脚本"><a href="#16-控制脚本" class="headerlink" title="16 控制脚本"></a>16 控制脚本</h2><h3 id="16-1-处理信号"><a href="#16-1-处理信号" class="headerlink" title="16.1 处理信号"></a>16.1 处理信号</h3><p>Linux利用信号与运行在系统中的进程进行通信。Linux里有64种信号，32种实时信号，32种非实时信号。在控制台输入<code>kill -l</code>可以查看所有信号以及其对应的数字。</p>
+<p><img src="https://tanwenbo.top/wp-content/uploads/2018/06/0833d69721db408d097d401a16eafc94.png" alt=""></p>
+<h4 id="16-1-1-主要Linux信号"><a href="#16-1-1-主要Linux信号" class="headerlink" title="16.1.1 主要Linux信号"></a>16.1.1 主要Linux信号</h4><p>信 号</p>
+<p>值</p>
+<p>描 述</p>
+<p>1</p>
+<p>SIGHUP</p>
+<p>挂起进程</p>
+<p>2</p>
+<p>SIGINT</p>
+<p>终止进程</p>
+<p>3</p>
+<p>SIGQUIT</p>
+<p>停止进程</p>
+<p>9</p>
+<p>SIGKILL</p>
+<p>无条件终止进程</p>
+<p>15</p>
+<p>SIGTERM</p>
+<p>尽可能终止进程</p>
+<p>17</p>
+<p>SIGSTOP</p>
+<p>无条件停止进程，但不是终止进程</p>
+<p>18</p>
+<p>SIGTSTP</p>
+<p>停止或暂停进程，但不终止进程</p>
+<p>19</p>
+<p>SIGCONT</p>
+<p>继续运行停止的进程</p>
+<p><code>SIGINT</code>和<code>SIGHUP</code>会终止shell脚本。</p>
+<h4 id="16-1-2-生成信号"><a href="#16-1-2-生成信号" class="headerlink" title="16.1.2 生成信号"></a>16.1.2 生成信号</h4><h5 id="1）中断进程"><a href="#1）中断进程" class="headerlink" title="1）中断进程"></a>1）中断进程</h5><p><code>Ctrl + C</code>组合键会生成<code>SIGINT</code>信号，并将其发送给当前在shell中运行的所有进程。<strong>终止进程</strong>。</p>
+<h5 id="2）-暂停进程"><a href="#2）-暂停进程" class="headerlink" title="2） 暂停进程"></a>2） 暂停进程</h5><p>不是挂起是暂停，<code>Ctrl + Z</code>组合键发送<code>SIGTSTP</code>信号。<strong>停止shell中运行的任何进程</strong>，要注意与<strong>终止</strong>的区别。停止进程会让程序继续保留在内存中，并能从上次停止的位置继续运行。</p>
+<h4 id="16-1-3-捕获信号"><a href="#16-1-3-捕获信号" class="headerlink" title="16.1.3 捕获信号"></a>16.1.3 捕获信号</h4><p>信号捕获出现时捕获它们并执行其他命令。<code>trap</code>命令允许你来指定<code>shell</code>脚本要监看并从shell中拦截的Linux信号。 trap命令的格式是： <strong>trap commands signals</strong></p>
+<h4 id="16-1-4-捕获脚本退出"><a href="#16-1-4-捕获脚本退出" class="headerlink" title="16.1.4 捕获脚本退出"></a>16.1.4 捕获脚本退出</h4><p>就是捕获EXIT信号。</p>
+<h4 id="16-1-5-修改或移除捕获"><a href="#16-1-5-修改或移除捕获" class="headerlink" title="16.1.5 修改或移除捕获"></a>16.1.5 修改或移除捕获</h4><p>要想在脚本中的不同位置进行不同的捕获处理，只需重新使用带有新选项的trap命令。</p>
+<h3 id="16-2-以后台模式运行脚本"><a href="#16-2-以后台模式运行脚本" class="headerlink" title="16.2 以后台模式运行脚本"></a>16.2 以后台模式运行脚本</h3><p>以后台模式运行shell脚本非常简单。只要在命令后加个<code>&amp;</code>符就行了。</p>
+<p>注意，当后台进程运行时，它仍然会使用终端显示器来显示<code>STDOUT</code>和<code>STDERR</code>消息。</p>
+<p>但是要注意如果退出终端会话那么脚本也会随之退出。</p>
+<h3 id="16-3-在非控制台下运行脚本"><a href="#16-3-在非控制台下运行脚本" class="headerlink" title="16.3 在非控制台下运行脚本"></a>16.3 在非控制台下运行脚本</h3><p><code>nohup</code>命令运行了另外一个命令来阻断所有发送给该进程的SIGHUP信号。这会在退出终端会 话时阻止进程退出。一般和<code>&amp;</code>一起用。</p>
+<p>用途：不挂断地运行命令。</p>
+<p>语法：<strong>nohup Command &amp;</strong></p>
+<h3 id="16-4-作业控制"><a href="#16-4-作业控制" class="headerlink" title="16.4 作业控制"></a>16.4 作业控制</h3><h4 id="16-4-1-查看作业"><a href="#16-4-1-查看作业" class="headerlink" title="16.4.1 查看作业"></a>16.4.1 查看作业</h4><p><code>jobs</code>查看当前shell正在处理的作业。</p>
+<h4 id="16-4-2-重启停止的作业"><a href="#16-4-2-重启停止的作业" class="headerlink" title="16.4.2 重启停止的作业"></a>16.4.2 重启停止的作业</h4><p><code>bg</code>命令重启停止的作业，加上作业号可以指定，用jobs查看作业号。</p>
+<h3 id="16-5-调整谦让度"><a href="#16-5-调整谦让度" class="headerlink" title="16.5 调整谦让度"></a>16.5 调整谦让度</h3><p>改变脚本运行的优先级。</p>
+<h4 id="16-5-1-nice命令"><a href="#16-5-1-nice命令" class="headerlink" title="16.5.1 nice命令"></a>16.5.1 nice命令</h4><p><code>nice</code>命令允许你设置命令<strong>启动时</strong>的调度优先级。</p>
+<pre><code>nice -n 10 ./test4.sh </code></pre><h4 id="16-5-2-renice命令"><a href="#16-5-2-renice命令" class="headerlink" title="16.5.2 renice命令"></a>16.5.2 renice命令</h4><p>改变<strong>已经运行</strong>命令的优先级。</p>
+<pre><code>renice -n 10 -p 5055
+#5055 是进程PID </code></pre><h3 id="16-6-定时运行作业"><a href="#16-6-定时运行作业" class="headerlink" title="16.6 定时运行作业"></a>16.6 定时运行作业</h3><h4 id="16-6-1-用at命令来计划执行作业"><a href="#16-6-1-用at命令来计划执行作业" class="headerlink" title="16.6.1 用at命令来计划执行作业"></a>16.6.1 用at命令来计划执行作业</h4><p>at命令格式：</p>
+<pre><code>at [-f filename] time</code></pre><p>主要是如何指定时间，这个时间格式的问题。</p>
+<ul>
+<li>标准的小时和分钟格式，比如10:15。</li>
+<li>AM/PM指示符，比如10:15 PM。</li>
+<li>特定可命名时间，比如now、noon、midnight或者teatime（4 PM）。</li>
+<li>除了指定运行作业的时间，也可以通过不同的日期格式指定特定的日期。</li>
+<li>标准日期格式，比如MMDDYY、MM/DD/YY或DD.MM.YY。</li>
+<li>文本日期，比如Jul 4或Dec 25，加不加年份均可。</li>
+</ul>
+<h4 id="16-6-2-安排需要定期执行的脚本"><a href="#16-6-2-安排需要定期执行的脚本" class="headerlink" title="16.6.2 安排需要定期执行的脚本"></a>16.6.2 安排需要定期执行的脚本</h4><p>定时执行，比如定时重启一下服务器。 <code>cron</code>时间表采用一种特别的格式来指定作业何时运行。其格式如下： <strong>min hour dayofmonth month dayofweek command</strong></p>
+<h5 id="cron目录"><a href="#cron目录" class="headerlink" title="cron目录"></a>cron目录</h5><p>有4个基本目录：hourly、daily、monthly和weekly。可以将脚本放进去，系统会自动根据目录运行。</p>
+<h2 id="17-创建函数"><a href="#17-创建函数" class="headerlink" title="17 创建函数"></a>17 创建函数</h2><blockquote>
+<p>简要一点了。</p>
+</blockquote>
+<h3 id="17-1-基本函数"><a href="#17-1-基本函数" class="headerlink" title="17.1 基本函数"></a>17.1 基本函数</h3><blockquote>
+<p>和很多见过的都一样，function开头。然后用中括号括起来</p>
+</blockquote>
+<pre><code>function name {
+commands
+}
+#两种
+name() {
+commands
+} </code></pre><h3 id="17-2-返回值"><a href="#17-2-返回值" class="headerlink" title="17.2 返回值"></a>17.2 返回值</h3><p>函数也相当于是脚本，结束时会返回一个退出状态码。用<code>$?</code>确定函数的退出状态码。</p>
+<p>可以用<code>return</code>返回固定的状态码。</p>
+<ul>
+<li>函数一结束就取返回值；</li>
+<li>退出状态码必须是0~255。</li>
+</ul>
+<p>函数也可以将值返回给变量</p>
+<pre><code>function dbl {
+read -p &quot;Enter a value: &quot; value
+echo $[ $value * 2 ]
+}
+result=$(dbl) </code></pre><h3 id="17-3-在函数中使用变量"><a href="#17-3-在函数中使用变量" class="headerlink" title="17.3 在函数中使用变量"></a>17.3 在函数中使用变量</h3><p>函数里也可以使用<code>$#</code>来判断参数的个数，<code>$1</code>为第一个参数，以此类推。</p>
+<p>调用的时候在函数名后面加参数即可。</p>
+<pre><code>function addem {
+if [ $# -eq 0 ] || [ $# -gt 2 ]
+then
+    echo -1
+elif [ $# -eq 1 ]
+then
+    echo $[ $1 + $1 ]
+else
+    echo $[ $1 + $2 ]
+fi
+
+value=$(addem 10 15)</code></pre><p>local在函数体里声明局部变量。</p>
+<pre><code>local temp=$[ $value + 5 ] </code></pre><h3 id="17-4-数组变量和函数"><a href="#17-4-数组变量和函数" class="headerlink" title="17.4 数组变量和函数"></a>17.4 数组变量和函数</h3><p>要在函数里定义一个数组，不能直接使用传进来的数组名，会出错。</p>
+<pre><code>function testit {
+local newarray
+newarray=(;&apos;echo &quot;$@&quot;&apos;)
+echo &quot;The new array value is: ${newarray[*]}&quot;
+}
+myarray=(1 2 3 4 5)
+echo &quot;The original array is ${myarray[*]}&quot;
+testit ${myarray[*]}</code></pre><p>要注意是<code>$@</code>和<code>newarray[*]</code></p>
+<h3 id="17-5-函数递归"><a href="#17-5-函数递归" class="headerlink" title="17.5 函数递归"></a>17.5 函数递归</h3><p>在脚本里使用递归，要注意终止递归的条件。</p>
+<pre><code>function factorial {
+if [ $1 -eq 1 ]
+then
+    echo 1
+else
+    local temp=$[ $1 - 1 ]
+    local result=&apos;factorial $temp&apos;
+    echo $[ $result * $1 ]
+fi
+} </code></pre><h3 id="17-6-创建库"><a href="#17-6-创建库" class="headerlink" title="17.6 创建库"></a>17.6 创建库</h3><p>脚本也可以使用库函数，写了一个脚本叫myfuncs，调用的时候加个点。</p>
+<pre><code>$ cat test14
+#!/bin/bash
+# using functions defined in a library file
+. ./myfuncs
+# 调用库文件
+value1=10
+value2=5
+result1=$(addem $value1 $value2)
+result2=$(multem $value1 $value2)
+result3=$(divem $value1 $value2) </code></pre><h3 id="17-7-在命令行上使用函数"><a href="#17-7-在命令行上使用函数" class="headerlink" title="17.7 在命令行上使用函数"></a>17.7 在命令行上使用函数</h3><p>将函数定义在.bashrc中可以在任意情况使用所定义的函数。</p>
+<h2 id="18-图形化桌面环境中的脚本编程"><a href="#18-图形化桌面环境中的脚本编程" class="headerlink" title="18 图形化桌面环境中的脚本编程"></a>18 图形化桌面环境中的脚本编程</h2><blockquote>
+<p>这个掠过</p>
+</blockquote>
+<h2 id="19-初识sed和gawk"><a href="#19-初识sed和gawk" class="headerlink" title="19 初识sed和gawk"></a>19 初识sed和gawk</h2><h3 id="19-1-sed编辑器"><a href="#19-1-sed编辑器" class="headerlink" title="19.1 sed编辑器"></a>19.1 sed编辑器</h3><p>sed编辑器被称作流编辑器（stream editor），和普通的交互式文本编辑器恰好相反。sed编辑器可以根据命令来处理数据流中的数据，这些命令要么从命令行中输入，要么存储在一个命令文本文件中。sed编辑器会执行下列操作。</p>
+<blockquote>
+<p>简单来说就是可以<strong>快速改变文本输出内容</strong></p>
+</blockquote>
+<p><strong>sed编辑器并不会修改文本文件的数据</strong>。它只会将修改后的数据发送到<strong>STDOUT</strong>。如果你查看原来的文本文件，它仍然保留着原始数据。</p>
+<pre><code>sed &apos;s/dog/cat/&apos; data1.txt </code></pre><h4 id="19-1-1-插入数据"><a href="#19-1-1-插入数据" class="headerlink" title="19.1.1 插入数据"></a>19.1.1 插入数据</h4><ul>
+<li>插入（insert）命令（i）会在指定行前增加一个新行；</li>
+<li>附加（append）命令（a）会在指定行后增加一个新行。</li>
+</ul>
+<p>下面的例子是将一个新行插入到数据流第三行前。</p>
+<pre><code>$ sed &apos;3i\
+&gt; This is an inserted line.&apos; data6.txt </code></pre><h4 id="19-1-2-使用sed-处理文件"><a href="#19-1-2-使用sed-处理文件" class="headerlink" title="19.1.2 使用sed 处理文件"></a>19.1.2 使用sed 处理文件</h4><p>将data6.txt的前两行写入到 test.txt</p>
+<pre><code>$ sed &apos;1,2w test.txt&apos; data6.txt
+This is line number 1.
+This is line number 2.
+This is line number 3.
+This is line number 4. </code></pre><h3 id="19-2-gawk程序"><a href="#19-2-gawk程序" class="headerlink" title="19.2 gawk程序"></a>19.2 gawk程序</h3><blockquote>
+<p>这个了解一下</p>
+</blockquote>
+<p>在gawk编程语言中，你可以做下面的事情：</p>
+<ul>
+<li>定义变量来保存数据；</li>
+<li>使用算术和字符串操作符来处理数据；</li>
+<li>使用结构化编程概念（比如if-then语句和循环）来为数据处理增加处理逻辑；</li>
+<li>通过提取数据文件中的数据元素，将其重新排列或格式化，生成格式化报告。</li>
+</ul>
+<h2 id="20-正则表达式"><a href="#20-正则表达式" class="headerlink" title="20 正则表达式"></a>20 正则表达式</h2><blockquote>
+<p>就不再解释什么是正则表达式了，直接用。</p>
+</blockquote>
+<h3 id="20-1-正则表达式的类型"><a href="#20-1-正则表达式的类型" class="headerlink" title="20.1 正则表达式的类型"></a>20.1 正则表达式的类型</h3><p>在Linux中，有两种流行的正则表达式引擎：</p>
+<ul>
+<li>POSIX基础正则表达式（basic regular expression，BRE）引擎</li>
+<li>POSIX扩展正则表达式（extended regular expression，ERE）引擎</li>
+</ul>
+<h3 id="20-2-BRE模式"><a href="#20-2-BRE模式" class="headerlink" title="20.2 BRE模式"></a>20.2 BRE模式</h3><h4 id="20-2-1-纯文本"><a href="#20-2-1-纯文本" class="headerlink" title="20.2.1 纯文本"></a>20.2.1 纯文本</h4><p>区分大小写，注意<code>p</code>是打印。</p>
+<pre><code>$ echo &quot;This is a test&quot; | sed -n &apos;/test/p&apos;
+This is a test
+$ echo &quot;This is a test&quot; | sed -n &apos;/trial/p&apos;
+$ </code></pre><h4 id="20-2-2-特殊字符"><a href="#20-2-2-特殊字符" class="headerlink" title="20.2.2 特殊字符"></a>20.2.2 特殊字符</h4><p>正则表达式识别的特殊字符包括： <code>.*[]^${}\+?|()</code></p>
+<p><strong>使用的时候必须在前面加上转义字符，<code>\</code>。</strong></p>
+<h4 id="20-2-3-锚字符"><a href="#20-2-3-锚字符" class="headerlink" title="20.2.3 锚字符"></a>20.2.3 锚字符</h4><p>mao字符。</p>
+<h5 id="1）锁定在行首"><a href="#1）锁定在行首" class="headerlink" title="1）锁定在行首"></a>1）锁定在行首</h5><p>脱字符（<code>^</code>）定义从数据流中文本行的行首开始的模式。就是只能匹配行首的位置</p>
+<h5 id="2）锁定在行尾"><a href="#2）锁定在行尾" class="headerlink" title="2）锁定在行尾"></a>2）锁定在行尾</h5><p>特殊字符美元符（<code>$</code>）定义了行尾锚点。</p>
+<h5 id="3）组合锚点"><a href="#3）组合锚点" class="headerlink" title="3）组合锚点"></a>3）组合锚点</h5><p>只找单独一行特定文本。</p>
+<pre><code>$ sed -n &apos;/^this is a test$/p&apos; data4
+this is a test </code></pre><h4 id="20-2-4-点号字符"><a href="#20-2-4-点号字符" class="headerlink" title="20.2.4 点号字符"></a>20.2.4 点号字符</h4><p>只匹配能用别的字符替换这个<code>.</code>的。</p>
+<pre><code>$ sed -n &apos;/.at/p&apos; data6
+The cat is sleeping.
+That is a very nice hat.
+This test is at line four.
+$ </code></pre><h4 id="20-2-5-字符组"><a href="#20-2-5-字符组" class="headerlink" title="20.2.5 字符组"></a>20.2.5 字符组</h4><p>可以和字符组中的任一字符组成组合。</p>
+<pre><code>$ sed -n &apos;/[ch]at/p&apos; data6
+The cat is sleeping.
+That is a very nice hat.
+$ </code></pre><h4 id="20-2-6-排除型字符组"><a href="#20-2-6-排除型字符组" class="headerlink" title="20.2.6 排除型字符组"></a>20.2.6 排除型字符组</h4><p>在字符组开头加个<code>^</code>。</p>
+<pre><code>$ sed -n &apos;/[^ch]at/p&apos; data6
+This test is at line four.
+$ </code></pre><h4 id="20-2-7-区间"><a href="#20-2-7-区间" class="headerlink" title="20.2.7 区间"></a>20.2.7 区间</h4><p>只匹配区间内的字符</p>
+<pre><code>$ sed -n &apos;/^[0-9][0-9][0-9][0-9][0-9]$/p&apos; data8
+60633
+46201
+45902
+$</code></pre><p>同样的方法也适用于字母。</p>
+<pre><code>$ sed -n &apos;/[c-h]at/p&apos; data6</code></pre><p>还可以在单个字符组指定多个不连续的区间。</p>
+<pre><code>$ sed -n &apos;/[a-ch-m]at/p&apos; data6 </code></pre><h4 id="20-2-8-特殊的字符组"><a href="#20-2-8-特殊的字符组" class="headerlink" title="20.2.8 特殊的字符组"></a>20.2.8 特殊的字符组</h4><p>匹配特定类型的字符</p>
+<p>组</p>
+<p>描述</p>
+<p>[[:alpha:]]</p>
+<p>匹配任意字母字符，不管是大写还是小写</p>
+<p>[[:alnum:]]</p>
+<p>匹配任意字母数字字符0<del>9、A</del>Z或a~z</p>
+<p>[[:blank:]]</p>
+<p>匹配空格或制表符</p>
+<p>[[:digit:]]</p>
+<p>匹配0~9之间的数字</p>
+<p>[[:lower:]]</p>
+<p>匹配小写字母字符a~z</p>
+<p>[[:print:]]</p>
+<p>匹配任意可打印字符</p>
+<p>[[:punct:]]</p>
+<p>匹配标点符号</p>
+<p>[[:space:]]</p>
+<p>匹配任意空白字符：空格、制表符、NL、FF、VT和CR</p>
+<p>[[:upper:]]</p>
+<p>匹配任意大写字母字符A~Z</p>
+<h4 id="20-2-9-星号"><a href="#20-2-9-星号" class="headerlink" title="20.2.9 星号"></a>20.2.9 星号</h4><p>字符后面加个<code>*</code>，表示这个e可以0次或者出现多次。</p>
+<pre><code>$ echo &quot;ik&quot; | sed -n &apos;/ie*k/p&apos;
+ik
+$ echo &quot;iek&quot; | sed -n &apos;/ie*k/p&apos;
+iek </code></pre><h3 id="20-3-扩展正则表达式"><a href="#20-3-扩展正则表达式" class="headerlink" title="20.3 扩展正则表达式"></a>20.3 扩展正则表达式</h3><p>主要是gawk程序使用。</p>
+<h4 id="20-3-1-问号"><a href="#20-3-1-问号" class="headerlink" title="20.3.1 问号"></a>20.3.1 问号</h4><p>问号类似于星号，不过有点细微的不同。问号表明前面的字符可以出现0次或1次，但只限于此。它不会匹配多次出现的字符。</p>
+<pre><code>$ echo &quot;bt&quot; | gawk &apos;/be?t/{print $0}&apos;
+bt
+$ echo &quot;bet&quot; | gawk &apos;/be?t/{print $0}&apos;
+bet </code></pre><h4 id="20-3-2-加号"><a href="#20-3-2-加号" class="headerlink" title="20.3.2 加号"></a>20.3.2 加号</h4><p>类似于星号但必须至少出现1次。如果该字符没有出现，那么模式就不会匹配。</p>
+<pre><code>$ echo &quot;beeet&quot; | gawk &apos;/be+t/{print $0}&apos;
+beeet
+$ echo &quot;beet&quot; | gawk &apos;/be+t/{print $0}&apos;
+beet </code></pre><h4 id="20-3-3-使用花括号"><a href="#20-3-3-使用花括号" class="headerlink" title="20.3.3 使用花括号"></a>20.3.3 使用花括号</h4><p>ERE中的花括号允许你为可重复的正则表达式指定一个上限，两种格式来指定区间。</p>
+<ul>
+<li><p>m：正则表达式准确出现m次。</p>
+</li>
+<li><p>m, n：正则表达式至少出现m次，至多n次。</p>
+<p>$ echo “bt” | gawk –re-interval ‘/be{1}t/{print $0}’<br>$<br>$ echo “bet” | gawk –re-interval ‘/be{1}t/{print $0}’<br>bet </p>
+</li>
+</ul>
+<h4 id="20-3-4-管道符号"><a href="#20-3-4-管道符号" class="headerlink" title="20.3.4 管道符号"></a>20.3.4 管道符号</h4><p>管道符号允许你在检查数据流时，用逻辑OR方式指定正则表达式引擎要用的两个或多个模 式。</p>
+<pre><code>$ echo &quot;The cat is asleep&quot; | gawk &apos;/cat|dog/{print $0}&apos;</code></pre><p>正则表达式和管道符号之间不能有空格，否则它们也会被认为是正则表达式模式的一部分。</p>
+<h4 id="20-3-5-表达式分组"><a href="#20-3-5-表达式分组" class="headerlink" title="20.3.5 表达式分组"></a>20.3.5 表达式分组</h4><p>正则表达式模式也可以用圆括号进行分组。</p>
+<pre><code>$ echo &quot;cat&quot; | gawk &apos;/(c|b)a(b|t)/{print $0}&apos;
+cat
+$ echo &quot;cab&quot; | gawk &apos;/(c|b)a(b|t)/{print $0}&apos;
+cab
+$ echo &quot;bat&quot; | gawk &apos;/(c|b)a(b|t)/{print $0}&apos;
+bat
+$ echo &quot;bab&quot; | gawk &apos;/(c|b)a(b|t)/{print $0}&apos;
+bab</code></pre><p>将分组和管道符号一起使用来创建可能的模式匹配组是很常见的做法。</p>
+<h2 id="21-sed进阶"><a href="#21-sed进阶" class="headerlink" title="21 sed进阶"></a>21 sed进阶</h2><blockquote>
+<p>本来不想看了，但是好像sed和awk是重点标出来的，还是看一下。</p>
+</blockquote>
+<h3 id="21-1-多行命令"><a href="#21-1-多行命令" class="headerlink" title="21.1 多行命令"></a>21.1 多行命令</h3><p>处理多行，之前介绍的都是单行。</p>
+<h4 id="21-1-1-next命令"><a href="#21-1-1-next命令" class="headerlink" title="21.1.1 next命令"></a>21.1.1 next命令</h4><p>可以对搜索到的数据的下一行进行操作。</p>
+<h5 id="1）单行的next命令"><a href="#1）单行的next命令" class="headerlink" title="1）单行的next命令"></a>1）单行的next命令</h5><p>小写<code>n</code></p>
+<pre><code>$ sed &apos;/header/{n ; d}&apos; data1.txt
+This is the header line.
+This is a data line.
+This is the last line.
+$</code></pre><p>可见，sed会先找到文本中有header的那一行，然后删除其下一行的空格<code>d</code>。</p>
+<h5 id="2）-合并文本行"><a href="#2）-合并文本行" class="headerlink" title="2） 合并文本行"></a>2） 合并文本行</h5><p>大写N可以将下一文本行添加到模式空间中已有的文本后，<strong>主要用来匹配不在同一行的对象</strong>。</p>
+<pre><code>$ cat data2.txt
+This is the header line.
+This is the first data line.
+This is the second data line.
+This is the last line.
+$
+$ sed &apos;/first/{ N ; s/\n/ / }&apos; data2.txt
+This is the header line.
+This is the first data line. This is the second data line.
+This is the last line.
+$</code></pre><p>要注意s后面的<code>\n</code>，是换行符，然后将这个换行符换为空格。</p>
+<h4 id="21-1-2-多行删除命令"><a href="#21-1-2-多行删除命令" class="headerlink" title="21.1.2 多行删除命令"></a>21.1.2 多行删除命令</h4><p><code>d</code>是删除单行，多行删除为<code>D</code>，并不是<strong>删除多行</strong>而是<strong>多行查找到后删除目标行</strong>。</p>
+<pre><code>$ cat data5.txt
+This is the header line.
+This is a data line.
+This is the last line.
+$
+$ sed &apos;/^$/{N ; /header/D}&apos; data5.txt
+This is the header line.
+This is a data line.
+This is the last line.
+$</code></pre><p>sed编辑器脚本会查找空白行，然后用N命令来将下一文本行添加到模式空间。如果新的模式空间内容含有单词header，则<code>D</code>命令会删除模式空间中的第一行。如果不结合使用<code>N</code>命令和<code>D</code>命令，就不可能在不删除其他空白行的情况下只删除第一个空白行。</p>
+<h4 id="21-1-3-多行打印命令"><a href="#21-1-3-多行打印命令" class="headerlink" title="21.1.3 多行打印命令"></a>21.1.3 多行打印命令</h4><blockquote>
+<p>模式空间就是sed会将符合规则的内容放入模式空间</p>
+</blockquote>
+<p>它只打印多行模式空间中的第一行。这包括模式空间中直到换行符为止的所有字符。要和N命令以及D命令组合起来使用才很强大。</p>
+<p>在命令脚本中加入N命令，你就能单步扫过整个模式空间，将多行一起匹配。接下来，使用P命令打印出第一行，然后用D命令删除第一行并绕回到脚本的起始处。一旦返回，N命令会读取下一行文本并重新开始这个过程。这个循环会一直继续下去，直到数据流结束。</p>
+<h3 id="21-2-保持空间"><a href="#21-2-保持空间" class="headerlink" title="21.2 保持空间"></a>21.2 保持空间</h3><p>sed编辑器有另一块称作保持空间（hold space）的缓冲区域。在处理模式空间中的某些行时，可以用保持空间来临时保存一些行。</p>
+<ul>
+<li>h 将模式空间复制到保持空间</li>
+<li>H 将模式空间附加到保持空间</li>
+<li>g 将保持空间复制到模式空间</li>
+<li>G 将保持空间附加到模式空间</li>
+<li>x 交换模式空间和保持空间的内容</li>
+</ul>
+<h3 id="21-3-排除命令"><a href="#21-3-排除命令" class="headerlink" title="21.3 排除命令"></a>21.3 排除命令</h3><pre><code>$ sed -n &apos;/header/!p&apos; data2.txt
+This is the first data line.
+This is the second data line.
+This is the last line.
+$</code></pre><p>就是输出不符合规则的文本。</p>
+<h3 id="21-4-改变流"><a href="#21-4-改变流" class="headerlink" title="21.4 改变流"></a>21.4 改变流</h3><h4 id="21-4-1-分支"><a href="#21-4-1-分支" class="headerlink" title="21.4.1 分支"></a>21.4.1 分支</h4><p>可以排除指定块，不对其使用命令。分支（branch）命令b的格式如下： <strong>[address]b [label]</strong> address参数决定了哪些行的数据会触发分支命令。label参数定义了要跳转到的位置。如果没有加label参数，跳转命令会跳转到脚本的结尾。</p>
+<pre><code>$ cat data2.txt
+This is the header line.
+This is the first data line.
+This is the second data line.
+This is the last line.
+$
+$ sed &apos;{2,3b ; s/This is/Is this/ ; s/line./test?/}&apos; data2.txt
+Is this the header test?
+This is the first data line.
+This is the second data line.
+Is this the last test?
+$</code></pre><p>跳过了第二行和第三行</p>
+<h4 id="21-4-2-测试"><a href="#21-4-2-测试" class="headerlink" title="21.4.2 测试"></a>21.4.2 测试</h4><p>如果替换命令成功匹配并替换了一个模式，测试命令就会跳转到指定的标签。如果替换命令未能匹配指定的模式，测试命令就不会跳转。 测试命令使用与分支命令相同的格式。 <strong>[address]t [label]</strong> 跟分支命令一样，在没有指定标签的情况下，如果测试成功，sed会跳转到脚本的结尾。</p>
+<blockquote>
+<p>这个命令就像是if else，如果替换前面的替换成功了那么后面的就不会进行操作。</p>
+</blockquote>
+<h3 id="21-5-模式替代"><a href="#21-5-模式替代" class="headerlink" title="21.5 模式替代"></a>21.5 模式替代</h3><p>用通配符<code>.</code>匹配多个单词，对其进行操作。</p>
+<h4 id="21-5-1-amp-符号"><a href="#21-5-1-amp-符号" class="headerlink" title="21.5.1 &amp;符号"></a>21.5.1 &amp;符号</h4><pre><code>$ echo &quot;The cat sleeps in his hat.&quot; | sed &apos;s/.at/&quot;&amp;&quot;/g&apos;
+The &quot;cat&quot; sleeps in his &quot;hat&quot;.
+$</code></pre><p>当模式匹配了单词cat，<code>&quot;cat&quot;</code>就会出现在了替换后的单词里。当它匹配了单词hat，”hat” 就出现在了替换后的单词中。</p>
+<h4 id="21-5-2-替代单独的单词"><a href="#21-5-2-替代单独的单词" class="headerlink" title="21.5.2 替代单独的单词"></a>21.5.2 替代单独的单词</h4><p>用单词替代短语，括号括起来的就是子模式。</p>
+<pre><code>$ echo &quot;That furry cat is pretty&quot; | sed &apos;s/furry \(.at\)/\1/&apos;
+That cat is pretty
+$
+$ echo &quot;That furry hat is pretty&quot; | sed &apos;s/furry \(.at\)/\1/&apos;
+That hat is pretty
+$ </code></pre><h2 id="22-gawk进阶"><a href="#22-gawk进阶" class="headerlink" title="22 gawk进阶"></a>22 gawk进阶</h2><blockquote>
+<p>粗略的看一看，不要拘泥细节</p>
+</blockquote>
+<h3 id="22-1-使用变量"><a href="#22-1-使用变量" class="headerlink" title="22.1 使用变量"></a>22.1 使用变量</h3><p>支持两种不同类型的变量：</p>
+<ul>
+<li>内建变量</li>
+<li>自定义变量</li>
+</ul>
+<h4 id="22-1-1-内建变量"><a href="#22-1-1-内建变量" class="headerlink" title="22.1.1 内建变量"></a>22.1.1 内建变量</h4><p>字段分隔符，用来分割数据。</p>
+<ul>
+<li>FIELDWIDTHS 由空格分隔的一列数字，定义了每个数据字段确切宽度</li>
+<li>FS 输入字段分隔符</li>
+<li>RS 输入记录分隔符</li>
+<li>OFS 输出字段分隔符</li>
+<li>ORS 输出记录分隔符</li>
+</ul>
+<p>默认分隔符为空格，用FS来判断分隔符，然后用OFS输出不同的分隔符。</p>
+<pre><code>$ cat data1
+data11,data12,data13,data14,data15
+data21,data22,data23,data24,data25
+data31,data32,data33,data34,data35
+$ gawk &apos;BEGIN{FS=&quot;,&quot;; OFS=&quot;-&quot;} {print $1,$2,$3}&apos; data1
+data11-data12-data13
+data21-data22-data23
+data31-data32-data33</code></pre><p>变量RS和ORS定义了gawk程序如何处理数据流中的字段。默认情况下，gawk将RS和ORS设为换行符。默认的RS值表明，输入数据流中的每行新本就是一条新纪录。</p>
+<p>前面的FS是处理字段，这个RS是处理字段里的数据。记录分隔符。</p>
+<pre><code>$ cat data2
+Riley Mullen
+123 Main Street
+Chicago, IL 60601
+(312)555-1234
+Frank Williams
+456 Oak Street
+Indianapolis, IN 46201
+(317)555-9876
+Haley Snell
+4231 Elm Street
+Detroit, MI 48201
+(313)555-4938
+$ gawk &apos;BEGIN{FS=&quot;\n&quot;; RS=&quot;&quot;} {print $1,$4}&apos; data2
+Riley Mullen (312)555-1234
+Frank Williams (317)555-9876
+Haley Snell (313)555-4938
+$ </code></pre><h4 id="22-1-2-自定义变量"><a href="#22-1-2-自定义变量" class="headerlink" title="22.1.2 自定义变量"></a>22.1.2 自定义变量</h4><p>gawk允许你定义自己的变量在程序代码中使用。gawk自定义变量名可以是任意数目的字母、数字和下划线，但不能以数字开头。重要的是，<strong>要记住gawk变量名区分大小写。</strong></p>
+<pre><code>$ gawk &apos;
+&gt; BEGIN{
+&gt; testing=&quot;This is a test&quot;
+&gt; print testing
+&gt; }&apos;
+This is a test
+$ </code></pre><h3 id="22-2-处理数组"><a href="#22-2-处理数组" class="headerlink" title="22.2 处理数组"></a>22.2 处理数组</h3><h4 id="22-2-1-定义数组变量"><a href="#22-2-1-定义数组变量" class="headerlink" title="22.2.1 定义数组变量"></a>22.2.1 定义数组变量</h4><p>数组变量赋值的格式如下： <strong>var[index] = element</strong> 和传统语言有点区别，要注意index也可以为任意类型。 下面是一些gawk中数组变量的例子。</p>
+<pre><code>capital[&quot;Illinois&quot;] = &quot;Springfield&quot;
+capital[&quot;Indiana&quot;] = &quot;Indianapolis&quot;
+capital[&quot;Ohio&quot;] = &quot;Columbus&quot; </code></pre><h4 id="22-2-2-遍历数组变量"><a href="#22-2-2-遍历数组变量" class="headerlink" title="22.2.2 遍历数组变量"></a>22.2.2 遍历数组变量</h4><p>重要的是记住这个变量中存储的是索引值而不是数组元素值。可以将这个变量用作数组的索引，轻松地取出数据元素值。</p>
+<pre><code>$ gawk &apos;BEGIN{
+&gt; var[&quot;a&quot;] = 1
+&gt; var[&quot;g&quot;] = 2
+&gt; var[&quot;m&quot;] = 3
+&gt; var[&quot;u&quot;] = 4
+&gt; for (test in var)
+&gt; {
+&gt; print &quot;Index:&quot;,test,&quot; - Value:&quot;,var[test]
+&gt; }
+&gt; }&apos;
+Index: u - Value: 4
+Index: m - Value: 3
+Index: a - Value: 1
+Index: g - Value: 2</code></pre><p>不像传统语言，索引值不会按任何特定顺序返回，但它们都能够指向对应的数据元素值。明白这点很重要，因为你不能指望着返回的值都是有固定的顺序，只能保证索引值和数据值是对应的。</p>
+<h4 id="22-2-3-删除数组变量"><a href="#22-2-3-删除数组变量" class="headerlink" title="22.2.3 删除数组变量"></a>22.2.3 删除数组变量</h4><p>从关联数组中删除数组索引要用一个特殊的命令。 <strong>delete array[index]</strong></p>
+<h3 id="22-3-使用模式"><a href="#22-3-使用模式" class="headerlink" title="22.3 使用模式"></a>22.3 使用模式</h3><p>和sed差不多，用正则表达式等进行匹配。</p>
+<h3 id="22-4-结构化命令"><a href="#22-4-结构化命令" class="headerlink" title="22.4 结构化命令"></a>22.4 结构化命令</h3><h4 id="22-4-1-if语句"><a href="#22-4-1-if语句" class="headerlink" title="22.4.1 if语句"></a>22.4.1 if语句</h4><p>和脚本不一样，这里的if就像常规的编程语言，需要用花括号<code>{}</code>括起来。</p>
+<pre><code>$ gawk &apos;{
+&gt; if ($1 &gt; 20)
+&gt; {
+&gt; x = $1 * 2
+&gt; print x
+&gt; } else
+&gt; {
+&gt; &gt; x = $1 / 2
+&gt; print x
+&gt; }}&apos; data4
+5
+2.5
+6.5
+100
+68
+$ </code></pre><h4 id="22-4-2-while语句"><a href="#22-4-2-while语句" class="headerlink" title="22.4.2 while语句"></a>22.4.2 while语句</h4><p>和C语言一样。</p>
+<h4 id="22-4-3-do-while语句"><a href="#22-4-3-do-while语句" class="headerlink" title="22.4.3 do-while语句"></a>22.4.3 do-while语句</h4><p>同上。</p>
+<h4 id="22-4-4-for语句"><a href="#22-4-4-for语句" class="headerlink" title="22.4.4 for语句"></a>22.4.4 for语句</h4><p>支持C语言风格的for语句</p>
+<pre><code>$ gawk &apos;{
+&gt; total = 0
+&gt; for (i = 1; i &lt; 4; i++)
+&gt; {
+&gt; total += $i
+&gt; } </code></pre><h3 id="22-5-格式化打印"><a href="#22-5-格式化打印" class="headerlink" title="22.5 格式化打印"></a>22.5 格式化打印</h3><p>和<strong>C语言</strong>中printf的格式一样，可以指定整数或者字符。</p>
+<pre><code>$ gawk &apos;BEGIN{
+&gt; x = 10 * 100
+&gt; printf &quot;The answer is: %e\n&quot;, x
+&gt; }&apos;
+The answer is: 1.000000e+03
+$ </code></pre><h3 id="22-6-内建函数"><a href="#22-6-内建函数" class="headerlink" title="22.6 内建函数"></a>22.6 内建函数</h3><p>也有很多自带函数，和C语言库函数一样。比如sqrt等等。</p>
+<h4 id="22-6-1-数学函数"><a href="#22-6-1-数学函数" class="headerlink" title="22.6.1 数学函数"></a>22.6.1 数学函数</h4><ul>
+<li><code>atan2(x, y)</code> x/y的反正切，x和y以弧度为单位</li>
+<li><code>cos(x)</code> x的余弦，x以弧度为单位</li>
+<li><code>exp(x)</code> x的指数函数</li>
+<li><code>int(x)</code> x的整数部分，取靠近零一侧的值</li>
+<li><code>log(x)</code> x的自然对数</li>
+<li><code>rand( )</code> 比0大比1小的随机浮点值</li>
+<li><code>sin(x)</code> x的正弦，x以弧度为单位</li>
+<li><code>sqrt(x)</code> x的平方根</li>
+<li><code>srand(x)</code> 为计算随机数指定一个种子值</li>
+</ul>
+<h4 id="22-6-2-字符串函数"><a href="#22-6-2-字符串函数" class="headerlink" title="22.6.2 字符串函数"></a>22.6.2 字符串函数</h4><p>挑几个有用一点的。</p>
+<ul>
+<li><code>split(s, a [,r])</code> 将s用FS字符或正则表达式r（如果指定了的话）分开放到数组a中。返回字段的总数</li>
+<li><code>index(s, t)</code> 返回字符串t在字符串s中的索引值，如果没找到的话返回0</li>
+<li><code>length([s])</code> 返回字符串s的长度；如果没有指定的话，返回$0的长度</li>
+<li><code>tolower(s)</code> 将s中的所有字符转换成小写</li>
+</ul>
+<h4 id="22-6-3-时间函数"><a href="#22-6-3-时间函数" class="headerlink" title="22.6.3 时间函数"></a>22.6.3 时间函数</h4><ul>
+<li>mktime(datespec) 将一个按YYYY MM DD HH MM SS [DST]格式指定的日期转换成时间戳值</li>
+<li>strftime(format[,timestamp]) 将当前时间的时间戳或timestamp（如果提供了的话）转化格式化日期（采用shell函数date()的格式）</li>
+<li>systime( ) 返回当前时间的时间戳</li>
+</ul>
+<p>下面是在gawk程序中使用时间函数的例子。</p>
+<pre><code>$ gawk &apos;BEGIN{
+&gt; date = systime()
+&gt; day = strftime(&quot;%A, %B %d, %Y&quot;, date)
+&gt; print day
+&gt; }&apos;
+Friday, December 26, 2014
+$ </code></pre><h3 id="22-7-自定义函数"><a href="#22-7-自定义函数" class="headerlink" title="22.7 自定义函数"></a>22.7 自定义函数</h3><p>要定义自己的函数，必须用function关键字。</p>
+<pre><code>function name([variables])
+{
+statements
+}</code></pre><p>其他的和常规语言一样，包括调用和编写库函数。</p>
+<h2 id="23-总结"><a href="#23-总结" class="headerlink" title="23 总结"></a>23 总结</h2><blockquote>
+<p>剩下的章节因为时间关系就不看了。</p>
+</blockquote>
+<p>通过对本书的系统性学习，发现Linux真的是太强大了，简简单单的命令就能操控一切。尤其是shell脚本编程，早该看到这本书的。以前命令每次忘记了还要去找，然后一大堆的cd vi。现在发现直接用脚本省事多了，熟悉之后真的很方便。</p>
+<p>命令行这个东西还是不需要去死记硬背，用多了自然就会了，实在不会的也可以去查阅资料。而且学完本书，感觉自己对Linux的理解又上了一个层次。</p>
+<p>编程语言果然是互通的，基本上学好C语言，上手其他语言真的很快，一些格式都是通用的。</p>
+<p>看书的过程总的来说并不是相当仔细，现在回想一下有些内容已经忘了，需要做到系统的复习。我的计划是每周花半天时间去回顾之前所做的笔记，查漏补缺。其实最主要的还是需要一个实战的项目才能让自己成长的更快！</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/shell/" rel="tag"># shell</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/05/11/arp-e5-8d-8f-e8-ae-ae/" rel="prev" title="ARP协议">
+      <i class="fa fa-chevron-left"></i> ARP协议
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/05/20/ervernote-wordpress-csdn/" rel="next" title="教你打造《印象笔记 + wordpress + csdn》 一站式发布">
+      教你打造《印象笔记 + wordpress + csdn》 一站式发布 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux命令行与shell脚本编程大全"><span class="nav-number">1.</span> <span class="nav-text">Linux命令行与shell脚本编程大全</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-初识Linux-shell"><span class="nav-number">1.1.</span> <span class="nav-text">1 初识Linux shell</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-什么是Linux"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.1 什么是Linux</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-GNU工具"><span class="nav-number">1.1.2.</span> <span class="nav-text">1.2 GNU工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-shell"><span class="nav-number">1.1.3.</span> <span class="nav-text">1.3 shell</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-Linux发行版"><span class="nav-number">1.1.4.</span> <span class="nav-text">1.4 Linux发行版</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-走进shell"><span class="nav-number">1.2.</span> <span class="nav-text">2 走进shell</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-进入命令行"><span class="nav-number">1.2.1.</span> <span class="nav-text">2.1 进入命令行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-通过Linux控制台终端访问CLI"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.2 通过Linux控制台终端访问CLI</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-基本的bash-shell命令"><span class="nav-number">1.3.</span> <span class="nav-text">3 基本的bash shell命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-启动shell"><span class="nav-number">1.3.1.</span> <span class="nav-text">3.1 启动shell</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-shell提示符"><span class="nav-number">1.3.2.</span> <span class="nav-text">3.2 shell提示符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-bash-手册"><span class="nav-number">1.3.3.</span> <span class="nav-text">3.3 bash 手册</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Linux手册页的内容区域"><span class="nav-number">1.3.3.1.</span> <span class="nav-text">Linux手册页的内容区域</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-浏览文件系统"><span class="nav-number">1.3.4.</span> <span class="nav-text">3.4 浏览文件系统</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#常见Linux目录结构"><span class="nav-number">1.3.4.1.</span> <span class="nav-text">常见Linux目录结构</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-遍历目录"><span class="nav-number">1.3.5.</span> <span class="nav-text">3.5 遍历目录</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-5-1-绝对文件路径"><span class="nav-number">1.3.5.1.</span> <span class="nav-text">3.5.1 绝对文件路径</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-5-2-相对文件路径"><span class="nav-number">1.3.5.2.</span> <span class="nav-text">3.5.2 相对文件路径</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-6-文件和目录列表"><span class="nav-number">1.3.6.</span> <span class="nav-text">3.6 文件和目录列表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-7-处理文件"><span class="nav-number">1.3.7.</span> <span class="nav-text">3.7 处理文件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-7-1-创建文件"><span class="nav-number">1.3.7.1.</span> <span class="nav-text">3.7.1 创建文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-7-2-复制文件"><span class="nav-number">1.3.7.2.</span> <span class="nav-text">3.7.2 复制文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-7-3-制表键自动补全"><span class="nav-number">1.3.7.3.</span> <span class="nav-text">3.7.3 制表键自动补全</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-7-4-链接文件"><span class="nav-number">1.3.7.4.</span> <span class="nav-text">3.7.4 链接文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-7-5-重命名文件"><span class="nav-number">1.3.7.5.</span> <span class="nav-text">3.7.5 重命名文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-7-6-删除文件"><span class="nav-number">1.3.7.6.</span> <span class="nav-text">3.7.6 删除文件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-8-处理目录"><span class="nav-number">1.3.8.</span> <span class="nav-text">3.8 处理目录</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-7-1-创建目录"><span class="nav-number">1.3.8.1.</span> <span class="nav-text">3.7.1 创建目录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-7-2-删除目录"><span class="nav-number">1.3.8.2.</span> <span class="nav-text">3.7.2 删除目录</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-9-查看文件内容"><span class="nav-number">1.3.9.</span> <span class="nav-text">3.9 查看文件内容</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-9-1-查看文件类型"><span class="nav-number">1.3.9.1.</span> <span class="nav-text">3.9.1 查看文件类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-9-2-查看整个文件"><span class="nav-number">1.3.9.2.</span> <span class="nav-text">3.9.2 查看整个文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-9-3-查看部分文件"><span class="nav-number">1.3.9.3.</span> <span class="nav-text">3.9.3 查看部分文件</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-更多的bash-shell命令"><span class="nav-number">1.4.</span> <span class="nav-text">4 更多的bash shell命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-监测程序"><span class="nav-number">1.4.1.</span> <span class="nav-text">4.1 监测程序</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1-1-探查进程"><span class="nav-number">1.4.1.1.</span> <span class="nav-text">4.1.1 探查进程</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Unix风格的ps命令参数"><span class="nav-number">1.4.1.1.1.</span> <span class="nav-text">Unix风格的ps命令参数</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1-2-实时监测进程"><span class="nav-number">1.4.1.2.</span> <span class="nav-text">4.1.2 实时监测进程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1-3-结束进程"><span class="nav-number">1.4.1.3.</span> <span class="nav-text">4.1.3 结束进程</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-检测磁盘空间"><span class="nav-number">1.4.2.</span> <span class="nav-text">4.2 检测磁盘空间</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-1-挂在存储媒体"><span class="nav-number">1.4.2.1.</span> <span class="nav-text">4.2.1 挂在存储媒体</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-2-查看磁盘空间"><span class="nav-number">1.4.2.2.</span> <span class="nav-text">4.2.2 查看磁盘空间</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-处理数据文件"><span class="nav-number">1.4.3.</span> <span class="nav-text">4.3 处理数据文件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-3-1-排序数据"><span class="nav-number">1.4.3.1.</span> <span class="nav-text">4.3.1 排序数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-3-2-搜索数据"><span class="nav-number">1.4.3.2.</span> <span class="nav-text">4.3.2 搜索数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-3-3-压缩数据"><span class="nav-number">1.4.3.3.</span> <span class="nav-text">4.3.3 压缩数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-3-4-归档数据"><span class="nav-number">1.4.3.4.</span> <span class="nav-text">4.3.4 归档数据</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-理解shell"><span class="nav-number">1.5.</span> <span class="nav-text">5 理解shell</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-shell的类型"><span class="nav-number">1.5.1.</span> <span class="nav-text">5.1 shell的类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-shell的父子关系"><span class="nav-number">1.5.2.</span> <span class="nav-text">5.2 shell的父子关系</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#5-2-1-进程列表"><span class="nav-number">1.5.2.1.</span> <span class="nav-text">5.2.1 进程列表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-2-1-牛笔的子shell用法"><span class="nav-number">1.5.2.2.</span> <span class="nav-text">5.2.1 牛笔的子shell用法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1）后台模式"><span class="nav-number">1.5.2.2.1.</span> <span class="nav-text">1）后台模式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2）进程列表置于后台"><span class="nav-number">1.5.2.2.2.</span> <span class="nav-text">2）进程列表置于后台</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3）协程"><span class="nav-number">1.5.2.2.3.</span> <span class="nav-text">3）协程</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-3-理解shell的内建命令"><span class="nav-number">1.5.3.</span> <span class="nav-text">5.3 理解shell的内建命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#5-3-1-外部命令"><span class="nav-number">1.5.3.1.</span> <span class="nav-text">5.3.1 外部命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-3-2-内建命令"><span class="nav-number">1.5.3.2.</span> <span class="nav-text">5.3.2 内建命令</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-使用Linux环境变量"><span class="nav-number">1.6.</span> <span class="nav-text">6 使用Linux环境变量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#6-1-什么是环境变量"><span class="nav-number">1.6.1.</span> <span class="nav-text">6.1 什么是环境变量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#6-1-1-全局环境变量"><span class="nav-number">1.6.1.1.</span> <span class="nav-text">6.1.1 全局环境变量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-1-2-局部环境变量"><span class="nav-number">1.6.1.2.</span> <span class="nav-text">6.1.2 局部环境变量</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-2-设置用户定义变量"><span class="nav-number">1.6.2.</span> <span class="nav-text">6.2 设置用户定义变量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#6-2-1-设置局部用户定义变量"><span class="nav-number">1.6.2.1.</span> <span class="nav-text">6.2.1 设置局部用户定义变量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-2-2-设置全局环境变量"><span class="nav-number">1.6.2.2.</span> <span class="nav-text">6.2.2 设置全局环境变量</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-3-删除环境"><span class="nav-number">1.6.3.</span> <span class="nav-text">6.3 删除环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-4-默认的shell环境变量"><span class="nav-number">1.6.4.</span> <span class="nav-text">6.4 默认的shell环境变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-5-设置PATH环境变量"><span class="nav-number">1.6.5.</span> <span class="nav-text">6.5 设置PATH环境变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-6-环境变量持久化"><span class="nav-number">1.6.6.</span> <span class="nav-text">6.6 环境变量持久化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-理解Linux文件权限"><span class="nav-number">1.7.</span> <span class="nav-text">7 理解Linux文件权限</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#7-1-Linux的安全性"><span class="nav-number">1.7.1.</span> <span class="nav-text">7.1 Linux的安全性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#7-1-1-etc-passwd文件"><span class="nav-number">1.7.1.1.</span> <span class="nav-text">7.1.1 &#x2F;etc&#x2F;passwd文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-1-2-etc-shadow文件"><span class="nav-number">1.7.1.2.</span> <span class="nav-text">7.1.2 &#x2F;etc&#x2F;shadow文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-1-3-添加新用户"><span class="nav-number">1.7.1.3.</span> <span class="nav-text">7.1.3 添加新用户</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-1-4-删除用户"><span class="nav-number">1.7.1.4.</span> <span class="nav-text">7.1.4 删除用户</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-1-5-修改用户"><span class="nav-number">1.7.1.5.</span> <span class="nav-text">7.1.5 修改用户</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-2-使用Linux组"><span class="nav-number">1.7.2.</span> <span class="nav-text">7.2 使用Linux组</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#7-2-1-etc-group文件"><span class="nav-number">1.7.2.1.</span> <span class="nav-text">7.2.1 &#x2F;etc&#x2F;group文件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-3-理解文件权限"><span class="nav-number">1.7.3.</span> <span class="nav-text">7.3 理解文件权限</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#7-3-1-使用文件权限符"><span class="nav-number">1.7.3.1.</span> <span class="nav-text">7.3.1 使用文件权限符</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#第一个字符："><span class="nav-number">1.7.3.1.1.</span> <span class="nav-text">第一个字符：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3组三字符编码，每一组定义了3种访问权限："><span class="nav-number">1.7.3.1.2.</span> <span class="nav-text">3组三字符编码，每一组定义了3种访问权限：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#每一组分别是："><span class="nav-number">1.7.3.1.3.</span> <span class="nav-text">每一组分别是：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-3-2-默认文件权限"><span class="nav-number">1.7.3.2.</span> <span class="nav-text">7.3.2 默认文件权限</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Linux文件权限码"><span class="nav-number">1.7.3.2.1.</span> <span class="nav-text">Linux文件权限码</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-4-改变安全性设置"><span class="nav-number">1.7.4.</span> <span class="nav-text">7.4 改变安全性设置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#7-4-1-改变权限"><span class="nav-number">1.7.4.1.</span> <span class="nav-text">7.4.1 改变权限</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-4-2-改变所属关系"><span class="nav-number">1.7.4.2.</span> <span class="nav-text">7.4.2 改变所属关系</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-5-共享文件"><span class="nav-number">1.7.5.</span> <span class="nav-text">7.5 共享文件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-管理文件系统"><span class="nav-number">1.8.</span> <span class="nav-text">8 管理文件系统</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#8-1-探索Linux文件系统"><span class="nav-number">1.8.1.</span> <span class="nav-text">8.1 探索Linux文件系统</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#8-1-1-基本的Linux文件系统"><span class="nav-number">1.8.1.1.</span> <span class="nav-text">8.1.1 基本的Linux文件系统</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1）ext文件系统"><span class="nav-number">1.8.1.1.1.</span> <span class="nav-text">1）ext文件系统</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2）ext2文件系统"><span class="nav-number">1.8.1.1.2.</span> <span class="nav-text">2）ext2文件系统</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-2-操作文件系统"><span class="nav-number">1.8.2.</span> <span class="nav-text">8.2 操作文件系统</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#8-2-1-创建分区"><span class="nav-number">1.8.2.1.</span> <span class="nav-text">8.2.1 创建分区</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-2-2-创建文件系统"><span class="nav-number">1.8.2.2.</span> <span class="nav-text">8.2.2 创建文件系统</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#创建文件系统的命令行程序"><span class="nav-number">1.8.2.2.1.</span> <span class="nav-text">创建文件系统的命令行程序</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-2-3-文件系统的检查与修复"><span class="nav-number">1.8.2.3.</span> <span class="nav-text">8.2.3 文件系统的检查与修复</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-3-逻辑卷管理"><span class="nav-number">1.8.3.</span> <span class="nav-text">8.3 逻辑卷管理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#8-3-1-逻辑卷管理布局"><span class="nav-number">1.8.3.1.</span> <span class="nav-text">8.3.1 逻辑卷管理布局</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#逻辑卷管理环境的基本布局："><span class="nav-number">1.8.3.1.1.</span> <span class="nav-text">逻辑卷管理环境的基本布局：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-3-2-Linux中的LVM"><span class="nav-number">1.8.3.2.</span> <span class="nav-text">8.3.2 Linux中的LVM</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1）快照"><span class="nav-number">1.8.3.2.1.</span> <span class="nav-text">1）快照</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2）条带化"><span class="nav-number">1.8.3.2.2.</span> <span class="nav-text">2）条带化</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3）镜像"><span class="nav-number">1.8.3.2.3.</span> <span class="nav-text">3）镜像</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-3-3-使用Linux-LVM"><span class="nav-number">1.8.3.3.</span> <span class="nav-text">8.3.3 使用Linux LVM</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-安装软件程序"><span class="nav-number">1.9.</span> <span class="nav-text">9 安装软件程序</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#9-1-包管理基础"><span class="nav-number">1.9.1.</span> <span class="nav-text">9.1 包管理基础</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-2-基于Debian的系统"><span class="nav-number">1.9.2.</span> <span class="nav-text">9.2 基于Debian的系统</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#9-2-1-用aptitude管理软件包"><span class="nav-number">1.9.2.1.</span> <span class="nav-text">9.2.1 用aptitude管理软件包</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-2-2-用aptitude安装软件包"><span class="nav-number">1.9.2.2.</span> <span class="nav-text">9.2.2 用aptitude安装软件包</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-2-3-用aptitude更新软件"><span class="nav-number">1.9.2.3.</span> <span class="nav-text">9.2.3 用aptitude更新软件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-2-4-用aptitude卸载软件"><span class="nav-number">1.9.2.4.</span> <span class="nav-text">9.2.4 用aptitude卸载软件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-3-apt-get和aptitude的区别"><span class="nav-number">1.9.2.5.</span> <span class="nav-text">9.3 apt-get和aptitude的区别</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-使用编辑器"><span class="nav-number">1.10.</span> <span class="nav-text">10 使用编辑器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#10-1-vim编辑器"><span class="nav-number">1.10.1.</span> <span class="nav-text">10.1 vim编辑器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#10-1-1-检查vim软件包"><span class="nav-number">1.10.1.1.</span> <span class="nav-text">10.1.1 检查vim软件包</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10-1-2-vim基础"><span class="nav-number">1.10.1.2.</span> <span class="nav-text">10.1.2 vim基础</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10-1-3-编辑数据"><span class="nav-number">1.10.1.3.</span> <span class="nav-text">10.1.3 编辑数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10-1-4-复制和粘贴"><span class="nav-number">1.10.1.4.</span> <span class="nav-text">10.1.4 复制和粘贴</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10-1-5-查找和替换"><span class="nav-number">1.10.1.5.</span> <span class="nav-text">10.1.5 查找和替换</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1）-查找"><span class="nav-number">1.10.1.5.1.</span> <span class="nav-text">1） 查找</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1）替换"><span class="nav-number">1.10.1.5.2.</span> <span class="nav-text">1）替换</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#11-构建基本脚本"><span class="nav-number">1.11.</span> <span class="nav-text">11 构建基本脚本</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#11-1-使用多个命令"><span class="nav-number">1.11.1.</span> <span class="nav-text">11.1 使用多个命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-2-创建shell脚本文件"><span class="nav-number">1.11.2.</span> <span class="nav-text">11.2 创建shell脚本文件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#11-2-1-编写自己的脚本"><span class="nav-number">1.11.2.1.</span> <span class="nav-text">11.2.1 编写自己的脚本</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1）建一个文件夹存放脚本"><span class="nav-number">1.11.2.1.1.</span> <span class="nav-text">1）建一个文件夹存放脚本</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2）将该文件添加到PATH里（2和7选一个）"><span class="nav-number">1.11.2.1.2.</span> <span class="nav-text">2）将该文件添加到PATH里（2和7选一个）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3）新建文件"><span class="nav-number">1.11.2.1.3.</span> <span class="nav-text">3）新建文件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4）将命令写入文件并保存"><span class="nav-number">1.11.2.1.4.</span> <span class="nav-text">4）将命令写入文件并保存</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5）更改权限"><span class="nav-number">1.11.2.1.5.</span> <span class="nav-text">5）更改权限</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#6）运行脚本"><span class="nav-number">1.11.2.1.6.</span> <span class="nav-text">6）运行脚本</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#7）将脚本目录加入到环境变量"><span class="nav-number">1.11.2.1.7.</span> <span class="nav-text">7）将脚本目录加入到环境变量</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#8）在任意界面运行脚本"><span class="nav-number">1.11.2.1.8.</span> <span class="nav-text">8）在任意界面运行脚本</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-3-显示消息"><span class="nav-number">1.11.3.</span> <span class="nav-text">11.3 显示消息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-4-使用变量"><span class="nav-number">1.11.4.</span> <span class="nav-text">11.4 使用变量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#11-4-1-使用环境变量"><span class="nav-number">1.11.4.1.</span> <span class="nav-text">11.4.1 使用环境变量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#11-4-2-用户变量"><span class="nav-number">1.11.4.2.</span> <span class="nav-text">11.4.2 用户变量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#11-4-3-命令替换"><span class="nav-number">1.11.4.3.</span> <span class="nav-text">11.4.3 命令替换</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-5-重定向输入和输出"><span class="nav-number">1.11.5.</span> <span class="nav-text">11.5 重定向输入和输出</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#11-5-1-输出重定向"><span class="nav-number">1.11.5.1.</span> <span class="nav-text">11.5.1 输出重定向</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#11-5-2-输入重定向"><span class="nav-number">1.11.5.2.</span> <span class="nav-text">11.5.2 输入重定向</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#内联输入重定向符号"><span class="nav-number">1.11.5.2.1.</span> <span class="nav-text">内联输入重定向符号</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-6-管道"><span class="nav-number">1.11.6.</span> <span class="nav-text">11.6 管道</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-7-执行数学运算"><span class="nav-number">1.11.7.</span> <span class="nav-text">11.7 执行数学运算</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#11-7-1-expr命令"><span class="nav-number">1.11.7.1.</span> <span class="nav-text">11.7.1 expr命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#11-7-2-使用方括号"><span class="nav-number">1.11.7.2.</span> <span class="nav-text">11.7.2 使用方括号</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#11-7-3-浮点解决方案"><span class="nav-number">1.11.7.3.</span> <span class="nav-text">11.7.3 浮点解决方案</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#在脚本里使用bc"><span class="nav-number">1.11.7.3.1.</span> <span class="nav-text">在脚本里使用bc</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#使用内联输入重定向解决多个表达式的麻烦"><span class="nav-number">1.11.7.3.2.</span> <span class="nav-text">使用内联输入重定向解决多个表达式的麻烦</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-8-退出脚本"><span class="nav-number">1.11.8.</span> <span class="nav-text">11.8 退出脚本</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#11-8-1-查看退出状态码"><span class="nav-number">1.11.8.1.</span> <span class="nav-text">11.8.1 查看退出状态码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#11-8-2-exit退出码"><span class="nav-number">1.11.8.2.</span> <span class="nav-text">11.8.2 exit退出码</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#12-使用结构化命令"><span class="nav-number">1.12.</span> <span class="nav-text">12 使用结构化命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#12-1-使用if-then语句"><span class="nav-number">1.12.1.</span> <span class="nav-text">12.1 使用if-then语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-2-if-then-else语句"><span class="nav-number">1.12.2.</span> <span class="nav-text">12.2 if-then-else语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-3-嵌套if"><span class="nav-number">1.12.3.</span> <span class="nav-text">12.3 嵌套if</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-4-test命令"><span class="nav-number">1.12.4.</span> <span class="nav-text">12.4 test命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-5-复合条件测试"><span class="nav-number">1.12.5.</span> <span class="nav-text">12.5 复合条件测试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-6-if-then的高级特性"><span class="nav-number">1.12.6.</span> <span class="nav-text">12.6 if-then的高级特性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#12-6-1-双括号"><span class="nav-number">1.12.6.1.</span> <span class="nav-text">12.6.1 双括号</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#12-6-2-使用方括号"><span class="nav-number">1.12.6.2.</span> <span class="nav-text">12.6.2 使用方括号</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-7-case命令"><span class="nav-number">1.12.7.</span> <span class="nav-text">12.7 case命令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#13-更多结构化命令"><span class="nav-number">1.13.</span> <span class="nav-text">13 更多结构化命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#13-1-for命令"><span class="nav-number">1.13.1.</span> <span class="nav-text">13.1 for命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#13-1-1-读取列表中的值"><span class="nav-number">1.13.1.1.</span> <span class="nav-text">13.1.1 读取列表中的值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#13-1-2-读取列表中的复杂值"><span class="nav-number">1.13.1.2.</span> <span class="nav-text">13.1.2 读取列表中的复杂值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#13-1-3-从变量读取列表"><span class="nav-number">1.13.1.3.</span> <span class="nav-text">13.1.3 从变量读取列表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#13-1-4-从命令读取值"><span class="nav-number">1.13.1.4.</span> <span class="nav-text">13.1.4 从命令读取值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#13-1-5-更改字符分隔符"><span class="nav-number">1.13.1.5.</span> <span class="nav-text">13.1.5 更改字符分隔符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#13-1-6-用通配符读取目录"><span class="nav-number">1.13.1.6.</span> <span class="nav-text">13.1.6 用通配符读取目录</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13-2-C语言风格的for命令"><span class="nav-number">1.13.2.</span> <span class="nav-text">13.2 C语言风格的for命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#13-2-1-C语言的for命令"><span class="nav-number">1.13.2.1.</span> <span class="nav-text">13.2.1 C语言的for命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#13-2-2-使用多个变量"><span class="nav-number">1.13.2.2.</span> <span class="nav-text">13.2.2 使用多个变量</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13-3-while命令"><span class="nav-number">1.13.3.</span> <span class="nav-text">13.3 while命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#13-3-1-while的基本格式"><span class="nav-number">1.13.3.1.</span> <span class="nav-text">13.3.1 while的基本格式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#13-3-2-使用多个测试命令"><span class="nav-number">1.13.3.2.</span> <span class="nav-text">13.3.2 使用多个测试命令</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13-4-until-命令"><span class="nav-number">1.13.4.</span> <span class="nav-text">13.4 until 命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13-5-嵌套循环"><span class="nav-number">1.13.5.</span> <span class="nav-text">13.5 嵌套循环</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13-6-循环处理文件数据"><span class="nav-number">1.13.6.</span> <span class="nav-text">13.6 循环处理文件数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13-7-控制循环"><span class="nav-number">1.13.7.</span> <span class="nav-text">13.7 控制循环</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#13-7-1-break命令"><span class="nav-number">1.13.7.1.</span> <span class="nav-text">13.7.1 break命令</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1）跳出单个循环"><span class="nav-number">1.13.7.1.1.</span> <span class="nav-text">1）跳出单个循环</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2）跳出内部循环"><span class="nav-number">1.13.7.1.2.</span> <span class="nav-text">2）跳出内部循环</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3）跳出外层循环"><span class="nav-number">1.13.7.1.3.</span> <span class="nav-text">3）跳出外层循环</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#13-7-2-continue命令"><span class="nav-number">1.13.7.2.</span> <span class="nav-text">13.7.2 continue命令</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13-8-处理循环的输出"><span class="nav-number">1.13.8.</span> <span class="nav-text">13.8 处理循环的输出</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#14-处理用户输入"><span class="nav-number">1.14.</span> <span class="nav-text">14 处理用户输入</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#14-1命令行参数"><span class="nav-number">1.14.1.</span> <span class="nav-text">14.1命令行参数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#14-1-1-读取参数"><span class="nav-number">1.14.1.1.</span> <span class="nav-text">14.1.1 读取参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#14-1-2-读取脚本名"><span class="nav-number">1.14.1.2.</span> <span class="nav-text">14.1.2 读取脚本名</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#14-1-3-测试参数"><span class="nav-number">1.14.1.3.</span> <span class="nav-text">14.1.3 测试参数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#14-2-特殊参数变量"><span class="nav-number">1.14.2.</span> <span class="nav-text">14.2 特殊参数变量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#14-2-1-参数统计"><span class="nav-number">1.14.2.1.</span> <span class="nav-text">14.2.1 参数统计</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#14-2-2-抓取所有的数据"><span class="nav-number">1.14.2.2.</span> <span class="nav-text">14.2.2 抓取所有的数据</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#14-3-移动变量"><span class="nav-number">1.14.3.</span> <span class="nav-text">14.3 移动变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#14-4-处理选项"><span class="nav-number">1.14.4.</span> <span class="nav-text">14.4 处理选项</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#14-4-1-查找选项"><span class="nav-number">1.14.4.1.</span> <span class="nav-text">14.4.1 查找选项</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#14-4-2-使用getopt命令"><span class="nav-number">1.14.4.2.</span> <span class="nav-text">14.4.2 使用getopt命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#14-4-3-更高级的getopts命令"><span class="nav-number">1.14.4.3.</span> <span class="nav-text">14.4.3 更高级的getopts命令</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#14-5-选项标准化"><span class="nav-number">1.14.5.</span> <span class="nav-text">14.5 选项标准化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#14-6-获得用户输入"><span class="nav-number">1.14.6.</span> <span class="nav-text">14.6 获得用户输入</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#14-6-1-基本的读取"><span class="nav-number">1.14.6.1.</span> <span class="nav-text">14.6.1 基本的读取</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#14-6-2-超时"><span class="nav-number">1.14.6.2.</span> <span class="nav-text">14.6.2 超时</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#14-6-3-隐藏方式读取"><span class="nav-number">1.14.6.3.</span> <span class="nav-text">14.6.3 隐藏方式读取</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#14-6-4-从文件中读取"><span class="nav-number">1.14.6.4.</span> <span class="nav-text">14.6.4 从文件中读取</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#15-呈现数据"><span class="nav-number">1.15.</span> <span class="nav-text">15 呈现数据</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#15-1-理解输入和输出"><span class="nav-number">1.15.1.</span> <span class="nav-text">15.1 理解输入和输出</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#15-1-1-标准文件描述符"><span class="nav-number">1.15.1.1.</span> <span class="nav-text">15.1.1 标准文件描述符</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Linux的标准文件描述符"><span class="nav-number">1.15.1.1.1.</span> <span class="nav-text">Linux的标准文件描述符</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-STDIN"><span class="nav-number">1.15.1.1.2.</span> <span class="nav-text">1) STDIN</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-STDOUT"><span class="nav-number">1.15.1.1.3.</span> <span class="nav-text">2) STDOUT</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3）STDERR"><span class="nav-number">1.15.1.1.4.</span> <span class="nav-text">3）STDERR</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#15-1-2-重定向错误"><span class="nav-number">1.15.1.2.</span> <span class="nav-text">15.1.2 重定向错误</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#15-1-3-重定向错误和数据"><span class="nav-number">1.15.1.3.</span> <span class="nav-text">15.1.3 重定向错误和数据</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#15-2-在脚本中重定向输出"><span class="nav-number">1.15.2.</span> <span class="nav-text">15.2 在脚本中重定向输出</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#15-2-1-临时重定向"><span class="nav-number">1.15.2.1.</span> <span class="nav-text">15.2.1 临时重定向</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#15-2-2-永久重定向"><span class="nav-number">1.15.2.2.</span> <span class="nav-text">15.2.2 永久重定向</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#15-3-在脚本重定向输入"><span class="nav-number">1.15.3.</span> <span class="nav-text">15.3 在脚本重定向输入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#15-4-创建自己的重定向"><span class="nav-number">1.15.4.</span> <span class="nav-text">15.4 创建自己的重定向</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#15-5-列出打开的文件描述符"><span class="nav-number">1.15.5.</span> <span class="nav-text">15.5 列出打开的文件描述符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#15-6-阻止命令输出"><span class="nav-number">1.15.6.</span> <span class="nav-text">15.6 阻止命令输出</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#15-7-创建临时文件"><span class="nav-number">1.15.7.</span> <span class="nav-text">15.7 创建临时文件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#15-7-1-创建本地临时文件"><span class="nav-number">1.15.7.1.</span> <span class="nav-text">15.7.1 创建本地临时文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#15-7-2-在-tmp目录创建临时文件"><span class="nav-number">1.15.7.2.</span> <span class="nav-text">15.7.2 在&#x2F;tmp目录创建临时文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#15-7-3-创建临时目录"><span class="nav-number">1.15.7.3.</span> <span class="nav-text">15.7.3 创建临时目录</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#15-8-记录消息"><span class="nav-number">1.15.8.</span> <span class="nav-text">15.8 记录消息</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#16-控制脚本"><span class="nav-number">1.16.</span> <span class="nav-text">16 控制脚本</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#16-1-处理信号"><span class="nav-number">1.16.1.</span> <span class="nav-text">16.1 处理信号</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#16-1-1-主要Linux信号"><span class="nav-number">1.16.1.1.</span> <span class="nav-text">16.1.1 主要Linux信号</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#16-1-2-生成信号"><span class="nav-number">1.16.1.2.</span> <span class="nav-text">16.1.2 生成信号</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1）中断进程"><span class="nav-number">1.16.1.2.1.</span> <span class="nav-text">1）中断进程</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2）-暂停进程"><span class="nav-number">1.16.1.2.2.</span> <span class="nav-text">2） 暂停进程</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#16-1-3-捕获信号"><span class="nav-number">1.16.1.3.</span> <span class="nav-text">16.1.3 捕获信号</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#16-1-4-捕获脚本退出"><span class="nav-number">1.16.1.4.</span> <span class="nav-text">16.1.4 捕获脚本退出</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#16-1-5-修改或移除捕获"><span class="nav-number">1.16.1.5.</span> <span class="nav-text">16.1.5 修改或移除捕获</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#16-2-以后台模式运行脚本"><span class="nav-number">1.16.2.</span> <span class="nav-text">16.2 以后台模式运行脚本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#16-3-在非控制台下运行脚本"><span class="nav-number">1.16.3.</span> <span class="nav-text">16.3 在非控制台下运行脚本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#16-4-作业控制"><span class="nav-number">1.16.4.</span> <span class="nav-text">16.4 作业控制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#16-4-1-查看作业"><span class="nav-number">1.16.4.1.</span> <span class="nav-text">16.4.1 查看作业</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#16-4-2-重启停止的作业"><span class="nav-number">1.16.4.2.</span> <span class="nav-text">16.4.2 重启停止的作业</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#16-5-调整谦让度"><span class="nav-number">1.16.5.</span> <span class="nav-text">16.5 调整谦让度</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#16-5-1-nice命令"><span class="nav-number">1.16.5.1.</span> <span class="nav-text">16.5.1 nice命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#16-5-2-renice命令"><span class="nav-number">1.16.5.2.</span> <span class="nav-text">16.5.2 renice命令</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#16-6-定时运行作业"><span class="nav-number">1.16.6.</span> <span class="nav-text">16.6 定时运行作业</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#16-6-1-用at命令来计划执行作业"><span class="nav-number">1.16.6.1.</span> <span class="nav-text">16.6.1 用at命令来计划执行作业</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#16-6-2-安排需要定期执行的脚本"><span class="nav-number">1.16.6.2.</span> <span class="nav-text">16.6.2 安排需要定期执行的脚本</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#cron目录"><span class="nav-number">1.16.6.2.1.</span> <span class="nav-text">cron目录</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#17-创建函数"><span class="nav-number">1.17.</span> <span class="nav-text">17 创建函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#17-1-基本函数"><span class="nav-number">1.17.1.</span> <span class="nav-text">17.1 基本函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#17-2-返回值"><span class="nav-number">1.17.2.</span> <span class="nav-text">17.2 返回值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#17-3-在函数中使用变量"><span class="nav-number">1.17.3.</span> <span class="nav-text">17.3 在函数中使用变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#17-4-数组变量和函数"><span class="nav-number">1.17.4.</span> <span class="nav-text">17.4 数组变量和函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#17-5-函数递归"><span class="nav-number">1.17.5.</span> <span class="nav-text">17.5 函数递归</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#17-6-创建库"><span class="nav-number">1.17.6.</span> <span class="nav-text">17.6 创建库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#17-7-在命令行上使用函数"><span class="nav-number">1.17.7.</span> <span class="nav-text">17.7 在命令行上使用函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#18-图形化桌面环境中的脚本编程"><span class="nav-number">1.18.</span> <span class="nav-text">18 图形化桌面环境中的脚本编程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#19-初识sed和gawk"><span class="nav-number">1.19.</span> <span class="nav-text">19 初识sed和gawk</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#19-1-sed编辑器"><span class="nav-number">1.19.1.</span> <span class="nav-text">19.1 sed编辑器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#19-1-1-插入数据"><span class="nav-number">1.19.1.1.</span> <span class="nav-text">19.1.1 插入数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#19-1-2-使用sed-处理文件"><span class="nav-number">1.19.1.2.</span> <span class="nav-text">19.1.2 使用sed 处理文件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#19-2-gawk程序"><span class="nav-number">1.19.2.</span> <span class="nav-text">19.2 gawk程序</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#20-正则表达式"><span class="nav-number">1.20.</span> <span class="nav-text">20 正则表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#20-1-正则表达式的类型"><span class="nav-number">1.20.1.</span> <span class="nav-text">20.1 正则表达式的类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#20-2-BRE模式"><span class="nav-number">1.20.2.</span> <span class="nav-text">20.2 BRE模式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#20-2-1-纯文本"><span class="nav-number">1.20.2.1.</span> <span class="nav-text">20.2.1 纯文本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#20-2-2-特殊字符"><span class="nav-number">1.20.2.2.</span> <span class="nav-text">20.2.2 特殊字符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#20-2-3-锚字符"><span class="nav-number">1.20.2.3.</span> <span class="nav-text">20.2.3 锚字符</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1）锁定在行首"><span class="nav-number">1.20.2.3.1.</span> <span class="nav-text">1）锁定在行首</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2）锁定在行尾"><span class="nav-number">1.20.2.3.2.</span> <span class="nav-text">2）锁定在行尾</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3）组合锚点"><span class="nav-number">1.20.2.3.3.</span> <span class="nav-text">3）组合锚点</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#20-2-4-点号字符"><span class="nav-number">1.20.2.4.</span> <span class="nav-text">20.2.4 点号字符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#20-2-5-字符组"><span class="nav-number">1.20.2.5.</span> <span class="nav-text">20.2.5 字符组</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#20-2-6-排除型字符组"><span class="nav-number">1.20.2.6.</span> <span class="nav-text">20.2.6 排除型字符组</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#20-2-7-区间"><span class="nav-number">1.20.2.7.</span> <span class="nav-text">20.2.7 区间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#20-2-8-特殊的字符组"><span class="nav-number">1.20.2.8.</span> <span class="nav-text">20.2.8 特殊的字符组</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#20-2-9-星号"><span class="nav-number">1.20.2.9.</span> <span class="nav-text">20.2.9 星号</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#20-3-扩展正则表达式"><span class="nav-number">1.20.3.</span> <span class="nav-text">20.3 扩展正则表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#20-3-1-问号"><span class="nav-number">1.20.3.1.</span> <span class="nav-text">20.3.1 问号</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#20-3-2-加号"><span class="nav-number">1.20.3.2.</span> <span class="nav-text">20.3.2 加号</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#20-3-3-使用花括号"><span class="nav-number">1.20.3.3.</span> <span class="nav-text">20.3.3 使用花括号</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#20-3-4-管道符号"><span class="nav-number">1.20.3.4.</span> <span class="nav-text">20.3.4 管道符号</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#20-3-5-表达式分组"><span class="nav-number">1.20.3.5.</span> <span class="nav-text">20.3.5 表达式分组</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#21-sed进阶"><span class="nav-number">1.21.</span> <span class="nav-text">21 sed进阶</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#21-1-多行命令"><span class="nav-number">1.21.1.</span> <span class="nav-text">21.1 多行命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#21-1-1-next命令"><span class="nav-number">1.21.1.1.</span> <span class="nav-text">21.1.1 next命令</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1）单行的next命令"><span class="nav-number">1.21.1.1.1.</span> <span class="nav-text">1）单行的next命令</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2）-合并文本行"><span class="nav-number">1.21.1.1.2.</span> <span class="nav-text">2） 合并文本行</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#21-1-2-多行删除命令"><span class="nav-number">1.21.1.2.</span> <span class="nav-text">21.1.2 多行删除命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#21-1-3-多行打印命令"><span class="nav-number">1.21.1.3.</span> <span class="nav-text">21.1.3 多行打印命令</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#21-2-保持空间"><span class="nav-number">1.21.2.</span> <span class="nav-text">21.2 保持空间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#21-3-排除命令"><span class="nav-number">1.21.3.</span> <span class="nav-text">21.3 排除命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#21-4-改变流"><span class="nav-number">1.21.4.</span> <span class="nav-text">21.4 改变流</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#21-4-1-分支"><span class="nav-number">1.21.4.1.</span> <span class="nav-text">21.4.1 分支</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#21-4-2-测试"><span class="nav-number">1.21.4.2.</span> <span class="nav-text">21.4.2 测试</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#21-5-模式替代"><span class="nav-number">1.21.5.</span> <span class="nav-text">21.5 模式替代</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#21-5-1-amp-符号"><span class="nav-number">1.21.5.1.</span> <span class="nav-text">21.5.1 &amp;符号</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#21-5-2-替代单独的单词"><span class="nav-number">1.21.5.2.</span> <span class="nav-text">21.5.2 替代单独的单词</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#22-gawk进阶"><span class="nav-number">1.22.</span> <span class="nav-text">22 gawk进阶</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#22-1-使用变量"><span class="nav-number">1.22.1.</span> <span class="nav-text">22.1 使用变量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#22-1-1-内建变量"><span class="nav-number">1.22.1.1.</span> <span class="nav-text">22.1.1 内建变量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#22-1-2-自定义变量"><span class="nav-number">1.22.1.2.</span> <span class="nav-text">22.1.2 自定义变量</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#22-2-处理数组"><span class="nav-number">1.22.2.</span> <span class="nav-text">22.2 处理数组</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#22-2-1-定义数组变量"><span class="nav-number">1.22.2.1.</span> <span class="nav-text">22.2.1 定义数组变量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#22-2-2-遍历数组变量"><span class="nav-number">1.22.2.2.</span> <span class="nav-text">22.2.2 遍历数组变量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#22-2-3-删除数组变量"><span class="nav-number">1.22.2.3.</span> <span class="nav-text">22.2.3 删除数组变量</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#22-3-使用模式"><span class="nav-number">1.22.3.</span> <span class="nav-text">22.3 使用模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#22-4-结构化命令"><span class="nav-number">1.22.4.</span> <span class="nav-text">22.4 结构化命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#22-4-1-if语句"><span class="nav-number">1.22.4.1.</span> <span class="nav-text">22.4.1 if语句</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#22-4-2-while语句"><span class="nav-number">1.22.4.2.</span> <span class="nav-text">22.4.2 while语句</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#22-4-3-do-while语句"><span class="nav-number">1.22.4.3.</span> <span class="nav-text">22.4.3 do-while语句</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#22-4-4-for语句"><span class="nav-number">1.22.4.4.</span> <span class="nav-text">22.4.4 for语句</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#22-5-格式化打印"><span class="nav-number">1.22.5.</span> <span class="nav-text">22.5 格式化打印</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#22-6-内建函数"><span class="nav-number">1.22.6.</span> <span class="nav-text">22.6 内建函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#22-6-1-数学函数"><span class="nav-number">1.22.6.1.</span> <span class="nav-text">22.6.1 数学函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#22-6-2-字符串函数"><span class="nav-number">1.22.6.2.</span> <span class="nav-text">22.6.2 字符串函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#22-6-3-时间函数"><span class="nav-number">1.22.6.3.</span> <span class="nav-text">22.6.3 时间函数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#22-7-自定义函数"><span class="nav-number">1.22.7.</span> <span class="nav-text">22.7 自定义函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#23-总结"><span class="nav-number">1.23.</span> <span class="nav-text">23 总结</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">113</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">70</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

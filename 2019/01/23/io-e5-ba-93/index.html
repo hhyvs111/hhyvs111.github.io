@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="IO库 IO库  头文件  IO对象无赋值拷贝  管理输出缓冲  缓冲刷新的原因 endl   文件输入输出  使用文件流对象   string流  istringstream ostringstream    C++语言不直接处理输入输出，而是通过一族定义在标准库中的类型来处理IO。这些类型支持从设备读取数据、向设备写入数据的IO操作，设备可以是文件、控制台窗口等。还有一些类型允许内存IO,即从">
+<meta property="og:type" content="article">
+<meta property="og:title" content="IO库">
+<meta property="og:url" content="http://yoursite.com/2019/01/23/io-e5-ba-93/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="IO库 IO库  头文件  IO对象无赋值拷贝  管理输出缓冲  缓冲刷新的原因 endl   文件输入输出  使用文件流对象   string流  istringstream ostringstream    C++语言不直接处理输入输出，而是通过一族定义在标准库中的类型来处理IO。这些类型支持从设备读取数据、向设备写入数据的IO操作，设备可以是文件、控制台窗口等。还有一些类型允许内存IO,即从">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-01-23T01:16:58.000Z">
+<meta property="article:modified_time" content="2020-04-14T06:29:36.320Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="IO">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2019/01/23/io-e5-ba-93/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>IO库 | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/23/io-e5-ba-93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          IO库
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-01-23 09:16:58" itemprop="dateCreated datePublished" datetime="2019-01-23T09:16:58+08:00">2019-01-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="IO库"><a href="#IO库" class="headerlink" title="IO库"></a>IO库</h1><ul>
+<li><p>IO库</p>
+</li>
+<li><p>头文件</p>
+</li>
+<li><p>IO对象无赋值拷贝</p>
+</li>
+<li><p>管理输出缓冲</p>
+<ul>
+<li>缓冲刷新的原因</li>
+<li>endl</li>
+</ul>
+</li>
+<li><p>文件输入输出</p>
+<ul>
+<li>使用文件流对象</li>
+</ul>
+</li>
+<li><p>string流</p>
+<ul>
+<li>istringstream</li>
+<li>ostringstream</li>
+</ul>
+</li>
+</ul>
+<p>C++语言不直接处理输入输出，而是通过一族定义在标准库中的类型来处理IO。这些类型支持从设备读取数据、向设备写入数据的IO操作，设备可以是文件、控制台窗口等。还有一些类型允许内存IO,即从string读取数据，向string写入数据。</p>
+<h2 id="头文件"><a href="#头文件" class="headerlink" title="头文件"></a>头文件</h2><p>头文件</p>
+<p>类型</p>
+<p>iostream</p>
+<p>读写流</p>
+<p>fstream</p>
+<p>读写文件</p>
+<p>sstream</p>
+<p>读写string</p>
+<h2 id="IO对象无赋值拷贝"><a href="#IO对象无赋值拷贝" class="headerlink" title="IO对象无赋值拷贝"></a>IO对象无赋值拷贝</h2><p>不能拷贝或对IO对象赋值:</p>
+<pre><code>ofstream out1，out2 ;
+out1 = out2;
+//错误:不能对流对象赋值
+ofstream print (ofstream) ;
+//错误:不能初始化ofstream参数
+out2 = print (out2) ;
+//错误:不能拷贝流对象</code></pre><p>由于不能拷贝IO对象，因此我们也不能将形参或返回类型设置为流类型。进行IO操作的函数通常以<strong>引用方式</strong>传递和返回流。读写一个I0对象会改变其状态，因此传递和返回的引用<strong>不能</strong>是const的。</p>
+<h2 id="管理输出缓冲"><a href="#管理输出缓冲" class="headerlink" title="管理输出缓冲"></a>管理输出缓冲</h2><p>每个输出流都管理一个缓冲区，用来保存程序读写的数据。例如，如果执行下面的代码</p>
+<pre><code>OS &lt;&lt; &quot;please enter a value: &quot;;</code></pre><p>文本串可能立即打印出来，但也有可能被操作系统保存在缓冲区中，随后再打印。</p>
+<h4 id="缓冲刷新的原因"><a href="#缓冲刷新的原因" class="headerlink" title="缓冲刷新的原因"></a>缓冲刷新的原因</h4><p>导致缓冲刷新的原因有很多：</p>
+<ul>
+<li>程序正常结束，作为main函数的return操作的一部分，缓冲刷新被执行；</li>
+<li>缓冲区满时，需要刷新缓冲，而后新的数据才能继续写入缓冲区。</li>
+<li>我们可以使用操纵符如endl (参见1.2节，第6页)来显式刷新缓冲区。</li>
+<li>在每个输出操作之后，我们可以用操纵符unitbuf设置流的内部状态，来清空冲区。默认情况下，对cerr是设置unitbuf的，因此写到cerr的内容都是立即刷新的</li>
+<li>一个输出流可能被关联到另-一个流。在这种情况下，当读写被关联的流时，关联到的流的缓冲区会被刷新。例如，默认情况下，cin和cerr都关联到cout。因此，读cin或写cerr都会导致cout的缓冲区被刷新。</li>
+</ul>
+<h4 id="endl"><a href="#endl" class="headerlink" title="endl"></a>endl</h4><p>我们已经使用过操纵符endl,它完成换行并刷新缓冲区的工作。I0库中还有两个类似的操纵符: flush和ends。flush刷新缓冲区，但不输出任何额外的字符: ends向缓冲区插入一个空字符，然后刷新缓冲区:</p>
+<pre><code>cout &lt;&lt; &quot;hi!&quot; &lt;&lt; endl; //输出hi和一个换行，然后刷新缓冲区
+cout &lt;&lt; &quot;hi!&quot; &lt;&lt; flush; // 输出hi,然后刷新缓冲区，不附加任何额外字符
+cout &lt;&lt; &quot;hi!&quot; &lt;&lt; ends ;//输出hi和一个空字符，然后刷新缓冲区</code></pre><h2 id="文件输入输出"><a href="#文件输入输出" class="headerlink" title="文件输入输出"></a>文件输入输出</h2><blockquote>
+<p>有时候写程序的时候总想要输入输出文件，但是总是不知道怎么弄这个格式。</p>
+</blockquote>
+<p>头文件fstream定义了三个类型来支持文件IO:ifstream从一.个给定文件读取数据，ofstream向一个给定文件写入数据，以及fstream可以读写给定文件。</p>
+<h3 id="使用文件流对象"><a href="#使用文件流对象" class="headerlink" title="使用文件流对象"></a>使用文件流对象</h3><p>创建文件流对象时,我们可以提供文件名(可选的)。如果提供了一个文件名，则open会自动被调用:</p>
+<pre><code>ifstream in(ifile) ;
+//构造一个ifstream并打开给定文件
+ofstream out;
+//输出文件流未关联到任何文件</code></pre><p>这段代码定义了一个输入流in，它被初始化为从文件读取数据，文件名由string类型的参数ifile指定。第二条语句定义了一个输出流out，未与任何文件关联。在新C++ 11 标准中，文件名既可以是库类型string对象，也可以是C风格字符数组（“12321”类似这种）。旧版本的标准库只允许C风格字符数组。</p>
+<h2 id="string流"><a href="#string流" class="headerlink" title="string流"></a>string流</h2><p>其实IO处理String应该较多，大多都是处理文本数据。这些文本数据都是string组成的。 考虑这样一个例子，假定有一个文件，列出了一些人和他们的电话号码。某些人只有一个号码，而另一些人则有多个一家庭电话、工作电话、移动电话等。我们的输入文件 看起来可能是这样的:</p>
+<pre><code>morgan 2015552368 8625550123
+drew 9735550130
+lee 6095550132 2015550175 8005550000</code></pre><p>文件中每条记录都以一个人名开始，后面跟随- -个或多个电话号码。我们首先定义一个简单的类来描述输入数据:</p>
+<pre><code>//成员默认为公有;参见7.2节(第240页)
+struct PersonInfo {
+    string name ; 
+    vector&lt;string&gt; phones;
+};</code></pre><h3 id="istringstream"><a href="#istringstream" class="headerlink" title="istringstream"></a>istringstream</h3><p>我们的程序会读取数据文件，并创建-一个PersonInfo的vector. vector中每个元素对应文件中的一条记录。我们在一个循环中处理输入数据，每个循环步读取一条记录，提取出一个人名和若干电话号码:</p>
+<pre><code>string line, word;
+//分别保存来自输入的一行和单词
+vector&lt;PersonInfo&gt; people;
+//保存来自输入的所有记录
+//逐行从输入读取数据，直至cin遇到文件尾(或其他错误)
+while (getline(cin, line) ) {
+    PersonInfo info;
+    //创建一个保存此记录数据的对象
+    istringstream record(line); // 将记录绑定到刚读入的行
+    record &gt;&gt; info.name;
+    //读取名字
+    while (record &gt;&gt; word)
+    //读取电话号码
+     info.phones.push_back(word) ; //保持它们
+    people.push_back(info) ;
+//将此记录追加到people末尾
+}</code></pre><p>这里我们用getline从标准输入读取整条记录。如果getline调用成功，那么line中将保存着从输入文件而来的一条记录。在while中,我们定义了一个局部PersonInfo对象，来保存当前记录中的数据。 接下来我们将一根istringstream与刚刚读取的文本行进行绑定，这样就可以在此istringstream上使用输入运算符来读取当前记录中的每个元素。</p>
+<h3 id="ostringstream"><a href="#ostringstream" class="headerlink" title="ostringstream"></a>ostringstream</h3><p>当我们逐步构造输出，希望最后一起打印时，ostringstream 是很有用的。例如，对上一节的例子,我们可能想逐个验证电话号码并改变其格式。如果所有号码都是有效的,我们希望输出一个新的文件，包含改变格式后的号码。对于那些无效的号码，我们不会将它们输出到新文件中，而是打印一条包含人名和无效号码的错误信息。 由于我们不希望输出有无效电话号码的人，因此对每个人，直到验证完所有电话号码后才可以进行输出操作。但是，我们可以先将输出内容“写入”到一个内存ostringstream中:</p>
+<pre><code>for(const auto &amp;entry : people) { //对people中每一项
+    ostringstream formatted, badNums; // 每个循环步创建的对象
+    for(const auto &amp;nums : entry.phones) { // 对每个数
+    if(!valid (nums)) {
+    badNums &lt;&lt; &quot; &quot; &lt;&lt; nums; //将数的字符串形式存入badNums i
+    }
+    else
+    {
+        //将格式化的字符串“写入”formatted
+        formatted &lt;&lt;” ”&lt;&lt; format (nums);
+    }
+    //打印名字
+    if (badNums.str().empty())//没有错误的数
+        os &lt;&lt; entry.name &lt;&lt;” ”&lt;&lt; formatted.str() &lt;&lt; endl;
+    //和格式化的数
+    //否则，打印名字和错误的数
+    else
+    cerr &lt;&lt; &quot;input error:&quot;&lt;&lt; entry.name &lt;&lt; &quot;invalid number (s) &quot;&lt;&lt; badNums.str() &lt;&lt; endl;
+}</code></pre><p>在此程序中，我们假定已有两个函数，valid和format,分别完成电话号码验证和改变格式的功能。程序最有趣的部分是对字符串流formatted和badNums的使用。我们使用标准的输出运算符(&lt;&lt;)向这些对象写入数据,但这些“写入”操作实际上转换为string操作，分别向formatted和badNums中的string对象添加字符。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/IO/" rel="tag"># IO</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/01/21/e5-a7-94-e6-89-98-e6-9e-84-e9-80-a0-e5-87-bd-e6-95-b0/" rel="prev" title="委托构造函数">
+      <i class="fa fa-chevron-left"></i> 委托构造函数
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/01/27/e5-85-b3-e8-81-94-e5-ae-b9-e5-99-a8/" rel="next" title="关联容器">
+      关联容器 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#IO库"><span class="nav-number">1.</span> <span class="nav-text">IO库</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#头文件"><span class="nav-number">1.1.</span> <span class="nav-text">头文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IO对象无赋值拷贝"><span class="nav-number">1.2.</span> <span class="nav-text">IO对象无赋值拷贝</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#管理输出缓冲"><span class="nav-number">1.3.</span> <span class="nav-text">管理输出缓冲</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#缓冲刷新的原因"><span class="nav-number">1.3.0.1.</span> <span class="nav-text">缓冲刷新的原因</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#endl"><span class="nav-number">1.3.0.2.</span> <span class="nav-text">endl</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文件输入输出"><span class="nav-number">1.4.</span> <span class="nav-text">文件输入输出</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用文件流对象"><span class="nav-number">1.4.1.</span> <span class="nav-text">使用文件流对象</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#string流"><span class="nav-number">1.5.</span> <span class="nav-text">string流</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#istringstream"><span class="nav-number">1.5.1.</span> <span class="nav-text">istringstream</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ostringstream"><span class="nav-number">1.5.2.</span> <span class="nav-text">ostringstream</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">113</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">70</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

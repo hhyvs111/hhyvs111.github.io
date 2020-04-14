@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Golang学习第三章 Golang学习第三章 方法 接口 例子 实现泛型编程 Stringers   Readers Web服务器    方法Go没有类，但是仍然可以在结构体类型上定义方法。 也可以对任意类型定义任意方法，但是不能对来自其他包的类型或基础类型定义方法。 方法接收者出现在func关键字和方法名之间的参数中。 func (方法接收者) 函数名() int { }有点像是函数指针的样子">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Golang学习第三章">
+<meta property="og:url" content="http://yoursite.com/2019/04/11/golang-e5-ad-a6-e4-b9-a0-e7-ac-ac-e4-b8-89-e7-ab-a0/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Golang学习第三章 Golang学习第三章 方法 接口 例子 实现泛型编程 Stringers   Readers Web服务器    方法Go没有类，但是仍然可以在结构体类型上定义方法。 也可以对任意类型定义任意方法，但是不能对来自其他包的类型或基础类型定义方法。 方法接收者出现在func关键字和方法名之间的参数中。 func (方法接收者) 函数名() int { }有点像是函数指针的样子">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-04-11T00:26:36.000Z">
+<meta property="article:modified_time" content="2020-04-14T06:29:36.321Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2019/04/11/golang-e5-ad-a6-e4-b9-a0-e7-ac-ac-e4-b8-89-e7-ab-a0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Golang学习第三章 | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/11/golang-e5-ad-a6-e4-b9-a0-e7-ac-ac-e4-b8-89-e7-ab-a0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Golang学习第三章
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-04-11 08:26:36" itemprop="dateCreated datePublished" datetime="2019-04-11T08:26:36+08:00">2019-04-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Go/" itemprop="url" rel="index"><span itemprop="name">Go</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Golang学习第三章"><a href="#Golang学习第三章" class="headerlink" title="Golang学习第三章"></a>Golang学习第三章</h1><ul>
+<li>Golang学习第三章<ul>
+<li>方法</li>
+<li>接口<ul>
+<li>例子</li>
+<li>实现泛型编程</li>
+<li>Stringers</li>
+</ul>
+</li>
+<li>Readers</li>
+<li>Web服务器</li>
+</ul>
+</li>
+</ul>
+<h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><p>Go没有类，但是仍然可以在结构体类型上定义方法。</p>
+<p>也可以对任意类型定义任意方法，但是不能对来自其他包的类型或基础类型定义方法。</p>
+<p>方法接收者出现在func关键字和方法名之间的参数中。</p>
+<pre><code>func (方法接收者) 函数名() int {
+}</code></pre><p>有点像是函数指针的样子。</p>
+<pre><code>package main
+
+import (
+    &quot;fmt&quot;
+    &quot;math&quot;
+)
+
+type Vertex struct {
+    X, Y float64
+}
+
+//接收者，类似于引用传参。
+func (v *Vertex) Abs() float64 {
+    return math.Sqrt(v.X*v.X + v.Y*v.Y)
+}
+
+
+func main() {
+    v := &amp;Vertex{3, 4}
+    //可以直接调用该函数
+    fmt.Println(v.Abs())
+}</code></pre><p>一般方法都是用指针来接受，有两个原因：</p>
+<ul>
+<li>避免在每个方法调用中拷贝值；</li>
+<li>方法可以修改接收者指向的值。</li>
+</ul>
+<p>其实就类似于引用，直接在参数中进行操作节约开销。</p>
+<h2 id="接口"><a href="#接口" class="headerlink" title="接口"></a>接口</h2><blockquote>
+<p>有点像是java啊，c++里还没搞过接口。</p>
+</blockquote>
+<p>接口类型是一组由方法定义的集合，可以存放实现这些方法的任何值。只有函数签名，没有具体实现。</p>
+<pre><code>type MyInterface interface {
+    function()
+}</code></pre><p>把所有共性的方法定义在一起，任何其他类型实现了这些方法就是实现了这个接口。</p>
+<p>方法实现规范：</p>
+<pre><code>func (name string) imp() string{
+    print(&quot;这是实现方法的写法&quot;)
+}
+
+func sum(x int,y int) int{
+    print(&quot;这是正常写法&quot;)
+}</code></pre><p>要注意函数的位置，区别方法实现和函数实现。</p>
+<h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><pre><code>type Phone interface {
+    call()
+}
+
+type NokiaPhone struct {
+}
+
+func (nokiaPhone NokiaPhone) call() {
+    fmt.Println(&quot;I am Nokia, I can call you!&quot;)
+}
+
+type IPhone struct {
+}
+
+func (iPhone IPhone) call() {
+    fmt.Println(&quot;I am iPhone, I can call you!&quot;)
+}
+
+func main() {
+    var phone Phone
+
+    phone = new(NokiaPhone)
+    phone.call()
+
+    phone = new(IPhone)
+    phone.call()
+
+}</code></pre><p>在上面的例子中，我们定义了一个接口Phone，接口里面有一个方法call()。然后我们在main函数里面定义了一个Phone类型变量，并分别为之赋值为NokiaPhone和IPhone。然后调用call()方法，输出结果如下：</p>
+<pre><code>I am Nokia, I can call you!
+I am iPhone, I can call you!</code></pre><p>只要方法是同名的话可以就覆盖接口，有点像是函数重载的感觉。但是具体实现还是自己写的啊，只能说根据对象的不同实现不同的函数吧。</p>
+<h3 id="实现泛型编程"><a href="#实现泛型编程" class="headerlink" title="实现泛型编程"></a>实现泛型编程</h3><p>严格来说，在Go里并不支持泛型编程，但是在c++等高级语言中使用泛型编程非常的简单。这里可以用接口实现泛型编程。</p>
+<p>比如对自己定义的结构体进行排序，一般在C++里是要在sort函数的第三个参数给出具体排序规则。</p>
+<p>go里的Sort函数的形参是一个interface，包含了三个方法：Len(), Less(i, j int), Swap(i,j int)。使用的时候不管数组的元素类型是什么类型，只要实现了这三个方法就可以使用Sort函数，从而达到实现”泛型编程”</p>
+<p>这里用年龄Age对结构体Person进行排序。</p>
+<pre><code>type Person struct {
+Name string
+Age  int
+}
+
+func (p Person) String() string {
+    return fmt.Sprintf(&quot;%s: %d&quot;, p.Name, p.Age)
+}
+
+// ByAge implements sort.Interface for []Person based on
+// the Age field.
+type ByAge []Person //自定义
+
+func (a ByAge) Len() int           { return len(a) }
+func (a ByAge) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
+func (a ByAge) Less(i, j int) bool { return a[i].Age &lt; a[j].Age }
+
+func main() {
+    people := []Person{
+        {&quot;Bob&quot;, 31},
+        {&quot;John&quot;, 42},
+        {&quot;Michael&quot;, 17},
+        {&quot;Jenny&quot;, 26},
+    }
+
+    fmt.Println(people)
+    sort.Sort(ByAge(people))
+    fmt.Println(people)
+}</code></pre><blockquote>
+<p>严格来说也不算是泛型编程，感觉像是这个函数方法实现。</p>
+</blockquote>
+<h3 id="Stringers"><a href="#Stringers" class="headerlink" title="Stringers"></a>Stringers</h3><p>这个有点像是格式化输出，自己实现了stringer里的string方法。</p>
+<pre><code>type Stringer struct {
+    String() string
+}</code></pre><p>Stringer 是一个可以用字符串描述自己的类型。<code>fmt</code>包 （还有许多其他包）使用这个来进行输出。</p>
+<pre><code>type Person struct {
+    Name string
+    Age  int
+}
+
+func (p Person) String() string {
+    return fmt.Sprintf(&quot;%v (%v years)&quot;, p.Name, p.Age)
+}
+
+func main() {
+    a := Person{&quot;Arthur Dent&quot;, 42}
+    z := Person{&quot;Zaphod Beeblebrox&quot;, 9001}
+    fmt.Println(a, z)
+}</code></pre><h2 id="Readers"><a href="#Readers" class="headerlink" title="Readers"></a>Readers</h2><p>io包指定了io.Reader接口，它表示从数据流结尾读取。</p>
+<p>io.Reader接口有一个Read方法:</p>
+<pre><code>func (T) Read(b []byte) (n int, err error)</code></pre><p>Read 用数据填充指定的字节 slice，并且返回填充的字节数和错误信息。 在遇到数据流结尾时，返回 io.EOF 错误。</p>
+<pre><code>import (
+    &quot;fmt&quot;
+    &quot;io&quot;
+    &quot;strings&quot;
+)
+
+func main() {
+    r := strings.NewReader(&quot;Hello, Reader!&quot;)
+    //每次循环读取8个字节，上面的字符要循环3次，最后一次的err是eof，说明读到了空。
+    b := make([]byte, 8)
+    for {
+        n, err := r.Read(b)
+        fmt.Printf(&quot;n = %v err = %v b = %v\n&quot;, n, err, b)
+        fmt.Printf(&quot;b[:n] = %q\n&quot;, b[:n])
+        if err == io.EOF {
+            break
+        }
+    }
+}</code></pre><p>这个有点像是C++里的read，如果失败返回的是一个io.EOF错误。不知道这里面有没有阻塞和非阻塞的区别，或者异步同步？</p>
+<h2 id="Web服务器"><a href="#Web服务器" class="headerlink" title="Web服务器"></a>Web服务器</h2><p>包http通过任何实现了http.Handler的值来相应http请求：</p>
+<pre><code>package http
+
+type Handler interface {
+    ServeHTTP(w ResponseWriter, r *Request)
+}</code></pre><p>在这个例子中，类型Hello实现了 ‘http.Handler’，访问本地4000端口会看到来自程序的问候。</p>
+<pre><code>import (
+    &quot;fmt&quot;
+    &quot;log&quot;
+    &quot;net/http&quot;
+)
+
+type Hello struct{}
+
+func (h Hello) ServeHTTP(
+    w http.ResponseWriter,
+    r *http.Request) {
+    fmt.Fprint(w, &quot;Hello!&quot;)
+}
+
+func main() {
+    var h Hello
+    err := http.ListenAndServe(&quot;localhost:4000&quot;, h)
+    if err != nil {
+        log.Fatal(err)
+    }
+}</code></pre><p><code>http.ListenAndServe</code>监听某个端口，启动服务，准备接受客户端的请求。有点像是Bind后然后继续Listen，然后accpet等待请求。go将这些操作都封装到这个函数里去了。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/04/10/golang-e5-ad-a6-e4-b9-a0-e7-ac-ac-e4-ba-8c-e7-ab-a0/" rel="prev" title="Golang学习第二章">
+      <i class="fa fa-chevron-left"></i> Golang学习第二章
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/04/13/e7-94-9f-e5-91-bd-e5-9c-a8-e4-ba-8e-e6-8a-98-e8-85-be-hhkb-type-s-e7-ae-80-e5-8d-95-e6-94-b9-e9-80-a0-e5-88-86-e4-ba-ab/" rel="next" title="生命在于折腾——HHKB Type-S 简单改造分享">
+      生命在于折腾——HHKB Type-S 简单改造分享 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Golang学习第三章"><span class="nav-number">1.</span> <span class="nav-text">Golang学习第三章</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#方法"><span class="nav-number">1.1.</span> <span class="nav-text">方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#接口"><span class="nav-number">1.2.</span> <span class="nav-text">接口</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#例子"><span class="nav-number">1.2.1.</span> <span class="nav-text">例子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现泛型编程"><span class="nav-number">1.2.2.</span> <span class="nav-text">实现泛型编程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Stringers"><span class="nav-number">1.2.3.</span> <span class="nav-text">Stringers</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Readers"><span class="nav-number">1.3.</span> <span class="nav-text">Readers</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Web服务器"><span class="nav-number">1.4.</span> <span class="nav-text">Web服务器</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">113</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">70</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

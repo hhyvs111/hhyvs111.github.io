@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="关联容器 关联容器  定义  标准库容器  按关键字有序保存元素  无序集合  使用map  使用set  初始化   pair对象  检测insert的返回值  在multimap或multiset中查找元素       定义关联容器和顺序容器有着根本的不同，关联容器中的元素是按关键字来保存和访问的。与之相对，顺序容器中的元素是按它们在容器中的位置来顺序保存和访问的。虽然关联容器的很多行为与顺序">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关联容器">
+<meta property="og:url" content="http://yoursite.com/2019/01/27/e5-85-b3-e8-81-94-e5-ae-b9-e5-99-a8/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="关联容器 关联容器  定义  标准库容器  按关键字有序保存元素  无序集合  使用map  使用set  初始化   pair对象  检测insert的返回值  在multimap或multiset中查找元素       定义关联容器和顺序容器有着根本的不同，关联容器中的元素是按关键字来保存和访问的。与之相对，顺序容器中的元素是按它们在容器中的位置来顺序保存和访问的。虽然关联容器的很多行为与顺序">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-01-27T00:22:04.000Z">
+<meta property="article:modified_time" content="2020-04-14T06:29:36.320Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="map">
+<meta property="article:tag" content="set">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2019/01/27/e5-85-b3-e8-81-94-e5-ae-b9-e5-99-a8/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>关联容器 | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/27/e5-85-b3-e8-81-94-e5-ae-b9-e5-99-a8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          关联容器
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-01-27 08:22:04" itemprop="dateCreated datePublished" datetime="2019-01-27T08:22:04+08:00">2019-01-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="关联容器"><a href="#关联容器" class="headerlink" title="关联容器"></a>关联容器</h1><ul>
+<li><p>关联容器</p>
+<ul>
+<li><p>定义</p>
+</li>
+<li><p>标准库容器</p>
+<ul>
+<li><p>按关键字有序保存元素</p>
+</li>
+<li><p>无序集合</p>
+</li>
+<li><p>使用map</p>
+</li>
+<li><p>使用set</p>
+<ul>
+<li>初始化</li>
+</ul>
+</li>
+<li><p>pair对象</p>
+</li>
+<li><p>检测insert的返回值</p>
+</li>
+<li><p>在multimap或multiset中查找元素</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>关联容器和顺序容器有着根本的不同，关联容器中的元素是按关键字来保存和访问的。与之相对，顺序容器中的元素是按它们在容器中的位置来顺序保存和访问的。虽然关联容器的很多行为与顺序容器相同，但其不同之处反映了关键字的作用。</p>
+<p>关联容器支持高校的关键字访问和查找。两个主要的关联容器是<strong>map</strong>和<strong>set</strong>，都是键值对，关键字起到索引的作用，值则表示与索引相关联的数据。</p>
+<p>二者的区别就在于set是去重的，map是不去重的。</p>
+<h2 id="标准库容器"><a href="#标准库容器" class="headerlink" title="标准库容器"></a>标准库容器</h2><p>标准库提供 <code>8</code>个关联容器，如下表:</p>
+<h4 id="按关键字有序保存元素"><a href="#按关键字有序保存元素" class="headerlink" title="按关键字有序保存元素"></a>按关键字有序保存元素</h4><p>说明</p>
+<p>说明</p>
+<p>map</p>
+<p>关联数组;保存关键字-值对</p>
+<p>set</p>
+<p>关键字即值，即只保存关键字的容器</p>
+<p>multimap</p>
+<p>关键字可重复出现的map</p>
+<p>multiset</p>
+<p>关键字可重复出现的set</p>
+<h4 id="无序集合"><a href="#无序集合" class="headerlink" title="无序集合"></a>无序集合</h4><p>容器</p>
+<p>说明</p>
+<p>unordered_map</p>
+<p>用哈希函数组织的map</p>
+<p>unordered_set</p>
+<p>用哈希函数组织的set</p>
+<p>unordered_multimap</p>
+<p>哈希组织的map;关键字可以重复出现</p>
+<p>unordered_multiset</p>
+<p>哈希组织的set;关键字可以重复出现</p>
+<p><strong>这8个容器间的不同体现在三个维度上:每个容器</strong></p>
+<ol>
+<li>或者是一个set，或者是一个map;</li>
+<li>或者要求不重复的关键字，或者允许重复关键字;</li>
+<li>按顺序保存元素，或无序保存。允许重复关键字的容器的名字中都包含单词multi;不保持关键字按顺序存储的容器的名字都以单词unordered开头。</li>
+</ol>
+<h3 id="使用map"><a href="#使用map" class="headerlink" title="使用map"></a>使用map</h3><p>一个经典的使用关联数组的例子是单词计数程序:</p>
+<pre><code>//统计每个单词在输入中出现的次数
+map&lt;string, size_ t&gt; word_ count; // string 到size_ t的空map
+string word;
+while (cin &gt;&gt; word)
+++word_count[word] ;
+//提取word的计数器并将其加1
+for(const auto &amp;w : word count) // 对map中的每个元素
+//打印结果
+cout &lt;&lt; w.first &lt;&lt;”occurs &quot; &lt;&lt; w.second
+    &lt;&lt;((w.second&gt;1)?”times&quot;:”time&quot;)&lt;&lt;endl;</code></pre><p>此程序读取输入，报告每个单词出现多少次。</p>
+<blockquote>
+<p>注意这里的word_count[word]，这里不像vector，如果不存在就不允许直接引用。但是map可以直接用，如果不存在则创建，这里的string就是一个类似于下标一样的东西。</p>
+</blockquote>
+<p>当对word_count进行下标操作时，我们使用一个string作为下标，获得与此string相关联的size_t类型的计数器。</p>
+<p>while循环每次从标准输入读取一个单词，它使用每个单词对word_count进行下标操作。如果word还未在map中，下标运算符会创建一个新元素，其关键字为word，值为0。不管元素是否是新创建的，我们将其值加1。</p>
+<p>一旦读取完所有输入，范围for语句(参见3.2.3节，第81页)就会遍历map,打印每个单词和对应的计数器。当从map中提取一个元素时,会得到一个<strong>pai</strong>r类型的对象，我们将在11.2.3 节(第379页)介绍它。简单来说，pair是一个模板类型，保存两个名:为<code>first</code>和<code>second</code>的(公有)数据成员。map所使用的pair用first成员保存关键字，用second成员保存对应的值。因此，输出语句的效果是打印每个单词及其关联的计数器。</p>
+<h3 id="使用set"><a href="#使用set" class="headerlink" title="使用set"></a>使用set</h3><p>这里的用法和map差不多，只要记住set有去重效果，而且map和set都有排序效果。但是要注意的是，定义map，必须指明关键字类型又需要指明值类型；而定义一个set时，只需要指明关键字类型，因为set中没有值。因为值是必须唯一的，所以没有必要再指定一个值形成值对pair。</p>
+<h4 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h4><p>一般会用到用vector来初始化set，这个是比较有用的。只要传入vector的迭代器就能将vector转换为set。</p>
+<pre><code>//类型要一致
+set&lt;int&gt; iset(ivec.begin(), ivec.end()):</code></pre><h3 id="pair对象"><a href="#pair对象" class="headerlink" title="pair对象"></a>pair对象</h3><p>pair对象就是map里存储的，比如map&lt;int, string&gt;。里面存储的就是pair，在使用的时候用pair的成员函数，first和second就行了。这个可以可以作为参数来使用，比如作为函数的返回值：</p>
+<pre><code>pair&lt;string, int&gt; process(vector&lt;string&gt; &amp;v)
+{
+    //处理v
+    if( !v.empty())
+        return {v.back(), v.back().size() }; //列表初始化
+    else
+        return pair&lt;string, int&gt;(); //隐式构造返回值</code></pre><p>若v不为空，我们返回一个由v中最后一个string及其大小组成的pair。否则，隐式构造一个空pair，并返回它。</p>
+<h3 id="检测insert的返回值"><a href="#检测insert的返回值" class="headerlink" title="检测insert的返回值"></a>检测insert的返回值</h3><blockquote>
+<p>在做题的时候有用到这个，感觉还蛮牛批的！</p>
+</blockquote>
+<p>insert (或emplace)返回的值依赖于容器类型和参数。对于不包含重复关键字的容器，添加单一元素的insert和emplace版本返回一个<code>pair</code>,告诉我们插入操作是否成功。pair的first成员是一个迭代器，指向具有给定关键字的元素;second成员是一个<code>bool</code>值，指出元素是插入成功还是已经存在于容器中。</p>
+<pre><code>pair(it,bool);</code></pre><p>如果关键字已在容器中，则insert什么事情也不做，且返回值中的bool部分为<code>false</code>。如果关键字不存在，元素被插入容器中，且bool值为true。 作为一个例子，我们用insert重写单词计数程序：</p>
+<pre><code>//统计每个单词在输入中出现次数的一种更烦琐的方法
+map&lt;string, size_ t&gt; word_count; // 从string到size_ _t 的空map
+string word;
+while (cin &gt;&gt; word) {
+    //插入一个元素，关键字等于word,值为1;
+    //若word已在word count中，insert什么也不做
+    auto ret = word_count.insert({word, 1}) ;
+    if (!ret. second)
+    // word已在word count中
+        ++ret.first-&gt; second;
+    . //递增计数器
+}</code></pre><p>对于每个word,我们尝试将其插入到容器中，对应的值为1。若word已在map中，则什么都不做，特别是与word相关联的计数器的值不变。若word还未在map中，则此string对象被添加到map中，且其计数器的值被置为1。</p>
+<blockquote>
+<p>有人可能觉得，这个和find有啥区别？总的来说如果你想实现上述功能，没有则插入，有则不插入。可以直接判断insert的返回值，而不是先find再insert。</p>
+</blockquote>
+<h3 id="在multimap或multiset中查找元素"><a href="#在multimap或multiset中查找元素" class="headerlink" title="在multimap或multiset中查找元素"></a>在multimap或multiset中查找元素</h3><p>在一个不允许重复关键字的关联容器中查找一个元素是- -件很简单的事情一元素要么在容器中，要么不在。但对于允许重复关键字的容器来说，过程就更为复杂:在容器中可能有很多元素具有给定的关键字。如果一个multimap或multiset中有多个元素具有给定关键字，则这些元素在容器中会<code>相邻存储</code>。</p>
+<p>例如，给定一个从作者到著作题目的映射,我们可能想打印一个特定作者的所有著作。可以用三种不同方法来解决这个问题。最直观的方法是使用find和count:</p>
+<pre><code>string search_ item(&quot;Alain de Botton&quot;) ;
+//要查找的作者
+auto entries = authors.count (search_item) ;
+//元素的数量
+auto iter = authors.find(search_item) ;
+//此作者的第一本书
+//用一个循环查找此作者的所有著作
+while (entries) {
+    cout &lt;&lt; iter-&gt;second &lt;&lt; endl;
+    //打印每个题目
+    ++iter;
+    //前进到下一本书
+    --entries;
+    //记录已经打印了多少本书
+    }</code></pre><p>首先调用count确定此作者共有多少本著作，并调用find获得一个迭代器，指向第一个关键字为此作者的元素。for循环的迭代次数依赖于count的返回值。特别是，如果count返回0，则循环一次也不执行。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/map/" rel="tag"># map</a>
+              <a href="/tags/set/" rel="tag"># set</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/01/23/io-e5-ba-93/" rel="prev" title="IO库">
+      <i class="fa fa-chevron-left"></i> IO库
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/01/30/e5-8a-a8-e6-80-81-e5-86-85-e5-ad-98/" rel="next" title="动态内存">
+      动态内存 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#关联容器"><span class="nav-number">1.</span> <span class="nav-text">关联容器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义"><span class="nav-number">1.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#标准库容器"><span class="nav-number">1.2.</span> <span class="nav-text">标准库容器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#按关键字有序保存元素"><span class="nav-number">1.2.0.1.</span> <span class="nav-text">按关键字有序保存元素</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#无序集合"><span class="nav-number">1.2.0.2.</span> <span class="nav-text">无序集合</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用map"><span class="nav-number">1.2.1.</span> <span class="nav-text">使用map</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用set"><span class="nav-number">1.2.2.</span> <span class="nav-text">使用set</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#初始化"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">初始化</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pair对象"><span class="nav-number">1.2.3.</span> <span class="nav-text">pair对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#检测insert的返回值"><span class="nav-number">1.2.4.</span> <span class="nav-text">检测insert的返回值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在multimap或multiset中查找元素"><span class="nav-number">1.2.5.</span> <span class="nav-text">在multimap或multiset中查找元素</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">113</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">70</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

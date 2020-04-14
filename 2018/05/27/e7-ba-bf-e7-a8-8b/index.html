@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="线程《Unix网络编程：卷1》&#96;&#96;线程&#96;&#96;互斥锁&#96;&#96;posts  本书前面有些内容直接简略的翻了一下，没有细看。   线程 1 概述 2 线程的创建 2.1 函数原型 2.2 线程的属性 2.3 函数传入线程   3 线程主要函数 3.1 pthread_join 3.2 pthread_self 3.3 pthread_detach 3.4 pthread_exit 具体实现例子可以看书。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="线程">
+<meta property="og:url" content="http://yoursite.com/2018/05/27/e7-ba-bf-e7-a8-8b/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="线程《Unix网络编程：卷1》&#96;&#96;线程&#96;&#96;互斥锁&#96;&#96;posts  本书前面有些内容直接简略的翻了一下，没有细看。   线程 1 概述 2 线程的创建 2.1 函数原型 2.2 线程的属性 2.3 函数传入线程   3 线程主要函数 3.1 pthread_join 3.2 pthread_self 3.3 pthread_detach 3.4 pthread_exit 具体实现例子可以看书。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2018-05-26T18:42:19.000Z">
+<meta property="article:modified_time" content="2020-04-14T06:29:36.318Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="线程">
+<meta property="article:tag" content="互斥锁">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2018/05/27/e7-ba-bf-e7-a8-8b/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>线程 | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/27/e7-ba-bf-e7-a8-8b/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          线程
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-05-27 02:42:19" itemprop="dateCreated datePublished" datetime="2018-05-27T02:42:19+08:00">2018-05-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" itemprop="url" rel="index"><span itemprop="name">计算机网络</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h1><p><code>《Unix网络编程：卷1》``线程``互斥锁``posts</code></p>
+<blockquote>
+<p>本书前面有些内容直接简略的翻了一下，没有细看。</p>
+</blockquote>
+<ul>
+<li><a href="#线程">线程</a><ul>
+<li><a href="#1-概述">1 概述</a></li>
+<li><a href="#2-线程的创建">2 线程的创建</a><ul>
+<li><a href="#21-函数原型">2.1 函数原型</a></li>
+<li><a href="#22-线程的属性">2.2 线程的属性</a></li>
+<li><a href="#23-函数传入线程">2.3 函数传入线程</a></li>
+</ul>
+</li>
+<li><a href="#3-线程主要函数">3 线程主要函数</a><ul>
+<li><a href="#31-pthreadjoin">3.1 pthread_join</a></li>
+<li><a href="#32-pthreadself">3.2 pthread_self</a></li>
+<li><a href="#33-pthreaddetach">3.3 pthread_detach</a></li>
+<li><a href="#34-pthreadexit">3.4 pthread_exit</a><ul>
+<li><a href="#具体实现例子可以看书">具体实现例子可以看书。</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#4-互斥锁">4 互斥锁</a><ul>
+<li><a href="#41-相关函数">4.1 相关函数</a></li>
+<li><a href="#42-初始化">4.2 初始化</a></li>
+<li><a href="#43-上锁解锁过程">4.3 上锁解锁过程</a></li>
+</ul>
+</li>
+<li><a href="#5-条件变量">5 条件变量</a><ul>
+<li><a href="#51-相关函数">5.1 相关函数</a></li>
+<li><a href="#52-函数解释">5.2 函数解释</a><ul>
+<li><a href="#1pthreadcondsignal-pthreadcondbroadcast">1）pthread_cond_signal() &amp; pthread_cond_broadcast()</a></li>
+<li><a href="#2pthreadcondwait-pthreadcondtimedwait">2）pthread_cond_wait() &amp; pthread_cond_timedwait()</a></li>
+</ul>
+</li>
+<li><a href="#53-生产者与消费者例子">5.3 生产者与消费者例子</a></li>
+<li><a href="#6-条件变量与互斥锁信号量的区别">6 条件变量与互斥锁、信号量的区别</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="1-概述"><a href="#1-概述" class="headerlink" title="1 概述"></a>1 概述</h2><p>多线程一直是计算机中一个重要的概念，有关于线程的基础概念就不再赘述。 之前写的多任务处理都是用的fork，但是fork的调用太浪费资源，而且父子进程之前通信需要花更多功夫。 线程有助于解决以上问题。 本章主要讲解一下在Unix中实现多线程、互斥锁和条件变量。</p>
+<h2 id="2-线程的创建"><a href="#2-线程的创建" class="headerlink" title="2 线程的创建"></a>2 线程的创建</h2><p>程序运行就会有一个主线程，其余线程由<code>pthread_create</code>函数创建。</p>
+<h3 id="2-1-函数原型"><a href="#2-1-函数原型" class="headerlink" title="2.1 函数原型"></a>2.1 函数原型</h3><p>#include &lt;pthread.h&gt;<br>    int pthread_create(pthread_t <em>thread, const pthread_attr_t *attr,<br>                              void *(</em>start_routine) (void *), void *arg); </p>
+<h3 id="2-2-线程的属性"><a href="#2-2-线程的属性" class="headerlink" title="2.2 线程的属性"></a>2.2 线程的属性</h3><p>每个线程都有许多属性：</p>
+<ul>
+<li>优先级</li>
+<li>初始栈大小</li>
+<li>是否应该成为一个守护进程</li>
+</ul>
+<p>可以通过pthread_attr_t变量指定这些属性，一般都置为空。</p>
+<h3 id="2-3-函数传入线程"><a href="#2-3-函数传入线程" class="headerlink" title="2.3 函数传入线程"></a>2.3 函数传入线程</h3><blockquote>
+<p>Unix中的线程和之前写过的QT&amp;&amp;C++中的线程不一样，前者是将函数放入线程中运行，后者是创建一个线程，在run函数里的内容就是在线程里跑的内容。</p>
+</blockquote>
+<p>创建一个线程时我们最后指定的参数是由该线程<code>执行的函数</code>以及<code>参数</code>。该线程通过调用这个函数开始执行，然后显式的终止（调用pthread_exit），或者隐式地终止（函数返回）。 要注意函数的唯一调用参数是指针<code>*arg</code>，如果需要传递多个参数则得打包成一个结构体。也可以将参数定义为全局变量，以便于函数使用。</p>
+<h2 id="3-线程主要函数"><a href="#3-线程主要函数" class="headerlink" title="3 线程主要函数"></a>3 线程主要函数</h2><h3 id="3-1-pthread-join"><a href="#3-1-pthread-join" class="headerlink" title="3.1 pthread_join"></a>3.1 pthread_join</h3><pre><code>#include &lt;pthread.h&gt;
+int pthread_join(pthread_t thread, void **retval);</code></pre><p>类似于进程里的waitpid，等待给定线程终止。如果该线程<strong>函数没有结束</strong>就<strong>调用了<code>pthread_join</code></strong>，调用者将会被阻塞。</p>
+<h3 id="3-2-pthread-self"><a href="#3-2-pthread-self" class="headerlink" title="3.2 pthread_self"></a>3.2 pthread_self</h3><pre><code>#include &lt;pthread.h&gt;
+pthread_t pthread_self(void);</code></pre><p>类似于getpid，获取自身线程ID。</p>
+<h3 id="3-3-pthread-detach"><a href="#3-3-pthread-detach" class="headerlink" title="3.3 pthread_detach"></a>3.3 pthread_detach</h3><pre><code>include &lt;pthread.h&gt;
+int pthread_detach(pthread_t thread);</code></pre><p>把指定线程转变为脱离状态。 结合join函数的问题来看，如果不希望调用者堵塞，可以在子线程中如下加入代码：</p>
+<pre><code>pthread_detach(pthread_self());
+//或者父线程调用
+pthread_detach(thread_id);
+//非阻塞，可立即返回</code></pre><p>这将该子线程的状态设置为detached,则该线程运行结束后会自动释放所有资源。</p>
+<h3 id="3-4-pthread-exit"><a href="#3-4-pthread-exit" class="headerlink" title="3.4 pthread_exit"></a>3.4 pthread_exit</h3><pre><code>#include &lt;pthread.h&gt;
+void pthread_exit(void *retval);</code></pre><p>终止线程的方法之一。 如果本线程未曾脱离（detach），它的线程ID和退出状态将一直留存到调用进程内的某个其他线程对它调用pthread_join。</p>
+<h4 id="具体实现例子可以看书。"><a href="#具体实现例子可以看书。" class="headerlink" title="具体实现例子可以看书。"></a>具体实现例子可以看书。</h4><h2 id="4-互斥锁"><a href="#4-互斥锁" class="headerlink" title="4 互斥锁"></a>4 互斥锁</h2><p>线程编程是<strong>并发编程</strong>或<strong>并行编程</strong>，多个线程可以并发的（并行的）运行且访问相同的变量。但是在某些情况，线程编程访问变量会出错。而进程则不会，因为父子进程之前除了描述符外不共享任何东西。 这个时候就需要使用互斥锁解决这个问题，可能有学过操作系统里银行家算法的想必对互斥锁不陌生。</p>
+<h3 id="4-1-相关函数"><a href="#4-1-相关函数" class="headerlink" title="4.1 相关函数"></a>4.1 相关函数</h3><pre><code>int pthread_mutex_lock(pthread_mutex_t *mutex);
+
+int pthread_mutex_trylock(pthread_mutex_t *mutex);
+
+int pthread_mutex_unlock(pthread_mutex_t *mutex);
+
+int pthread_mutex_destroy(pthread_mutex_t *mutex);</code></pre><p>*注意：如果对一个已经被另外线程锁住的互斥锁上锁，那么本线程将被阻塞，直到该互斥锁被解锁位置。</p>
+<h3 id="4-2-初始化"><a href="#4-2-初始化" class="headerlink" title="4.2 初始化"></a>4.2 初始化</h3><pre><code>pthread_mutex_t counter_mutex = PTHREAD_MUTEX_INITIALIZER;</code></pre><p>有些系统将PTHREAD_MUTEX_INITIALIZER定义为0。</p>
+<h3 id="4-3-上锁解锁过程"><a href="#4-3-上锁解锁过程" class="headerlink" title="4.3 上锁解锁过程"></a>4.3 上锁解锁过程</h3><p>书上的例子：</p>
+<pre><code>for (i = 0; i &lt; NLOOP; i++) {
+        Pthread_mutex_lock(&amp;counter_mutex);
+
+        val = counter;
+        printf(&quot;%d: %d\n&quot;, pthread_self(), val + 1);
+        counter = val + 1;
+
+        Pthread_mutex_unlock(&amp;counter_mutex);
+    }</code></pre><p>可见，lock和unlock之间的变量是互斥的，别的线程不能同时访问。</p>
+<h2 id="5-条件变量"><a href="#5-条件变量" class="headerlink" title="5 条件变量"></a>5 条件变量</h2><p>互斥锁适合与防止同时访问某个共享变量，但是我们需要另外某种在等待某个条件发生期间能让我们进入睡眠的东西。<strong>简单来说就是让主循环进入睡眠，知道某个线程通知它有事可做才醒来的方法。</strong> 条件变量结合互斥锁能够提供这个功能。互斥锁提供互斥机制，条件变量提供信号机制。</p>
+<h3 id="5-1-相关函数"><a href="#5-1-相关函数" class="headerlink" title="5.1 相关函数"></a>5.1 相关函数</h3><p>#include &lt;pthread.h&gt;<br>    //条件变量<br>    pthread_cond_t cond = PTHREAD_COND_INITIALIZER;</p>
+<pre><code>int pthread_cond_init(pthread_cond_t *cond, pthread_condattr_t *cond_attr);
+
+int pthread_cond_signal(pthread_cond_t *cond);
+
+int pthread_cond_broadcast(pthread_cond_t *cond);
+
+int pthread_cond_wait(pthread_cond_t *cond, pthread_mutex_t *mutex);
+
+int pthread_cond_timedwait(pthread_cond_t *cond,  pthread_mutex_t  *mutex,  const struct timespec *abstime);
+int pthread_cond_destroy(pthread_cond_t *cond); </code></pre><h3 id="5-2-函数解释"><a href="#5-2-函数解释" class="headerlink" title="5.2 函数解释"></a>5.2 函数解释</h3><p>初始化和销毁就不说了。</p>
+<blockquote>
+<p>以下内容来自<a href="https://blog.csdn.net/anonymalias/article/details/9174481" target="_blank" rel="noopener">Linux线程同步之条件变量</a></p>
+</blockquote>
+<h4 id="1）pthread-cond-signal-amp-pthread-cond-broadcast"><a href="#1）pthread-cond-signal-amp-pthread-cond-broadcast" class="headerlink" title="1）pthread_cond_signal() &amp; pthread_cond_broadcast()"></a>1）pthread_cond_signal() &amp; pthread_cond_broadcast()</h4><p>这两个函数都是用于向等待条件的线程发送唤醒信号，<code>pthread_cond_signal()</code>函数只会唤醒等待该条件的某个线程，<code>pthread_cond_broadcast()</code>会广播条件状态的改变，以唤醒等待该条件的所有线程。例如多个线程只读共享资源，这是可以将它们都唤醒。</p>
+<h4 id="2）pthread-cond-wait-amp-pthread-cond-timedwait"><a href="#2）pthread-cond-wait-amp-pthread-cond-timedwait" class="headerlink" title="2）pthread_cond_wait() &amp; pthread_cond_timedwait()"></a>2）pthread_cond_wait() &amp; pthread_cond_timedwait()</h4><p>函数用于等待条件被触发。该函数传入两个参数，一个条件变量一个互斥量，函数将条件变量和互斥量进行关联，互斥量对该条件进行保护，<code>传入的互斥量必须是已经锁住的</code>。调用pthread_cond_wait()函数后，会原子的执行以下两个动作：</p>
+<ul>
+<li><strong>将调用线程放到等待条件的线程列表上，即进入睡眠</strong>；</li>
+<li><strong>对互斥量进行解锁</strong>；</li>
+</ul>
+<p>pthread_cond_timedwait()函数和和pthread_cond_wait()的工作方式相似，只是多了一个等待时间。等待时间的结构为struct timespec。</p>
+<pre><code>struct timespec{  
+time_t  tv_sec    //Seconds.  
+long    tv_nsec   //Nanoseconds.  
+}; </code></pre><h3 id="5-3-生产者与消费者例子"><a href="#5-3-生产者与消费者例子" class="headerlink" title="5.3 生产者与消费者例子"></a>5.3 生产者与消费者例子</h3><p>#include <iostream><br>    #include <queue><br>    #include <cstdlib>  </p>
+<pre><code>#include &lt;unistd.h&gt;  
+#include &lt;pthread.h&gt;  
+
+using namespace std;  
+
+//把共享数据和它们的同步变量集合到一个结构中，这往往是一个较好的编程技巧。  
+struct{  
+    pthread_mutex_t mutex;  
+    pthread_cond_t cond;  
+    queue&lt;int&gt; product;  
+}sharedData = {PTHREAD_MUTEX_INITIALIZER, PTHREAD_COND_INITIALIZER};  
+
+void * produce(void *ptr)  
+{  
+    for (int i = 0; i &lt; 10; ++i)  
+    {  
+        pthread_mutex_lock(&amp;sharedData.mutex);  //生产的时候将product锁住
+
+        sharedData.product.push(i);  
+
+        pthread_mutex_unlock(&amp;sharedData.mutex);  
+
+        if (sharedData.product.size() == 1)     //生产了一个产品则唤醒消费线程
+            pthread_cond_signal(&amp;sharedData.cond);  
+
+        //sleep(1);  
+    }  
+}  
+
+void * consume(void *ptr)  
+{  
+    for (int i = 0; i &lt; 10;)  
+    {  
+        pthread_mutex_lock(&amp;sharedData.mutex);  
+
+        while(sharedData.product.empty())  //消费完了将进程放入睡眠状态
+            pthread_cond_wait(&amp;sharedData.cond, &amp;sharedData.mutex);  
+
+        ++i;  
+        cout&lt;&lt;&quot;consume:&quot;&lt;&lt;sharedData.product.front()&lt;&lt;endl;  
+        sharedData.product.pop();  
+
+        pthread_mutex_unlock(&amp;sharedData.mutex);  
+
+        //sleep(1);  
+    }  
+}  
+
+int main()  
+{  
+    pthread_t tid1, tid2;  
+
+    pthread_create(&amp;tid1, NULL, consume, NULL);  
+    pthread_create(&amp;tid2, NULL, produce, NULL);  
+
+    void *retVal;  
+
+    pthread_join(tid1, &amp;retVal);  
+    pthread_join(tid2, &amp;retVal);  
+
+    return 0;  
+} </code></pre><h3 id="6-条件变量与互斥锁、信号量的区别"><a href="#6-条件变量与互斥锁、信号量的区别" class="headerlink" title="6 条件变量与互斥锁、信号量的区别"></a>6 条件变量与互斥锁、信号量的区别</h3><ol>
+<li><p>互斥锁必须总是由给它上锁的线程解锁，信号量的挂出即不必由执行过它的等待操作的同一进程执行。一个线程可以等待某个给定信号灯，而另一个线程可以挂出该信号灯。</p>
+</li>
+<li><p>互斥锁要么锁住，要么被解开（二值状态，类型二值信号量）。</p>
+</li>
+<li><p>由于信号量有一个与之关联的状态（它的计数值），信号量挂出操作总是被记住。然而当向一个条件变量发送信号时，如果没有线程等待在该条件变量上，那么该信号将丢失。</p>
+</li>
+<li><p><strong>互斥锁是为了上锁而设计的</strong>，<strong>条件变量是为了等待而设计的</strong>，信号灯即可用于上锁，也可用于等待，因而可能导致更多的开销和更高的复杂性。</p>
+</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%BA%BF%E7%A8%8B/" rel="tag"># 线程</a>
+              <a href="/tags/%E4%BA%92%E6%96%A5%E9%94%81/" rel="tag"># 互斥锁</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/05/26/e9-9d-9e-e9-98-bb-e5-a1-9e-e5-bc-8fi-o/" rel="prev" title="非阻塞式I/O">
+      <i class="fa fa-chevron-left"></i> 非阻塞式I/O
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/05/29/posix-ipc/" rel="next" title="Posix IPC">
+      Posix IPC <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#线程"><span class="nav-number">1.</span> <span class="nav-text">线程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-概述"><span class="nav-number">1.1.</span> <span class="nav-text">1 概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-线程的创建"><span class="nav-number">1.2.</span> <span class="nav-text">2 线程的创建</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-函数原型"><span class="nav-number">1.2.1.</span> <span class="nav-text">2.1 函数原型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-线程的属性"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.2 线程的属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-函数传入线程"><span class="nav-number">1.2.3.</span> <span class="nav-text">2.3 函数传入线程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-线程主要函数"><span class="nav-number">1.3.</span> <span class="nav-text">3 线程主要函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-pthread-join"><span class="nav-number">1.3.1.</span> <span class="nav-text">3.1 pthread_join</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-pthread-self"><span class="nav-number">1.3.2.</span> <span class="nav-text">3.2 pthread_self</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-pthread-detach"><span class="nav-number">1.3.3.</span> <span class="nav-text">3.3 pthread_detach</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-pthread-exit"><span class="nav-number">1.3.4.</span> <span class="nav-text">3.4 pthread_exit</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#具体实现例子可以看书。"><span class="nav-number">1.3.4.1.</span> <span class="nav-text">具体实现例子可以看书。</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-互斥锁"><span class="nav-number">1.4.</span> <span class="nav-text">4 互斥锁</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-相关函数"><span class="nav-number">1.4.1.</span> <span class="nav-text">4.1 相关函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-初始化"><span class="nav-number">1.4.2.</span> <span class="nav-text">4.2 初始化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-上锁解锁过程"><span class="nav-number">1.4.3.</span> <span class="nav-text">4.3 上锁解锁过程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-条件变量"><span class="nav-number">1.5.</span> <span class="nav-text">5 条件变量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-相关函数"><span class="nav-number">1.5.1.</span> <span class="nav-text">5.1 相关函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-函数解释"><span class="nav-number">1.5.2.</span> <span class="nav-text">5.2 函数解释</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1）pthread-cond-signal-amp-pthread-cond-broadcast"><span class="nav-number">1.5.2.1.</span> <span class="nav-text">1）pthread_cond_signal() &amp; pthread_cond_broadcast()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2）pthread-cond-wait-amp-pthread-cond-timedwait"><span class="nav-number">1.5.2.2.</span> <span class="nav-text">2）pthread_cond_wait() &amp; pthread_cond_timedwait()</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-3-生产者与消费者例子"><span class="nav-number">1.5.3.</span> <span class="nav-text">5.3 生产者与消费者例子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-条件变量与互斥锁、信号量的区别"><span class="nav-number">1.5.4.</span> <span class="nav-text">6 条件变量与互斥锁、信号量的区别</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">113</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">70</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

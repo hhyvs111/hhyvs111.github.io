@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Edit 第四章 连接《C陷阱与缺陷》学习笔记 形参 实参 static posts  第四章 连接   4.1 什么是连接器  4.2 声明和定义  4.3 命名冲突与static修饰符    4.3.1 变量  4.3.2 函数    4.4 形参、实参与返回值   4.4.1 形参实参的区别  4.4.2 强制转换  4.4.3 返回值    4.5 检查外部类型   原内存布局  现内存布">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第四章 连接">
+<meta property="og:url" content="http://yoursite.com/2018/04/24/four-link/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Edit 第四章 连接《C陷阱与缺陷》学习笔记 形参 实参 static posts  第四章 连接   4.1 什么是连接器  4.2 声明和定义  4.3 命名冲突与static修饰符    4.3.1 变量  4.3.2 函数    4.4 形参、实参与返回值   4.4.1 形参实参的区别  4.4.2 强制转换  4.4.3 返回值    4.5 检查外部类型   原内存布局  现内存布">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://tanwenbo.top/wp-content/uploads/2018/06/e98054d288ab979ab00d1b0319cfc674.png">
+<meta property="og:image" content="https://tanwenbo.top/wp-content/uploads/2018/06/b8923f18c4555c4870fdfd935f6c55e7.png">
+<meta property="article:published_time" content="2018-04-24T04:05:28.000Z">
+<meta property="article:modified_time" content="2020-04-14T06:29:36.318Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="static">
+<meta property="article:tag" content="实参">
+<meta property="article:tag" content="形参">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tanwenbo.top/wp-content/uploads/2018/06/e98054d288ab979ab00d1b0319cfc674.png">
+
+<link rel="canonical" href="http://yoursite.com/2018/04/24/four-link/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>第四章 连接 | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/24/four-link/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          第四章 连接
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-04-24 12:05:28" itemprop="dateCreated datePublished" datetime="2018-04-24T12:05:28+08:00">2018-04-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><a href="http://maxiang.io/#/?provider=evernote&guid=558692fd-8021-498e-a42c-9f3d939845dd&notebook=%E3%80%8AC%E9%99%B7%E9%98%B1%E4%B8%8E%E7%BC%BA%E9%99%B7%E3%80%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0" target="_blank" rel="noopener">Edit</a></p>
+<h1 id="第四章-连接"><a href="#第四章-连接" class="headerlink" title="第四章 连接"></a>第四章 连接</h1><p>《C陷阱与缺陷》学习笔记 形参 实参 static posts</p>
+<ul>
+<li><a href="#第四章-连接">第四章 连接</a></li>
+</ul>
+<ul>
+<li><p><a href="#41-什么是连接器">4.1 什么是连接器</a></p>
+</li>
+<li><p><a href="#42-声明和定义">4.2 声明和定义</a></p>
+</li>
+<li><p><a href="#43-命名冲突与static修饰符">4.3 命名冲突与static修饰符</a></p>
+</li>
+</ul>
+<ul>
+<li><p><a href="#431-变量">4.3.1 变量</a></p>
+</li>
+<li><p><a href="#432-函数">4.3.2 函数</a></p>
+</li>
+</ul>
+<ul>
+<li><a href="#44-形参实参与返回值">4.4 形参、实参与返回值</a></li>
+</ul>
+<ul>
+<li><p><a href="#441-形参实参的区别">4.4.1 形参实参的区别</a></p>
+</li>
+<li><p><a href="#442-强制转换">4.4.2 强制转换</a></p>
+</li>
+<li><p><a href="#443-返回值">4.4.3 返回值</a></p>
+</li>
+</ul>
+<ul>
+<li><a href="#45-检查外部类型">4.5 检查外部类型</a></li>
+</ul>
+<ul>
+<li><p><a href="#原内存布局">原内存布局</a></p>
+</li>
+<li><p><a href="#现内存布局">现内存布局</a></p>
+</li>
+</ul>
+<ul>
+<li><p><a href="#46-头文件">4.6 头文件</a></p>
+</li>
+<li><p><a href="#总结">总结</a></p>
+</li>
+</ul>
+<h2 id="4-1-什么是连接器"><a href="#4-1-什么是连接器" class="headerlink" title="4.1 什么是连接器"></a>4.1 什么是连接器</h2><blockquote>
+<p>在C语言中，一个重要的思想就是分别编译，即若干个源程序可以在不同的时候单独进行编译，然后在恰当的时候整合到一起。但是连接器一般是与C编译器分离的，连接器如何做到把若干个C源程序合并成一个整体呢？</p>
+<p>典型的连接器把由编译器或汇编器生成的若干个目标模块，整合成一个被称为载入模块或可执行文件的实体，该实体能够被操作系统直接执行。其中，某些目标模块是直接作为输入提供给连接器的；而另外一些目标模块则是根据连接过程的需要，从包括有类似printf函数的库文件中取得的。</p>
+</blockquote>
+<p>简而言之，连接器就是用来连接各个编译好的模块，然后将其组成一个模块或者可执行文件。且会检查外部对象是否有重复，重复则报错。因为大多数连接器都进制同一个载入模块中的两个不同对象拥有相同的名称。</p>
+<h2 id="4-2-声明和定义"><a href="#4-2-声明和定义" class="headerlink" title="4.2 声明和定义"></a>4.2 声明和定义</h2><p>声明在函数体之外的变量是全局变量，也称为外部对象。</p>
+<p>1.int a; //声明</p>
+<p>2.a = 1; //定义</p>
+<p>3.int b = 1; //声明并定义</p>
+<p>如果使用了extern关键字，则代表该变量是其他地方分配的。</p>
+<p>1.extern int a;</p>
+<h2 id="4-3-命名冲突与static修饰符"><a href="#4-3-命名冲突与static修饰符" class="headerlink" title="4.3 命名冲突与static修饰符"></a>4.3 命名冲突与static修饰符</h2><h3 id="4-3-1-变量"><a href="#4-3-1-变量" class="headerlink" title="4.3.1 变量"></a>4.3.1 变量</h3><p>static修饰的变量只会初始化一次，其值固定在内存空间直至销毁，所以如果再次对其进行赋值是无效的。</p>
+<p>static变量可以重名，不会发生冲突</p>
+<p>1.static int a;</p>
+<p>2.int a;</p>
+<h3 id="4-3-2-函数"><a href="#4-3-2-函数" class="headerlink" title="4.3.2 函数"></a>4.3.2 函数</h3><p>static声明的函数可以在外部使用，一般称其为静态函数。</p>
+<p>1.static int g(int x)</p>
+<p>2.{</p>
+<p>3…..</p>
+<p>4.}</p>
+<p>5.</p>
+<p>6.void f()</p>
+<p>7.{</p>
+<ol start="8">
+<li>b = g(a);</li>
+</ol>
+<p>9.}</p>
+<h2 id="4-4-形参、实参与返回值"><a href="#4-4-形参、实参与返回值" class="headerlink" title="4.4 形参、实参与返回值"></a>4.4 形参、实参与返回值</h2><h3 id="4-4-1-形参实参的区别"><a href="#4-4-1-形参实参的区别" class="headerlink" title="4.4.1 形参实参的区别"></a>4.4.1 形参实参的区别</h3><p>老生常谈了，用段代码来解释下形参和实参。</p>
+<p>1.#include&lt;stdio.h&gt;</p>
+<p>2.void swap(int a,int b)</p>
+<p>3.{</p>
+<ol start="4">
+<li>int c = a;</li>
+</ol>
+<p>5.#include&lt;stdio.h&gt;</p>
+<p>6.void swap(int a,int b) //传的形参</p>
+<p>7.{</p>
+<ol start="8">
+<li><p>int c = a;</p>
+</li>
+<li><p>a = b;</p>
+</li>
+<li><p>b = c;</p>
+</li>
+</ol>
+<p>11.}</p>
+<p>12.void swap1(int *a,int *b) //传实参</p>
+<p>13.{</p>
+<p>14.</p>
+<ol start="15">
+<li><p>int c = *a;</p>
+</li>
+<li><p>*a = *b;</p>
+</li>
+<li><p>*b = c;</p>
+</li>
+</ol>
+<p>18.}</p>
+<p>19.int main()</p>
+<p>20.{</p>
+<ol start="21">
+<li><p>int a = 1,b = 2;</p>
+</li>
+<li><p>swap(a,b); //没有交换</p>
+</li>
+<li><p>printf(“%d %d\n”,a ,b);</p>
+</li>
+<li><p>swap1(&amp;a,&amp;b); //交换了</p>
+</li>
+<li><p>printf(“%d %d\n”,a , b);</p>
+</li>
+<li><p>return 0 ;</p>
+</li>
+</ol>
+<p>27.}</p>
+<h3 id="4-4-2-强制转换"><a href="#4-4-2-强制转换" class="headerlink" title="4.4.2 强制转换"></a>4.4.2 强制转换</h3><p>当函数指定了参数类型，会进行强制转换，比如：</p>
+<p>1.double square(double);</p>
+<p>2.square(2); //合法，会自动转换为双精度类型</p>
+<h3 id="4-4-3-返回值"><a href="#4-4-3-返回值" class="headerlink" title="4.4.3 返回值"></a>4.4.3 返回值</h3><p>函数除了构造函数和析构函数之外，都要声明返回值，void或者其他类型。</p>
+<h2 id="4-5-检查外部类型"><a href="#4-5-检查外部类型" class="headerlink" title="4.5 检查外部类型"></a>4.5 检查外部类型</h2><p>在引用外部变量的时候要注意最好是类型一样，比如：</p>
+<p>1.char filename[] = “/etc/passwd”;</p>
+<p>2.</p>
+<p>3.extern char* filename; //外部引用</p>
+<p>虽然指针与数组好像是一样的，但是filename的类型是“字符数组”，而不是“字符指针”。在第二个声明中，filename被确定为一个指针。这两个对filename的声明使用存储空间的方式是不同的。</p>
+<h4 id="原内存布局"><a href="#原内存布局" class="headerlink" title="原内存布局"></a>原内存布局</h4><p><img src="https://tanwenbo.top/wp-content/uploads/2018/06/e98054d288ab979ab00d1b0319cfc674.png" alt=""></p>
+<h4 id="现内存布局"><a href="#现内存布局" class="headerlink" title="现内存布局"></a>现内存布局</h4><p><img src="https://tanwenbo.top/wp-content/uploads/2018/06/b8923f18c4555c4870fdfd935f6c55e7.png" alt=""></p>
+<p>应该改为同样类型：</p>
+<p>1.char filename[] = “/etc”;</p>
+<p>2.extern char filename[];</p>
+<p>3.</p>
+<p>4.char* filename= “/etc”;</p>
+<p>5.extern char* filename;</p>
+<h2 id="4-6-头文件"><a href="#4-6-头文件" class="headerlink" title="4.6 头文件"></a>4.6 头文件</h2><p>每个外部对象应只在一个头文件中声明，需要用到该外部对象的所有模块都应该包括这个头文件。定义该外部对象的模块也应该包括这个头文件。比如：</p>
+<p>public.h</p>
+<p>1.int a = 1;</p>
+<p>2.char* str = “123”;</p>
+<p>main.c</p>
+<p>1.#include &lt;stdio.h&gt;</p>
+<p>2.#include “public.h”</p>
+<p>3.extern int a;</p>
+<p>4.extern char* str;</p>
+<p>5.int main()</p>
+<p>6.{</p>
+<ol start="7">
+<li><p>printf(“%d\n”,a);</p>
+</li>
+<li><p>return 0;</p>
+</li>
+</ol>
+<p>9.}</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>C语言的连接是一个很强大的东西，将小的模块组成大的模块，文件和变量之间能很好的进行交互，从而达到高内聚低耦合的效果。</p>
+<p>%23%u7B2C%u56DB%u7AE0%20%u8FDE%u63A5%0A@%28%u300AC%u9677%u9631%u4E0E%u7F3A%u9677%u300B%u5B66%u4E60%u7B14%u8BB0%29%5B%u5F62%u53C2%7C%u5B9E%u53C2%7Cstatic%7Cposts%5D%0A%0A%5BTOC%5D%0A%0A%23%23%204.1%20%u4EC0%u4E48%u662F%u8FDE%u63A5%u5668%0A%3E%20%u5728C%u8BED%u8A00%u4E2D%uFF0C%u4E00%u4E2A%u91CD%u8981%u7684%u601D%u60F3%u5C31%u662F%u5206%u522B%u7F16%u8BD1%uFF0C%u5373%u82E5%u5E72%u4E2A%u6E90%u7A0B%u5E8F%u53EF%u4EE5%u5728%u4E0D%u540C%u7684%u65F6%u5019%u5355%u72EC%u8FDB%u884C%u7F16%u8BD1%uFF0C%u7136%u540E%u5728%u6070%u5F53%u7684%u65F6%u5019%u6574%u5408%u5230%u4E00%u8D77%u3002%u4F46%u662F%u8FDE%u63A5%u5668%u4E00%u822C%u662F%u4E0EC%u7F16%u8BD1%u5668%u5206%u79BB%u7684%uFF0C%u8FDE%u63A5%u5668%u5982%u4F55%u505A%u5230%u628A%u82E5%u5E72%u4E2AC%u6E90%u7A0B%u5E8F%u5408%u5E76%u6210%u4E00%u4E2A%u6574%u4F53%u5462%uFF1F%0A%3E%20%u5178%u578B%u7684%u8FDE%u63A5%u5668%u628A%u7531%u7F16%u8BD1%u5668%u6216%u6C47%u7F16%u5668%u751F%u6210%u7684%u82E5%u5E72%u4E2A%u76EE%u6807%u6A21%u5757%uFF0C%u6574%u5408%u6210%u4E00%u4E2A%u88AB%u79F0%u4E3A%u8F7D%u5165%u6A21%u5757%u6216%u53EF%u6267%u884C%u6587%u4EF6%u7684%u5B9E%u4F53%uFF0C%u8BE5%u5B9E%u4F53%u80FD%u591F%u88AB%u64CD%u4F5C%u7CFB%u7EDF%u76F4%u63A5%u6267%u884C%u3002%u5176%u4E2D%uFF0C%u67D0%u4E9B%u76EE%u6807%u6A21%u5757%u662F%u76F4%u63A5%u4F5C%u4E3A%u8F93%u5165%u63D0%u4F9B%u7ED9%u8FDE%u63A5%u5668%u7684%uFF1B%u800C%u53E6%u5916%u4E00%u4E9B%u76EE%u6807%u6A21%u5757%u5219%u662F%u6839%u636E%u8FDE%u63A5%u8FC7%u7A0B%u7684%u9700%u8981%uFF0C%u4ECE%u5305%u62EC%u6709%u7C7B%u4F3Cprintf%u51FD%u6570%u7684%u5E93%u6587%u4EF6%u4E2D%u53D6%u5F97%u7684%u3002%0A%0A%u7B80%u800C%u8A00%u4E4B%uFF0C%u8FDE%u63A5%u5668%u5C31%u662F%u7528%u6765%u8FDE%u63A5%u5404%u4E2A%u7F16%u8BD1%u597D%u7684%u6A21%u5757%uFF0C%u7136%u540E%u5C06%u5176%u7EC4%u6210%u4E00%u4E2A%u6A21%u5757%u6216%u8005%u53EF%u6267%u884C%u6587%u4EF6%u3002%u4E14%u4F1A%u68C0%u67E5%u5916%u90E8%u5BF9%u8C61%u662F%u5426%u6709%u91CD%u590D%uFF0C%u91CD%u590D%u5219%u62A5%u9519%u3002%u56E0%u4E3A<strong>%u5927%u591A%u6570%u8FDE%u63A5%u5668%u90FD%u8FDB%u5236%u540C%u4E00%u4E2A%u8F7D%u5165%u6A21%u5757%u4E2D%u7684%u4E24%u4E2A%u4E0D%u540C%u5BF9%u8C61%u62E5%u6709%u76F8%u540C%u7684%u540D%u79F0</strong>%u3002%0A%0A%23%23%204.2%20%u58F0%u660E%u548C%u5B9A%u4E49%0A%u58F0%u660E%u5728%u51FD%u6570%u4F53%u4E4B%u5916%u7684%u53D8%u91CF%u662F<strong>%u5168%u5C40%u53D8%u91CF</strong>%uFF0C%u4E5F%u79F0%u4E3A<strong>%u5916%u90E8%u5BF9%u8C61</strong>%u3002%0A%60%60%60c%0Aint%20a%3B%09%09%09%09//%u58F0%u660E%0Aa%20%3D%201%3B%09%09%09%09//%u5B9A%u4E49%0Aint%20b%20%3D%201%3B%09%09%09//%u58F0%u660E%u5E76%u5B9A%u4E49%0A%60%60%60%0A%u5982%u679C%u4F7F%u7528%u4E86extern%u5173%u952E%u5B57%uFF0C%u5219%u4EE3%u8868%u8BE5%u53D8%u91CF%u662F%u5176%u4ED6%u5730%u65B9%u5206%u914D%u7684%u3002%0A%60%60%60c%0Aextern%20int%20a%3B%0A%60%60%60%0A%0A%23%23%204.3%20%u547D%u540D%u51B2%u7A81%u4E0Estatic%u4FEE%u9970%u7B26%0A%23%23%23%204.3.1%20%u53D8%u91CF%0Astatic%u4FEE%u9970%u7684%u53D8%u91CF%u53EA%u4F1A%60%60%u521D%u59CB%u5316%u4E00%u6B21%60%60%uFF0C%u5176%u503C%u56FA%u5B9A%u5728%u5185%u5B58%u7A7A%u95F4%u76F4%u81F3%u9500%u6BC1%uFF0C<strong>%u6240%u4EE5%u5982%u679C%u518D%u6B21%u5BF9%u5176%u8FDB%u884C%u8D4B%u503C%u662F%u65E0%u6548%u7684%u3002</strong>%0A%0Astatic%u53D8%u91CF%u53EF%u4EE5%60%u91CD%u540D%60%uFF0C%u4E0D%u4F1A%u53D1%u751F%u51B2%u7A81%0A%60%60%60c%20%0Astatic%20int%20a%3B%0Aint%20a%3B%0A%60%60%60%0A%0A%23%23%23%204.3.2%20%u51FD%u6570%0Astatic%u58F0%u660E%u7684%u51FD%u6570%u53EF%u4EE5%u5728%u5916%u90E8%u4F7F%u7528%uFF0C%u4E00%u822C%u79F0%u5176%u4E3A%60%u9759%u6001%u51FD%u6570%60%u3002%0A%60%60%60c%0Astatic%20int%20g%28int%20x%29%0A%7B%0A….%0A%7D%20%0A%0Avoid%20f%28%29%0A%7B%0A%09b%20%3D%20g%28a%29%3B%0A%7D%0A%60%60%60%0A%0A%23%23%204.4%20%u5F62%u53C2%u3001%u5B9E%u53C2%u4E0E%u8FD4%u56DE%u503C%0A%23%23%23%204.4.1%20%u5F62%u53C2%u5B9E%u53C2%u7684%u533A%u522B%0A%u8001%u751F%u5E38%u8C08%u4E86%uFF0C%u7528%u6BB5%u4EE3%u7801%u6765%u89E3%u91CA%u4E0B%60%u5F62%u53C2%60%u548C%60%u5B9E%u53C2%60%u3002%0A%60%60%60C%0A%23include%3Cstdio.h%3E%0Avoid%20swap%28int%20a%2Cint%20b%29%0A%7B%0A%20%20%20%20int%20c%20%3D%20a%3B%0A%23include%3Cstdio.h%3E%0Avoid%20swap%28int%20a%2Cint%20b%29%09%09//%u4F20%u7684%u5F62%u53C2%0A%7B%20%20%20%0A%20%20%20%20int%20c%20%3D%20a%3B%0A%20%20%20%20a%20%3D%20b%3B%0A%20%20%20%20b%20%3D%20c%3B%0A%7D%0Avoid%20swap1%28int%20*a%2Cint%20*b%29%20%09//%u4F20%u5B9E%u53C2%0A%7B%0A%0A%20%20%20%20int%20c%20%3D%20*a%3B%20%0A%20%20%20%20*a%20%3D%20*b%3B%20%0A%20%20%20%20*b%20%3D%20c%3B%0A%7D%0Aint%20main%28%29%0A%7B%0A%20%20%20%20int%20a%20%3D%201%2Cb%20%3D%202%3B%0A%20%20%20%20swap%28a%2Cb%29%3B%20%20%20//%u6CA1%u6709%u4EA4%u6362%0A%20%20%20%20printf%28%22%25d%20%25d%5Cn%22%2Ca%20%2Cb%29%3B%20%20%20%20%0A%20%20%20%20swap1%28%26a%2C%26b%29%3B%20%20%20//%u4EA4%u6362%u4E86%0A%20%20%20%20printf%28%22%25d%20%25d%5Cn%22%2Ca%20%2C%20b%29%3B%0A%20%20%20%20return%200%20%3B%0A%7D%0A%60%60%60%0A%23%23%23%204.4.2%20%u5F3A%u5236%u8F6C%u6362%0A%u5F53%u51FD%u6570%u6307%u5B9A%u4E86%u53C2%u6570%u7C7B%u578B%uFF0C%u4F1A%u8FDB%u884C%60%u5F3A%u5236%u8F6C%u6362%60%uFF0C%u6BD4%u5982%uFF1A%0A%60%60%60C%0Adouble%20square%28double%29%3B%0Asquare%282%29%3B%20%09%09%09//%u5408%u6CD5%uFF0C%u4F1A%u81EA%u52A8%u8F6C%u6362%u4E3A%u53CC%u7CBE%u5EA6%u7C7B%u578B%0A%60%60%60%0A%23%23%23%204.4.3%20%u8FD4%u56DE%u503C%0A%u51FD%u6570%u9664%u4E86%60%u6784%u9020%u51FD%u6570%60%u548C%60%u6790%u6784%u51FD%u6570%60%u4E4B%u5916%uFF0C%u90FD%u8981%u58F0%u660E%u8FD4%u56DE%u503C%uFF0Cvoid%u6216%u8005%u5176%u4ED6%u7C7B%u578B%u3002%0A%0A%23%23%204.5%20%u68C0%u67E5%u5916%u90E8%u7C7B%u578B%0A%u5728%u5F15%u7528%60%u5916%u90E8%u53D8%u91CF%60%u7684%u65F6%u5019%u8981%u6CE8%u610F%u6700%u597D%u662F%u7C7B%u578B%u4E00%u6837%uFF0C%u6BD4%u5982%uFF1A%0A%60%60%60c%0Achar%20filename%5B%5D%20%3D%20%22/etc/passwd%22%3B%0A%0Aextern%20char<em>%20filename%3B%09//%u5916%u90E8%u5F15%u7528%0A%60%60%60%0A%u867D%u7136%u6307%u9488%u4E0E%u6570%u7EC4%u597D%u50CF%u662F%u4E00%u6837%u7684%uFF0C%u4F46%u662F%60filename%60%u7684%u7C7B%u578B%u662F%u201C%60%u5B57%u7B26%u6570%u7EC4%60%u201D%uFF0C%u800C%u4E0D%u662F%60%u201C%u5B57%u7B26%u6307%u9488%u201D%60%u3002%u5728%u7B2C%u4E8C%u4E2A%u58F0%u660E%u4E2D%uFF0C%60filename%60%u88AB%u786E%u5B9A%u4E3A%u4E00%u4E2A%60%u6307%u9488%60%u3002%u8FD9%u4E24%u4E2A%u5BF9%60filename%60%u7684%u58F0%u660E%u4F7F%u7528%u5B58%u50A8%u7A7A%u95F4%u7684%u65B9%u5F0F%u662F%u4E0D%u540C%u7684%u3002%0A%0A%23%23%23%23%20%u539F%u5185%u5B58%u5E03%u5C40%0A%21%5BAlt%20text%5D%28./1524645704928.png%29%0A%23%23%23%23%20%u73B0%u5185%u5B58%u5E03%u5C40%0A%21%5BAlt%20text%5D%28./1524645774249.png%29%0A%0A%u5E94%u8BE5%u6539%u4E3A%u540C%u6837%u7C7B%u578B%uFF1A%0A%60%60%60C%0Achar%20filename%5B%5D%20%3D%20%22/etc%22%3B%0Aextern%20char%20filename%5B%5D%3B%0A%0Achar</em>%20filename%3D%20%22/etc%22%3B%0Aextern%20char<em>%20filename%3B%0A%60%60%60%0A%0A%23%23%204.6%20%u5934%u6587%u4EF6%0A%u6BCF%u4E2A%u5916%u90E8%u5BF9%u8C61%u5E94%u53EA%u5728%u4E00%u4E2A%60%u5934%u6587%u4EF6%60%u4E2D%u58F0%u660E%uFF0C%u9700%u8981%u7528%u5230%u8BE5%u5916%u90E8%u5BF9%u8C61%u7684%60%u6240%u6709%u6A21%u5757%60%u90FD%u5E94%u8BE5%u5305%u62EC%u8FD9%u4E2A%60%u5934%u6587%u4EF6%60%u3002%u5B9A%u4E49%u8BE5%u5916%u90E8%u5BF9%u8C61%u7684%u6A21%u5757%u4E5F%u5E94%u8BE5%u5305%u62EC%u8FD9%u4E2A%60%u5934%u6587%u4EF6%60%u3002%u6BD4%u5982%uFF1A%0A%0A**public.h*\</em>%0A%60%60%60c%0Aint%20a%20%3D%201%3B%0Achar<em>%20str%20%3D%20%22123%22%3B%0A%60%60%60%0A**main.c*\</em>%0A%60%60%60c%0A%23include%20%3Cstdio.h%3E%0A%23include%20%22public.h%22%0Aextern%20int%20a%3B%0Aextern%20char<em>%20str%3B%0Aint%20main%28%29%0A%7B%0A%09printf%28%22%25d%5Cn%22%2Ca%29%3B%0A%09return%200%3B%0A%7D%0A%60%60%60%0A%23%23%20%u603B%u7ED3%0AC%u8BED%u8A00%u7684%u8FDE%u63A5%u662F%u4E00%u4E2A%u5F88%u5F3A%u5927%u7684%u4E1C%u897F%uFF0C%u5C06%u5C0F%u7684%u6A21%u5757%u7EC4%u6210%u5927%u7684%u6A21%u5757%uFF0C%u6587%u4EF6%u548C%u53D8%u91CF%u4E4B%u95F4%u80FD%u5F88%u597D%u7684%u8FDB%u884C%u4EA4%u4E92%uFF0C%u4ECE%u800C%u8FBE%u5230*</em>%u9AD8%u5185%u805A%u4F4E%u8026%u5408**%u7684%u6548%u679C%u3002%0A%0A</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/static/" rel="tag"># static</a>
+              <a href="/tags/%E5%AE%9E%E5%8F%82/" rel="tag"># 实参</a>
+              <a href="/tags/%E5%BD%A2%E5%8F%82/" rel="tag"># 形参</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/04/24/3-e8-af-ad-e4-b9-89-e9-99-b7-e9-98-b1/" rel="prev" title="第三章 语义“陷阱”">
+      <i class="fa fa-chevron-left"></i> 第三章 语义“陷阱”
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/04/26/e7-ac-ac-e4-ba-94-e7-ab-a0-e5-ba-93-e5-87-bd-e6-95-b0/" rel="next" title="第五章 库函数">
+      第五章 库函数 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#第四章-连接"><span class="nav-number">1.</span> <span class="nav-text">第四章 连接</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-什么是连接器"><span class="nav-number">1.1.</span> <span class="nav-text">4.1 什么是连接器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-声明和定义"><span class="nav-number">1.2.</span> <span class="nav-text">4.2 声明和定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-3-命名冲突与static修饰符"><span class="nav-number">1.3.</span> <span class="nav-text">4.3 命名冲突与static修饰符</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-1-变量"><span class="nav-number">1.3.1.</span> <span class="nav-text">4.3.1 变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-2-函数"><span class="nav-number">1.3.2.</span> <span class="nav-text">4.3.2 函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-4-形参、实参与返回值"><span class="nav-number">1.4.</span> <span class="nav-text">4.4 形参、实参与返回值</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-4-1-形参实参的区别"><span class="nav-number">1.4.1.</span> <span class="nav-text">4.4.1 形参实参的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-4-2-强制转换"><span class="nav-number">1.4.2.</span> <span class="nav-text">4.4.2 强制转换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-4-3-返回值"><span class="nav-number">1.4.3.</span> <span class="nav-text">4.4.3 返回值</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-5-检查外部类型"><span class="nav-number">1.5.</span> <span class="nav-text">4.5 检查外部类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#原内存布局"><span class="nav-number">1.5.0.1.</span> <span class="nav-text">原内存布局</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#现内存布局"><span class="nav-number">1.5.0.2.</span> <span class="nav-text">现内存布局</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-6-头文件"><span class="nav-number">1.6.</span> <span class="nav-text">4.6 头文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">1.7.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">113</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">70</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

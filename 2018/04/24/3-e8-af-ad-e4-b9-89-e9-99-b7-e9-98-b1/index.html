@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="第三章 语义“陷阱”《C陷阱与缺陷》学习笔记&#96;&#96;指针&#96;&#96;数组&#96;&#96;posts  第三章 语义“陷阱” 3.1 指针与数组 3.1.1 数组名的使用 3.1.2 指针的使用 3.1.3 二维数组 3.1.4 二维数组名的使用   3.2 非数组的指针 3.3 作为参数的数组声明 3.4 避免“举隅法” 3.4.1 指针复制问题   3.5 空指针并非空字符串 3.6 边界计算与不对称边界 3.6.1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第三章 语义“陷阱”">
+<meta property="og:url" content="http://yoursite.com/2018/04/24/3-e8-af-ad-e4-b9-89-e9-99-b7-e9-98-b1/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="第三章 语义“陷阱”《C陷阱与缺陷》学习笔记&#96;&#96;指针&#96;&#96;数组&#96;&#96;posts  第三章 语义“陷阱” 3.1 指针与数组 3.1.1 数组名的使用 3.1.2 指针的使用 3.1.3 二维数组 3.1.4 二维数组名的使用   3.2 非数组的指针 3.3 作为参数的数组声明 3.4 避免“举隅法” 3.4.1 指针复制问题   3.5 空指针并非空字符串 3.6 边界计算与不对称边界 3.6.1">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2018-04-23T19:19:47.000Z">
+<meta property="article:modified_time" content="2020-04-14T06:29:36.318Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="数组">
+<meta property="article:tag" content="指针">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2018/04/24/3-e8-af-ad-e4-b9-89-e9-99-b7-e9-98-b1/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>第三章 语义“陷阱” | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/24/3-e8-af-ad-e4-b9-89-e9-99-b7-e9-98-b1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          第三章 语义“陷阱”
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-04-24 03:19:47" itemprop="dateCreated datePublished" datetime="2018-04-24T03:19:47+08:00">2018-04-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="第三章-语义“陷阱”"><a href="#第三章-语义“陷阱”" class="headerlink" title="第三章 语义“陷阱”"></a>第三章 语义“陷阱”</h1><p><code>《C陷阱与缺陷》学习笔记``指针``数组``posts</code></p>
+<ul>
+<li><a href="#第三章-语义陷阱">第三章 语义“陷阱”</a><ul>
+<li><a href="#31-指针与数组">3.1 指针与数组</a><ul>
+<li><a href="#311-数组名的使用">3.1.1 数组名的使用</a></li>
+<li><a href="#312-指针的使用">3.1.2 指针的使用</a></li>
+<li><a href="#313-二维数组">3.1.3 二维数组</a></li>
+<li><a href="#314-二维数组名的使用">3.1.4 二维数组名的使用</a></li>
+</ul>
+</li>
+<li><a href="#32-非数组的指针">3.2 非数组的指针</a></li>
+<li><a href="#33-作为参数的数组声明">3.3 作为参数的数组声明</a></li>
+<li><a href="#34-避免举隅法">3.4 避免“举隅法”</a><ul>
+<li><a href="#341-指针复制问题">3.4.1 指针复制问题</a></li>
+</ul>
+</li>
+<li><a href="#35-空指针并非空字符串">3.5 空指针并非空字符串</a></li>
+<li><a href="#36-边界计算与不对称边界">3.6 边界计算与不对称边界</a><ul>
+<li><a href="#361-规定编码风格">3.6.1 规定编码风格</a></li>
+</ul>
+</li>
+<li><a href="#37-求值顺序">3.7 求值顺序</a></li>
+<li><a href="#38-运算符和">3.8 运算符&amp;&amp;、||和!</a></li>
+<li><a href="#39-整数溢出">3.9 整数溢出</a></li>
+<li><a href="#310-main函数的返回值">3.10 main函数的返回值</a></li>
+<li><a href="#总结">总结</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="3-1-指针与数组"><a href="#3-1-指针与数组" class="headerlink" title="3.1 指针与数组"></a>3.1 指针与数组</h2><p>数组其实就是由指针实现的，任何数组下标运算都等同于一个对应的指针运算。</p>
+<pre><code>1.int *ip;
+2.int i; 
+3.ip = &amp;i; //地址赋值，使ip指向了整型变量i
+4.*ip = 17; //通过指针修改i的值， </code></pre><h3 id="3-1-1-数组名的使用"><a href="#3-1-1-数组名的使用" class="headerlink" title="3.1.1 数组名的使用"></a>3.1.1 数组名的使用</h3><p>如果直接使用数组名（一维数组），那么数组名就当作指向该数组下标为0的元素的指针。</p>
+<pre><code>1.int a[10];
+2.int *p;
+3.p = a; //p指向了a数组的首地址
+4.int num = *p; //*p就是a[0]的值 </code></pre><h3 id="3-1-2-指针的使用"><a href="#3-1-2-指针的使用" class="headerlink" title="3.1.2 指针的使用"></a>3.1.2 指针的使用</h3><p>指针有时候也可以当成数组使用，二者意思相等。</p>
+<pre><code>1.int a[10];
+2.int *p;
+3.p = a + 2; //p指向了a[2]
+4.p++; //p指向了a[3]
+5. </code></pre><h3 id="3-1-3-二维数组"><a href="#3-1-3-二维数组" class="headerlink" title="3.1.3 二维数组"></a>3.1.3 二维数组</h3><pre><code>1.int calendar[12][31];
+2.int *p;
+3.int i;
+4.p = calendar[4]; //p指向了calender[4]中下标为0的元素
+5.//下面三个式子意思一样
+6.i = calendar[4][7];
+7.i = *(calendar[4] + 7);
+8.i = *(*calendar+4) + 7);</code></pre><p>记住解引用的用法，和数组[]符号意思一样。</p>
+<h3 id="3-1-4-二维数组名的使用"><a href="#3-1-4-二维数组名的使用" class="headerlink" title="3.1.4 二维数组名的使用"></a>3.1.4 二维数组名的使用</h3><p>一维数组可以直接使用数组名，但是二维数组不行。比如：</p>
+<pre><code>1.int calendar[12][31];
+2.int *p;
+3.p = calendar; //非法，因为p是指向整型变量的指针，calender是指向数组的指针，类型不同</code></pre><p>需要声明一种指向数组的指针的方法，需要类型相同</p>
+<pre><code>1.int calendar[12][31];
+2.int (*monthp)[31];
+3.monthp = calendar; </code></pre><h2 id="3-2-非数组的指针"><a href="#3-2-非数组的指针" class="headerlink" title="3.2 非数组的指针"></a>3.2 非数组的指针</h2><p><strong>任何指针都需要初始化，否则会成为野指针</strong></p>
+<blockquote>
+<p>野指针指向一个已删除的对象或未申请访问受限内存区域的指针。与空指针不同，野指针无法通过简单地判断是否为 NULL避免，而只能通过养成良好的编程习惯来尽力减少。对野指针进行操作很容易造成程序错误。</p>
+</blockquote>
+<p>简单归纳如下：</p>
+<ul>
+<li><p>指针需要初始化，指向NULL或者一块内存区域;</p>
+</li>
+<li><p>分配的内存使用完后要及时释放;</p>
+</li>
+<li><p>malloc分配内存的时候应在字符长度的基础上+1，用来存放结束标志。</p>
+<p>1.char *r;<br>2.r = malloc(strlen(s) + 1); </p>
+</li>
+</ul>
+<h2 id="3-3-作为参数的数组声明"><a href="#3-3-作为参数的数组声明" class="headerlink" title="3.3 作为参数的数组声明"></a>3.3 作为参数的数组声明</h2><p>将数组作为参数传到函数里，C语言会自动的将作为参数的数组声明转换成相应的指针声明，所以在传数组的时候只需要写数组名，不需要写大小。</p>
+<pre><code>1.int strlen(char s[]) 等于 int strlen(char *s) //都是将首地址传了进去 </code></pre><h2 id="3-4-避免“举隅法”"><a href="#3-4-避免“举隅法”" class="headerlink" title="3.4 避免“举隅法”"></a>3.4 避免“举隅法”</h2><p><strong>简单来说就是不要以<code>整体</code>代表<code>部分</code>，或者以<code>部分</code>代表<code>整体</code></strong></p>
+<pre><code>1.char *p, *q;
+2.p = &quot;xyz&quot;;</code></pre><p>之前可能以为p的值就是字符串<code>“xyz”</code>，其实不然，p是一个指向由<code>&#39;x&#39;, &#39;y&#39;, &#39;z&#39;, &#39;\0&#39;</code>，4个字符组成的数组的起始元素的指针。</p>
+<h3 id="3-4-1-指针复制问题"><a href="#3-4-1-指针复制问题" class="headerlink" title="3.4.1 指针复制问题"></a>3.4.1 指针复制问题</h3><p>如果直接执行</p>
+<pre><code>1.q = p;</code></pre><p>程序并没有想象中的那样所有值都复制了过来，而是都指向同一地址。</p>
+<p><strong>需要记住，复制指针并不同时复制指针指向的数据</strong> 而且如果通过<code>q</code>来修改指针内容，那么<code>p</code>的内容也变了</p>
+<pre><code>1.q[1] = &apos;Y&apos;;</code></pre><p>这个时候内存变为<code>&quot;xYz&quot;</code>,p[1]也是<code>&#39;Y&#39;</code>。</p>
+<h2 id="3-5-空指针并非空字符串"><a href="#3-5-空指针并非空字符串" class="headerlink" title="3.5 空指针并非空字符串"></a>3.5 空指针并非空字符串</h2><p>在C语言中，<code>NULL</code>和<code>0</code>的值都是一样的，但是为了目的和用途以及容易识别的原因，<strong><code>NULL</code>用于指针和对象，<code>0</code>用于数值对与字符串的结尾，使用’\0’</strong> 在不同的系统中，<code>NULL</code>并非总是和<code>0</code>等同，<strong><code>NULL</code>仅仅代表空值，也就是指向一个不被使用的地址</strong></p>
+<h2 id="3-6-边界计算与不对称边界"><a href="#3-6-边界计算与不对称边界" class="headerlink" title="3.6 边界计算与不对称边界"></a>3.6 边界计算与不对称边界</h2><p>C语言里边界问题是一个很容易出错的地方，比如：满足边界X&gt;=16且X&lt;=37的整数有多少个？ 按常规思考，会计算出37-16 = 21个数，但是其实是22个。</p>
+<h3 id="3-6-1-规定编码风格"><a href="#3-6-1-规定编码风格" class="headerlink" title="3.6.1 规定编码风格"></a>3.6.1 规定编码风格</h3><p><strong><code>入界点</code></strong>在取值范围里，<strong><code>出界点</code></strong>不在取值范围里。这样的操作带来的效果是惊人的：</p>
+<ul>
+<li><strong>取值范围的大小就是上界与下界之差；</strong>。</li>
+<li><strong>如果取值范围为空，那么上界等于下界；</strong></li>
+<li><strong>即使取值范围为空，上界也永远不可能小于下界。</strong></li>
+</ul>
+<h2 id="3-7-求值顺序"><a href="#3-7-求值顺序" class="headerlink" title="3.7 求值顺序"></a>3.7 求值顺序</h2><p>在使用if语句的时候可能会用到多个条件判断，C语言中判断的顺序是从左至右，比如:</p>
+<pre><code>1.if(a &gt; b &amp;&amp; a &gt; c) //如果a &gt; b成立才会判断a &gt; c，不会先判断a &gt; c
+2.max = a; </code></pre><h2 id="3-8-运算符-amp-amp-、-和"><a href="#3-8-运算符-amp-amp-、-和" class="headerlink" title="3.8 运算符&amp;&amp;、||和!"></a>3.8 运算符&amp;&amp;、||和!</h2><p>这些都是逻辑运算符，用来判断语句的正确性，可以相互组合起来。但是有时候会<code>少写</code>一个，编译器也不会报错，需要十分小心。</p>
+<h2 id="3-9-整数溢出"><a href="#3-9-整数溢出" class="headerlink" title="3.9 整数溢出"></a>3.9 整数溢出</h2><p>C语言里有两类整数算术运算</p>
+<ul>
+<li><code>无符号运算</code></li>
+<li><code>有符号运算</code></li>
+</ul>
+<p>在无符号算术中，没有“溢出”的说法。</p>
+<h2 id="3-10-main函数的返回值"><a href="#3-10-main函数的返回值" class="headerlink" title="3.10 main函数的返回值"></a>3.10 main函数的返回值</h2><p>main函数会有返回值，就想我们平时写程序一样：</p>
+<pre><code>1.int main()
+2.{
+3.        ...
+4.        return 0;
+5.}</code></pre><p>返回值为<code>0</code>代表程序执行成功，返回值<code>非0</code>则表示程序执行失败！</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li>数组就是由指针实现的，在进行一些数组操作的时候可以当成指针来使用。同理，在对指针进行操作的时候也可以将其当成数组来操作；</li>
+<li>函数传指针或者数组，只需要传首地址即可；</li>
+<li>数组不要越界，在遍历的时候遵循<strong><code>“满下界，空上界”</code></strong>原则。</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%95%B0%E7%BB%84/" rel="tag"># 数组</a>
+              <a href="/tags/%E6%8C%87%E9%92%88/" rel="tag"># 指针</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/04/21/e8-af-ad-e6-b3-95-e9-87-8c-e5-b8-b8-e8-a7-81-e7-9a-84-e9-94-99-e8-af-af/" rel="prev" title="语法里常见的错误">
+      <i class="fa fa-chevron-left"></i> 语法里常见的错误
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/04/24/four-link/" rel="next" title="第四章 连接">
+      第四章 连接 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#第三章-语义“陷阱”"><span class="nav-number">1.</span> <span class="nav-text">第三章 语义“陷阱”</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-指针与数组"><span class="nav-number">1.1.</span> <span class="nav-text">3.1 指针与数组</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-1-数组名的使用"><span class="nav-number">1.1.1.</span> <span class="nav-text">3.1.1 数组名的使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-2-指针的使用"><span class="nav-number">1.1.2.</span> <span class="nav-text">3.1.2 指针的使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-3-二维数组"><span class="nav-number">1.1.3.</span> <span class="nav-text">3.1.3 二维数组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-4-二维数组名的使用"><span class="nav-number">1.1.4.</span> <span class="nav-text">3.1.4 二维数组名的使用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-非数组的指针"><span class="nav-number">1.2.</span> <span class="nav-text">3.2 非数组的指针</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-作为参数的数组声明"><span class="nav-number">1.3.</span> <span class="nav-text">3.3 作为参数的数组声明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-4-避免“举隅法”"><span class="nav-number">1.4.</span> <span class="nav-text">3.4 避免“举隅法”</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-1-指针复制问题"><span class="nav-number">1.4.1.</span> <span class="nav-text">3.4.1 指针复制问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-5-空指针并非空字符串"><span class="nav-number">1.5.</span> <span class="nav-text">3.5 空指针并非空字符串</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-6-边界计算与不对称边界"><span class="nav-number">1.6.</span> <span class="nav-text">3.6 边界计算与不对称边界</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-6-1-规定编码风格"><span class="nav-number">1.6.1.</span> <span class="nav-text">3.6.1 规定编码风格</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-7-求值顺序"><span class="nav-number">1.7.</span> <span class="nav-text">3.7 求值顺序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-8-运算符-amp-amp-、-和"><span class="nav-number">1.8.</span> <span class="nav-text">3.8 运算符&amp;&amp;、||和!</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-9-整数溢出"><span class="nav-number">1.9.</span> <span class="nav-text">3.9 整数溢出</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-10-main函数的返回值"><span class="nav-number">1.10.</span> <span class="nav-text">3.10 main函数的返回值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">1.11.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">113</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">70</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
