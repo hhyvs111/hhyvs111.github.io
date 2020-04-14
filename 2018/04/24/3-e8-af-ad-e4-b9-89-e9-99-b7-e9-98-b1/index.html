@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-Hans">
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
@@ -24,12 +24,11 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="第三章 语义“陷阱”">
 <meta property="og:url" content="http://yoursite.com/2018/04/24/3-e8-af-ad-e4-b9-89-e9-99-b7-e9-98-b1/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:site_name" content="hhyvs111">
 <meta property="og:description" content="第三章 语义“陷阱”《C陷阱与缺陷》学习笔记&#96;&#96;指针&#96;&#96;数组&#96;&#96;posts  第三章 语义“陷阱” 3.1 指针与数组 3.1.1 数组名的使用 3.1.2 指针的使用 3.1.3 二维数组 3.1.4 二维数组名的使用   3.2 非数组的指针 3.3 作为参数的数组声明 3.4 避免“举隅法” 3.4.1 指针复制问题   3.5 空指针并非空字符串 3.6 边界计算与不对称边界 3.6.1">
-<meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2018-04-23T19:19:47.000Z">
 <meta property="article:modified_time" content="2020-04-14T06:29:36.318Z">
-<meta property="article:author" content="John Doe">
+<meta property="article:author" content="tanwenbo">
 <meta property="article:tag" content="数组">
 <meta property="article:tag" content="指针">
 <meta name="twitter:card" content="summary">
@@ -43,11 +42,11 @@
     sidebar: "",
     isHome : false,
     isPost : true,
-    lang   : 'en'
+    lang   : 'zh-Hans'
   };
 </script>
 
-  <title>第三章 语义“陷阱” | Hexo</title>
+  <title>第三章 语义“陷阱” | hhyvs111</title>
   
 
 
@@ -98,9 +97,10 @@
 
     <a href="/" class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
-      <h1 class="site-title">Hexo</h1>
+      <h1 class="site-title">hhyvs111</h1>
       <span class="logo-line-after"><i></i></span>
     </a>
+      <p class="site-subtitle" itemprop="description">Be a great man</p>
   </div>
 
   <div class="site-nav-right">
@@ -117,6 +117,21 @@
         <li class="menu-item menu-item-home">
 
     <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
 
   </li>
         <li class="menu-item menu-item-archives">
@@ -151,17 +166,17 @@
     
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/24/3-e8-af-ad-e4-b9-89-e9-99-b7-e9-98-b1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
+      <meta itemprop="name" content="tanwenbo">
+      <meta itemprop="description" content="enjoy share">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="hhyvs111">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -401,21 +416,23 @@
 
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">John Doe</p>
-  <div class="site-description" itemprop="description"></div>
+  <p class="site-author-name" itemprop="name">tanwenbo</p>
+  <div class="site-description" itemprop="description">enjoy share</div>
 </div>
 <div class="site-state-wrap motion-element">
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">113</span>
+          <span class="site-state-item-count">111</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">15</span>
-        <span class="site-state-item-name">categories</span>
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
         <span class="site-state-item-count">70</span>
@@ -449,7 +466,7 @@
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">John Doe</span>
+  <span class="author" itemprop="copyrightHolder">tanwenbo</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
   </div>

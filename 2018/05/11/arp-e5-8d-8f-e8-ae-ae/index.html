@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-Hans">
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
@@ -24,13 +24,12 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="ARP协议">
 <meta property="og:url" content="http://yoursite.com/2018/05/11/arp-e5-8d-8f-e8-ae-ae/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:site_name" content="hhyvs111">
 <meta property="og:description" content="ARP协议《TCP&#x2F;IP详解 卷1：协议》&#96;&#96;posts  ARP协议 1 引言 2 ARP 帧格式 3 ARP的位置 4 ARP高速缓存 4.1 定义 4.2 ARP高速缓存的使用 4.3 ARP高速缓存的优缺点   5 免费ARP 6 代理ARP    1 引言如果一台主机要将一个帧发送到另一台主机，仅知道这台主机的IP地址是不够的，还需要知道主机在网络中的有有效硬件地址。操作系统软件必须知道">
-<meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://tanwenbo.top/wp-content/uploads/2018/05/2392a0945708651d67d53f13fbc682a7.png">
 <meta property="article:published_time" content="2018-05-10T19:24:01.000Z">
 <meta property="article:modified_time" content="2020-04-14T06:29:36.318Z">
-<meta property="article:author" content="John Doe">
+<meta property="article:author" content="tanwenbo">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://tanwenbo.top/wp-content/uploads/2018/05/2392a0945708651d67d53f13fbc682a7.png">
 
@@ -43,11 +42,11 @@
     sidebar: "",
     isHome : false,
     isPost : true,
-    lang   : 'en'
+    lang   : 'zh-Hans'
   };
 </script>
 
-  <title>ARP协议 | Hexo</title>
+  <title>ARP协议 | hhyvs111</title>
   
 
 
@@ -98,9 +97,10 @@
 
     <a href="/" class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
-      <h1 class="site-title">Hexo</h1>
+      <h1 class="site-title">hhyvs111</h1>
       <span class="logo-line-after"><i></i></span>
     </a>
+      <p class="site-subtitle" itemprop="description">Be a great man</p>
   </div>
 
   <div class="site-nav-right">
@@ -117,6 +117,21 @@
         <li class="menu-item menu-item-home">
 
     <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
 
   </li>
         <li class="menu-item menu-item-archives">
@@ -151,17 +166,17 @@
     
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/11/arp-e5-8d-8f-e8-ae-ae/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
+      <meta itemprop="name" content="tanwenbo">
+      <meta itemprop="description" content="enjoy share">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="hhyvs111">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -358,21 +373,23 @@
 
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">John Doe</p>
-  <div class="site-description" itemprop="description"></div>
+  <p class="site-author-name" itemprop="name">tanwenbo</p>
+  <div class="site-description" itemprop="description">enjoy share</div>
 </div>
 <div class="site-state-wrap motion-element">
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">113</span>
+          <span class="site-state-item-count">111</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">15</span>
-        <span class="site-state-item-name">categories</span>
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
         <span class="site-state-item-count">70</span>
@@ -406,7 +423,7 @@
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">John Doe</span>
+  <span class="author" itemprop="copyrightHolder">tanwenbo</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
   </div>

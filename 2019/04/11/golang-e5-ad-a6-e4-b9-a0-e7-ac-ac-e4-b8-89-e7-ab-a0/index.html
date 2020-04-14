@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-Hans">
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
@@ -24,12 +24,11 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="Golang学习第三章">
 <meta property="og:url" content="http://yoursite.com/2019/04/11/golang-e5-ad-a6-e4-b9-a0-e7-ac-ac-e4-b8-89-e7-ab-a0/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:site_name" content="hhyvs111">
 <meta property="og:description" content="Golang学习第三章 Golang学习第三章 方法 接口 例子 实现泛型编程 Stringers   Readers Web服务器    方法Go没有类，但是仍然可以在结构体类型上定义方法。 也可以对任意类型定义任意方法，但是不能对来自其他包的类型或基础类型定义方法。 方法接收者出现在func关键字和方法名之间的参数中。 func (方法接收者) 函数名() int { }有点像是函数指针的样子">
-<meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2019-04-11T00:26:36.000Z">
 <meta property="article:modified_time" content="2020-04-14T06:29:36.321Z">
-<meta property="article:author" content="John Doe">
+<meta property="article:author" content="tanwenbo">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="http://yoursite.com/2019/04/11/golang-e5-ad-a6-e4-b9-a0-e7-ac-ac-e4-b8-89-e7-ab-a0/">
@@ -41,11 +40,11 @@
     sidebar: "",
     isHome : false,
     isPost : true,
-    lang   : 'en'
+    lang   : 'zh-Hans'
   };
 </script>
 
-  <title>Golang学习第三章 | Hexo</title>
+  <title>Golang学习第三章 | hhyvs111</title>
   
 
 
@@ -96,9 +95,10 @@
 
     <a href="/" class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
-      <h1 class="site-title">Hexo</h1>
+      <h1 class="site-title">hhyvs111</h1>
       <span class="logo-line-after"><i></i></span>
     </a>
+      <p class="site-subtitle" itemprop="description">Be a great man</p>
   </div>
 
   <div class="site-nav-right">
@@ -115,6 +115,21 @@
         <li class="menu-item menu-item-home">
 
     <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
 
   </li>
         <li class="menu-item menu-item-archives">
@@ -149,17 +164,17 @@
     
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/11/golang-e5-ad-a6-e4-b9-a0-e7-ac-ac-e4-b8-89-e7-ab-a0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
+      <meta itemprop="name" content="tanwenbo">
+      <meta itemprop="description" content="enjoy share">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="hhyvs111">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -414,7 +429,7 @@ func main() {
       <i class="fa fa-chevron-left"></i> Golang学习第二章
     </a></div>
       <div class="post-nav-item">
-    <a href="/2020/04/13/e7-94-9f-e5-91-bd-e5-9c-a8-e4-ba-8e-e6-8a-98-e8-85-be-hhkb-type-s-e7-ae-80-e5-8d-95-e6-94-b9-e9-80-a0-e5-88-86-e4-ba-ab/" rel="next" title="生命在于折腾——HHKB Type-S 简单改造分享">
+    <a href="/2020/04/13/%E7%94%9F%E5%91%BD%E5%9C%A8%E4%BA%8E%E6%8A%98%E8%85%BE%E2%80%94%E2%80%94HHKB%20Type-S%20%E7%AE%80%E5%8D%95%E6%94%B9%E9%80%A0%E5%88%86%E4%BA%AB/" rel="next" title="生命在于折腾——HHKB Type-S 简单改造分享">
       生命在于折腾——HHKB Type-S 简单改造分享 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
@@ -481,21 +496,23 @@ func main() {
 
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">John Doe</p>
-  <div class="site-description" itemprop="description"></div>
+  <p class="site-author-name" itemprop="name">tanwenbo</p>
+  <div class="site-description" itemprop="description">enjoy share</div>
 </div>
 <div class="site-state-wrap motion-element">
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">113</span>
+          <span class="site-state-item-count">111</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">15</span>
-        <span class="site-state-item-name">categories</span>
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
         <span class="site-state-item-count">70</span>
@@ -529,7 +546,7 @@ func main() {
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">John Doe</span>
+  <span class="author" itemprop="copyrightHolder">tanwenbo</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
   </div>

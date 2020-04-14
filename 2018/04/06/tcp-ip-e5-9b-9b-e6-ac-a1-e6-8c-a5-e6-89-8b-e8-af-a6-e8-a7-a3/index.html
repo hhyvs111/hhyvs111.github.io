@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-Hans">
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
@@ -24,13 +24,12 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="TCP&#x2F;IP四次挥手详解">
 <meta property="og:url" content="http://yoursite.com/2018/04/06/tcp-ip-e5-9b-9b-e6-ac-a1-e6-8c-a5-e6-89-8b-e8-af-a6-e8-a7-a3/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:site_name" content="hhyvs111">
 <meta property="og:description" content="前面讲到了连接的三次握手，这里讲一讲四次挥手，依旧上图！ 其中部分字符意思详解可以看三次握手里面的不过这里多了一个FIN字符，这是用来释放连接的。 那么看一看四次挥手的主要步骤 （1）第一次挥手：Client发送一个FIN，用来关闭Client到Server的数据传送，Client进入FIN_WAIT_1状态。 （2）第二次挥手：Server收到FIN后，发送一个ACK给Client，确认序号为收">
-<meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://47.100.160.51/wordpress/wp-content/uploads/2018/04/ed14c8c99fdaa9debd5fd60fb46b797c.jpeg">
 <meta property="article:published_time" content="2018-04-06T00:45:04.000Z">
 <meta property="article:modified_time" content="2020-04-14T06:29:36.317Z">
-<meta property="article:author" content="John Doe">
+<meta property="article:author" content="tanwenbo">
 <meta property="article:tag" content="面试">
 <meta property="article:tag" content="TCP">
 <meta name="twitter:card" content="summary">
@@ -45,11 +44,11 @@
     sidebar: "",
     isHome : false,
     isPost : true,
-    lang   : 'en'
+    lang   : 'zh-Hans'
   };
 </script>
 
-  <title>TCP/IP四次挥手详解 | Hexo</title>
+  <title>TCP/IP四次挥手详解 | hhyvs111</title>
   
 
 
@@ -100,9 +99,10 @@
 
     <a href="/" class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
-      <h1 class="site-title">Hexo</h1>
+      <h1 class="site-title">hhyvs111</h1>
       <span class="logo-line-after"><i></i></span>
     </a>
+      <p class="site-subtitle" itemprop="description">Be a great man</p>
   </div>
 
   <div class="site-nav-right">
@@ -119,6 +119,21 @@
         <li class="menu-item menu-item-home">
 
     <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
 
   </li>
         <li class="menu-item menu-item-archives">
@@ -153,17 +168,17 @@
     
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/06/tcp-ip-e5-9b-9b-e6-ac-a1-e6-8c-a5-e6-89-8b-e8-af-a6-e8-a7-a3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
+      <meta itemprop="name" content="tanwenbo">
+      <meta itemprop="description" content="enjoy share">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="hhyvs111">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -300,21 +315,23 @@
 
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">John Doe</p>
-  <div class="site-description" itemprop="description"></div>
+  <p class="site-author-name" itemprop="name">tanwenbo</p>
+  <div class="site-description" itemprop="description">enjoy share</div>
 </div>
 <div class="site-state-wrap motion-element">
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">113</span>
+          <span class="site-state-item-count">111</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">15</span>
-        <span class="site-state-item-name">categories</span>
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
         <span class="site-state-item-count">70</span>
@@ -348,7 +365,7 @@
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">John Doe</span>
+  <span class="author" itemprop="copyrightHolder">tanwenbo</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
   </div>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-Hans">
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
@@ -24,13 +24,12 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="运算符优先级的问题">
 <meta property="og:url" content="http://yoursite.com/2018/04/20/e8-bf-90-e7-ae-97-e7-ac-a6-e4-bc-98-e5-85-88-e7-ba-a7-e7-9a-84-e9-97-ae-e9-a2-98/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:site_name" content="hhyvs111">
 <meta property="og:description" content="结合性的理解自左向右，比如成员运算符‘.’，a.b.c的含义是(a.b).c，而不是a.(b.c)。就是从左到右依次结合。 运算符优先级依次递减 单目运算符运算所需变量为1个的运算符（并不是之前理解的一个字符就是单目运算符），又称一元运算符，其中有  !（逻辑非运算符） ~（按位取反运算符) ++（自增运算符） —（自减运算符）  它们的结合性是从右到左，比如*p++会被编译器解释成*(p++)">
-<meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://47.100.160.51/wordpress/wp-content/uploads/2018/04/1edd33fbc74d915b8ddfe9c96af8aaa1.png">
 <meta property="article:published_time" content="2018-04-20T04:03:07.000Z">
 <meta property="article:modified_time" content="2020-04-14T06:29:36.318Z">
-<meta property="article:author" content="John Doe">
+<meta property="article:author" content="tanwenbo">
 <meta property="article:tag" content="C陷阱">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://47.100.160.51/wordpress/wp-content/uploads/2018/04/1edd33fbc74d915b8ddfe9c96af8aaa1.png">
@@ -44,11 +43,11 @@
     sidebar: "",
     isHome : false,
     isPost : true,
-    lang   : 'en'
+    lang   : 'zh-Hans'
   };
 </script>
 
-  <title>运算符优先级的问题 | Hexo</title>
+  <title>运算符优先级的问题 | hhyvs111</title>
   
 
 
@@ -99,9 +98,10 @@
 
     <a href="/" class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
-      <h1 class="site-title">Hexo</h1>
+      <h1 class="site-title">hhyvs111</h1>
       <span class="logo-line-after"><i></i></span>
     </a>
+      <p class="site-subtitle" itemprop="description">Be a great man</p>
   </div>
 
   <div class="site-nav-right">
@@ -118,6 +118,21 @@
         <li class="menu-item menu-item-home">
 
     <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
 
   </li>
         <li class="menu-item menu-item-archives">
@@ -152,17 +167,17 @@
     
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/20/e8-bf-90-e7-ae-97-e7-ac-a6-e4-bc-98-e5-85-88-e7-ba-a7-e7-9a-84-e9-97-ae-e9-a2-98/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
+      <meta itemprop="name" content="tanwenbo">
+      <meta itemprop="description" content="enjoy share">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="hhyvs111">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -325,21 +340,23 @@ home_score = visitor_score;</code></pre><p>​</p>
 
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">John Doe</p>
-  <div class="site-description" itemprop="description"></div>
+  <p class="site-author-name" itemprop="name">tanwenbo</p>
+  <div class="site-description" itemprop="description">enjoy share</div>
 </div>
 <div class="site-state-wrap motion-element">
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">113</span>
+          <span class="site-state-item-count">111</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">15</span>
-        <span class="site-state-item-name">categories</span>
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
         <span class="site-state-item-count">70</span>
@@ -373,7 +390,7 @@ home_score = visitor_score;</code></pre><p>​</p>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">John Doe</span>
+  <span class="author" itemprop="copyrightHolder">tanwenbo</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
   </div>

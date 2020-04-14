@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-Hans">
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
@@ -20,12 +20,13 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
+  <meta name="description" content="enjoy share">
+<meta property="og:type" content="website">
+<meta property="og:title" content="hhyvs111">
 <meta property="og:url" content="http://yoursite.com/page/7/index.html">
-<meta property="og:site_name" content="Hexo">
-<meta property="og:locale" content="en_US">
-<meta property="article:author" content="John Doe">
+<meta property="og:site_name" content="hhyvs111">
+<meta property="og:description" content="enjoy share">
+<meta property="article:author" content="tanwenbo">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="http://yoursite.com/page/7/">
@@ -37,11 +38,11 @@
     sidebar: "",
     isHome : true,
     isPost : false,
-    lang   : 'en'
+    lang   : 'zh-Hans'
   };
 </script>
 
-  <title>Hexo</title>
+  <title>hhyvs111</title>
   
 
 
@@ -92,9 +93,10 @@
 
     <a href="/" class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
-      <h1 class="site-title">Hexo</h1>
+      <h1 class="site-title">hhyvs111</h1>
       <span class="logo-line-after"><i></i></span>
     </a>
+      <p class="site-subtitle" itemprop="description">Be a great man</p>
   </div>
 
   <div class="site-nav-right">
@@ -111,6 +113,21 @@
         <li class="menu-item menu-item-home">
 
     <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
 
   </li>
         <li class="menu-item menu-item-archives">
@@ -144,115 +161,17 @@
       
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/31/e8-af-bb-e5-86-99-e9-94-81/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/05/31/e8-af-bb-e5-86-99-e9-94-81/" class="post-title-link" itemprop="url">读写锁</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2018-05-31 07:10:12" itemprop="dateCreated datePublished" datetime="2018-05-31T07:10:12+08:00">2018-05-31</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="读写锁"><a href="#读写锁" class="headerlink" title="读写锁"></a>读写锁</h1><p><code>《Unix网络编程：卷2》``读写锁``posts</code></p>
-<blockquote>
-<p>新的概念，和之前的互斥锁有点不同。</p>
-</blockquote>
-<h2 id="1-概述"><a href="#1-概述" class="headerlink" title="1 概述"></a>1 概述</h2><p>读写锁，顾名思义。对读和写加锁，但其实不然。与互斥锁类似，不过读写锁有个特点，那就是<code>写独占</code>，<code>读共享</code>。</p>
-<p>规则如下：</p>
-<ul>
-<li>只要没有线程持有某个给定的读写锁<code>用于写</code>，那么任意数目的线程可以持有该读写锁<code>用于读</code>,也就是“写独占，读共享”；</li>
-<li>仅当没有线程持有某个给定的读写锁用于读或用于写时，才能分配该读写锁<code>用于写</code>。</li>
-</ul>
-<p>就是没有线程在修改数据，这个时候大家都可以读。只要没人在读或者在修改，那么线程才可以去修改它。</p>
-<blockquote>
-<p>个人认为读写锁在数据库的增删查改的时候很有必要！</p>
-</blockquote>
-<h2 id="2-获取与释放读写锁"><a href="#2-获取与释放读写锁" class="headerlink" title="2 获取与释放读写锁"></a>2 获取与释放读写锁</h2><h3 id="2-1-读出锁"><a href="#2-1-读出锁" class="headerlink" title="2.1 读出锁"></a>2.1 读出锁</h3><pre><code>#include &lt;pthread.h&gt;
-
-int pthread_rwlock_rdlock(pthread_rwlock_t *rwlock);</code></pre><p>如果对应的读写锁已有某个<code>写入者</code>持有，那么会阻塞调用线程。</p>
-<h3 id="2-2-写入锁"><a href="#2-2-写入锁" class="headerlink" title="2.2 写入锁"></a>2.2 写入锁</h3><pre><code>int pthread_rwlock_wrlock(pthread_rwlock_t *rwlock);</code></pre><p>如果对应的读写锁已由另一个<code>写入者</code>持有，或者已由一个或多个<code>读写者</code>持有，那就阻塞调用线程。</p>
-<p><strong>写的时候不能有人在读。</strong></p>
-<h3 id="2-3-释放锁"><a href="#2-3-释放锁" class="headerlink" title="2.3 释放锁"></a>2.3 释放锁</h3><pre><code>int pthread_rwlock_unlock(pthread_rwlock_t *rwptr);</code></pre><h3 id="2-4-尝试访问"><a href="#2-4-尝试访问" class="headerlink" title="2.4 尝试访问"></a>2.4 尝试访问</h3><p>如果不能马上取得，那么返回<code>EBUSY</code>错误。</p>
-<pre><code>int pthread_rwlock_tryrdlock(pthread_rwlock_t *rwlock);
-
-int pthread_rwlock_trywrlock(pthread_rwlock_t *rwlock);</code></pre><blockquote>
-<p>以上返回值都一样：成功返回0，失败返回错误号。</p>
-</blockquote>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/30/posix-e6-b6-88-e6-81-af-e9-98-9f-e5-88-97/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
+      <meta itemprop="name" content="tanwenbo">
+      <meta itemprop="description" content="enjoy share">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="hhyvs111">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -386,17 +305,17 @@ int mq_notify(mqd_t mqdes, const struct sigevent *sevp);</code></pre><p>有两�
       
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/29/e7-ae-a1-e9-81-93-e5-92-8cfifo/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
+      <meta itemprop="name" content="tanwenbo">
+      <meta itemprop="description" content="enjoy share">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="hhyvs111">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -632,17 +551,17 @@ fcntl(fd, F_SETFL, flags); </code></pre><h3 id="3-2-O-NONBLOCK的影响"><a href
       
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/29/system-v-ipc/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
+      <meta itemprop="name" content="tanwenbo">
+      <meta itemprop="description" content="enjoy share">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="hhyvs111">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -723,17 +642,17 @@ key_t ftok(const char *pathname, int proj_id);</code></pre><p>三种类型的Sys
       
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/29/posix-ipc/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
+      <meta itemprop="name" content="tanwenbo">
+      <meta itemprop="description" content="enjoy share">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="hhyvs111">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -817,17 +736,17 @@ mqd_t mq_open(const char *name, int oflag, mode_t mode,
       
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/27/e7-ba-bf-e7-a8-8b/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
+      <meta itemprop="name" content="tanwenbo">
+      <meta itemprop="description" content="enjoy share">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="hhyvs111">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -1079,17 +998,17 @@ int main()
       
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/26/e9-9d-9e-e9-98-bb-e5-a1-9e-e5-bc-8fi-o/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
+      <meta itemprop="name" content="tanwenbo">
+      <meta itemprop="description" content="enjoy share">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="hhyvs111">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -1175,17 +1094,17 @@ int main()
       
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/26/e5-a5-97-e6-8e-a5-e5-ad-97-e5-92-8c-e6-a0-87-e5-87-86i-o/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
+      <meta itemprop="name" content="tanwenbo">
+      <meta itemprop="description" content="enjoy share">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="hhyvs111">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -1296,17 +1215,17 @@ FILE *fdopen(int fd, const char *mode);</code></pre><p>返回值是文件流形�
       
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/24/e5-9f-ba-e6-9c-acudp-e5-a5-97-e6-8e-a5-e5-ad-97-e7-bc-96-e7-a8-8b/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
+      <meta itemprop="name" content="tanwenbo">
+      <meta itemprop="description" content="enjoy share">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="hhyvs111">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -1430,17 +1349,17 @@ main(int argc, char **argv)
       
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/24/e5-a5-97-e6-8e-a5-e5-ad-97-e9-80-89-e9-a1-b9/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
+      <meta itemprop="name" content="tanwenbo">
+      <meta itemprop="description" content="enjoy share">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="hhyvs111">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -1570,6 +1489,128 @@ Setsockopt(listenfd, SOL_SOCKET, SO_RCVBUF, &amp;on, sizeof(on));</code></pre>
   
   
 
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/23/select-e5-87-bd-e6-95-b0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="tanwenbo">
+      <meta itemprop="description" content="enjoy share">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hhyvs111">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/05/23/select-e5-87-bd-e6-95-b0/" class="post-title-link" itemprop="url">select函数</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-05-23 12:26:00" itemprop="dateCreated datePublished" datetime="2018-05-23T12:26:00+08:00">2018-05-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" itemprop="url" rel="index"><span itemprop="name">计算机网络</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="select函数"><a href="#select函数" class="headerlink" title="select函数"></a>select函数</h1><p><code>《Unix网络编程：卷1》``select``posts</code></p>
+<blockquote>
+<p>第六章主要讲的是I/O复用的2个函数，select和poll函数。现在主要看看select函数</p>
+</blockquote>
+<h2 id="1-函数原型"><a href="#1-函数原型" class="headerlink" title="1 函数原型"></a>1 函数原型</h2><pre><code>#include &lt;sys/select.h&gt;
+/* According to earlier standards */
+#include &lt;sys/time.h&gt;
+#include &lt;sys/types.h&gt;
+#include &lt;unistd.h&gt;
+
+int select(int nfds, fd_set *readfds, fd_set *writefds,
+          fd_set *exceptfds, struct timeval *timeout);</code></pre><p>该函数运行进程指示内核等待多个事件中的任何一个发生，并只在有一个或多个时间发生或经历一段指定的时间后才唤醒它。 简单说，使用select就可以实现<strong>非阻塞</strong>，一旦执行必然会有返回值，以返回值的不同来反映函数的执行情况。</p>
+<h2 id="2-参数解析"><a href="#2-参数解析" class="headerlink" title="2 参数解析"></a>2 参数解析</h2><blockquote>
+<p>这几个参数其实都不是很重要</p>
+</blockquote>
+<h3 id="2-1-nfds"><a href="#2-1-nfds" class="headerlink" title="2.1 nfds"></a>2.1 nfds</h3><p>是一个整数值，是指集合中所有文件描述符的范围，即所有文件描述符的最大值加1。每次循环，描述符0，1，2，···，一直到nfds-1都会被测试。</p>
+<blockquote>
+<p>怪不得有一个maxfdp1 = max(fileno(fp), sockfd) + 1的语句</p>
+</blockquote>
+<h3 id="2-2-readfds"><a href="#2-2-readfds" class="headerlink" title="2.2 *readfds"></a>2.2 *readfds</h3><p>指向fd_set结构的指针，监视文件描述符的<code>读变化</code>。如果集合中有一个文件可读，select就会返回一个大于0的值，表示有文件可读。如果没有那么根据timeout参数判断是否超时。超出返回0，错误返回负值。可以传入NULL值，表示不关心任何文件的读变化。</p>
+<h3 id="2-3-writefds"><a href="#2-3-writefds" class="headerlink" title="2.3 *writefds"></a>2.3 *writefds</h3><p>上同，改为<code>写变化</code>。</p>
+<h3 id="2-4-exceptfds"><a href="#2-4-exceptfds" class="headerlink" title="2.4 *exceptfds"></a>2.4 *exceptfds</h3><p>用来观察异常情况。</p>
+<blockquote>
+<p>上述三个参数都值—结果参数。调用select函数时，我们指定所关心的描述符的值，函数返回时，结果将指示哪些描述符已就绪。</p>
+</blockquote>
+<h3 id="2-5-timeout"><a href="#2-5-timeout" class="headerlink" title="2.5 *timeout"></a>2.5 *timeout</h3><p>告知内核等待所指定描述符中的任何一个就绪可花多长时间。</p>
+<h2 id="3-宏定义"><a href="#3-宏定义" class="headerlink" title="3 宏定义"></a>3 宏定义</h2><p>有几个宏定义需要了解一下。</p>
+<h3 id="3-1-FD-ZERO-fd-set-rset"><a href="#3-1-FD-ZERO-fd-set-rset" class="headerlink" title="3.1 FD_ZERO(fd_set *rset)"></a>3.1 FD_ZERO(fd_set *rset)</h3><p>初始化文件描述符集合。</p>
+<h3 id="3-2-FD-SET-int-fd-fd-set-fdset"><a href="#3-2-FD-SET-int-fd-fd-set-fdset" class="headerlink" title="3.2 FD_SET(int fd, fd_set *fdset)"></a>3.2 FD_SET(int fd, fd_set *fdset)</h3><p>将描述符放入集合。</p>
+<h3 id="3-3-FD-CLR-int-fd-fd-set-fdset"><a href="#3-3-FD-CLR-int-fd-fd-set-fdset" class="headerlink" title="3.3 FD_CLR(int fd, fd_set *fdset)"></a>3.3 FD_CLR(int fd, fd_set *fdset)</h3><p>将描述符移除集合。</p>
+<h3 id="3-4-FD-ISSET-int-fd-fd-set-fdset"><a href="#3-4-FD-ISSET-int-fd-fd-set-fdset" class="headerlink" title="3.4 FD_ISSET(int fd, fd_set *fdset)"></a>3.4 FD_ISSET(int fd, fd_set *fdset)</h3><p>判断描述符是否在集合中。</p>
+<h2 id="4-描述符就绪条件"><a href="#4-描述符就绪条件" class="headerlink" title="4 描述符就绪条件"></a>4 描述符就绪条件</h2><h3 id="4-1-套接字准备读"><a href="#4-1-套接字准备读" class="headerlink" title="4.1 套接字准备读"></a>4.1 套接字准备读</h3><p>满足以下任一情况则可读：</p>
+<ul>
+<li>该套接字接受缓冲区中的数据字节数大于等于套接字接收缓冲区低水位标记的当前大小；</li>
+<li>该连接的读半关闭（接收了FIN的TCP连接）；</li>
+<li>该套接字是一个监听套接字且已完成的连接数不为0；</li>
+<li>其上有一个套接字错误待处理。</li>
+</ul>
+<h3 id="4-2-套接字准备写"><a href="#4-2-套接字准备写" class="headerlink" title="4.2 套接字准备写"></a>4.2 套接字准备写</h3><p>满足以下任一情况则可写：</p>
+<ul>
+<li>该套接字发送缓冲区中的可用空间字节数大于等于套接字发送缓冲区低水位标记的当前大小，并且或者该套接字已连接，或者该套接字不需要连接（如UDP套接字）；</li>
+<li>该连接的写半部关闭，对这样的套接字进行写操作会产生<code>SIGPIPE</code>信号；</li>
+<li>使用非阻塞式connect的套接字已建立连接；</li>
+<li>其上只有一个套接字错误待处理。</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
 
   
   <nav class="pagination">
@@ -1631,21 +1672,23 @@ Setsockopt(listenfd, SOL_SOCKET, SO_RCVBUF, &amp;on, sizeof(on));</code></pre>
 
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">John Doe</p>
-  <div class="site-description" itemprop="description"></div>
+  <p class="site-author-name" itemprop="name">tanwenbo</p>
+  <div class="site-description" itemprop="description">enjoy share</div>
 </div>
 <div class="site-state-wrap motion-element">
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">113</span>
+          <span class="site-state-item-count">111</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">15</span>
-        <span class="site-state-item-name">categories</span>
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
         <span class="site-state-item-count">70</span>
@@ -1679,7 +1722,7 @@ Setsockopt(listenfd, SOL_SOCKET, SO_RCVBUF, &amp;on, sizeof(on));</code></pre>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">John Doe</span>
+  <span class="author" itemprop="copyrightHolder">tanwenbo</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
   </div>
