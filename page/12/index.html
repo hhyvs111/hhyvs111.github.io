@@ -157,6 +157,228 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/13/linux-e7-ae-a1-e9-81-93-e9-80-9a-e4-bf-a1-e4-b9-8b-e5-91-bd-e5-90-8d-e7-ae-a1-e9-81-93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="tanwenbo">
+      <meta itemprop="description" content="enjoy share">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hhyvs111">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/04/13/linux-e7-ae-a1-e9-81-93-e9-80-9a-e4-bf-a1-e4-b9-8b-e5-91-bd-e5-90-8d-e7-ae-a1-e9-81-93/" class="post-title-link" itemprop="url">linux管道通信之命名管道</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-04-13 11:11:21" itemprop="dateCreated datePublished" datetime="2018-04-13T11:11:21+08:00">2018-04-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="管道通信"><a href="#管道通信" class="headerlink" title="管道通信"></a>管道通信</h2><h3 id="命名管道"><a href="#命名管道" class="headerlink" title="命名管道"></a>命名管道</h3><p>创建：mkfifo<br>删除：unlink</p>
+<h5 id="管道本质：单向队列"><a href="#管道本质：单向队列" class="headerlink" title="管道本质：单向队列"></a>管道本质：单向队列</h5><p>操作方法：<br>1、创建管道文件<br>2、打开管道文件<br>3、写入数据<br>4、关闭管道</p>
+<p>管道文件：虚拟文件，打开管道文件的时候，系统在内存中建立了一个单向队列的缓存区，数据写入内存中。当管道文件关闭时，数据丢失。</p>
+<h3 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h3><h4 id="写入信息到管道"><a href="#写入信息到管道" class="headerlink" title="写入信息到管道"></a>写入信息到管道</h4><h5 id="fifo-c"><a href="#fifo-c" class="headerlink" title="fifo.c"></a>fifo.c</h5><pre><code>#include&lt;stdio.h&gt;
+#include&lt;sys/types.h&gt;
+#include&lt;sys/stat.h&gt;
+#include&lt;unistd.h&gt;
+#include&lt;stdlib.h&gt;
+#include&lt;fcntl.h&gt;
+#include&lt;signal.h&gt;
+
+//实现循环写入数字到管道
+int fd = 0;
+//信号函数
+void endProc(int s)
+{
+    close(fd);
+    unlink(&quot;2.pipe&quot;); //删除管道文件和rm命令作用一样，都是删除文件
+    exit(0);
+}
+
+//用于进程间通信的
+int main()
+{
+    signal(SIGINT, endProc);
+
+    mkfifo(&quot;2.pipe&quot;,0666); //0666可读写权限
+
+    fd = open(&quot;2.pipe&quot;,O_RDWR);//返回一个文件描述符,如果用只写的方式就会独占用这个文件
+    int i = 1;
+    while(1)
+    {
+        printf(&quot;data %d\n&quot;,i);
+        write(fd,&amp;i,4);
+        i++;
+        sleep(1);
+    }
+    return 0;
+}</code></pre><h4 id="从管道文件读入信息"><a href="#从管道文件读入信息" class="headerlink" title="从管道文件读入信息"></a>从管道文件读入信息</h4><h5 id="fifo2-C"><a href="#fifo2-C" class="headerlink" title="fifo2.C"></a>fifo2.C</h5><pre><code>#include&lt;stdio.h&gt;
+#include&lt;sys/types.h&gt;
+#include&lt;sys/stat.h&gt;
+#include&lt;unistd.h&gt;
+#include&lt;stdlib.h&gt;
+#include&lt;fcntl.h&gt;
+#include&lt;signal.h&gt;
+
+//实现循环写入数字到管道
+int fd = 0;
+//信号函数
+void endProc(int s)
+{
+    close(fd);
+    unlink(&quot;2.pipe&quot;); //删除管道文件和rm命令作用一样，都是删除文件
+    exit(0);
+}
+
+//用于进程间通信的
+int main()
+{
+    signal(SIGINT, endProc);
+
+    mkfifo(&quot;2.pipe&quot;,0666); //0666可读写权限
+
+    fd = open(&quot;2.pipe&quot;,O_RDWR);//返回一个文件描述符,如果用只写的方式就会独占用这个文件
+    int i = 1;
+    while(1)
+    {
+        printf(&quot;data %d\n&quot;,i);
+        write(fd,&amp;i,4);
+        i++;
+        sleep(1);
+    }
+    return 0;
+}</code></pre>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/12/linux-e7-ae-a1-e9-81-93-e9-80-9a-e4-bf-a1-e4-b9-8b-e5-8c-bf-e5-90-8d-e7-ae-a1-e9-81-93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="tanwenbo">
+      <meta itemprop="description" content="enjoy share">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hhyvs111">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/04/12/linux-e7-ae-a1-e9-81-93-e9-80-9a-e4-bf-a1-e4-b9-8b-e5-8c-bf-e5-90-8d-e7-ae-a1-e9-81-93/" class="post-title-link" itemprop="url">linux管道通信之匿名管道</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-04-12 11:01:51" itemprop="dateCreated datePublished" datetime="2018-04-12T11:01:51+08:00">2018-04-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="匿名管道"><a href="#匿名管道" class="headerlink" title="匿名管道"></a>匿名管道</h3><p>管道文件的大小始终是为0，更多的时候，它只是起一个标识作用，标识内核中的那块缓存区。就会出现所谓的匿名管道（比如父子进程之间的通信）。 使用pipe创建匿名管道，看不到pipe文件。 pipe(int fds[2]); // fds[0] 读，fds[1]写 返回2个文件描述符，一个读文件描述符，一个写文件描述符。</p>
+<h4 id="匿名管道只适用于父子进程"><a href="#匿名管道只适用于父子进程" class="headerlink" title="匿名管道只适用于父子进程"></a>匿名管道只适用于父子进程</h4><p>案例： 使用2个子进程，分别计算1-5000的素数，5001-10000的素数。主进程负责保存数据到文件。</p>
+<h4 id="pipe-c"><a href="#pipe-c" class="headerlink" title="pipe.c"></a>pipe.c</h4><p>#include&lt;stdio.h&gt; #include&lt;unistd.h&gt; #include&lt;stdlib.h&gt; #include&lt;sys/stat.h&gt; #include&lt;sys/wait.h&gt; #include&lt;sys/types.h&gt; #include&lt;fcntl.h&gt; #include&lt;signal.h&gt; int numChild = 0; //子进程数全局变量 void childProcEnd(int s) {     int status;     if(s == SIGCHLD)     {         printf(“delete child%d\n”,numChild);         numChild++;         wait(&amp;status);     }     if(numChild == 2)     {         printf(“all child delete\n”);         exit(0);     } } int isSushu(int num) {     int tp = num;     for(int i = 2;i &lt; tp;i++)     {         if(num%i == 0) return 0;     }     return 1; } int main() { // int fd = mkfifo(“num.pipe”,0666);     int numProc = 2;     int fds[2];    //fds[0]是读，fds[1]是写     pipe(fds);     int a,b;     signal(SIGCHLD,childProcEnd);    /<em>在一个进程终止或者停止时，将SIGCHLD信号发送给其父进程， 按系统默认将忽略此信号，如果父进程希望被告知其子系统的这种状态，则应捕捉此信号。</em>/       printf(“father id:%d\n”,getpid());     while(1)     {         if(numProc == 2)         {             a = 2;             b = 100;         }         if(numProc == 1)         {             a = 101;             b = 200;         }         if(fork() &gt; 0)//在主进程里创建         {             if(–numProc == 0)             break;         }         else         {             close(fds[0]);             for(int i = a;i &lt;= b;i++)             {                 if(isSushu(i) == 1)                 write(fds[1] ,&amp;i, 4);             }             exit(0);//当子进程事情做完后退出,是退出的子进程而不是父进程             //子进程退出，等待主进程的回收，以防僵死进程             //break;         }     } {     close(fds[1]); //把写关闭     //写入到文件里面     int wfd = open(“result.txt”,O_RDWR | O_CREAT);     while(1)     {         int num = 0;         int ret = read(fds[0],&amp;num, 4);         if(ret == 4)         write(wfd,&amp;num,4);         // printf(“%d\n”,num);         } }     return 0; }</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/12/linux-e7-ae-a1-e9-81-93-e9-80-9a-e4-bf-a1-e4-b9-8b-e5-91-bd-e5-90-8d-e7-ae-a1-e9-81-93-2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -566,7 +788,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">114</span>
+          <span class="site-state-item-count">116</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

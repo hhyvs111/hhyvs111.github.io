@@ -157,6 +157,227 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/22/101-symmetric-tree-e9-95-9c-e5-83-8f-e4-ba-8c-e5-8f-89-e6-a0-91/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="tanwenbo">
+      <meta itemprop="description" content="enjoy share">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hhyvs111">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/03/22/101-symmetric-tree-e9-95-9c-e5-83-8f-e4-ba-8c-e5-8f-89-e6-a0-91/" class="post-title-link" itemprop="url">101. Symmetric Tree  镜像二叉树</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-03-22 08:24:14" itemprop="dateCreated datePublished" datetime="2019-03-22T08:24:14+08:00">2019-03-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h2><p>判断一颗二叉树是否是镜像二叉树，也就是中心对称。</p>
+<pre><code>For example, this binary tree [1,2,2,3,4,4,3] is symmetric:
+
+    1
+   / \
+  2   2
+ / \ / \
+3  4 4  3
+But the following [1,2,2,null,3,null,3] is not:
+    1
+   / \
+  2   2
+   \   \
+   3    3</code></pre><h2 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h2><h3 id="递归版"><a href="#递归版" class="headerlink" title="递归版"></a>递归版</h3><p>利用递归思想, root相等且递归t1的左节点等于t2的右节点相等，那么才返回true，如果一个为空，另一个不为空直接返回false。</p>
+<pre><code>class Solution {
+public:
+    bool isSymmetric(TreeNode* root) {
+        return mirror(root,root);
+    }
+    bool mirror(TreeNode* t1, TreeNode* t2){
+        if(t1 == NULL &amp;&amp; t2 == NULL) return true;
+        if(t1 == NULL || t2 == NULL) return false;
+        return (t1-&gt;val == t2-&gt;val) &amp;&amp; mirror(t1-&gt;left,t2-&gt;right) &amp;&amp; mirror(t1-&gt;right, t2-&gt;left);
+    }
+};</code></pre><h3 id="迭代版"><a href="#迭代版" class="headerlink" title="迭代版"></a>迭代版</h3><p>用栈做，push两次根节点，然后取出来判断。再依次push进去t1的左节点和t2的右节点，因为相近的就是要比较的，每次弹出两个来比较。</p>
+<pre><code>class Solution {
+public:
+    vector&lt;int&gt; nums;
+    vector&lt;int&gt; numsRev;
+    bool isSymmetric(TreeNode* root) {
+        if(root == NULL)
+            return true;
+        //左右一个栈，同时进行递归
+        //镜面原理，将一个树分为两颗子树，他们符合一个规律。左子树等于另一个树的右子树。
+        stack&lt;TreeNode*&gt; s;
+        s.push(root);
+        s.push(root);
+        while(!s.empty())
+        {
+            TreeNode* t1 = s.top();
+            s.pop();
+            TreeNode* t2 = s.top();
+            s.pop();
+            //如果都为空则继续，可能有空节点
+            if(t1 == NULL &amp;&amp; t2 == NULL) continue;
+            if(t1 == NULL || t2 == NULL) return false;
+            if(t1-&gt;val != t2-&gt;val) return false;
+            s.push(t1-&gt;left);
+            s.push(t2-&gt;right);
+            s.push(t1-&gt;right);
+            s.push(t2-&gt;left);
+        }
+        return true;
+    }
+};</code></pre>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/22/53-maximum-subarray-e6-9c-80-e5-a4-a7-e7-9a-84-e8-bf-9e-e7-bb-ad-e5-ad-90-e6-95-b0-e7-bb-84-e5-92-8c/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="tanwenbo">
+      <meta itemprop="description" content="enjoy share">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hhyvs111">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/03/22/53-maximum-subarray-e6-9c-80-e5-a4-a7-e7-9a-84-e8-bf-9e-e7-bb-ad-e5-ad-90-e6-95-b0-e7-bb-84-e5-92-8c/" class="post-title-link" itemprop="url">53. Maximum Subarray 最大的连续子数组和</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-03-22 08:19:17" itemprop="dateCreated datePublished" datetime="2019-03-22T08:19:17+08:00">2019-03-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h2><p>给一串数字，求出连续的子数组的最大和。用O(n)解决。</p>
+<pre><code>Input: [-2,1,-3,4,-1,2,1,-5,4],
+Output: 6
+Explanation: [4,-1,2,1] has the largest sum = 6.</code></pre><h2 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h2><p>依次累加，定义一个当前sum和最大sum。</p>
+<ul>
+<li>如果nowSum加了这个值是大于nums[i]的，那么就加，因为是正向的；</li>
+<li>如果nowSum加了这个值比当前的值还要小，那么这个序列是成负向的，直接把标号移动到nums[i]的位置。</li>
+</ul>
+<p>因为要尽量跳过负数，所以如果减到0那么就要重新累加。</p>
+<pre><code>class Solution {
+public:
+    int maxSubArray(vector&lt;int&gt;&amp; nums) {
+        int nowSum = nums[0];
+        int maxSum = nowSum;
+        for(int i = 1; i &lt; nums.size();i++)
+        {
+            nowSum = (nowSum + nums[i])  &gt;= nums[i]? (nowSum + nums[i]) : nums[i];
+            maxSum = max(maxSum,nowSum);
+        }
+        return maxSum;
+    }
+};</code></pre>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/22/70-climbing-stairs-e7-88-ac-e6-a5-bc-e6-a2-af/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1066,198 +1287,6 @@ taskQueue.post (task) ;
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/16/singleton/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="tanwenbo">
-      <meta itemprop="description" content="enjoy share">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="hhyvs111">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/02/16/singleton/" class="post-title-link" itemprop="url">Singleton</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-02-16 06:57:37" itemprop="dateCreated datePublished" datetime="2019-02-16T06:57:37+08:00">2019-02-16</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="Singleton-单例"><a href="#Singleton-单例" class="headerlink" title="Singleton 单例"></a>Singleton 单例</h1><p>单例模式是设计模式之一，和之前的观察者模式又是不一样的。</p>
-<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>单例模式，也叫单子模式，是一种常用的软件设计模式。在应用这个模式时，单例对象的类必须保证只有一个实例存在。许多时候整个系统只需要拥有一个的全局对象，这样有利于我们协调系统整体的行为。比如在某个服务器程序中，该服务器的配置信息存放在一个文件中，这些配置数据由一个单例对象统一读取，然后服务进程中的其他对象再通过这个单例对象获取这些配置信息。这种方式简化了在复杂环境下的配置管理。</p>
-<h2 id="实现思路"><a href="#实现思路" class="headerlink" title="实现思路"></a>实现思路</h2><p>一个类能返回对象一个引用(永远是同一个)和一个获得该实例的方法（必须是静态方法，通常使用getInstance这个名称）；当我们调用这个方法时，如果类持有的引用不为空就返回这个引用，如果类保持的引用为空就创建该类的实例并将实例的引用赋予该类保持的引用；同时我们还将该类的<code>构造函数</code>定义为<code>私有方法</code>，这样其他处的代码就无法通过调用该类的构造函数来实例化该类的对象，只有通过该类提供的<code>静态方法</code>来得到该类的唯一实例。</p>
-<pre><code>class SingleObject{
-private:
-    SingleObject(){}
-    static SingleObject instance = new SingleObject();
-public:
-    static SingleObject getInstance(){
-        return instace;
-    }
- };</code></pre><h3 id="互斥锁"><a href="#互斥锁" class="headerlink" title="互斥锁"></a>互斥锁</h3><p>单例模式在多线程的应用场合下必须小心使用。如果当唯一实例尚未创建时，有两个线程同时调用创建方法，那么它们同时没有检测到唯一实例的存在，从而同时各自创建了一个实例，这样就有两个实例被构造出来，从而违反了单例模式中实例唯一的原则。 解决这个问题的办法是为指示类是否已经实例化的变量提供一个互斥锁(虽然这样会降低效率)。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/13/e7-ba-bf-e7-a8-8b-e5-90-8c-e6-ad-a5-e7-b2-be-e8-a6-81/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="tanwenbo">
-      <meta itemprop="description" content="enjoy share">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="hhyvs111">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/02/13/e7-ba-bf-e7-a8-8b-e5-90-8c-e6-ad-a5-e7-b2-be-e8-a6-81/" class="post-title-link" itemprop="url">线程同步精要</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-02-13 07:32:54" itemprop="dateCreated datePublished" datetime="2019-02-13T07:32:54+08:00">2019-02-13</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="线程同步精要"><a href="#线程同步精要" class="headerlink" title="线程同步精要"></a>线程同步精要</h1><h2 id="四项原则"><a href="#四项原则" class="headerlink" title="四项原则"></a>四项原则</h2><ol>
-<li>首要原则是尽量最低限度地共享对象，减少需要同步的场合。一个对象能不暴露给别的线程就不要暴露;如果要暴露，优先考虑immutable对象;实在不行 才暴露可修改的对象，并用同步措施来充分保护它。</li>
-<li>其次是使用高级的并发编程构件，如TaskQueue、Producer-Consumer Queue、CountDownLatch等等。</li>
-<li>最后不得已必须使用底层同步原语( primitives)时，只用非递归的互斥器和条件变量，慎用读写锁，不要用信号量。</li>
-<li>除了使用atomic整数之外，不自己编写lock-free代码3，也不要用“内核级’同步原语45。不凭空猜测“哪种做法性能会更好”，比如spin lock vs. mutex。</li>
-</ol>
-<h2 id="互斥器"><a href="#互斥器" class="headerlink" title="互斥器"></a>互斥器</h2><p>保护了临界区，任何一个时刻最多只能有一个线程再次mutex画出的临界区活动。保护共享数据原则：</p>
-<h4 id="主要原则"><a href="#主要原则" class="headerlink" title="主要原则"></a>主要原则</h4><ul>
-<li>使用RAII封装mutex的创建、销毁、加锁、解锁这四个操作。</li>
-</ul>
-<blockquote>
-<p>在C++中，这种在生命周期结束时释放资源的方法被称作资源获取即初始化（Resource Acquisition Is Initialization (RAII)）</p>
-</blockquote>
-<ul>
-<li><p>只用非递归的mutex（不可重入的mutex）；</p>
-</li>
-<li><p>不手工调用lock()和unlock()函数，一切交给栈上的Guard对象的构造和析构函数负责。Guard对象的生命期正好等于临界区(分析对象在什么时候析构 是C++程序员的基本功)。这样我们保证始终在同一个函数同一个scope里对某个mutex加锁和解锁。避免在foo()里加锁,然后跑到bar()里解锁;也避 免在不同的语句分支中分别加锁、解锁。这种做法被称为Scoped Locking</p>
-</li>
-<li><p>在每次构造Guard对象的时候，思考一路上(调用栈上)已经持有的锁，防止因加锁顺序不同而导致死锁( deadlock)。由于Guard对象是栈上对象，看函数调用栈就能分析用锁的情况,非常便利。</p>
-</li>
-</ul>
-<h4 id="次要原则"><a href="#次要原则" class="headerlink" title="次要原则"></a>次要原则</h4><ul>
-<li><p>不使用跨进程的mutex,进程间通信只用TCP sockets。</p>
-</li>
-<li><p>加锁、解锁在同一个线程，线程a不能去unlock线程b已经锁住的mutex</p>
-<p>(RAII自动保证)。</p>
-</li>
-<li><p>别忘了解锁(RAII自动保证)。</p>
-</li>
-<li><p>不重复解锁(RAII自动保证)。</p>
-</li>
-<li><p>必要的时候可以考虑用PTHREAD_ MUTEX_ ERRORCHECK来排错。</p>
-</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1327,7 +1356,7 @@ public:
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">114</span>
+          <span class="site-state-item-count">116</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

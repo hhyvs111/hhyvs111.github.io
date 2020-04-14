@@ -157,6 +157,285 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/21/e5-88-9d-e8-af-86linux-e4-b8-ad-e7-9a-84socket/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="tanwenbo">
+      <meta itemprop="description" content="enjoy share">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hhyvs111">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/05/21/e5-88-9d-e8-af-86linux-e4-b8-ad-e7-9a-84socket/" class="post-title-link" itemprop="url">初识Linux中的socket</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-05-21 06:32:51" itemprop="dateCreated datePublished" datetime="2018-05-21T06:32:51+08:00">2018-05-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="初识Linux中的socket"><a href="#初识Linux中的socket" class="headerlink" title="初识Linux中的socket"></a>初识Linux中的socket</h1><p><code>《Unix网络编程：卷1》``posts</code></p>
+<blockquote>
+<p>和之前的QT中的socket大有不同，C语言中的socket好像要复杂得多。</p>
+</blockquote>
+<h2 id="1-一切都是文件"><a href="#1-一切都是文件" class="headerlink" title="1 一切都是文件"></a>1 一切都是文件</h2><p>经过前面的学习，已经知道在Linux中一切皆为文件，那么文件就会有文件标识符。 所以我们可以看到在实际编程中socket和连接等的文件标识符都是<code>int</code>类型。 比如：</p>
+<pre><code>int listenfd, connfd;
+listenfd = socket(AF_INET, SOCK_STREAM, 0 );
+//socket 会返回一个int类型的描述符
+.....</code></pre><h2 id="2-socket"><a href="#2-socket" class="headerlink" title="2 socket"></a>2 socket</h2><p>socket函数创建一个网际字节流套接字，它是TCP套接字的花哨名字。该函数返回一个小整数描述符，以后的所有函数调用（如随后的bind和listen）就用该描述符标识这个套接字。</p>
+<h3 id="2-1-函数原型"><a href="#2-1-函数原型" class="headerlink" title="2.1 函数原型"></a>2.1 函数原型</h3><pre><code>int socket(int domain, int type, int protocol);
+//返回负数则创建失败，大于0成功</code></pre><h3 id="2-2-参数详解"><a href="#2-2-参数详解" class="headerlink" title="2.2 参数详解"></a>2.2 参数详解</h3><ul>
+<li>第一个参数都是<code>AF_INET</code> 其中<code>AF</code> 表示<code>ADDRESS FAMILY</code>地址族，总的意思是<code>IPv4 Internet protocols</code>表示IPV4地址族。IPv6则用<code>AF_INET6</code>。</li>
+<li>第二个参数<code>type</code>，一般是<code>SOCK_STREAM</code> 表示提供面向连接的稳定数据传输，即TCP协议。</li>
+<li>第三个参数<code>protocol</code>，一般都是<code>0</code> 指定协议，常用协议有IPPROTO_TCP、IPPROTO_UDP等，type和protocol不能随意组合，要选择type对应的protocol。当参数为0时，会自动选择type对应的默认协议。</li>
+</ul>
+<h3 id="2-3-实际使用"><a href="#2-3-实际使用" class="headerlink" title="2.3 实际使用"></a>2.3 实际使用</h3><pre><code>int listenfd = socket(AF_INET, SOCK_STREAM, 0 );</code></pre><h1 id="服务端"><a href="#服务端" class="headerlink" title="服务端"></a>服务端</h1><p>标准的TCP服务器准备监听描述符的步骤：</p>
+<ul>
+<li>创建socket</li>
+<li>bind地址</li>
+<li>listen监听</li>
+</ul>
+<h2 id="3-bind"><a href="#3-bind" class="headerlink" title="3 bind"></a>3 bind</h2><p>无论是服务器还是客户端，都需要创建socket，在服务器的一端需要将socket绑定端口和IP。（这样的话还要先介绍一下<code>sockaddr</code>和<code>sockaddr_in</code>，反正记住它是一个地址结构体，用来存放地址和端口等信息）</p>
+<h3 id="3-1-函数原型："><a href="#3-1-函数原型：" class="headerlink" title="3.1 函数原型："></a>3.1 函数原型：</h3><pre><code>int bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen);
+//返回：0 ──成功， - 1 ──失败</code></pre><h3 id="3-2-参数详解"><a href="#3-2-参数详解" class="headerlink" title="3.2 参数详解"></a>3.2 参数详解</h3><ul>
+<li><p>第一个参数<code>sockfd</code>，这个在上一节有说到，就是socket的文件描述符。</p>
+</li>
+<li><p>第二个参数<code>*addr</code>，可以看到前面是const struct sockaddr类型，说明是个常量结构体。一般新建结构体的时候是用<code>sockaddr_in</code>，在用的时候再将其强制转换为<code>sockaddr</code>类型。</p>
+<p>struct  sockaddr_in {<br>short  int  sin_family;   /* Address family <em>/<br>unsigned  short  int  sin_port;  /</em> Port number <em>/<br>struct  in_addr  sin_addr;  /</em> Internet address <em>/<br>unsigned  char  sin_zero[8];   /</em> Same size as struct sockaddr */<br>};</p>
+</li>
+</ul>
+<ul>
+<li>第三个参数<code>addrlen</code>，为结构体的长度，一般用<code>sizeof</code>来求的。</li>
+</ul>
+<h3 id="3-3-实际使用"><a href="#3-3-实际使用" class="headerlink" title="3.3 实际使用"></a>3.3 实际使用</h3><p>函数调用的例子：</p>
+<pre><code>struct sockaddr_in saddr； 
+saddr.sin_family = AF_INET; 
+saddr.sin_port = htons(8888); //端口
+saddr.sin_addr.s_addr = htonl(INADDR_ANY);//监听任意地址 
+bind(ListenSocket,(struct sockaddr *)&amp;saddr,sizeof(saddr))； //绑定</code></pre><blockquote>
+<p>和QT有不同的地方是，QT里好像没有bind过程，直接监听了。然后监听的时候指定了端口和IP。</p>
+</blockquote>
+<h2 id="4-listen"><a href="#4-listen" class="headerlink" title="4 listen"></a>4 listen</h2><p>调用listen函数把该套接字转换成一个监听套接字，这样来自客户的外来连接就可在该套接字上由内核接受。</p>
+<h3 id="4-1-函数原型"><a href="#4-1-函数原型" class="headerlink" title="4.1 函数原型"></a>4.1 函数原型</h3><pre><code>int listen(int sockfd, int backlog);
+//返回：0──成功， -1──失败</code></pre><h3 id="4-2-参数详解"><a href="#4-2-参数详解" class="headerlink" title="4.2 参数详解"></a>4.2 参数详解</h3><ul>
+<li>第一个参数<code>sockfd</code>，套接字描述符。</li>
+<li>第二个参数<code>backlog</code>，这个参数涉及到一些网络的细节，主要是限制监听描述符上排队的最大客户连接数。</li>
+</ul>
+<h3 id="4-3-实际使用"><a href="#4-3-实际使用" class="headerlink" title="4.3 实际使用"></a>4.3 实际使用</h3><pre><code>listen(listenfd, LISTENQ);  //这个LISTENQ为自定义的</code></pre><h3 id="4-4-backlog"><a href="#4-4-backlog" class="headerlink" title="4.4 backlog"></a>4.4 backlog</h3><p>内核为任何一个给定的监听套接字维护两个队列：</p>
+<ul>
+<li>未完成连接队列，处于<code>SYN_RCVD</code>状态的套接字；</li>
+<li>已完成连接队列，处于<code>ESTABLISHED</code>状态的套接字。</li>
+</ul>
+<p><strong>以上两队列之和不超过backlog</strong></p>
+<h2 id="5-accept"><a href="#5-accept" class="headerlink" title="5 accept"></a>5 accept</h2><p>accept()系统调用主要用在基于连接的套接字类型，比如<code>SOCK_STREAM</code>和<code>SOCK_SEQPACKET</code>。它提取出所监听套接字的等待连接队列中<strong>第一个连接请求</strong>，创建一个<strong>新的套接字</strong>，并返回指向该套接字的文件描述符。<strong>新建立的套接字不在监听状态</strong>，原来所监听的套接字也不受该系统调用的影响。</p>
+<blockquote>
+<p>之前QT里写的，里面还有分Server这个类，专门用来处理连接，<code>incomingconnection</code>函数处理客户端请求，然后将socketId发给新的socket用来处理数据。</p>
+</blockquote>
+<p>区分这两个套接字非常重要。一个服务器通常仅仅创建一个<code>监听套接字</code>，它在该服务器的生命期内一直存在。</p>
+<h3 id="5-1-函数原型"><a href="#5-1-函数原型" class="headerlink" title="5.1 函数原型"></a>5.1 函数原型</h3><pre><code>int accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen);</code></pre><p>最多返回三个值：</p>
+<ul>
+<li>新套接字描述符或者出错指示的值</li>
+<li>客户进程的协议地址（由addr所指）</li>
+<li>该地址的大小（addrlen所指）</li>
+</ul>
+<p><strong>并不是说返回三个int，而是有三个值因为这个函数而改变。</strong></p>
+<h3 id="5-2-参数详解"><a href="#5-2-参数详解" class="headerlink" title="5.2 参数详解"></a>5.2 参数详解</h3><ul>
+<li>第一个参数<code>sockfd</code>，在这里要注意，用的是监听sockfd，然后会返回一个新的sockfd，用来发送数据接收数据等。</li>
+<li>第二个参数<code>*addr</code>，一样，客户端地址。</li>
+<li>第三个参数<code>*addrlen</code>，结构体长度。</li>
+</ul>
+<blockquote>
+<p>如果我们对客户端的协议地址不感兴趣，可以把arrd和addrlen均置为空指针。</p>
+</blockquote>
+<h3 id="5-3-实际使用"><a href="#5-3-实际使用" class="headerlink" title="5.3 实际使用"></a>5.3 实际使用</h3><pre><code>int connfd = accept(listenfd, (sockadr *)NULL, NULL);</code></pre><h1 id="客户端"><a href="#客户端" class="headerlink" title="客户端"></a>客户端</h1><h2 id="6-connect"><a href="#6-connect" class="headerlink" title="6 connect"></a>6 connect</h2><p>通常用于客户端建立TCP连接。创建socket的步骤就省略了，服务端和客户端创建socket的方法一样。</p>
+<h3 id="6-1-函数原型"><a href="#6-1-函数原型" class="headerlink" title="6.1 函数原型"></a>6.1 函数原型</h3><pre><code>int connect(int sockfd, const struct sockaddr *addr, socklen_t addrlen);
+//返回负数则连接失败</code></pre><h3 id="6-2-参数详解"><a href="#6-2-参数详解" class="headerlink" title="6.2 参数详解"></a>6.2 参数详解</h3><ul>
+<li>第一个参数<code>socket</code>，不说了。</li>
+<li>第二个参数<code>*addr</code>，在这里是socket想连接的地址和端口，结构体设置步骤和<code>3.3节</code>一样。</li>
+<li>第三个参数<code>addrlen</code>，结构体长度。</li>
+</ul>
+<h3 id="6-3-实际使用"><a href="#6-3-实际使用" class="headerlink" title="6.3 实际使用"></a>6.3 实际使用</h3><pre><code>struct sockaddr_in servaddr;
+.....
+
+if (connect(sockfd, (sockadd *) &amp;servaddr, sizeof(servaddr)) &lt; 0)
+        //错误信息</code></pre><h1 id="通信"><a href="#通信" class="headerlink" title="通信"></a>通信</h1><p>主要介绍一下读和写</p>
+<h2 id="7-write"><a href="#7-write" class="headerlink" title="7 write"></a>7 write</h2><p>将缓冲区的数据写入套接字</p>
+<h3 id="7-1-函数原型"><a href="#7-1-函数原型" class="headerlink" title="7.1 函数原型"></a>7.1 函数原型</h3><pre><code>ssize_t write(int fd, const void *buf, size_t count);
+//返回：若成功则返回写入的字节数，若出错则返回-1</code></pre><p>其实这个函数很多地方都有用到，不止是socket才用。但是原理一样，将数据写入sockfd。</p>
+<h3 id="7-2-参数详解"><a href="#7-2-参数详解" class="headerlink" title="7.2 参数详解"></a>7.2 参数详解</h3><ul>
+<li>第一个参数<code>fd</code>，在这里可以理解为sockfd，套接字的文件描述符；</li>
+<li>第二个参数<code>*buf</code>，缓冲区，一般是字符缓冲区。用来存放数据；</li>
+<li>第三个参数<code>count</code>，缓冲区长度，在写入的时候要指明写入多少数据。</li>
+</ul>
+<h3 id="7-3-实际使用"><a href="#7-3-实际使用" class="headerlink" title="7.3 实际使用"></a>7.3 实际使用</h3><pre><code>char buff[1024];
+
+write(connfd, buff, strlen(buff));
+//connfd来自上一节</code></pre><h2 id="8-read"><a href="#8-read" class="headerlink" title="8 read"></a>8 read</h2><p>从文件读数据，在这里是从套接字中读数据。使用方法和write一样。</p>
+<h3 id="8-1-函数原型"><a href="#8-1-函数原型" class="headerlink" title="8.1 函数原型"></a>8.1 函数原型</h3><pre><code>ssize_t read(int fd, void *buf, size_t count);
+// 返回：若成功则返回读到的字节数，若已到文件末尾则返回0，若出错则返回-1</code></pre><h3 id="8-2-参数详解"><a href="#8-2-参数详解" class="headerlink" title="8.2 参数详解"></a>8.2 参数详解</h3><ul>
+<li>第一个参数<code>fd</code>，套接字文件描述符</li>
+<li>第二个参数<code>*buf</code>，缓冲区，一般是字符缓冲区。用来存放数据；</li>
+<li>第三个参数<code>count</code>，读入多少数据。</li>
+</ul>
+<h3 id="8-3-实际使用"><a href="#8-3-实际使用" class="headerlink" title="8.3 实际使用"></a>8.3 实际使用</h3><pre><code>char recvline[MAXLINE];
+while(( n = read(sockfd, recvline, MAXLINE)) &gt; 0)
+....</code></pre>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/20/ervernote-wordpress-csdn/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="tanwenbo">
+      <meta itemprop="description" content="enjoy share">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hhyvs111">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/05/20/ervernote-wordpress-csdn/" class="post-title-link" itemprop="url">教你打造《印象笔记 + wordpress + csdn》 一站式发布</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-05-20 08:11:47" itemprop="dateCreated datePublished" datetime="2018-05-20T08:11:47+08:00">2018-05-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">教程</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="教你打造《印象笔记-wordpress-csdn》-一站式发布"><a href="#教你打造《印象笔记-wordpress-csdn》-一站式发布" class="headerlink" title="教你打造《印象笔记 + wordpress + csdn》 一站式发布"></a>教你打造《印象笔记 + wordpress + csdn》 一站式发布</h1><p><code>教程``posts</code></p>
+<blockquote>
+<p>首先介绍下这个标题，我的目的是在印象笔记里写了笔记，然后可以自动同步到自己的wordpress和csdn上。其实就是搬运整合了这么一个教程。印象笔记导入wordpress；印象笔记导入csdn；wordpress导入csdn</p>
+</blockquote>
+<h2 id="1-准备"><a href="#1-准备" class="headerlink" title="1 准备"></a>1 准备</h2><p>印象笔记和csdn注册下载什么的就不说了好吧，wordpress的搭建可以自己搜搜。最主要的还是wordpress的插件，其插件实现了这些功能。</p>
+<h2 id="2-印象笔记"><a href="#2-印象笔记" class="headerlink" title="2 印象笔记"></a>2 印象笔记</h2><h3 id="2-1-wordpress插件——Evernote-Sync"><a href="#2-1-wordpress插件——Evernote-Sync" class="headerlink" title="2.1 wordpress插件——Evernote Sync"></a>2.1 wordpress插件——Evernote Sync</h3><p>在wordpress里下载安装这个插件：</p>
+<ul>
+<li>插件</li>
+<li>安装插件</li>
+<li>搜索Evernote Sync</li>
+<li>启用</li>
+</ul>
+<h3 id="2-2-获取印象笔记token"><a href="#2-2-获取印象笔记token" class="headerlink" title="2.2 获取印象笔记token"></a>2.2 获取印象笔记token</h3><blockquote>
+<p>这个东西一开始花了点功夫，已经印象笔记已经暂停token获取了。需要自行申请token</p>
+</blockquote>
+<h4 id="2-2-1-印象笔记帮助中心"><a href="#2-2-1-印象笔记帮助中心" class="headerlink" title="2.2.1 印象笔记帮助中心"></a>2.2.1 印象笔记帮助中心</h4><p>网址：<a href="https://help.yinxiang.com/hc/zh-cn/" target="_blank" rel="noopener">https://help.yinxiang.com/hc/zh-cn/</a>? 点击寻求帮助，要登录自己的账号。 <img src="http://tanwenbo.top/wp-content/uploads/2018/05/a8e926cb47ef8d60c901915aa3d1cdcf.png" alt=""> 可以像这样填： <img src="http://tanwenbo.top/wp-content/uploads/2018/05/7b74cb946147930371f095e31d10f6d5.png" alt=""> 一般过个<strong>半天</strong>或者<strong>几个小时</strong>可以收到回复。在这里贴一下当时发给我的邮件： <img src="http://tanwenbo.top/wp-content/uploads/2018/05/3fa484c7b19cc339a14c646a40895a1b.png" alt=""></p>
+<h4 id="2-2-2-获取token"><a href="#2-2-2-获取token" class="headerlink" title="2.2.2 获取token"></a>2.2.2 获取token</h4><p>网址：<a href="https://app.yinxiang.com/api/DeveloperToken.action" target="_blank" rel="noopener">https://app.yinxiang.com/api/DeveloperToken.action</a> 创建token： <img src="http://tanwenbo.top/wp-content/uploads/2018/05/6bbb44cc08033e67a702a9bb206a62b8.png" alt=""> 复制token（<strong>这个界面只有一次，要妥善保管该token，下次打开上面那个页面就看不到了。</strong>） <img src="http://tanwenbo.top/wp-content/uploads/2018/05/0aa6b1e3c044c91f1b3f30e9678ef674.png" alt=""> 这个时候可以获取到token了</p>
+<h3 id="2-3-配置插件"><a href="#2-3-配置插件" class="headerlink" title="2.3 配置插件"></a>2.3 配置插件</h3><p><img src="http://tanwenbo.top/wp-content/uploads/2018/05/ef2d690552896229b36b1b4434a33129.png" alt=""> 完成配置！ 只要笔记有posts标签就能自动同步到wordpress。</p>
+<h2 id="3-CSDN"><a href="#3-CSDN" class="headerlink" title="3 CSDN"></a>3 CSDN</h2><blockquote>
+<p>这个略微简单</p>
+</blockquote>
+<h3 id="3-1-wordpress插件——WP2CSDNBlog"><a href="#3-1-wordpress插件——WP2CSDNBlog" class="headerlink" title="3.1 wordpress插件——WP2CSDNBlog"></a>3.1 wordpress插件——WP2CSDNBlog</h3><p>下载安装不解释。</p>
+<h3 id="3-2-配置插件"><a href="#3-2-配置插件" class="headerlink" title="3.2 配置插件"></a>3.2 配置插件</h3><p><img src="http://tanwenbo.top/wp-content/uploads/2018/05/5fae3fe55386d947c47062b5f2b10834.png" alt=""></p>
+<h2 id="4-完结"><a href="#4-完结" class="headerlink" title="4 完结"></a>4 完结</h2><p><strong>这个时候只要你写完笔记加上<code>posts</code>标签，然后就会自动同步到<code>wordpress</code>里，然后插件又会将<code>wordpress</code>新增的文章发布到你自己的<code>csdn</code>。</strong></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/14/linux-e5-91-bd-e4-bb-a4-e8-a1-8c-e4-b8-8eshell-e8-84-9a-e6-9c-ac-e7-bc-96-e7-a8-8b-e5-a4-a7-e5-85-a8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -4994,277 +5273,6 @@ signal(signal type, handler function);</code></pre><p>signal type代表信号中
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/24/3-e8-af-ad-e4-b9-89-e9-99-b7-e9-98-b1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="tanwenbo">
-      <meta itemprop="description" content="enjoy share">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="hhyvs111">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/04/24/3-e8-af-ad-e4-b9-89-e9-99-b7-e9-98-b1/" class="post-title-link" itemprop="url">第三章 语义“陷阱”</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-04-24 03:19:47" itemprop="dateCreated datePublished" datetime="2018-04-24T03:19:47+08:00">2018-04-24</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="第三章-语义“陷阱”"><a href="#第三章-语义“陷阱”" class="headerlink" title="第三章 语义“陷阱”"></a>第三章 语义“陷阱”</h1><p><code>《C陷阱与缺陷》学习笔记``指针``数组``posts</code></p>
-<ul>
-<li><a href="#第三章-语义陷阱">第三章 语义“陷阱”</a><ul>
-<li><a href="#31-指针与数组">3.1 指针与数组</a><ul>
-<li><a href="#311-数组名的使用">3.1.1 数组名的使用</a></li>
-<li><a href="#312-指针的使用">3.1.2 指针的使用</a></li>
-<li><a href="#313-二维数组">3.1.3 二维数组</a></li>
-<li><a href="#314-二维数组名的使用">3.1.4 二维数组名的使用</a></li>
-</ul>
-</li>
-<li><a href="#32-非数组的指针">3.2 非数组的指针</a></li>
-<li><a href="#33-作为参数的数组声明">3.3 作为参数的数组声明</a></li>
-<li><a href="#34-避免举隅法">3.4 避免“举隅法”</a><ul>
-<li><a href="#341-指针复制问题">3.4.1 指针复制问题</a></li>
-</ul>
-</li>
-<li><a href="#35-空指针并非空字符串">3.5 空指针并非空字符串</a></li>
-<li><a href="#36-边界计算与不对称边界">3.6 边界计算与不对称边界</a><ul>
-<li><a href="#361-规定编码风格">3.6.1 规定编码风格</a></li>
-</ul>
-</li>
-<li><a href="#37-求值顺序">3.7 求值顺序</a></li>
-<li><a href="#38-运算符和">3.8 运算符&amp;&amp;、||和!</a></li>
-<li><a href="#39-整数溢出">3.9 整数溢出</a></li>
-<li><a href="#310-main函数的返回值">3.10 main函数的返回值</a></li>
-<li><a href="#总结">总结</a></li>
-</ul>
-</li>
-</ul>
-<h2 id="3-1-指针与数组"><a href="#3-1-指针与数组" class="headerlink" title="3.1 指针与数组"></a>3.1 指针与数组</h2><p>数组其实就是由指针实现的，任何数组下标运算都等同于一个对应的指针运算。</p>
-<pre><code>1.int *ip;
-2.int i; 
-3.ip = &amp;i; //地址赋值，使ip指向了整型变量i
-4.*ip = 17; //通过指针修改i的值， </code></pre><h3 id="3-1-1-数组名的使用"><a href="#3-1-1-数组名的使用" class="headerlink" title="3.1.1 数组名的使用"></a>3.1.1 数组名的使用</h3><p>如果直接使用数组名（一维数组），那么数组名就当作指向该数组下标为0的元素的指针。</p>
-<pre><code>1.int a[10];
-2.int *p;
-3.p = a; //p指向了a数组的首地址
-4.int num = *p; //*p就是a[0]的值 </code></pre><h3 id="3-1-2-指针的使用"><a href="#3-1-2-指针的使用" class="headerlink" title="3.1.2 指针的使用"></a>3.1.2 指针的使用</h3><p>指针有时候也可以当成数组使用，二者意思相等。</p>
-<pre><code>1.int a[10];
-2.int *p;
-3.p = a + 2; //p指向了a[2]
-4.p++; //p指向了a[3]
-5. </code></pre><h3 id="3-1-3-二维数组"><a href="#3-1-3-二维数组" class="headerlink" title="3.1.3 二维数组"></a>3.1.3 二维数组</h3><pre><code>1.int calendar[12][31];
-2.int *p;
-3.int i;
-4.p = calendar[4]; //p指向了calender[4]中下标为0的元素
-5.//下面三个式子意思一样
-6.i = calendar[4][7];
-7.i = *(calendar[4] + 7);
-8.i = *(*calendar+4) + 7);</code></pre><p>记住解引用的用法，和数组[]符号意思一样。</p>
-<h3 id="3-1-4-二维数组名的使用"><a href="#3-1-4-二维数组名的使用" class="headerlink" title="3.1.4 二维数组名的使用"></a>3.1.4 二维数组名的使用</h3><p>一维数组可以直接使用数组名，但是二维数组不行。比如：</p>
-<pre><code>1.int calendar[12][31];
-2.int *p;
-3.p = calendar; //非法，因为p是指向整型变量的指针，calender是指向数组的指针，类型不同</code></pre><p>需要声明一种指向数组的指针的方法，需要类型相同</p>
-<pre><code>1.int calendar[12][31];
-2.int (*monthp)[31];
-3.monthp = calendar; </code></pre><h2 id="3-2-非数组的指针"><a href="#3-2-非数组的指针" class="headerlink" title="3.2 非数组的指针"></a>3.2 非数组的指针</h2><p><strong>任何指针都需要初始化，否则会成为野指针</strong></p>
-<blockquote>
-<p>野指针指向一个已删除的对象或未申请访问受限内存区域的指针。与空指针不同，野指针无法通过简单地判断是否为 NULL避免，而只能通过养成良好的编程习惯来尽力减少。对野指针进行操作很容易造成程序错误。</p>
-</blockquote>
-<p>简单归纳如下：</p>
-<ul>
-<li><p>指针需要初始化，指向NULL或者一块内存区域;</p>
-</li>
-<li><p>分配的内存使用完后要及时释放;</p>
-</li>
-<li><p>malloc分配内存的时候应在字符长度的基础上+1，用来存放结束标志。</p>
-<p>1.char *r;<br>2.r = malloc(strlen(s) + 1); </p>
-</li>
-</ul>
-<h2 id="3-3-作为参数的数组声明"><a href="#3-3-作为参数的数组声明" class="headerlink" title="3.3 作为参数的数组声明"></a>3.3 作为参数的数组声明</h2><p>将数组作为参数传到函数里，C语言会自动的将作为参数的数组声明转换成相应的指针声明，所以在传数组的时候只需要写数组名，不需要写大小。</p>
-<pre><code>1.int strlen(char s[]) 等于 int strlen(char *s) //都是将首地址传了进去 </code></pre><h2 id="3-4-避免“举隅法”"><a href="#3-4-避免“举隅法”" class="headerlink" title="3.4 避免“举隅法”"></a>3.4 避免“举隅法”</h2><p><strong>简单来说就是不要以<code>整体</code>代表<code>部分</code>，或者以<code>部分</code>代表<code>整体</code></strong></p>
-<pre><code>1.char *p, *q;
-2.p = &quot;xyz&quot;;</code></pre><p>之前可能以为p的值就是字符串<code>“xyz”</code>，其实不然，p是一个指向由<code>&#39;x&#39;, &#39;y&#39;, &#39;z&#39;, &#39;\0&#39;</code>，4个字符组成的数组的起始元素的指针。</p>
-<h3 id="3-4-1-指针复制问题"><a href="#3-4-1-指针复制问题" class="headerlink" title="3.4.1 指针复制问题"></a>3.4.1 指针复制问题</h3><p>如果直接执行</p>
-<pre><code>1.q = p;</code></pre><p>程序并没有想象中的那样所有值都复制了过来，而是都指向同一地址。</p>
-<p><strong>需要记住，复制指针并不同时复制指针指向的数据</strong> 而且如果通过<code>q</code>来修改指针内容，那么<code>p</code>的内容也变了</p>
-<pre><code>1.q[1] = &apos;Y&apos;;</code></pre><p>这个时候内存变为<code>&quot;xYz&quot;</code>,p[1]也是<code>&#39;Y&#39;</code>。</p>
-<h2 id="3-5-空指针并非空字符串"><a href="#3-5-空指针并非空字符串" class="headerlink" title="3.5 空指针并非空字符串"></a>3.5 空指针并非空字符串</h2><p>在C语言中，<code>NULL</code>和<code>0</code>的值都是一样的，但是为了目的和用途以及容易识别的原因，<strong><code>NULL</code>用于指针和对象，<code>0</code>用于数值对与字符串的结尾，使用’\0’</strong> 在不同的系统中，<code>NULL</code>并非总是和<code>0</code>等同，<strong><code>NULL</code>仅仅代表空值，也就是指向一个不被使用的地址</strong></p>
-<h2 id="3-6-边界计算与不对称边界"><a href="#3-6-边界计算与不对称边界" class="headerlink" title="3.6 边界计算与不对称边界"></a>3.6 边界计算与不对称边界</h2><p>C语言里边界问题是一个很容易出错的地方，比如：满足边界X&gt;=16且X&lt;=37的整数有多少个？ 按常规思考，会计算出37-16 = 21个数，但是其实是22个。</p>
-<h3 id="3-6-1-规定编码风格"><a href="#3-6-1-规定编码风格" class="headerlink" title="3.6.1 规定编码风格"></a>3.6.1 规定编码风格</h3><p><strong><code>入界点</code></strong>在取值范围里，<strong><code>出界点</code></strong>不在取值范围里。这样的操作带来的效果是惊人的：</p>
-<ul>
-<li><strong>取值范围的大小就是上界与下界之差；</strong>。</li>
-<li><strong>如果取值范围为空，那么上界等于下界；</strong></li>
-<li><strong>即使取值范围为空，上界也永远不可能小于下界。</strong></li>
-</ul>
-<h2 id="3-7-求值顺序"><a href="#3-7-求值顺序" class="headerlink" title="3.7 求值顺序"></a>3.7 求值顺序</h2><p>在使用if语句的时候可能会用到多个条件判断，C语言中判断的顺序是从左至右，比如:</p>
-<pre><code>1.if(a &gt; b &amp;&amp; a &gt; c) //如果a &gt; b成立才会判断a &gt; c，不会先判断a &gt; c
-2.max = a; </code></pre><h2 id="3-8-运算符-amp-amp-、-和"><a href="#3-8-运算符-amp-amp-、-和" class="headerlink" title="3.8 运算符&amp;&amp;、||和!"></a>3.8 运算符&amp;&amp;、||和!</h2><p>这些都是逻辑运算符，用来判断语句的正确性，可以相互组合起来。但是有时候会<code>少写</code>一个，编译器也不会报错，需要十分小心。</p>
-<h2 id="3-9-整数溢出"><a href="#3-9-整数溢出" class="headerlink" title="3.9 整数溢出"></a>3.9 整数溢出</h2><p>C语言里有两类整数算术运算</p>
-<ul>
-<li><code>无符号运算</code></li>
-<li><code>有符号运算</code></li>
-</ul>
-<p>在无符号算术中，没有“溢出”的说法。</p>
-<h2 id="3-10-main函数的返回值"><a href="#3-10-main函数的返回值" class="headerlink" title="3.10 main函数的返回值"></a>3.10 main函数的返回值</h2><p>main函数会有返回值，就想我们平时写程序一样：</p>
-<pre><code>1.int main()
-2.{
-3.        ...
-4.        return 0;
-5.}</code></pre><p>返回值为<code>0</code>代表程序执行成功，返回值<code>非0</code>则表示程序执行失败！</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
-<li>数组就是由指针实现的，在进行一些数组操作的时候可以当成指针来使用。同理，在对指针进行操作的时候也可以将其当成数组来操作；</li>
-<li>函数传指针或者数组，只需要传首地址即可；</li>
-<li>数组不要越界，在遍历的时候遵循<strong><code>“满下界，空上界”</code></strong>原则。</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/21/e8-af-ad-e6-b3-95-e9-87-8c-e5-b8-b8-e8-a7-81-e7-9a-84-e9-94-99-e8-af-af/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="tanwenbo">
-      <meta itemprop="description" content="enjoy share">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="hhyvs111">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/04/21/e8-af-ad-e6-b3-95-e9-87-8c-e5-b8-b8-e8-a7-81-e7-9a-84-e9-94-99-e8-af-af/" class="post-title-link" itemprop="url">语法里常见的错误</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-04-21 03:07:32" itemprop="dateCreated datePublished" datetime="2018-04-21T03:07:32+08:00">2018-04-21</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="1-语句结束符的分号"><a href="#1-语句结束符的分号" class="headerlink" title="1 语句结束符的分号"></a>1 语句结束符的分号</h3><p>如果在写代码的时候少写了分号或者多加了分号，这样的错误带来的后果是很严重的。有时候编译器可能都不会对其进行报错，这样导致你寻找错误的成本大大增加。比如：</p>
-<pre><code>if(x[i] &gt; big);
-    big = x[i];</code></pre><p>编译器会正常地接收第一行代码中的分号而不会提示任何警告信息，正确的做法应该是：</p>
-<pre><code>if(x[i] &gt; big)
-    big = x[i];</code></pre><h3 id="2-switch语句"><a href="#2-switch语句" class="headerlink" title="2 switch语句"></a>2 switch语句</h3><p>C语言的switch语句的控制流程能够依次通过并执行各个case部分，这一点是C语言与众不同之处。但是你有时候会忘记写break语句，这样就会造成意想不到的后果，比如：</p>
-<pre><code>switch(color){
-case 1:printf(&quot;red&quot;);
-case 2:printf(&quot;yellow&quot;);
-case 3:printf(&quot;blue&quot;);
-}</code></pre><p>如果当color的值为2的时候，编译器会输出“yellowblue”。因为程序的控制流程在执行了第二个printf函数的调用之后，会自然而然的顺序执行下去，第三个printf函数调用也会被执行。所以在写switch语句的时候要相当注意，不过有时候你的需求就是不用加break，那么最好在程序里写上你的注释，这样别人就不会以为是忽略的错误。</p>
-<pre><code>case SUBTRACT:
-            opnd2 = -opnd2;
-            //此处没有break语句
-
-case ADD:
-            .....</code></pre><h3 id="3-“悬挂”else引发的问题"><a href="#3-“悬挂”else引发的问题" class="headerlink" title="3 “悬挂”else引发的问题"></a>3 “悬挂”else引发的问题</h3><p><strong>else始终会与同一对括号内最近的且未匹配的if结合</strong></p>
-<h3 id="练习2-1"><a href="#练习2-1" class="headerlink" title="练习2-1"></a>练习2-1</h3><p>C语言允许初始化列表中出现多余的逗号，例如：</p>
-<pre><code>int days[] = { 31, 28 ,31 , 31,};</code></pre><p>为什么这种特性是有用的？答：方便自动化编写代码，不用单独处理。</p>
-<p>​</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -5334,7 +5342,7 @@ case ADD:
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">114</span>
+          <span class="site-state-item-count">116</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

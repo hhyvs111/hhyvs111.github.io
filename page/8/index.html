@@ -157,6 +157,223 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/26/e9-9d-9e-e9-98-bb-e5-a1-9e-e5-bc-8fi-o/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="tanwenbo">
+      <meta itemprop="description" content="enjoy share">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hhyvs111">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/05/26/e9-9d-9e-e9-98-bb-e5-a1-9e-e5-bc-8fi-o/" class="post-title-link" itemprop="url">非阻塞式I/O</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-05-26 09:18:08" itemprop="dateCreated datePublished" datetime="2018-05-26T09:18:08+08:00">2018-05-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" itemprop="url" rel="index"><span itemprop="name">计算机网络</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="非阻塞式I-O"><a href="#非阻塞式I-O" class="headerlink" title="非阻塞式I/O"></a>非阻塞式I/O</h1><p><code>《Unix网络编程：卷1》``posts</code></p>
+<blockquote>
+<p>将I/O设置为非阻塞是提高传输效率的重要手段之一。</p>
+</blockquote>
+<h2 id="1-概述"><a href="#1-概述" class="headerlink" title="1 概述"></a>1 概述</h2><p>一开始的笔记有写到将套接字设置成<code>非阻塞式</code>，但是好像只是设置了，并没有应用。这一章主要讲一下如何实现非阻塞式I/O以提高效率。 可能阻塞的套接字调用可分以下四类：</p>
+<ul>
+<li>输入操作，包括read、readv、recv、recvfrom、和recvmsg；</li>
+<li>输出操作，包括write、writev、send、sendto和sendmsg；</li>
+<li>接收外来连接，即accept函数；</li>
+<li>发起外出连接，即connect函数。</li>
+</ul>
+<h2 id="2-非阻塞读写"><a href="#2-非阻塞读写" class="headerlink" title="2 非阻塞读写"></a>2 非阻塞读写</h2><p>书上第一个例子太冗长了，简单理解就是在读和写的两个缓冲区设置了几个指针，指示了当前<code>写容量</code>和<code>可读容量</code>，并对其进行操作。 主要是应用了<code>select</code>实现的非阻塞I/O。 简单一点的是使用多进程，一个进程专门用来读，一个进程用来写。但是要注意异步，用信号通知另一进程做相应的操作。</p>
+<h2 id="3-非阻塞connect"><a href="#3-非阻塞connect" class="headerlink" title="3 非阻塞connect"></a>3 非阻塞connect</h2><p>当在一个非阻塞的TCP套接字上调用connect时，connect将立即返回一个<code>EINPROGRESS</code>错误，不过已经发起的TCP三路握手继续进行。然后使用select检测是否成功。 具体代码看书353页。</p>
+<h2 id="4-非阻塞accept"><a href="#4-非阻塞accept" class="headerlink" title="4 非阻塞accept"></a>4 非阻塞accept</h2><h3 id="4-1-阻塞的accept"><a href="#4-1-阻塞的accept" class="headerlink" title="4.1 阻塞的accept"></a>4.1 阻塞的accept</h3><blockquote>
+<p>之前有个猜想，为什么服务器里的while循环没有一直运行，而是有连接才进行下一步操作。后来发现accept函数是阻塞的。</p>
+</blockquote>
+<p>来自man 2 accept里的资料：</p>
+<pre><code>If no pending connections are present on the queue, and the socket is not marked as nonblocking,  accept() blocks  the  caller until a connection is present.  If the socket is marked nonblocking and no pending connections are present on the queue, accept() fails with the error EAGAIN or EWOULDBLOCK.</code></pre><p>可见如果没有将套接字设置为<code>非阻塞</code>，那么accept会一直等待下一个连接，从而accept下面的语句就不会执行。</p>
+<h3 id="4-2-非阻塞"><a href="#4-2-非阻塞" class="headerlink" title="4.2 非阻塞"></a>4.2 非阻塞</h3><p>和很多非阻塞函数一样，要处理返回的错误信息，甚至可以忽略这些错误信息。 主要是使用select加非阻塞套接字实现非阻塞。 具体看书362页。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/26/e5-a5-97-e6-8e-a5-e5-ad-97-e5-92-8c-e6-a0-87-e5-87-86i-o/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="tanwenbo">
+      <meta itemprop="description" content="enjoy share">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hhyvs111">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/05/26/e5-a5-97-e6-8e-a5-e5-ad-97-e5-92-8c-e6-a0-87-e5-87-86i-o/" class="post-title-link" itemprop="url">套接字和标准I/O</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-05-26 02:31:14" itemprop="dateCreated datePublished" datetime="2018-05-26T02:31:14+08:00">2018-05-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" itemprop="url" rel="index"><span itemprop="name">计算机网络</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="套接字和标准I-O"><a href="#套接字和标准I-O" class="headerlink" title="套接字和标准I/O"></a>套接字和标准I/O</h1><p><code>《Unix网络编程：卷1》``SOCKET``posts</code> 之前一直使用的Unix I/O，包括read，write这两个函数以及它们的变体（recv、send等）。下面使用标准I/O库（ANSI C）实现读取写入。</p>
+<h2 id="1-fdopen函数"><a href="#1-fdopen函数" class="headerlink" title="1 fdopen函数"></a>1 fdopen函数</h2><pre><code>#include &lt;stdio.h&gt;
+FILE *fdopen(int fd, const char *mode);</code></pre><p>返回值是文件流形式。 .0</p>
+<h3 id="1-1-模式"><a href="#1-1-模式" class="headerlink" title="1.1 模式"></a>1.1 模式</h3><p>fdopen有模式区分，比如：</p>
+<ul>
+<li>r，读</li>
+<li>r+，读和写</li>
+<li>w，写</li>
+<li>w+，写和读</li>
+<li>a，append，在文件末端写</li>
+<li>a+，可读，在文件末端写</li>
+</ul>
+<h3 id="1-2-例子"><a href="#1-2-例子" class="headerlink" title="1.2 例子"></a>1.2 例子</h3><pre><code>char        line[MAXLINE];
+    FILE        *fpin, *fpout;
+
+    fpin = Fdopen(sockfd, &quot;r&quot;);
+    fpout = Fdopen(sockfd, &quot;w&quot;);
+
+    while (Fgets(line, MAXLINE, fpin) != NULL)
+        Fputs(line, fpout);</code></pre><p>该例子是完全缓冲的，不能实时回显。</p>
+<h3 id="1-3-三类缓冲"><a href="#1-3-三类缓冲" class="headerlink" title="1.3 三类缓冲"></a>1.3 三类缓冲</h3><p>标准I/O函数库执行以下三类缓冲：</p>
+<h4 id="1）完全缓冲"><a href="#1）完全缓冲" class="headerlink" title="1）完全缓冲"></a>1）完全缓冲</h4><p>只在以下情况发生I/O：</p>
+<ul>
+<li>缓冲区满，通常为8192字节；</li>
+<li>进程显式调用fflush（之前有写过的将缓冲区写入的函数，还有类似的fseek）；</li>
+<li>进程调用exit。</li>
+</ul>
+<h4 id="2）行缓冲"><a href="#2）行缓冲" class="headerlink" title="2）行缓冲"></a>2）行缓冲</h4><p>只在以下情况发生I/O：</p>
+<ul>
+<li>碰到一个换行符；</li>
+<li>进程调用fflush；</li>
+<li>进程调用exit。</li>
+</ul>
+<h4 id="3）不缓冲"><a href="#3）不缓冲" class="headerlink" title="3）不缓冲"></a>3）不缓冲</h4><p>每次调用标准I/O输出函数都发生I/O。 标准I/O函数库的大多数Unix实现使用如下规则：</p>
+<ul>
+<li>标准错误输出（2）总是不缓冲；</li>
+<li>标准输入（0）和标准输出（1）完全缓冲，除非它们指代终端设备（行缓冲）；</li>
+<li>所有其他I/O流都是完全缓冲，除非它们指代中断设备（行缓冲）。</li>
+</ul>
+<h1 id="2-弊端"><a href="#2-弊端" class="headerlink" title="2 弊端"></a>2 弊端</h1><p>如上述问题所知，其实套接字上是不建议使用标准I/O。但是也有办法解决，比如：</p>
+<ul>
+<li>通过调用<code>setvbuf</code>迫使这个输出流变为行缓冲；</li>
+<li>在每次调用fputs之后通过调用<code>fflush</code>强制输出每个缓冲区的字符。</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/24/e5-9f-ba-e6-9c-acudp-e5-a5-97-e6-8e-a5-e5-ad-97-e7-bc-96-e7-a8-8b/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1091,285 +1308,6 @@ Connect(int fd, const struct sockaddr *sa, socklen_t salen)
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/21/e5-88-9d-e8-af-86linux-e4-b8-ad-e7-9a-84socket/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="tanwenbo">
-      <meta itemprop="description" content="enjoy share">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="hhyvs111">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/05/21/e5-88-9d-e8-af-86linux-e4-b8-ad-e7-9a-84socket/" class="post-title-link" itemprop="url">初识Linux中的socket</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-05-21 06:32:51" itemprop="dateCreated datePublished" datetime="2018-05-21T06:32:51+08:00">2018-05-21</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="初识Linux中的socket"><a href="#初识Linux中的socket" class="headerlink" title="初识Linux中的socket"></a>初识Linux中的socket</h1><p><code>《Unix网络编程：卷1》``posts</code></p>
-<blockquote>
-<p>和之前的QT中的socket大有不同，C语言中的socket好像要复杂得多。</p>
-</blockquote>
-<h2 id="1-一切都是文件"><a href="#1-一切都是文件" class="headerlink" title="1 一切都是文件"></a>1 一切都是文件</h2><p>经过前面的学习，已经知道在Linux中一切皆为文件，那么文件就会有文件标识符。 所以我们可以看到在实际编程中socket和连接等的文件标识符都是<code>int</code>类型。 比如：</p>
-<pre><code>int listenfd, connfd;
-listenfd = socket(AF_INET, SOCK_STREAM, 0 );
-//socket 会返回一个int类型的描述符
-.....</code></pre><h2 id="2-socket"><a href="#2-socket" class="headerlink" title="2 socket"></a>2 socket</h2><p>socket函数创建一个网际字节流套接字，它是TCP套接字的花哨名字。该函数返回一个小整数描述符，以后的所有函数调用（如随后的bind和listen）就用该描述符标识这个套接字。</p>
-<h3 id="2-1-函数原型"><a href="#2-1-函数原型" class="headerlink" title="2.1 函数原型"></a>2.1 函数原型</h3><pre><code>int socket(int domain, int type, int protocol);
-//返回负数则创建失败，大于0成功</code></pre><h3 id="2-2-参数详解"><a href="#2-2-参数详解" class="headerlink" title="2.2 参数详解"></a>2.2 参数详解</h3><ul>
-<li>第一个参数都是<code>AF_INET</code> 其中<code>AF</code> 表示<code>ADDRESS FAMILY</code>地址族，总的意思是<code>IPv4 Internet protocols</code>表示IPV4地址族。IPv6则用<code>AF_INET6</code>。</li>
-<li>第二个参数<code>type</code>，一般是<code>SOCK_STREAM</code> 表示提供面向连接的稳定数据传输，即TCP协议。</li>
-<li>第三个参数<code>protocol</code>，一般都是<code>0</code> 指定协议，常用协议有IPPROTO_TCP、IPPROTO_UDP等，type和protocol不能随意组合，要选择type对应的protocol。当参数为0时，会自动选择type对应的默认协议。</li>
-</ul>
-<h3 id="2-3-实际使用"><a href="#2-3-实际使用" class="headerlink" title="2.3 实际使用"></a>2.3 实际使用</h3><pre><code>int listenfd = socket(AF_INET, SOCK_STREAM, 0 );</code></pre><h1 id="服务端"><a href="#服务端" class="headerlink" title="服务端"></a>服务端</h1><p>标准的TCP服务器准备监听描述符的步骤：</p>
-<ul>
-<li>创建socket</li>
-<li>bind地址</li>
-<li>listen监听</li>
-</ul>
-<h2 id="3-bind"><a href="#3-bind" class="headerlink" title="3 bind"></a>3 bind</h2><p>无论是服务器还是客户端，都需要创建socket，在服务器的一端需要将socket绑定端口和IP。（这样的话还要先介绍一下<code>sockaddr</code>和<code>sockaddr_in</code>，反正记住它是一个地址结构体，用来存放地址和端口等信息）</p>
-<h3 id="3-1-函数原型："><a href="#3-1-函数原型：" class="headerlink" title="3.1 函数原型："></a>3.1 函数原型：</h3><pre><code>int bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen);
-//返回：0 ──成功， - 1 ──失败</code></pre><h3 id="3-2-参数详解"><a href="#3-2-参数详解" class="headerlink" title="3.2 参数详解"></a>3.2 参数详解</h3><ul>
-<li><p>第一个参数<code>sockfd</code>，这个在上一节有说到，就是socket的文件描述符。</p>
-</li>
-<li><p>第二个参数<code>*addr</code>，可以看到前面是const struct sockaddr类型，说明是个常量结构体。一般新建结构体的时候是用<code>sockaddr_in</code>，在用的时候再将其强制转换为<code>sockaddr</code>类型。</p>
-<p>struct  sockaddr_in {<br>short  int  sin_family;   /* Address family <em>/<br>unsigned  short  int  sin_port;  /</em> Port number <em>/<br>struct  in_addr  sin_addr;  /</em> Internet address <em>/<br>unsigned  char  sin_zero[8];   /</em> Same size as struct sockaddr */<br>};</p>
-</li>
-</ul>
-<ul>
-<li>第三个参数<code>addrlen</code>，为结构体的长度，一般用<code>sizeof</code>来求的。</li>
-</ul>
-<h3 id="3-3-实际使用"><a href="#3-3-实际使用" class="headerlink" title="3.3 实际使用"></a>3.3 实际使用</h3><p>函数调用的例子：</p>
-<pre><code>struct sockaddr_in saddr； 
-saddr.sin_family = AF_INET; 
-saddr.sin_port = htons(8888); //端口
-saddr.sin_addr.s_addr = htonl(INADDR_ANY);//监听任意地址 
-bind(ListenSocket,(struct sockaddr *)&amp;saddr,sizeof(saddr))； //绑定</code></pre><blockquote>
-<p>和QT有不同的地方是，QT里好像没有bind过程，直接监听了。然后监听的时候指定了端口和IP。</p>
-</blockquote>
-<h2 id="4-listen"><a href="#4-listen" class="headerlink" title="4 listen"></a>4 listen</h2><p>调用listen函数把该套接字转换成一个监听套接字，这样来自客户的外来连接就可在该套接字上由内核接受。</p>
-<h3 id="4-1-函数原型"><a href="#4-1-函数原型" class="headerlink" title="4.1 函数原型"></a>4.1 函数原型</h3><pre><code>int listen(int sockfd, int backlog);
-//返回：0──成功， -1──失败</code></pre><h3 id="4-2-参数详解"><a href="#4-2-参数详解" class="headerlink" title="4.2 参数详解"></a>4.2 参数详解</h3><ul>
-<li>第一个参数<code>sockfd</code>，套接字描述符。</li>
-<li>第二个参数<code>backlog</code>，这个参数涉及到一些网络的细节，主要是限制监听描述符上排队的最大客户连接数。</li>
-</ul>
-<h3 id="4-3-实际使用"><a href="#4-3-实际使用" class="headerlink" title="4.3 实际使用"></a>4.3 实际使用</h3><pre><code>listen(listenfd, LISTENQ);  //这个LISTENQ为自定义的</code></pre><h3 id="4-4-backlog"><a href="#4-4-backlog" class="headerlink" title="4.4 backlog"></a>4.4 backlog</h3><p>内核为任何一个给定的监听套接字维护两个队列：</p>
-<ul>
-<li>未完成连接队列，处于<code>SYN_RCVD</code>状态的套接字；</li>
-<li>已完成连接队列，处于<code>ESTABLISHED</code>状态的套接字。</li>
-</ul>
-<p><strong>以上两队列之和不超过backlog</strong></p>
-<h2 id="5-accept"><a href="#5-accept" class="headerlink" title="5 accept"></a>5 accept</h2><p>accept()系统调用主要用在基于连接的套接字类型，比如<code>SOCK_STREAM</code>和<code>SOCK_SEQPACKET</code>。它提取出所监听套接字的等待连接队列中<strong>第一个连接请求</strong>，创建一个<strong>新的套接字</strong>，并返回指向该套接字的文件描述符。<strong>新建立的套接字不在监听状态</strong>，原来所监听的套接字也不受该系统调用的影响。</p>
-<blockquote>
-<p>之前QT里写的，里面还有分Server这个类，专门用来处理连接，<code>incomingconnection</code>函数处理客户端请求，然后将socketId发给新的socket用来处理数据。</p>
-</blockquote>
-<p>区分这两个套接字非常重要。一个服务器通常仅仅创建一个<code>监听套接字</code>，它在该服务器的生命期内一直存在。</p>
-<h3 id="5-1-函数原型"><a href="#5-1-函数原型" class="headerlink" title="5.1 函数原型"></a>5.1 函数原型</h3><pre><code>int accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen);</code></pre><p>最多返回三个值：</p>
-<ul>
-<li>新套接字描述符或者出错指示的值</li>
-<li>客户进程的协议地址（由addr所指）</li>
-<li>该地址的大小（addrlen所指）</li>
-</ul>
-<p><strong>并不是说返回三个int，而是有三个值因为这个函数而改变。</strong></p>
-<h3 id="5-2-参数详解"><a href="#5-2-参数详解" class="headerlink" title="5.2 参数详解"></a>5.2 参数详解</h3><ul>
-<li>第一个参数<code>sockfd</code>，在这里要注意，用的是监听sockfd，然后会返回一个新的sockfd，用来发送数据接收数据等。</li>
-<li>第二个参数<code>*addr</code>，一样，客户端地址。</li>
-<li>第三个参数<code>*addrlen</code>，结构体长度。</li>
-</ul>
-<blockquote>
-<p>如果我们对客户端的协议地址不感兴趣，可以把arrd和addrlen均置为空指针。</p>
-</blockquote>
-<h3 id="5-3-实际使用"><a href="#5-3-实际使用" class="headerlink" title="5.3 实际使用"></a>5.3 实际使用</h3><pre><code>int connfd = accept(listenfd, (sockadr *)NULL, NULL);</code></pre><h1 id="客户端"><a href="#客户端" class="headerlink" title="客户端"></a>客户端</h1><h2 id="6-connect"><a href="#6-connect" class="headerlink" title="6 connect"></a>6 connect</h2><p>通常用于客户端建立TCP连接。创建socket的步骤就省略了，服务端和客户端创建socket的方法一样。</p>
-<h3 id="6-1-函数原型"><a href="#6-1-函数原型" class="headerlink" title="6.1 函数原型"></a>6.1 函数原型</h3><pre><code>int connect(int sockfd, const struct sockaddr *addr, socklen_t addrlen);
-//返回负数则连接失败</code></pre><h3 id="6-2-参数详解"><a href="#6-2-参数详解" class="headerlink" title="6.2 参数详解"></a>6.2 参数详解</h3><ul>
-<li>第一个参数<code>socket</code>，不说了。</li>
-<li>第二个参数<code>*addr</code>，在这里是socket想连接的地址和端口，结构体设置步骤和<code>3.3节</code>一样。</li>
-<li>第三个参数<code>addrlen</code>，结构体长度。</li>
-</ul>
-<h3 id="6-3-实际使用"><a href="#6-3-实际使用" class="headerlink" title="6.3 实际使用"></a>6.3 实际使用</h3><pre><code>struct sockaddr_in servaddr;
-.....
-
-if (connect(sockfd, (sockadd *) &amp;servaddr, sizeof(servaddr)) &lt; 0)
-        //错误信息</code></pre><h1 id="通信"><a href="#通信" class="headerlink" title="通信"></a>通信</h1><p>主要介绍一下读和写</p>
-<h2 id="7-write"><a href="#7-write" class="headerlink" title="7 write"></a>7 write</h2><p>将缓冲区的数据写入套接字</p>
-<h3 id="7-1-函数原型"><a href="#7-1-函数原型" class="headerlink" title="7.1 函数原型"></a>7.1 函数原型</h3><pre><code>ssize_t write(int fd, const void *buf, size_t count);
-//返回：若成功则返回写入的字节数，若出错则返回-1</code></pre><p>其实这个函数很多地方都有用到，不止是socket才用。但是原理一样，将数据写入sockfd。</p>
-<h3 id="7-2-参数详解"><a href="#7-2-参数详解" class="headerlink" title="7.2 参数详解"></a>7.2 参数详解</h3><ul>
-<li>第一个参数<code>fd</code>，在这里可以理解为sockfd，套接字的文件描述符；</li>
-<li>第二个参数<code>*buf</code>，缓冲区，一般是字符缓冲区。用来存放数据；</li>
-<li>第三个参数<code>count</code>，缓冲区长度，在写入的时候要指明写入多少数据。</li>
-</ul>
-<h3 id="7-3-实际使用"><a href="#7-3-实际使用" class="headerlink" title="7.3 实际使用"></a>7.3 实际使用</h3><pre><code>char buff[1024];
-
-write(connfd, buff, strlen(buff));
-//connfd来自上一节</code></pre><h2 id="8-read"><a href="#8-read" class="headerlink" title="8 read"></a>8 read</h2><p>从文件读数据，在这里是从套接字中读数据。使用方法和write一样。</p>
-<h3 id="8-1-函数原型"><a href="#8-1-函数原型" class="headerlink" title="8.1 函数原型"></a>8.1 函数原型</h3><pre><code>ssize_t read(int fd, void *buf, size_t count);
-// 返回：若成功则返回读到的字节数，若已到文件末尾则返回0，若出错则返回-1</code></pre><h3 id="8-2-参数详解"><a href="#8-2-参数详解" class="headerlink" title="8.2 参数详解"></a>8.2 参数详解</h3><ul>
-<li>第一个参数<code>fd</code>，套接字文件描述符</li>
-<li>第二个参数<code>*buf</code>，缓冲区，一般是字符缓冲区。用来存放数据；</li>
-<li>第三个参数<code>count</code>，读入多少数据。</li>
-</ul>
-<h3 id="8-3-实际使用"><a href="#8-3-实际使用" class="headerlink" title="8.3 实际使用"></a>8.3 实际使用</h3><pre><code>char recvline[MAXLINE];
-while(( n = read(sockfd, recvline, MAXLINE)) &gt; 0)
-....</code></pre>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/20/ervernote-wordpress-csdn/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="tanwenbo">
-      <meta itemprop="description" content="enjoy share">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="hhyvs111">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/05/20/ervernote-wordpress-csdn/" class="post-title-link" itemprop="url">教你打造《印象笔记 + wordpress + csdn》 一站式发布</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-05-20 08:11:47" itemprop="dateCreated datePublished" datetime="2018-05-20T08:11:47+08:00">2018-05-20</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">教程</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="教你打造《印象笔记-wordpress-csdn》-一站式发布"><a href="#教你打造《印象笔记-wordpress-csdn》-一站式发布" class="headerlink" title="教你打造《印象笔记 + wordpress + csdn》 一站式发布"></a>教你打造《印象笔记 + wordpress + csdn》 一站式发布</h1><p><code>教程``posts</code></p>
-<blockquote>
-<p>首先介绍下这个标题，我的目的是在印象笔记里写了笔记，然后可以自动同步到自己的wordpress和csdn上。其实就是搬运整合了这么一个教程。印象笔记导入wordpress；印象笔记导入csdn；wordpress导入csdn</p>
-</blockquote>
-<h2 id="1-准备"><a href="#1-准备" class="headerlink" title="1 准备"></a>1 准备</h2><p>印象笔记和csdn注册下载什么的就不说了好吧，wordpress的搭建可以自己搜搜。最主要的还是wordpress的插件，其插件实现了这些功能。</p>
-<h2 id="2-印象笔记"><a href="#2-印象笔记" class="headerlink" title="2 印象笔记"></a>2 印象笔记</h2><h3 id="2-1-wordpress插件——Evernote-Sync"><a href="#2-1-wordpress插件——Evernote-Sync" class="headerlink" title="2.1 wordpress插件——Evernote Sync"></a>2.1 wordpress插件——Evernote Sync</h3><p>在wordpress里下载安装这个插件：</p>
-<ul>
-<li>插件</li>
-<li>安装插件</li>
-<li>搜索Evernote Sync</li>
-<li>启用</li>
-</ul>
-<h3 id="2-2-获取印象笔记token"><a href="#2-2-获取印象笔记token" class="headerlink" title="2.2 获取印象笔记token"></a>2.2 获取印象笔记token</h3><blockquote>
-<p>这个东西一开始花了点功夫，已经印象笔记已经暂停token获取了。需要自行申请token</p>
-</blockquote>
-<h4 id="2-2-1-印象笔记帮助中心"><a href="#2-2-1-印象笔记帮助中心" class="headerlink" title="2.2.1 印象笔记帮助中心"></a>2.2.1 印象笔记帮助中心</h4><p>网址：<a href="https://help.yinxiang.com/hc/zh-cn/" target="_blank" rel="noopener">https://help.yinxiang.com/hc/zh-cn/</a>? 点击寻求帮助，要登录自己的账号。 <img src="http://tanwenbo.top/wp-content/uploads/2018/05/a8e926cb47ef8d60c901915aa3d1cdcf.png" alt=""> 可以像这样填： <img src="http://tanwenbo.top/wp-content/uploads/2018/05/7b74cb946147930371f095e31d10f6d5.png" alt=""> 一般过个<strong>半天</strong>或者<strong>几个小时</strong>可以收到回复。在这里贴一下当时发给我的邮件： <img src="http://tanwenbo.top/wp-content/uploads/2018/05/3fa484c7b19cc339a14c646a40895a1b.png" alt=""></p>
-<h4 id="2-2-2-获取token"><a href="#2-2-2-获取token" class="headerlink" title="2.2.2 获取token"></a>2.2.2 获取token</h4><p>网址：<a href="https://app.yinxiang.com/api/DeveloperToken.action" target="_blank" rel="noopener">https://app.yinxiang.com/api/DeveloperToken.action</a> 创建token： <img src="http://tanwenbo.top/wp-content/uploads/2018/05/6bbb44cc08033e67a702a9bb206a62b8.png" alt=""> 复制token（<strong>这个界面只有一次，要妥善保管该token，下次打开上面那个页面就看不到了。</strong>） <img src="http://tanwenbo.top/wp-content/uploads/2018/05/0aa6b1e3c044c91f1b3f30e9678ef674.png" alt=""> 这个时候可以获取到token了</p>
-<h3 id="2-3-配置插件"><a href="#2-3-配置插件" class="headerlink" title="2.3 配置插件"></a>2.3 配置插件</h3><p><img src="http://tanwenbo.top/wp-content/uploads/2018/05/ef2d690552896229b36b1b4434a33129.png" alt=""> 完成配置！ 只要笔记有posts标签就能自动同步到wordpress。</p>
-<h2 id="3-CSDN"><a href="#3-CSDN" class="headerlink" title="3 CSDN"></a>3 CSDN</h2><blockquote>
-<p>这个略微简单</p>
-</blockquote>
-<h3 id="3-1-wordpress插件——WP2CSDNBlog"><a href="#3-1-wordpress插件——WP2CSDNBlog" class="headerlink" title="3.1 wordpress插件——WP2CSDNBlog"></a>3.1 wordpress插件——WP2CSDNBlog</h3><p>下载安装不解释。</p>
-<h3 id="3-2-配置插件"><a href="#3-2-配置插件" class="headerlink" title="3.2 配置插件"></a>3.2 配置插件</h3><p><img src="http://tanwenbo.top/wp-content/uploads/2018/05/5fae3fe55386d947c47062b5f2b10834.png" alt=""></p>
-<h2 id="4-完结"><a href="#4-完结" class="headerlink" title="4 完结"></a>4 完结</h2><p><strong>这个时候只要你写完笔记加上<code>posts</code>标签，然后就会自动同步到<code>wordpress</code>里，然后插件又会将<code>wordpress</code>新增的文章发布到你自己的<code>csdn</code>。</strong></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1439,7 +1377,7 @@ while(( n = read(sockfd, recvline, MAXLINE)) &gt; 0)
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">114</span>
+          <span class="site-state-item-count">116</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

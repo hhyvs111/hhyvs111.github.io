@@ -157,6 +157,201 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/28/ubuntu-16-04-e6-9b-b4-e6-96-b0openssl-e8-87-b31-1-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="tanwenbo">
+      <meta itemprop="description" content="enjoy share">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hhyvs111">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/06/28/ubuntu-16-04-e6-9b-b4-e6-96-b0openssl-e8-87-b31-1-1/" class="post-title-link" itemprop="url">Ubuntu 16.04 更新openssl至1.1.1</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-06-28 01:02:47" itemprop="dateCreated datePublished" datetime="2018-06-28T01:02:47+08:00">2018-06-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">教程</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Ubuntu-16-04-更新openssl至1-1-1"><a href="#Ubuntu-16-04-更新openssl至1-1-1" class="headerlink" title="Ubuntu 16.04 更新openssl至1.1.1"></a>Ubuntu 16.04 更新openssl至1.1.1</h1><blockquote>
+<p>因为要用SM2国密算法，而Ubuntu自带的openssl不支持SM2。需要将openssl更新至1.1.1，网上的教程不齐就单独写一个。</p>
+</blockquote>
+<h2 id="1-查看版本"><a href="#1-查看版本" class="headerlink" title="1 查看版本"></a>1 查看版本</h2><p>先看看自己的版本是多少：</p>
+<pre><code>openssl version</code></pre><p>一般是很旧的，不会是最新的。</p>
+<h2 id="2-下载并解压源码"><a href="#2-下载并解压源码" class="headerlink" title="2 下载并解压源码"></a>2 下载并解压源码</h2><pre><code>cd /usr/local/src
+wget https://www.openssl.org/source/openssl-1.1.1-pre8.tar.gz
+tar -zxf openssl-1.1.1-pre8.tar.gz</code></pre><h2 id="3-编译安装"><a href="#3-编译安装" class="headerlink" title="3 编译安装"></a>3 编译安装</h2><p>进入自己的安装目录进行编译</p>
+<pre><code>cd openssl-1.1.1-pre8
+./config
+make install</code></pre><h2 id="4-移除旧版本-Openssl"><a href="#4-移除旧版本-Openssl" class="headerlink" title="4 移除旧版本 Openssl"></a>4 移除旧版本 Openssl</h2><p>这个看你自己的目录，我的是在/usr/bin里。找不到可以用<code>find -name openssl</code>找一下</p>
+<pre><code>mv /usr/bin/openssl /tmp/</code></pre><p>再将编译好的软连接到源目录</p>
+<pre><code>ln -s /usr/local/bin/openssl /usr/bin/openssl</code></pre><h2 id="5-复制源码"><a href="#5-复制源码" class="headerlink" title="5 复制源码"></a>5 复制源码</h2><p>如果出现：</p>
+<pre><code>openssl: error while loading shared libraries: libssl.so.1.1: cannot open shared object file: No such file or directory</code></pre><p>那么将源码里的两个文件复制到系统目录：</p>
+<pre><code>cd /usr/local/src
+cp libssl.so.1.1 /lib/x86_64-linux-gnu
+libcrypto.so.1.1 /lib/x86_64-linux-gnu</code></pre><p>这个时候就升级成功了！ 输入<code>openssl version</code>： <img src="https://tanwenbo.top/wp-content/uploads/2018/06/0fbbaed39e0ac280463953f7d437e98b.png" alt=""> 参考： <a href="https://w3ctech.com/topic/1873" target="_blank" rel="noopener">https://w3ctech.com/topic/1873</a> <a href="https://sb.sb/blog/centos-upgrade-openssl/" target="_blank" rel="noopener">https://sb.sb/blog/centos-upgrade-openssl/</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/10/linux-e4-b8-8bcore-dump-e8-b0-83-e8-af-95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="tanwenbo">
+      <meta itemprop="description" content="enjoy share">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hhyvs111">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/06/10/linux-e4-b8-8bcore-dump-e8-b0-83-e8-af-95/" class="post-title-link" itemprop="url">Linux下core dump调试</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-06-10 01:14:02" itemprop="dateCreated datePublished" datetime="2018-06-10T01:14:02+08:00">2018-06-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Linux下core-dump调试"><a href="#Linux下core-dump调试" class="headerlink" title="Linux下core dump调试"></a>Linux下core dump调试</h1><p><code>linux``gdb``dump``posts</code></p>
+<h2 id="1-前言"><a href="#1-前言" class="headerlink" title="1 前言"></a>1 前言</h2><p>很多时候在跑代码的时候会碰到以下错误： <img src="http://tanwenbo.top/wp-content/uploads/2018/06/4621c5a223688d45d97243c2ef9f7812.png" alt=""> 然后有时候又不能快速定位错误的位置，这个时候就需要进行GDB的段错误调试。</p>
+<blockquote>
+<p>通常情况下，core文件会包含了程序运行时的内存，寄存器状态，堆栈指针，内存管理信息还有各种函数调用堆栈信息等，我们可以理解为是程序工作当前状态存储生成第一个文件，许多的程序出错的时候都会产生一个core文件，通过工具分析这个文件，我们可以定位到程序异常退出的时候对应的堆栈调用等信息，找出问题所在并进行及时解决。</p>
+</blockquote>
+<h2 id="2-准备工作"><a href="#2-准备工作" class="headerlink" title="2 准备工作"></a>2 准备工作</h2><h3 id="2-1-core文件大小"><a href="#2-1-core文件大小" class="headerlink" title="2.1 core文件大小"></a>2.1 core文件大小</h3><p>需要设置当前会话的ulimit，若为0则不会产生对应的coredump。</p>
+<h4 id="命令：ulimit-a"><a href="#命令：ulimit-a" class="headerlink" title="命令：ulimit -a"></a>命令：ulimit -a</h4><p><img src="http://tanwenbo.top/wp-content/uploads/2018/06/84f6e5f721663daad91a2bde5835960c.png" alt=""></p>
+<h4 id="命令：ulimit-c-unlimited"><a href="#命令：ulimit-c-unlimited" class="headerlink" title="命令：ulimit -c unlimited"></a>命令：ulimit -c unlimited</h4><p><img src="http://tanwenbo.top/wp-content/uploads/2018/06/9a751ff171123ad9b147b46e8a7a7f7c.png" alt=""> 这个时候如果产生了段错误，那么就会生成core文件。</p>
+<h3 id="2-2-core文件位置"><a href="#2-2-core文件位置" class="headerlink" title="2.2 core文件位置"></a>2.2 core文件位置</h3><blockquote>
+<p>第一次找了半天没找到core文件在哪，原来是自己没有设置好。</p>
+</blockquote>
+<p>core文件默认的存储位置与对应的可执行程序在同一目录下，文件名是core，大家可以通过下面的命令看到core文件的存在位置：</p>
+<h4 id="命令：cat-proc-sys-kernel-core-pattern"><a href="#命令：cat-proc-sys-kernel-core-pattern" class="headerlink" title="命令：cat /proc/sys/kernel/core_pattern"></a>命令：cat /proc/sys/kernel/core_pattern</h4><p><img src="http://tanwenbo.top/wp-content/uploads/2018/06/22ca1f20a1d7db5658b3eff093eee21b.png" alt=""> 可以看到当前产生的core文件保存在<code>/var/core/</code>文件目录下。也可以自行对其修改。</p>
+<h2 id="3-core调试"><a href="#3-core调试" class="headerlink" title="3 core调试"></a>3 core调试</h2><p>先写一个比较典型的<code>内存越界</code>错误的程序：</p>
+<pre><code>#include&lt;stdio.h&gt;
+
+int main()
+{
+    int *a = NULL;
+    printf(&quot;%d\n&quot;,*a);
+    return 0;
+}</code></pre><h3 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h3><p>在编译的时候要加<code>-g</code>选项！一般release版不要加-g选项，这样编译时间会很久。</p>
+<h3 id="编译运行"><a href="#编译运行" class="headerlink" title="编译运行"></a>编译运行</h3><p><img src="http://tanwenbo.top/wp-content/uploads/2018/06/b7452cc85f0aba1fde63810d5f15d192.png" alt=""> 可以看到有core dumped提示，那么这个时候可以用gdb进行调试。 但是请不要直接<code>gdb core文件</code>，会产生： <code>not in executable format: File format not recognized</code> 错误。</p>
+<blockquote>
+<p>有些教程是直接让你gdb core文件。</p>
+</blockquote>
+<p>需要这样： <code>gdb 执行文件 core文件</code></p>
+<pre><code>gdb error /var/core/core-1528593396-error-20168-18446744073709551615</code></pre><p>这个时候可以很明显的看到段错误的位置： <img src="http://tanwenbo.top/wp-content/uploads/2018/06/52c4b28adaf06f385ddf5ef89c524e6c.png" alt=""></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/06/e5-85-b1-e4-ba-ab-e5-86-85-e5-ad-98/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1375,223 +1570,6 @@ int main()
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/26/e9-9d-9e-e9-98-bb-e5-a1-9e-e5-bc-8fi-o/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="tanwenbo">
-      <meta itemprop="description" content="enjoy share">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="hhyvs111">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/05/26/e9-9d-9e-e9-98-bb-e5-a1-9e-e5-bc-8fi-o/" class="post-title-link" itemprop="url">非阻塞式I/O</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-05-26 09:18:08" itemprop="dateCreated datePublished" datetime="2018-05-26T09:18:08+08:00">2018-05-26</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" itemprop="url" rel="index"><span itemprop="name">计算机网络</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="非阻塞式I-O"><a href="#非阻塞式I-O" class="headerlink" title="非阻塞式I/O"></a>非阻塞式I/O</h1><p><code>《Unix网络编程：卷1》``posts</code></p>
-<blockquote>
-<p>将I/O设置为非阻塞是提高传输效率的重要手段之一。</p>
-</blockquote>
-<h2 id="1-概述"><a href="#1-概述" class="headerlink" title="1 概述"></a>1 概述</h2><p>一开始的笔记有写到将套接字设置成<code>非阻塞式</code>，但是好像只是设置了，并没有应用。这一章主要讲一下如何实现非阻塞式I/O以提高效率。 可能阻塞的套接字调用可分以下四类：</p>
-<ul>
-<li>输入操作，包括read、readv、recv、recvfrom、和recvmsg；</li>
-<li>输出操作，包括write、writev、send、sendto和sendmsg；</li>
-<li>接收外来连接，即accept函数；</li>
-<li>发起外出连接，即connect函数。</li>
-</ul>
-<h2 id="2-非阻塞读写"><a href="#2-非阻塞读写" class="headerlink" title="2 非阻塞读写"></a>2 非阻塞读写</h2><p>书上第一个例子太冗长了，简单理解就是在读和写的两个缓冲区设置了几个指针，指示了当前<code>写容量</code>和<code>可读容量</code>，并对其进行操作。 主要是应用了<code>select</code>实现的非阻塞I/O。 简单一点的是使用多进程，一个进程专门用来读，一个进程用来写。但是要注意异步，用信号通知另一进程做相应的操作。</p>
-<h2 id="3-非阻塞connect"><a href="#3-非阻塞connect" class="headerlink" title="3 非阻塞connect"></a>3 非阻塞connect</h2><p>当在一个非阻塞的TCP套接字上调用connect时，connect将立即返回一个<code>EINPROGRESS</code>错误，不过已经发起的TCP三路握手继续进行。然后使用select检测是否成功。 具体代码看书353页。</p>
-<h2 id="4-非阻塞accept"><a href="#4-非阻塞accept" class="headerlink" title="4 非阻塞accept"></a>4 非阻塞accept</h2><h3 id="4-1-阻塞的accept"><a href="#4-1-阻塞的accept" class="headerlink" title="4.1 阻塞的accept"></a>4.1 阻塞的accept</h3><blockquote>
-<p>之前有个猜想，为什么服务器里的while循环没有一直运行，而是有连接才进行下一步操作。后来发现accept函数是阻塞的。</p>
-</blockquote>
-<p>来自man 2 accept里的资料：</p>
-<pre><code>If no pending connections are present on the queue, and the socket is not marked as nonblocking,  accept() blocks  the  caller until a connection is present.  If the socket is marked nonblocking and no pending connections are present on the queue, accept() fails with the error EAGAIN or EWOULDBLOCK.</code></pre><p>可见如果没有将套接字设置为<code>非阻塞</code>，那么accept会一直等待下一个连接，从而accept下面的语句就不会执行。</p>
-<h3 id="4-2-非阻塞"><a href="#4-2-非阻塞" class="headerlink" title="4.2 非阻塞"></a>4.2 非阻塞</h3><p>和很多非阻塞函数一样，要处理返回的错误信息，甚至可以忽略这些错误信息。 主要是使用select加非阻塞套接字实现非阻塞。 具体看书362页。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/26/e5-a5-97-e6-8e-a5-e5-ad-97-e5-92-8c-e6-a0-87-e5-87-86i-o/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="tanwenbo">
-      <meta itemprop="description" content="enjoy share">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="hhyvs111">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/05/26/e5-a5-97-e6-8e-a5-e5-ad-97-e5-92-8c-e6-a0-87-e5-87-86i-o/" class="post-title-link" itemprop="url">套接字和标准I/O</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-05-26 02:31:14" itemprop="dateCreated datePublished" datetime="2018-05-26T02:31:14+08:00">2018-05-26</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" itemprop="url" rel="index"><span itemprop="name">计算机网络</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="套接字和标准I-O"><a href="#套接字和标准I-O" class="headerlink" title="套接字和标准I/O"></a>套接字和标准I/O</h1><p><code>《Unix网络编程：卷1》``SOCKET``posts</code> 之前一直使用的Unix I/O，包括read，write这两个函数以及它们的变体（recv、send等）。下面使用标准I/O库（ANSI C）实现读取写入。</p>
-<h2 id="1-fdopen函数"><a href="#1-fdopen函数" class="headerlink" title="1 fdopen函数"></a>1 fdopen函数</h2><pre><code>#include &lt;stdio.h&gt;
-FILE *fdopen(int fd, const char *mode);</code></pre><p>返回值是文件流形式。 .0</p>
-<h3 id="1-1-模式"><a href="#1-1-模式" class="headerlink" title="1.1 模式"></a>1.1 模式</h3><p>fdopen有模式区分，比如：</p>
-<ul>
-<li>r，读</li>
-<li>r+，读和写</li>
-<li>w，写</li>
-<li>w+，写和读</li>
-<li>a，append，在文件末端写</li>
-<li>a+，可读，在文件末端写</li>
-</ul>
-<h3 id="1-2-例子"><a href="#1-2-例子" class="headerlink" title="1.2 例子"></a>1.2 例子</h3><pre><code>char        line[MAXLINE];
-    FILE        *fpin, *fpout;
-
-    fpin = Fdopen(sockfd, &quot;r&quot;);
-    fpout = Fdopen(sockfd, &quot;w&quot;);
-
-    while (Fgets(line, MAXLINE, fpin) != NULL)
-        Fputs(line, fpout);</code></pre><p>该例子是完全缓冲的，不能实时回显。</p>
-<h3 id="1-3-三类缓冲"><a href="#1-3-三类缓冲" class="headerlink" title="1.3 三类缓冲"></a>1.3 三类缓冲</h3><p>标准I/O函数库执行以下三类缓冲：</p>
-<h4 id="1）完全缓冲"><a href="#1）完全缓冲" class="headerlink" title="1）完全缓冲"></a>1）完全缓冲</h4><p>只在以下情况发生I/O：</p>
-<ul>
-<li>缓冲区满，通常为8192字节；</li>
-<li>进程显式调用fflush（之前有写过的将缓冲区写入的函数，还有类似的fseek）；</li>
-<li>进程调用exit。</li>
-</ul>
-<h4 id="2）行缓冲"><a href="#2）行缓冲" class="headerlink" title="2）行缓冲"></a>2）行缓冲</h4><p>只在以下情况发生I/O：</p>
-<ul>
-<li>碰到一个换行符；</li>
-<li>进程调用fflush；</li>
-<li>进程调用exit。</li>
-</ul>
-<h4 id="3）不缓冲"><a href="#3）不缓冲" class="headerlink" title="3）不缓冲"></a>3）不缓冲</h4><p>每次调用标准I/O输出函数都发生I/O。 标准I/O函数库的大多数Unix实现使用如下规则：</p>
-<ul>
-<li>标准错误输出（2）总是不缓冲；</li>
-<li>标准输入（0）和标准输出（1）完全缓冲，除非它们指代终端设备（行缓冲）；</li>
-<li>所有其他I/O流都是完全缓冲，除非它们指代中断设备（行缓冲）。</li>
-</ul>
-<h1 id="2-弊端"><a href="#2-弊端" class="headerlink" title="2 弊端"></a>2 弊端</h1><p>如上述问题所知，其实套接字上是不建议使用标准I/O。但是也有办法解决，比如：</p>
-<ul>
-<li>通过调用<code>setvbuf</code>迫使这个输出流变为行缓冲；</li>
-<li>在每次调用fputs之后通过调用<code>fflush</code>强制输出每个缓冲区的字符。</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1661,7 +1639,7 @@ FILE *fdopen(int fd, const char *mode);</code></pre><p>返回值是文件流形�
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">114</span>
+          <span class="site-state-item-count">116</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
