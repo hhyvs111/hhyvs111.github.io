@@ -157,607 +157,6 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/26/1-two-sum/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="tanwenbo">
-      <meta itemprop="description" content="enjoy share">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="hhyvs111">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/11/26/1-two-sum/" class="post-title-link" itemprop="url">1. Two Sum</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-11-26 11:17:40" itemprop="dateCreated datePublished" datetime="2018-11-26T11:17:40+08:00">2018-11-26</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p>要开始刷算法题了，昨天去头条笔试被吊打了，现在的自己原来这么菜。</p>
-<p>那么就从LeetCode开始刷吧。</p>
-</blockquote>
-<h2 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h2><p>Given an array of integers, return indices of the two numbers such that they add up to a specific target.</p>
-<p>You may assume that each input would have exactly one solution, and you may not use the same element twice.<br>Example:</p>
-<pre><code>Given nums = [2, 7, 11, 15], target = 9,
-Because nums[0] + nums[1] = 2 + 7 = 9,
-return [0, 1].</code></pre><h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>就是在数组里找两个数是否是相加等于这个目标值。</p>
-<p>直接想到的方法就是遍历，然后判断是否相等。</p>
-<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><pre><code>class Solution {
-public:
-    vector&lt;int&gt; twoSum(vector&lt;int&gt;&amp; nums, int target) {
-        vector&lt;int&gt; ans;
-        int size = nums.size();
-        for(int i = 0; i &lt; size; i++){
-            for(int j = i + 1 ;j &lt; size; j++){
-                if(nums[i] + nums[j] == target){
-                    ans.push_back(i);
-                    ans.push_back(j);
-                    return ans;
-                }
-            }
-        }
-    }
-};</code></pre><blockquote>
-<p>吗的，提交后虽然一次过，但是看了时间复杂度排行前面的真的是神仙代码，完全看不懂的节奏。。。</p>
-</blockquote>
-<p><img src="https://tanwenbo.top/wp-content/uploads/2018/11/15432025064317.jpg" alt="">￼</p>
-<p>看来需要学习的东西太多了。</p>
-<h2 id="另一种方法"><a href="#另一种方法" class="headerlink" title="另一种方法"></a>另一种方法</h2><p>我看排行第一的用的是HashMap。</p>
-<blockquote>
-<p>完全不知道HashMap原理，直接贴出来看看。</p>
-</blockquote>
-<pre><code>class Solution {
-public:
-    vector&lt;int&gt; twoSum(vector&lt;int&gt;&amp; nums, int target) {
-      std::unordered_map&lt;int, std::size_t&gt; tmp;  
-      for (std::size_t i = 0; i &lt; nums.size(); ++i) {
-        if (tmp.count(target - nums[i])) {
-            return {tmp[target - nums[i]], i};
-        }
-        tmp[nums[i]] = i;
-    }
-        return {0,0};
-
-    }
-};</code></pre><p>目前的知识还不足以了解这个解法，先填坑以后再来看吧。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/19/mojaveopengl/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="tanwenbo">
-      <meta itemprop="description" content="enjoy share">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="hhyvs111">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/11/19/mojaveopengl/" class="post-title-link" itemprop="url">Mojave+OpenGL绘制黑屏解决方法</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-11-19 17:19:42" itemprop="dateCreated datePublished" datetime="2018-11-19T17:19:42+08:00">2018-11-19</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/OpenGL/" itemprop="url" rel="index"><span itemprop="name">OpenGL</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/OpenGL/%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">教程</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h2><p>看来MacOS是真的要放弃OpenGL了，今天更新了一下新版<code>xcode</code>和<code>command line tool</code>。结果代码跑出来是黑屏的，然后要拖动（drag）一下标题才能绘制出来。<br><img src="https://tanwenbo.top/wp-content/uploads/2018/11/15426195038276.jpg" alt="">￼</p>
-<p>而且我的程序是绑定了鼠标操作的，意味着如果切换到代码运行界面，那么就无法拖动窗口。</p>
-<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p>最后在<code>Stack Overflow</code>上找到了解决方法。<a href="https://stackoverflow.com/questions/52509427/mac-mojave-opengl/52559723#52559723" target="_blank" rel="noopener">Mac Mojave + opengl</a></p>
-<p>主要方法就是在绘制循环里加入如下代码：</p>
-<pre><code>bool needDraw = true;
-    if (needDraw) {
-        glfwShowWindow(window);
-        glfwHideWindow(window);
-        glfwShowWindow(window);
-        needDraw = false;
-    }</code></pre><p>里面有几个方法，就这个有效果。</p>
-<p>这个网站还是很神奇的，可惜声望值不够不能点赞，尴尬。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/02/poly2tri/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="tanwenbo">
-      <meta itemprop="description" content="enjoy share">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="hhyvs111">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/11/02/poly2tri/" class="post-title-link" itemprop="url">使用Poly2tri对多边形进行剖分</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-11-02 16:35:23" itemprop="dateCreated datePublished" datetime="2018-11-02T16:35:23+08:00">2018-11-02</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/OpenGL/" itemprop="url" rel="index"><span itemprop="name">OpenGL</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p>之前有写一个如何使用耳切法的教程，但是效果还是不够理想。但是poly2tri切出来的效果很好，在这里写一下基本用法。我也是摸索了一会才搞懂的。<br>等搞懂了poly2tri算法的实现原理再在此文里补充。</p>
-</blockquote>
-<h2 id="0-原理"><a href="#0-原理" class="headerlink" title="0 原理"></a>0 原理</h2><blockquote>
-<p>待填坑。</p>
-</blockquote>
-<h2 id="1-源码下载"><a href="#1-源码下载" class="headerlink" title="1 源码下载"></a>1 源码下载</h2><p>这个就不多说了，直接上github地址<a href="https://github.com/greenm01/poly2tri" target="_blank" rel="noopener">poly2tri</a>。这个也是基于C的。</p>
-<h2 id="2-编译"><a href="#2-编译" class="headerlink" title="2 编译"></a>2 编译</h2><p>可以按照源码里的编译方法编译，但是我用的是CLion，就没那也编译了。直接把相关文件放入自己的项目里，然后写好<code>CMakeLists</code>就好了。</p>
-<h3 id="2-1-项目结构"><a href="#2-1-项目结构" class="headerlink" title="2.1 项目结构"></a>2.1 项目结构</h3><p><img src="https://tanwenbo.top/wp-content/uploads/2018/11/15411484431976.jpg" alt="">￼</p>
-<h3 id="2-2-CMakeLists"><a href="#2-2-CMakeLists" class="headerlink" title="2.2 CMakeLists"></a>2.2 CMakeLists</h3><pre><code>add_library( POLY2TRI  poly2tri/common/shapes.cc poly2tri/sweep/advancing_front.cc poly2tri/sweep/cdt.cc poly2tri/sweep/sweep_context.cc
-        poly2tri/sweep/sweep.cc
-        poly2tri/sweep/sweep_context.cc)
-set(LIBS ${LIBS} POLY2TRI)
-
-
-        add_executable(${NAME} ${SOURCE} includes/Delaunay.h includes/vertex.h
-                poly2tri/poly2tri.h poly2tri/sweep/cdt.h poly2tri/sweep/sweep_context.h poly2tri/sweep/sweep.h poly2tri/common/shapes.h  poly2tri/common/utils.h poly2tri/sweep/advancing_front.h
-                includes/mapbox/earcut.hpp)
-        target_link_libraries(${NAME} ${LIBS})</code></pre><blockquote>
-<p>有一些其他的内容是自己的项目相关的。</p>
-</blockquote>
-<h2 id="3-使用"><a href="#3-使用" class="headerlink" title="3 使用"></a>3 使用</h2><p>这里使用我参考了里面的Demo，但是因为我是macOS没有跑出来，所以参照代码在自己的项目里跑成功了。一开始也遇到了<code>耳切法</code>那个错误，就是点的插入顺序不对，具体可以看看<a href="(https://tanwenbo.top/course/er-qie-fa-shi-yong-zhi-nan.html)">耳切法使用指南</a>。</p>
-<h3 id="3-1-相关变量声明"><a href="#3-1-相关变量声明" class="headerlink" title="3.1 相关变量声明"></a>3.1 相关变量声明</h3><pre><code>// Constrained triangles，用来存放剖分好的理想三角
-vector&lt;Triangle*&gt; triangles;
-// Triangle map，完整剖分
-list&lt;Triangle*&gt; map;
-// Polylines，线的集合
-vector&lt; vector&lt;Point*&gt; &gt; polylines;
-//线
-vector&lt;p2t::Point*&gt; polyline;
-//调用类
-CDT* cdt;</code></pre><p>Point类型自己可以看一下源码，源码的是二维，我要用到三维数据我就直接在结构体里加了个<code>z值</code>。</p>
-<blockquote>
-<p>我的剖分步骤是先将三维投影到二维，然后剖分完毕后反投影回去。相关内容将来会发布。</p>
-</blockquote>
-<h3 id="3-2-剖分"><a href="#3-2-剖分" class="headerlink" title="3.2 剖分"></a>3.2 剖分</h3><pre><code> VERTEX *Merge = faultMerge(fault1_up, 10, fault2_up, 10);
- //将vertex的xy坐标输入到这个poly
- for(int i = 0;i &lt; 20; i++)
- {
-     double x = Merge[i].x;
-     double y = Merge[i].y;
-     double z = Merge[i].z;
-     Point *point = new Point(x,y);
-     point-&gt;z = z;
-
-     polyline.push_back(point);
-     cout &lt;&lt; &quot; double &quot;&lt;&lt; x&lt;&lt; &quot; &quot; &lt;&lt; y &lt;&lt;&quot; &quot;&lt;&lt; z &lt;&lt;endl;
- }
-
- //用完就删除
- delete [] Merge;
- //将这个polyline输入到polylines里去，后者应该是这个集合？
- polylines.push_back(polyline);
-
- cdt = new CDT(polyline);
-
-//开始剖分
- cdt-&gt;Triangulate();
-
- //map是完整的剖分（包含空洞的剖分）？
- map = cdt-&gt;GetMap();
- //获取三角，这个时候triangles里就是
- triangles = cdt-&gt;GetTriangles();</code></pre><p>这里我只输入了一个多边形，其他的情况暂时没有测试。</p>
-<h3 id="3-3-获取三角"><a href="#3-3-获取三角" class="headerlink" title="3.3 获取三角"></a>3.3 获取三角</h3><pre><code>void Poly2TriBind(unsigned int * PolyVAOs, unsigned int * PolyVBOs, vector&lt;Triangle*&gt; _triangle)
-{
-    glGenVertexArrays(_triangle.size(), PolyVAOs);
-    glGenBuffers(_triangle.size(), PolyVBOs);
-
-    //循环读取Polyl里的三角形顶点数据
-    float TraVertex[9];
-    for (int i = 0; i &lt; _triangle.size(); i++)
-    {
-            Triangle &amp;t = *_triangle[i];
-
-            Point &amp;a = *t.GetPoint(0);
-            Point &amp;b = *t.GetPoint(1);
-            Point &amp;c = *t.GetPoint(2);
-            //将顶点分配给这个float
-
-            TraVertex[0] = a.x;
-            TraVertex[1] = a.y;
-            TraVertex[2] = a.z;
-            TraVertex[3] = b.x;
-            TraVertex[4] = b.y;
-            TraVertex[5] = b.z;
-            TraVertex[6] = c.x;
-            TraVertex[7] = c.y;
-            TraVertex[8] = c.z;
-    }</code></pre><blockquote>
-<p>上述代码都是我项目里的部分代码。</p>
-</blockquote>
-<p>要注意这个三角访问，因为Point类用的是引用值，修改了三角里Point的值，与这个Point相关的三角也会变化。</p>
-<h2 id="4-效果"><a href="#4-效果" class="headerlink" title="4 效果"></a>4 效果</h2><p>我用了三种剖分方法，poly2tri是目前最好的，结果也是我想要的。</p>
-<h3 id="poly2tri"><a href="#poly2tri" class="headerlink" title="poly2tri"></a>poly2tri</h3><p>目前效果最好的算法，剖分结果就是Delaunay增量算法的非凸版本，简直完美。<br><img src="https://tanwenbo.top/wp-content/uploads/2018/11/15406231387483.jpg" alt="">￼</p>
-<h3 id="增量法"><a href="#增量法" class="headerlink" title="增量法"></a>增量法</h3><p><img src="https://tanwenbo.top/wp-content/uploads/2018/11/15406231601122.jpg" alt="">￼</p>
-<p>可以看到，这个算法就是在poly2tri上加了凸包，这是我第一次用的算法，本来还想着如何去除凸包。</p>
-<h3 id="耳切法"><a href="#耳切法" class="headerlink" title="耳切法"></a>耳切法</h3><p><img src="https://tanwenbo.top/wp-content/uploads/2018/11/15406231995468.jpg" alt="">￼</p>
-<p>结果不是很理想。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/25/er-qie-fa-shi-yong-zhi-nan/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="tanwenbo">
-      <meta itemprop="description" content="enjoy share">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="hhyvs111">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/10/25/er-qie-fa-shi-yong-zhi-nan/" class="post-title-link" itemprop="url">耳切法使用指南</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-10-25 19:27:40" itemprop="dateCreated datePublished" datetime="2018-10-25T19:27:40+08:00">2018-10-25</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/OpenGL/" itemprop="url" rel="index"><span itemprop="name">OpenGL</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/OpenGL/%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">教程</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p>因为论文需要，所以在剖分那一块用了耳切法，本文只是写一下使用方法，原理和代码都是直接搬运的。</p>
-</blockquote>
-<h2 id="1-原理"><a href="#1-原理" class="headerlink" title="1 原理"></a>1 原理</h2><p><a href="https://blog.csdn.net/u012871784/article/details/50418817?utm_source=blogxgwz0" target="_blank" rel="noopener">耳切法原理</a></p>
-<p>大概的原理可以看看上面的文章</p>
-<h2 id="2-代码"><a href="#2-代码" class="headerlink" title="2 代码"></a>2 代码</h2><p>这里暂时只给出C++的代码，主要是来自<code>github</code>上的，但是他的说明文档不是很清楚，我自己研究了半天。</p>
-<p><a href="https://github.com/mapbox/earcut.hpp" target="_blank" rel="noopener">代码</a></p>
-<h3 id="2-1-使用方法"><a href="#2-1-使用方法" class="headerlink" title="2.1 使用方法"></a>2.1 使用方法</h3><h4 id="头文件"><a href="#头文件" class="headerlink" title="头文件"></a>头文件</h4><p>把代码里的<code>mapbox</code>放入自己的项目里，然后包含头文件</p>
-<pre><code>#include &lt;earcut.hpp&gt;</code></pre><h4 id="调用"><a href="#调用" class="headerlink" title="调用"></a>调用</h4><p>这里是官方给出的使用方法。</p>
-<pre><code>// The number type to use for tessellation
-using Coord = double;
-
-// The index type. Defaults to uint32_t, but you can also pass uint16_t if you know that your
-// data won&apos;t have more than 65536 vertices.
-using N = uint32_t;
-
-// Create array
-using Point = std::array&lt;Coord, 2&gt;;
-std::vector&lt;std::vector&lt;Point&gt;&gt; polygon;
-
-// Fill polygon structure with actual data. Any winding order works.
-// The first polyline defines the main polygon.
-polygon.push_back({ {100, 0}, {100, 100}, {0, 100}, {0, 0}});
-// Following polylines define holes.
-polygon.push_back({ {75, 25}, {75, 75}, {25, 75}, {25, 25}});
-
-// Run tessellation
-// Returns array of indices that refer to the vertices of the input polygon.
-// e.g: the index 6 would refer to {25, 75} in this example.
-// Three subsequent indices form a triangle. Output triangles are clockwise.
-std::vector&lt;N&gt; indices = mapbox::earcut&lt;N&gt;(polygon);</code></pre><h4 id="获得三角形"><a href="#获得三角形" class="headerlink" title="获得三角形"></a>获得三角形</h4><p>这里要注意，上述代码输入了2个多边形，那么再获取相关剖分数据的时候要区别一下。</p>
-<p>主要是获取这个各个点的连接顺序，也就是三角剖分。indices的值就是点的顺序。比如indices的值是<code>24</code>，那么就是有<code>8</code>个三角形（上面有2个正方形组成的带孔的正方形）。按indices输出顺序连接三角形，就是剖分结果了。</p>
-<pre><code>    for (const auto&amp; i : indices) {
-        Point point;
-        cout  &lt;&lt; i&lt;&lt; endl;
-//        cout &lt;&lt; indices.at(i) &lt;&lt; endl;
-//        cout &lt;&lt; endl;
-        //如果大于4则是访问第二个多边形
-        if(i &gt;= 4)
-        {
-            //
-            point.x = polygon.at(1).at(i - 4).at(0);
-            point.y = polygon.at(1).at(i - 4).at(1);
-        }
-        else
-        {
-            point.x = polygon.at(0).at(i).at(0);
-            point.y = polygon.at(0).at(i).at(1);
-        }
-
-        cout &lt;&lt;  point.x&lt;&lt; &quot; &quot; &lt;&lt; point.y &lt;&lt; endl;
-    }</code></pre><p>这样就能正确的获取三角形的连接顺序，然后就正常操作就好了。</p>
-<h3 id="输入顺序"><a href="#输入顺序" class="headerlink" title="输入顺序"></a>输入顺序</h3><p>这里要注意一下这个输入点的顺序，不要打乱。</p>
-<h4 id="错误输入"><a href="#错误输入" class="headerlink" title="错误输入"></a>错误输入</h4><p><img src="https://tanwenbo.top/wp-content/uploads/2018/10/15406923747219.jpg" alt="">￼</p>
-<p>如果点的输入顺序是ABCDEFGHI，那么这个时候剖分的数据就会有问题。</p>
-<h4 id="正确输入"><a href="#正确输入" class="headerlink" title="正确输入"></a>正确输入</h4><p><img src="https://tanwenbo.top/wp-content/uploads/2018/10/15406924150890.jpg" alt="">￼</p>
-<p>输入顺序ABCDIHGFE，这样剖分的结果才是正确的。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/24/glfwgetkey/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="tanwenbo">
-      <meta itemprop="description" content="enjoy share">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="hhyvs111">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/10/24/glfwgetkey/" class="post-title-link" itemprop="url">glfwGetKey多次触发的问题</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-10-24 09:58:46" itemprop="dateCreated datePublished" datetime="2018-10-24T09:58:46+08:00">2018-10-24</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/OpenGL/" itemprop="url" rel="index"><span itemprop="name">OpenGL</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>最近写程序的时候用到了glfwGetKey，在里面写了一些相关的触发函数。但是奇怪的发现，我只按了一次触发键，却引起了多次调用。不知道是为什么，一开始没发现导致我踩了很多坑。</p>
-<pre><code>if (glfwGetKey(window, GLFW_KEY_F1) == GLFW_PRESS)
-{
-    function();
-}</code></pre><p>比如说你绑定了<code>F1</code>为某个功能键，你会发现你按了一下，却多次触发了function。目前原因不明，我的解决方法是加一个全局变量开关。</p>
-<pre><code>if (glfwGetKey(window, GLFW_KEY_F1) == GLFW_PRESS)
-{
-    if(!functionOpen)
-    {
-        function();
-        functionOpen = true;
-    }
-}</code></pre><p>不是完美的解决方法但是还是可以用的。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/11/opengl-learn-6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1873,6 +1272,665 @@ endif()</code></pre><p>还有头文件也有问题，原来的是：</p>
   
   
 
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/08/opengl-learn-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="tanwenbo">
+      <meta itemprop="description" content="enjoy share">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hhyvs111">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/09/08/opengl-learn-2/" class="post-title-link" itemprop="url">OpenGL学习笔记第2篇——开始</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-09-08 10:25:06" itemprop="dateCreated datePublished" datetime="2018-09-08T10:25:06+08:00">2018-09-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OpenGL/" itemprop="url" rel="index"><span itemprop="name">OpenGL</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OpenGL/%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">教程</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>昨天搞了一下这个基本准备，现在开始写第一个Demo。<br>因为我用的是glew，所以和网站上的代码还是有点不一样的。</p>
+<h2 id="0-代码结构"><a href="#0-代码结构" class="headerlink" title="0 代码结构"></a>0 代码结构</h2><p>既然是跟着课程学习的，那么必要的规范还是要做的，比如这个代码可以根据目录来分类，然后依次做好层次关系。</p>
+<p><img src="https://tanwenbo.top/wp-content/uploads/2018/09/15363736319358.jpg" alt="">￼</p>
+<p>主要是这个目录，但是这个main函数的调用有点问题，需要单独处理一下。</p>
+<blockquote>
+<p>直接在source那里去除就好了，只留下一个main</p>
+<pre><code>set(SOURCE_FILES &quot;src/1.start/1.1.helloWindow/helloWindow.cpp&quot;)</code></pre></blockquote>
+<h2 id="1-Demo"><a href="#1-Demo" class="headerlink" title="1 Demo"></a>1 Demo</h2><p>教程上的第一个Demo，要注意头文件的包含，一定要glew在glfw之前。</p>
+<blockquote>
+<p>书上的是glad在glfw之前。<br>还是用glad吧，跟着潮流走。<br>具体配置可见<a href="https://tanwenbo.top/course/mac-shi-yongclion-pei-zhiopenglglewgladglfw.html" target="_blank" rel="noopener">Mac使用Clion配置OpenGL(glew,glad,glfw)</a></p>
+</blockquote>
+<pre><code>int main()
+{
+    //初始化
+    glfwInit();
+    //配置GLFW，第一个参数代表选项的名称，第二个是设置的值。
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    //苹果系统需要去除这个注释
+#ifdef __APPLE__
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // uncomment this statement to fix compilation on OS X
+#endif
+    return 0;
+}</code></pre><p>一些基本的东西，需要注意一些差别。</p>
+<blockquote>
+<p>感觉和QT有点像啊，都是一些窗口绑定的操作。</p>
+</blockquote>
+<h2 id="2-创建窗口"><a href="#2-创建窗口" class="headerlink" title="2 创建窗口"></a>2 创建窗口</h2><pre><code>GLFWwindow* window = glfwCreateWindow(800, 600, &quot;LearnOpenGL&quot;, NULL, NULL);
+if (window == NULL)
+{
+    std::cout &lt;&lt; &quot;Failed to create GLFW window&quot; &lt;&lt; std::endl;
+    glfwTerminate();
+    return -1;
+}
+glfwMakeContextCurrent(window);</code></pre><p>就是初始化一个window，然后设置它的长宽和标题。然后glfw调用这个window</p>
+<h2 id="3-GLAD"><a href="#3-GLAD" class="headerlink" title="3 GLAD"></a>3 GLAD</h2><p>一开始有说如果需要调用OpenGL的函数需要定义函数原型，然后找到正确的函数并赋值给函数指针，这个时候才可以调用函数。</p>
+<pre><code>// 定义函数原型
+typedef void (*GL_GENBUFFERS) (GLsizei, GLuint*);
+// 找到正确的函数并赋值给函数指针
+GL_GENBUFFERS glGenBuffers  = (GL_GENBUFFERS)wglGetProcAddress(&quot;glGenBuffers&quot;);
+// 现在函数可以被正常调用了
+GLuint buffer;
+glGenBuffers(1, &amp;buffer);</code></pre><p>这个时候调用十分复杂，有点像之前C陷阱里的定义void函数返回类型。</p>
+<h2 id="4-视角"><a href="#4-视角" class="headerlink" title="4 视角"></a>4 视角</h2><p>在渲染的时候需要告诉OpenGL窗口的尺寸大小，不设置的话当你拉伸这个窗口大小的时候坐标不会对应变大，因为在定义的时候被固定了大小。</p>
+<p>调用<code>glViewport</code>函数来设置窗口的维度（Dimension）</p>
+<pre><code>glViewport(0, 0, 800, 600);</code></pre><h2 id="5-回调函数"><a href="#5-回调函数" class="headerlink" title="5 回调函数"></a>5 回调函数</h2><p>那么怎么动态调整呢？这里用到了<a href="https://baike.baidu.com/item/%E5%9B%9E%E8%B0%83%E5%87%BD%E6%95%B0" target="_blank" rel="noopener">回调函数</a>，将窗口和回调函数绑定，当窗口变化的时候自动调用回调函数。</p>
+<pre><code>void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+{
+    glViewport(0, 0, width, height);
+}</code></pre><p>我们还需要注册这个函数，告诉GLFW我们希望每当窗口调整大小的时候调用这个函数：</p>
+<pre><code>glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);</code></pre><blockquote>
+<p>有点像qt的信号槽，估计信号槽也就是一种回调函数。</p>
+</blockquote>
+<h3 id="5-1-注册函数"><a href="#5-1-注册函数" class="headerlink" title="5.1 注册函数"></a>5.1 注册函数</h3><p>可以看一下具体的实现，GLFW源码：</p>
+<pre><code>GLFWAPI GLFWframebuffersizefun glfwSetFramebufferSizeCallback(GLFWwindow* handle,
+                                                              GLFWframebuffersizefun cbfun)
+{
+    _GLFWwindow* window = (_GLFWwindow*) handle;
+    assert(window != NULL);
+
+    _GLFW_REQUIRE_INIT_OR_RETURN(NULL);
+    _GLFW_SWAP_POINTERS(window-&gt;callbacks.fbsize, cbfun);
+    return cbfun;
+}</code></pre><p>可以看到传入和返回的函数都是同一种类型，该函数的主要功能就是交换了window指针的fbsize功能，替换为了我们注册的<code>cbfun</code>。</p>
+<pre><code>_GLFW_SWAP_POINTERS(window-&gt;callbacks.fbsize, cbfun);</code></pre><h3 id="5-2-封装"><a href="#5-2-封装" class="headerlink" title="5.2 封装"></a>5.2 封装</h3><pre><code>void _glfwInputFramebufferSize(_GLFWwindow* window, int width, int height)
+{
+    if (window-&gt;callbacks.fbsize)
+        window-&gt;callbacks.fbsize((GLFWwindow*) window, width, height);
+}</code></pre><p>这里简单地封装了一下，调用了<code>window-&gt;callbacks.fbsize</code>所指向的函数，这里也就是我们的<code>framebuffer_size_callback()</code>。</p>
+<h3 id="5-3-调用"><a href="#5-3-调用" class="headerlink" title="5.3 调用"></a>5.3 调用</h3><pre><code>_glfwInputFramebufferSize(window, LOWORD(lParam), HIWORD(lParam));</code></pre><p>当检测到窗口产生了大小变化时，调用了<code>_glfwInputFramebufferSize()</code>，将对应窗口宽高的参数传了进去。</p>
+<blockquote>
+<p>以上内容来自评论。</p>
+</blockquote>
+<h2 id="6-循环"><a href="#6-循环" class="headerlink" title="6 循环"></a>6 循环</h2><p>没有加入循环的代码就像一般的控制台程序，运行完结果后就直接关闭了。那么为了直观的观察绘制出来的程序，我们需要在主动关闭其之前不断绘制图像并能够接受用户输入。</p>
+<p>因此，我们需要在程序中添加一个while循环，我们可以把它称之为渲染循环(Render Loop)，它能在我们让GLFW退出前一直保持运行。下面几行的代码就实现了一个简单的渲染循环：</p>
+<pre><code>while(!glfwWindowShouldClose(window))
+{
+    glfwSwapBuffers(window);
+    glfwPollEvents();    
+}</code></pre><ul>
+<li><code>glfwWindowShouldClose</code>函数在我们每次循环的开始前检查一次GLFW是否被要求退出，如果是的话该函数返回true然后渲染循环便结束了，之后为我们就可以关闭应用程序了。</li>
+<li><code>glfwPollEvents</code>函数检查有没有触发什么事件（比如键盘输入、鼠标移动等）、更新窗口状态，并调用对应的回调函数（可以通过回调方法手动设置）。</li>
+<li><code>glfwSwapBuffers</code>函数会交换颜色缓冲（它是一个储存着GLFW窗口每一个像素颜色值的大缓冲），它在这一迭代中被用来绘制，并且将会作为输出显示在屏幕上。</li>
+</ul>
+<h2 id="7-释放"><a href="#7-释放" class="headerlink" title="7 释放"></a>7 释放</h2><p>和分配内存一样，渲染结束后应该正确释放之前分配的所有资源，在main函数的最后调用<code>glfwTerminate</code>函数来完成。</p>
+<pre><code>glfwTerminate();
+return 0; </code></pre><h2 id="8-运行"><a href="#8-运行" class="headerlink" title="8 运行"></a>8 运行</h2><h3 id="完整代码"><a href="#完整代码" class="headerlink" title="完整代码"></a>完整代码</h3><pre><code>// Created by 谭文波 on 2018/9/8.
+#include &lt;glad/glad.h&gt;
+#include &lt;GLFW/glfw3.h&gt;
+
+#include &lt;iostream&gt;
+
+void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+void processInput(GLFWwindow *window);
+
+// settings
+const unsigned int SCR_WIDTH = 800;
+const unsigned int SCR_HEIGHT = 600;
+
+int main()
+{
+    // glfw: initialize and configure
+    // ------------------------------
+    glfwInit();
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+#ifdef __APPLE__
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // uncomment this statement to fix compilation on OS X
+#endif
+
+    // glfw window creation
+    // --------------------
+    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, &quot;LearnOpenGL&quot;, NULL, NULL);
+    if (window == NULL)
+    {
+        std::cout &lt;&lt; &quot;Failed to create GLFW window&quot; &lt;&lt; std::endl;
+        glfwTerminate();
+        return -1;
+    }
+    glfwMakeContextCurrent(window);
+    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+
+    // glad: load all OpenGL function pointers
+    // ---------------------------------------
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+    {
+        std::cout &lt;&lt; &quot;Failed to initialize GLAD&quot; &lt;&lt; std::endl;
+        return -1;
+    }
+
+    // render loop
+    // -----------
+    while (!glfwWindowShouldClose(window))
+    {
+        // input
+        // -----
+        processInput(window);
+
+        // render
+        // ------
+        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
+        // -------------------------------------------------------------------------------
+        glfwSwapBuffers(window);
+        glfwPollEvents();
+    }
+
+    // glfw: terminate, clearing all previously allocated GLFW resources.
+    // ------------------------------------------------------------------
+    glfwTerminate();
+    return 0;
+}
+
+// process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
+// ---------------------------------------------------------------------------------------------------------
+void processInput(GLFWwindow *window)
+{
+    //退出键esc关闭窗口
+    if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+        glfwSetWindowShouldClose(window, true);
+}
+
+// glfw: whenever the window size changed (by OS or user resize) this callback function executes
+// ---------------------------------------------------------------------------------------------
+//回调函数
+void framebuffer_size_callback(GLFWwindow* wind
+ow, int width, int height)
+{
+    // make sure the viewport matches the new window dimensions; note that width and
+    // height will be significantly larger than specified on retina displays.
+    glViewport(0, 0, width, height);
+}</code></pre><h3 id="运行结果"><a href="#运行结果" class="headerlink" title="运行结果"></a>运行结果</h3><p><img src="https://tanwenbo.top/wp-content/uploads/2018/09/15363906099951.jpg" alt="">￼</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/07/opengl-glew-glfw/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="tanwenbo">
+      <meta itemprop="description" content="enjoy share">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hhyvs111">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/09/07/opengl-glew-glfw/" class="post-title-link" itemprop="url">OpenGL中的GLEW和GLFW简介</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-09-07 19:21:47" itemprop="dateCreated datePublished" datetime="2018-09-07T19:21:47+08:00">2018-09-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OpenGL/" itemprop="url" rel="index"><span itemprop="name">OpenGL</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OpenGL/%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">教程</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0 前言"></a>0 前言</h2><p>最近在用Mac下编译OpenGL相关的Demo，但是很多麻烦。比如这个glut的库在Mac OS 10.9版本已经废弃，然后很多老代码都编译不了用不了。</p>
+<p>后来发现了这个glew和glfw这两个库，说是可以代替这个glut和gl，但是看资料看了半天也不知道这两个库到底是干嘛的。在搜索了一些相关资料后，决定自己整理一下。</p>
+<p>目前需要解决的几个难点：</p>
+<h4 id="老代码迁移"><a href="#老代码迁移" class="headerlink" title="老代码迁移"></a>老代码迁移</h4><p>以前用glut写的代码如何用glew和glfw迁移，是不能直接换函数名的，有些函数不是一一对应的。</p>
+<p>比如这种：</p>
+<p><img src="https://tanwenbo.top/wp-content/uploads/2018/09/15363203630682.jpg" alt="">￼</p>
+<blockquote>
+<p>编译器用的是Mac下的CLion。</p>
+</blockquote>
+<p>有些函数是不存在的，那么现在需要将其替换成glew和glfw里的函数。</p>
+<h2 id="1-GLEW"><a href="#1-GLEW" class="headerlink" title="1 GLEW"></a>1 GLEW</h2><p>主要介绍一下这个库的作用以及相关函数。</p>
+<h3 id="1-1-简介"><a href="#1-1-简介" class="headerlink" title="1.1 简介"></a>1.1 简介</h3><blockquote>
+<p>OpenGL扩展库是个简单的工具，用于帮助C/C++开发者初始化扩展（OpenGL扩展功能）并书写可移植的应用程序。GLEW当前支持各种各样的操作系统，包含Windows，Linux，Darwin，Irix与Solaris。</p>
+<p>from 百度百科</p>
+</blockquote>
+<p>可以看到这个库主要是实现可移植性，因为不同平台的OpenGL库函数可能不一样，然后该库提供了一个功能：</p>
+<p><strong>能自动识别当前平台所支持的全部OpenGL高级扩展涵数。只要包含glew.h头文件，就能使用gl,glu,glext,wgl,glx的全部函数。</strong></p>
+<p>也就是说只要用这个库，然后你写的代码在不同平台就能直接编译，不需要再做特殊处理。</p>
+<blockquote>
+<p>具体是不是以后有待验证。</p>
+</blockquote>
+<h2 id="2-GLFW"><a href="#2-GLFW" class="headerlink" title="2 GLFW"></a>2 GLFW</h2><h3 id="2-1-简介"><a href="#2-1-简介" class="headerlink" title="2.1 简介"></a>2.1 简介</h3><blockquote>
+<p><strong>GLFW</strong> 是配合 <a href="https://zh.wikipedia.org/wiki/OpenGL" target="_blank" rel="noopener">OpenGL</a> 使用的轻量级工具程序库，缩写自 <strong>G</strong>raphics <strong>L</strong>ibrary <strong>F</strong>rame<strong>w</strong>ork（图形库框架）。GLFW 的主要功能是创建并管理窗口和 OpenGL 上下文，同时还提供了处理<a href="https://zh.wikipedia.org/wiki/%E6%89%8B%E6%9F%84" target="_blank" rel="noopener">手柄</a>、<a href="https://zh.wikipedia.org/wiki/%E9%94%AE%E7%9B%98" target="_blank" rel="noopener">键盘</a>、<a href="https://zh.wikipedia.org/wiki/%E9%BC%A0%E6%A0%87" target="_blank" rel="noopener">鼠标</a>输入的功能。</p>
+<p>from wiki</p>
+</blockquote>
+<p>看起来好像是一个框架，与上面的GLEW相辅相成。这个库也算是GLUT的新版本，这两个库之间的区别之一就在于 GLFW 更加先进而且有活力，但是GLUT则显得比较老旧，而且它的开发维护现在也基本上停滞了。所以可以直接用GLFW<strong>代替</strong>GLUT。</p>
+<h3 id="2-2-区别"><a href="#2-2-区别" class="headerlink" title="2.2 区别"></a>2.2 区别</h3><p>有些区别和GLUT不一样的地方，比如这个初始化。</p>
+<h4 id="GLUT"><a href="#GLUT" class="headerlink" title="GLUT"></a>GLUT</h4><pre><code>glutInit(&amp;argc, argv);      </code></pre><h4 id="GLFW"><a href="#GLFW" class="headerlink" title="GLFW"></a>GLFW</h4><pre><code>glfwInit();</code></pre><p>其实就是少了参数，其他的差别就不一一列举了。​</p>
+<h2 id="3-小结"><a href="#3-小结" class="headerlink" title="3 小结"></a>3 小结</h2><p>总的来说学习OpenGL使用这两个库足以满足所有需求，且可移植性也很强！</p>
+<h3 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h3><p><a href="http://wiki.jikexueyuan.com/project/modern-opengl-tutorial/tutorial44.html" target="_blank" rel="noopener">http://wiki.jikexueyuan.com/project/modern-opengl-tutorial/tutorial44.html</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/07/opengl-learn-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="tanwenbo">
+      <meta itemprop="description" content="enjoy share">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hhyvs111">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/09/07/opengl-learn-1/" class="post-title-link" itemprop="url">OpenGL学习笔记第1篇——准备</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-09-07 16:38:26" itemprop="dateCreated datePublished" datetime="2018-09-07T16:38:26+08:00">2018-09-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OpenGL/" itemprop="url" rel="index"><span itemprop="name">OpenGL</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>为了自己的论文现在需要从头开始学习一下OpenGL，发现了一个很好的网站<a href="https://learnopengl-cn.github.io/" target="_blank" rel="noopener">LearnOpenGL中文版</a>，其原版就是<a href="https://learnopengl.com/" target="_blank" rel="noopener">LearnOpenGL</a>。为了进度，还是选择看中文版（太菜）。</p>
+</blockquote>
+<h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0 前言"></a>0 前言</h2><p>基本的概念就不说了，做笔记也不是做教程，只写一下自己需要的东西。</p>
+<h2 id="1-对象"><a href="#1-对象" class="headerlink" title="1 对象"></a>1 对象</h2><p>这个东西有点意思，因为本来OpenGL就是用C语言写的，但是也会有个<strong>对象</strong>的概念。</p>
+<p>在OpenGL中一个对象是指一些选项的集合，它代表OpenGL状态的一个子集。比如，我们可以用一个对象来代表绘图窗口的设置，之后我们就可以设置它的大小、支持的颜色位数等等。可以把对象看做一个C风格的结构体(Struct)：</p>
+<pre><code>struct object_name {
+    float  option1;
+    int    option2;
+    char[] name;
+};</code></pre><p>然后有一些绑定对象的操作：</p>
+<pre><code>// 创建对象
+unsigned int objectId = 0;
+glGenObject(1, &amp;objectId);
+// 绑定对象至上下文
+glBindObject(GL_WINDOW_TARGET, objectId);
+// 设置当前绑定到 GL_WINDOW_TARGET 的对象的一些选项
+glSetObjectOption(GL_WINDOW_TARGET, GL_OPTION_WINDOW_WIDTH, 800);
+glSetObjectOption(GL_WINDOW_TARGET, GL_OPTION_WINDOW_HEIGHT, 600);
+// 将上下文对象设回默认
+glBindObject(GL_WINDOW_TARGET, 0);</code></pre><p>这一小段代码展现了你以后使用OpenGL时常见的工作流。我们首先创建一个对象，然后用一个id保存它的引用（实际数据被储存在后台）。然后我们将对象绑定至上下文的目标位置（例子中窗口对象目标的位置被定义成GL_WINDOW_TARGET）。接下来我们设置窗口的选项。最后我们将目标位置的对象id设回0，解绑这个对象。设置的选项将被保存在objectId所引用的对象中，一旦我们重新绑定这个对象到GL_WINDOW_TARGET位置，这些选项就会重新生效。</p>
+<h2 id="2-GLAD"><a href="#2-GLAD" class="headerlink" title="2 GLAD"></a>2 GLAD</h2><blockquote>
+<p>跟着这个网站学习的原因主要是其用的东西都是比较先进的，比如GLFW和CMake等工具，但是也有一些特别的工具。</p>
+</blockquote>
+<p>这里用到了一个工具<code>GLAD</code>，好像没听过啊，只听过GLFW和GLEW。</p>
+<p>GLAD用来解决函数位置无法再编译时确定的问题，不同驱动的位置无法确定，所以需要在运行时获取函数地址并将其保存在一个函数指针中供以后使用。</p>
+<blockquote>
+<p>具体来说就是不同的显卡驱动有不同的OpenGL实现，所以需要用GLAD来隐藏这些差别，达到无差别使用体验。</p>
+</blockquote>
+<p>而且这是一个<a href="https://glad.dav1d.de/" target="_blank" rel="noopener">在线服务</a>，也就是说需要在网上去生成，感觉有点鸡肋啊。</p>
+<h2 id="3-其他准备"><a href="#3-其他准备" class="headerlink" title="3 其他准备"></a>3 其他准备</h2><p>如果你是Mac用户，那么可以参考一下使用GLFW和GLEW的组合，再配合CLion来学习OpenGL。具体的可以参考我的博文<a href="https://tanwenbo.top/course/mac%E4%BD%BF%E7%94%A8clion%E9%85%8D%E7%BD%AEopengl-2.html" target="_blank" rel="noopener">Mac使用CLion配置OpenGL</a>。</p>
+<p>之所以不推荐用xcode，个人觉得配置过于复杂且可移植性很差。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/25/mac-e9-85-8d-e7-bd-aeiterm2-e5-ae-9e-e7-8e-b0mosh-e8-87-aa-e5-8a-a8-e8-bf-9c-e7-a8-8b-e8-bf-9e-e6-8e-a5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="tanwenbo">
+      <meta itemprop="description" content="enjoy share">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hhyvs111">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/08/25/mac-e9-85-8d-e7-bd-aeiterm2-e5-ae-9e-e7-8e-b0mosh-e8-87-aa-e5-8a-a8-e8-bf-9c-e7-a8-8b-e8-bf-9e-e6-8e-a5/" class="post-title-link" itemprop="url">Mac配置iTerm2实现mosh自动远程连接</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-08-25 01:43:20" itemprop="dateCreated datePublished" datetime="2018-08-25T01:43:20+08:00">2018-08-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">教程</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>其实网上教程也挺多的，但是用起来总是不那么方便，还遇到了一些bug。现在就总结几个问题再输出一下！</p>
+</blockquote>
+<h2 id="1-准备"><a href="#1-准备" class="headerlink" title="1 准备"></a>1 准备</h2><p>首先创建一个ssh秘钥是最方便的，这样就不用输入密码，不过用了该功能也没必要了，直接用就是的。</p>
+<h3 id="1-1-安装expect"><a href="#1-1-安装expect" class="headerlink" title="1.1 安装expect"></a>1.1 安装expect</h3><p>首先确保你的mac安装了expect，这个是一个自动化执行脚本，可以输入一些普通shell脚本做不到的东西，需要人工操作的。比如<code>回车确认</code>等等。</p>
+<pre><code>brew install expect</code></pre><p>如果你brew都没装那可以出门右转了。</p>
+<h3 id="1-2-安装mosh"><a href="#1-2-安装mosh" class="headerlink" title="1.2 安装mosh"></a>1.2 安装mosh</h3><blockquote>
+<p>你也可以不装，只使用ssh连接，那么直接跳过这里。</p>
+</blockquote>
+<p>这个是什么呢？就是用来解决ssh卡顿的，因为默认的是键盘每输入一个字符就要向服务器发送一个字节，这样就会大大增加传输次数，也会增加延迟。</p>
+<blockquote>
+<p>mosh 是一个替代SSH的免费软件，它最大的特点是支持网络漫游和间歇性连接。</p>
+<ul>
+<li>会话的中断不会导致当前正在前端执行的命令中断，相当于你所有的操作都是在screen命令中一样在后台执行</li>
+<li>会话在中断过后，不会立刻退出，而是启用一个计时器，当网络恢复后会自动重新连接，同时会延续之前的会话，不会重新开启一个</li>
+</ul>
+</blockquote>
+<pre><code>brew install mosh</code></pre><p>目前只是客户端mac安装了，服务器端也要安装。如果是Ubuntu的话用如下命令：</p>
+<pre><code>sudo apt-get install mosh</code></pre><blockquote>
+<p>看到这里你可能觉得有点复杂，但是一劳永逸，亲测延迟要降低很多！</p>
+</blockquote>
+<p>然后运行<code>mosh-server</code></p>
+<pre><code>mosh-server</code></pre><p>这个时候<code>mosh-server</code>可能绑定的是<code>60001</code>端口，可以自己看一下</p>
+<pre><code>netstat -anp | grep mosh</code></pre><p><img src="https://tanwenbo.top/wp-content/uploads/2018/08/ede2d90db1e0d03d5731a8f07f113a16.png" alt="">像我是阿里云的服务器，可能就要到安全组里开通60001的udp端口，具体怎么设置相信你可以百度得到。</p>
+<p>如果提示错误：</p>
+<pre><code>The locale requested by LC_ALL=zh_CN.UTF-8 isn&apos;t available here.Running `locale-gen zh_CN.UTF-8&apos; may be necessary.mosh-server needs a UTF-8 native locale to run.Unfortunately, the local environment (LC_ALL=zh_CN.UTF-8) specifiesthe character set &quot;US-ASCII&quot;,The client-supplied environment ([no charset variables]) specifiesthe character set &quot;US-ASCII&quot;.LANG=LANGUAGE=LC_CTYPE=&quot;POSIX&quot;LC_NUMERIC=&quot;POSIX&quot;LC_TIME=&quot;POSIX&quot;LC_COLLATE=&quot;POSIX&quot;LC_MONETARY=&quot;POSIX&quot;LC_MESSAGES=&quot;POSIX&quot;LC_PAPER=&quot;POSIX&quot;LC_NAME=&quot;POSIX&quot;LC_ADDRESS=&quot;POSIX&quot;LC_TELEPHONE=&quot;POSIX&quot;LC_MEASUREMENT=&quot;POSIX&quot;LC_IDENTIFICATION=&quot;POSIX&quot;LC_ALL=</code></pre><p>那么可能是你的服务器没有设置中文的utf-8，执行以下命令：</p>
+<pre><code>sudo apt-get -y install language-pack-zh-hans</code></pre><p>如果弹出</p>
+<pre><code>MOSH CONNECT 60001 /tnUTZ/3MIU0uF1Qlk0K6Amosh-server (mosh 1.2.5) [build mosh 1.2.5]Copyright 2012 Keith Winstein &lt;mosh-devel@mit.edu&gt;License GPLv3+: GNU GPL version 3 or later &lt;http://gnu.org/licenses/gpl.html&gt;.This is free software: you are free to change and redistribute it.There is NO WARRANTY, to the extent permitted by law.</code></pre><p>那么就意味着运行成功了。</p>
+<h2 id="2-配置"><a href="#2-配置" class="headerlink" title="2 配置"></a>2 配置</h2><p>准备操作已完成，那么就进行配置了。</p>
+<h3 id="2-1-脚本"><a href="#2-1-脚本" class="headerlink" title="2.1 脚本"></a>2.1 脚本</h3><p>首先利用expect在<code>/usr/local/bin/</code>下面写一个脚本login.exp，并加上执行权限：</p>
+<pre><code>chmod +x login.exp</code></pre><p>login.exp</p>
+<h4 id="使用mosh"><a href="#使用mosh" class="headerlink" title="使用mosh"></a>使用mosh</h4><pre><code>#!/usr/bin/expectset timeout 30spawn mosh -p 60001 [lindex $argv 0]@[lindex $argv 1]expect {    &quot;(yes/no)?&quot;    {send &quot;yes\n&quot;;exp_continue}    &quot;password:&quot;    {send &quot;[lindex $argv 2]\n&quot;}}interact</code></pre><h4 id="使用ssh"><a href="#使用ssh" class="headerlink" title="使用ssh"></a>使用ssh</h4><pre><code>#!/usr/bin/expectset timeout 30spawn ssh [lindex $argv 0]@[lindex $argv 1]expect {    &quot;(yes/no)?&quot;    {send &quot;yes\n&quot;;exp_continue}    &quot;password:&quot;    {send &quot;[lindex $argv 2]\n&quot;}}interact</code></pre><h3 id="2-2-iTerm2配置"><a href="#2-2-iTerm2配置" class="headerlink" title="2.2 iTerm2配置"></a>2.2 iTerm2配置</h3><p>可以直接按快捷键<code>command + ,</code>，或者在iTerm2设置里打开<code>preference</code>，点开Profiles，然后在<code>Genernal-&gt;Command</code>下选择 <code>Login shell</code>，在输入框里填入相关信息，用空格隔开，如果有特殊字符需要用<code>单引号</code>隔开。<img src="https://tanwenbo.top/wp-content/uploads/2018/08/d8505f803d54077b18d5081ec6e5d4fb.png" alt=""></p>
+<p>你还可以自己加一个快捷键<img src="https://tanwenbo.top/wp-content/uploads/2018/08/3bed11ccee9fdadaa9ec896542437097.png" alt=""></p>
+<h2 id="3-使用"><a href="#3-使用" class="headerlink" title="3 使用"></a>3 使用</h2><p>使用快捷键一键登录！享受mosh带来的低延迟吧！</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/22/e7-a1-ac-e9-93-be-e6-8e-a5-e5-92-8c-e8-bd-af-e8-bf-9e-e6-8e-a5-e7-9a-84-e5-8c-ba-e5-88-ab/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="tanwenbo">
+      <meta itemprop="description" content="enjoy share">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hhyvs111">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/08/22/e7-a1-ac-e9-93-be-e6-8e-a5-e5-92-8c-e8-bd-af-e8-bf-9e-e6-8e-a5-e7-9a-84-e5-8c-ba-e5-88-ab/" class="post-title-link" itemprop="url">硬链接和软连接的区别</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-08-22 04:06:38" itemprop="dateCreated datePublished" datetime="2018-08-22T04:06:38+08:00">2018-08-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <ul>
+<li><p>.</p>
+<p>在Linux的文件系统中，保存在磁盘分区中的文件不管是什么类型都给它分配一个编号，称为索引节点号inode 。<strong>软连接，其实就是新建立一个文件</strong>，这个文件就是专门用来指向别的文件的（那就和windows 下的快捷方式的那个文件有很接近的意味）。软链接产生的是一个新的文件，但这个文件的作用就是专门指向某个文件的，删了这个软连接文件，那就等于不需要这个连接，和原来的存在的实体原文件没有任何关系，但删除原来的文件，则相应的软连接不可用（cat那个软链接文件，则提示“没有该文件或目录“）</p>
+<p><strong>硬连接是不会建立inode的</strong>，他只是在文件原来的inode link count域再增加1而已，也因此<strong>硬链接是不可以跨越文件系统的</strong>。相反都是软连接会重新建立一个inode，当然inode的结构跟其他的不一样，他只是一个指明源文件的字符串信息。一旦删除源文件，那么软连接将变得毫无意义。而硬链接删除的时候，系统调用会检查inode link count的数值，如果他大于等于1，那么inode不会被回收。因此文件的内容不会被删除。</p>
+<p><strong>硬链接实际上是为文件建一个别名</strong>，链接文件和原文件实际上是同一个文件。可以通过ls -i来查看一下，这<strong>两个文件的inode号是同一个</strong>，说明它们是同一个文件；而软链接建立的是一个指向，即链接文件内的内容是指向原文件的指针，它们是两个文件。</p>
+<p>软链接可以跨文件系统，硬链接不可以；软链接可以对一个不存在的文件名(filename)进行链接（当然此时如果你vi这个软链接文件，linux会自动新建一个文件名为filename的文件）,硬链接不可以（其文件必须存在，inode必须存在）；软链接可以对目录进行连接，硬链接不可以。两种链接都可以通过命令 ln 来创建。ln 默认创建的是硬链接。使用 -s 开关可以创建软链接。</p>
+<p>.</p>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
 
   
   <nav class="pagination">
@@ -1942,7 +2000,7 @@ endif()</code></pre><p>还有头文件也有问题，原来的是：</p>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">116</span>
+          <span class="site-state-item-count">111</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
