@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="[toc] 起因迫于没钱，不能续费阿里云服务器，便有想法将阿里云上部署的WordPress博客迁移到github来。一来是不要钱，二来还能每天刷这个github的记录。  很多内容直接复制的别的大佬的链接，我这里算是一个整合。  博客搭建这里我参考的是Hexo(macOS)+Pages(Github)+MWeb(Editor)构建博客系统 如果是Mac用户可以直接参照这个来使用，方法很简单。 Wo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="github博客从0到1全纪录&amp;&amp;Apple全家桶博客体验">
+<meta property="og:url" content="http://yoursite.com/2020/04/15/github%E5%8D%9A%E5%AE%A2%E4%BB%8E0%E5%88%B01%E5%85%A8%E7%BA%AA%E5%BD%95&&Apple%E5%85%A8%E5%AE%B6%E6%A1%B6%E5%8D%9A%E5%AE%A2%E4%BD%93%E9%AA%8C/index.html">
+<meta property="og:site_name" content="hhyvs111">
+<meta property="og:description" content="[toc] 起因迫于没钱，不能续费阿里云服务器，便有想法将阿里云上部署的WordPress博客迁移到github来。一来是不要钱，二来还能每天刷这个github的记录。  很多内容直接复制的别的大佬的链接，我这里算是一个整合。  博客搭建这里我参考的是Hexo(macOS)+Pages(Github)+MWeb(Editor)构建博客系统 如果是Mac用户可以直接参照这个来使用，方法很简单。 Wo">
+<meta property="og:image" content="http://yoursite.com/images/4D76C812-BD14-47A6-9A77-DB98AE84D5CA_1_105_c.jpeg">
+<meta property="og:image" content="http://yoursite.com/images/CFF97A4F-8916-4E1A-810A-106568EEC85E_1_105_c.jpeg">
+<meta property="article:published_time" content="2020-04-15T03:18:17.000Z">
+<meta property="article:modified_time" content="2020-04-15T03:52:34.096Z">
+<meta property="article:author" content="tanwenbo">
+<meta property="article:tag" content="博客">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/images/4D76C812-BD14-47A6-9A77-DB98AE84D5CA_1_105_c.jpeg">
+
+<link rel="canonical" href="http://yoursite.com/2020/04/15/github%E5%8D%9A%E5%AE%A2%E4%BB%8E0%E5%88%B01%E5%85%A8%E7%BA%AA%E5%BD%95&&Apple%E5%85%A8%E5%AE%B6%E6%A1%B6%E5%8D%9A%E5%AE%A2%E4%BD%93%E9%AA%8C/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
+
+  <title>github博客从0到1全纪录&&Apple全家桶博客体验 | hhyvs111</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">hhyvs111</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Be a great man</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/15/github%E5%8D%9A%E5%AE%A2%E4%BB%8E0%E5%88%B01%E5%85%A8%E7%BA%AA%E5%BD%95&&Apple%E5%85%A8%E5%AE%B6%E6%A1%B6%E5%8D%9A%E5%AE%A2%E4%BD%93%E9%AA%8C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="tanwenbo">
+      <meta itemprop="description" content="enjoy share">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hhyvs111">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          github博客从0到1全纪录&&Apple全家桶博客体验
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-04-15 11:18:17 / 修改时间：11:52:34" itemprop="dateCreated datePublished" datetime="2020-04-15T11:18:17+08:00">2020-04-15</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%88%86%E4%BA%AB/" itemprop="url" rel="index"><span itemprop="name">分享</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>[toc]</p>
+<h1 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h1><p>迫于没钱，不能续费阿里云服务器，便有想法将阿里云上部署的WordPress博客迁移到github来。一来是不要钱，二来还能每天刷这个github的记录。</p>
+<blockquote>
+<p>很多内容直接复制的别的大佬的链接，我这里算是一个整合。</p>
+</blockquote>
+<h1 id="博客搭建"><a href="#博客搭建" class="headerlink" title="博客搭建"></a>博客搭建</h1><p>这里我参考的是<a href="https://mmmbo.com/2019/12/29/Hexo-Github-Pages-MWeb-Editor-blog/" target="_blank" rel="noopener">Hexo(macOS)+Pages(Github)+MWeb(Editor)构建博客系统</a></p>
+<p>如果是Mac用户可以直接参照这个来使用，方法很简单。</p>
+<h1 id="WordPress博客迁移"><a href="#WordPress博客迁移" class="headerlink" title="WordPress博客迁移"></a>WordPress博客迁移</h1><p>没想到这个迁移的过程如此简单，直接导出之后直接使用hexo的插件即可，这里参考<a href="https://tech-seeker.cn/2019/06/09/%E5%8D%9A%E5%AE%A2%E4%BB%8E-wordpress-%E8%BF%81%E7%A7%BB%E5%88%B0-github-pages/" target="_blank" rel="noopener">博客从 wordpress 迁移到 github pages</a><br>即可。</p>
+<h2 id="分类问题"><a href="#分类问题" class="headerlink" title="分类问题"></a>分类问题</h2><p>新搭建的系统是没有分类的，所以我用了next主题里自建的分类，要注意一下如果你新建好了相应的<code>categories</code>，在首页设置了这个分类的话是可以看到WordPress上的所有分类的，标签同理。</p>
+<h1 id="Apple全家桶编辑体验"><a href="#Apple全家桶编辑体验" class="headerlink" title="Apple全家桶编辑体验"></a>Apple全家桶编辑体验</h1><p>如果你用的是Mac，正好也有iOS设备，那么十分的推荐购买MWeb，作为移动端的md编辑器。可以通过iCloud实现多个苹果设备的同步，具体方法如下：</p>
+<h2 id="博客放在iCloud下"><a href="#博客放在iCloud下" class="headerlink" title="博客放在iCloud下"></a>博客放在iCloud下</h2><p>将<code>博客搭建</code>这里的步骤改一下，把这个博客的根目录放在iCloud下。这样一来就可以多设备访问了；</p>
+<h2 id="iOS设备设置对应的编辑"><a href="#iOS设备设置对应的编辑" class="headerlink" title="iOS设备设置对应的编辑"></a>iOS设备设置对应的编辑</h2><p>iOS的MWeb是免费的，可以直接下载使用，并使用iCloud同步。</p>
+<p>这里在应用里的网盘文档里新增加hexo里的source文件夹即可<br><img src="/images/4D76C812-BD14-47A6-9A77-DB98AE84D5CA_1_105_c.jpeg" alt="4D76C812-BD14-47A6-9A77-DB98AE84D5CA_1_105"></p>
+<p>然后就可以在iOS设备里编辑同一个文档了，如果没有及时的刷出来，那么就在<code>文件</code>app里找到对应的刷新即可。</p>
+<p><img src="/images/CFF97A4F-8916-4E1A-810A-106568EEC85E_1_105_c.jpeg" alt="CFF97A4F-8916-4E1A-810A-106568EEC85E_1_105"></p>
+<h1 id="MWeb配合Alfred"><a href="#MWeb配合Alfred" class="headerlink" title="MWeb配合Alfred"></a>MWeb配合Alfred</h1><p>最开始觉得整个过程其实是有点繁琐的，比如新建hexo文档和推送文档到github。这一系列过程要在不同的软件里来回切换。</p>
+<p>这里参考了<a href="https://www.jianshu.com/p/b1ea59daf404" target="_blank" rel="noopener">hexo+gitpages+mweb快速新建文章并发布博客更新（macOS）</a></p>
+<p>但是该教程有一个不足就是只能新建，还要自己去打开文档，所以我在这个命令里加了几行。</p>
+<h2 id="新的脚本"><a href="#新的脚本" class="headerlink" title="新的脚本"></a>新的脚本</h2><p>主要新增了两行内容，用起来更方便。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">if [ -f "$&#123;MHEXO_HOME&#125;" -o -z "$&#123;MHEXO_HOME&#125;" ];then</span><br><span class="line">   exit 1</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">export PATH=/usr/local/bin:$PATH</span><br><span class="line"></span><br><span class="line">cd "$&#123;MHEXO_HOME&#125;"</span><br><span class="line"></span><br><span class="line">para_arr=($1)</span><br><span class="line"></span><br><span class="line">case $&#123;para_arr[0]&#125; in</span><br><span class="line">    -n)</span><br><span class="line">        hexo new post $&#123;para_arr[1]&#125;</span><br><span class="line">        echo "new post $&#123;para_arr[1]&#125;"</span><br><span class="line">		   open -a /Applications/MWeb.app source/_posts/$&#123;para_arr[1]&#125;.md #新建文章之后使用MWeb自动打开这个文章，注意文档的名字不要重复</span><br><span class="line"></span><br><span class="line">        ;;</span><br><span class="line">    -d)</span><br><span class="line">	    hexo clean #在推送博客之前清空一下内容</span><br><span class="line">        hexo g -d</span><br><span class="line">        open "$MHEXO_URL"</span><br><span class="line">        echo "deploy done"</span><br><span class="line">        ;;</span><br><span class="line">    *)</span><br><span class="line">        open .</span><br><span class="line">        ;;</span><br><span class="line">esac</span><br></pre></td></tr></table></figure>
+
+<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>这一套流程算是比较完美的，后续如果想把博客发在别的平台也可以利用MWeb的发布功能，可以达到一文多发的功能。</p>
+<p>并且不仅可以在Mac上编辑博客，也可以同时在iOS设备上编辑，但是这里要注意不要同时编辑，可能会导致相互覆盖。</p>
+<p>作者打算等秒控键盘出来了就买一个iPad Pro 2020，让它利用上述流程成为真正的生产力工具。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%8D%9A%E5%AE%A2/" rel="tag"># 博客</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/04/14/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E9%A1%BA%E5%88%A9/" rel="prev" title="博客搭建顺利">
+      <i class="fa fa-chevron-left"></i> 博客搭建顺利
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#起因"><span class="nav-number">1.</span> <span class="nav-text">起因</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#博客搭建"><span class="nav-number">2.</span> <span class="nav-text">博客搭建</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#WordPress博客迁移"><span class="nav-number">3.</span> <span class="nav-text">WordPress博客迁移</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#分类问题"><span class="nav-number">3.1.</span> <span class="nav-text">分类问题</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Apple全家桶编辑体验"><span class="nav-number">4.</span> <span class="nav-text">Apple全家桶编辑体验</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#博客放在iCloud下"><span class="nav-number">4.1.</span> <span class="nav-text">博客放在iCloud下</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#iOS设备设置对应的编辑"><span class="nav-number">4.2.</span> <span class="nav-text">iOS设备设置对应的编辑</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MWeb配合Alfred"><span class="nav-number">5.</span> <span class="nav-text">MWeb配合Alfred</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#新的脚本"><span class="nav-number">5.1.</span> <span class="nav-text">新的脚本</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#小结"><span class="nav-number">6.</span> <span class="nav-text">小结</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">tanwenbo</p>
+  <div class="site-description" itemprop="description">enjoy share</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">112</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">72</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">tanwenbo</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

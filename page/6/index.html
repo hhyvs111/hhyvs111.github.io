@@ -157,6 +157,88 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/22/e7-a1-ac-e9-93-be-e6-8e-a5-e5-92-8c-e8-bd-af-e8-bf-9e-e6-8e-a5-e7-9a-84-e5-8c-ba-e5-88-ab/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="tanwenbo">
+      <meta itemprop="description" content="enjoy share">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hhyvs111">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/08/22/e7-a1-ac-e9-93-be-e6-8e-a5-e5-92-8c-e8-bd-af-e8-bf-9e-e6-8e-a5-e7-9a-84-e5-8c-ba-e5-88-ab/" class="post-title-link" itemprop="url">硬链接和软连接的区别</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-08-22 04:06:38" itemprop="dateCreated datePublished" datetime="2018-08-22T04:06:38+08:00">2018-08-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <ul>
+<li><p>.</p>
+<p>在Linux的文件系统中，保存在磁盘分区中的文件不管是什么类型都给它分配一个编号，称为索引节点号inode 。<strong>软连接，其实就是新建立一个文件</strong>，这个文件就是专门用来指向别的文件的（那就和windows 下的快捷方式的那个文件有很接近的意味）。软链接产生的是一个新的文件，但这个文件的作用就是专门指向某个文件的，删了这个软连接文件，那就等于不需要这个连接，和原来的存在的实体原文件没有任何关系，但删除原来的文件，则相应的软连接不可用（cat那个软链接文件，则提示“没有该文件或目录“）</p>
+<p><strong>硬连接是不会建立inode的</strong>，他只是在文件原来的inode link count域再增加1而已，也因此<strong>硬链接是不可以跨越文件系统的</strong>。相反都是软连接会重新建立一个inode，当然inode的结构跟其他的不一样，他只是一个指明源文件的字符串信息。一旦删除源文件，那么软连接将变得毫无意义。而硬链接删除的时候，系统调用会检查inode link count的数值，如果他大于等于1，那么inode不会被回收。因此文件的内容不会被删除。</p>
+<p><strong>硬链接实际上是为文件建一个别名</strong>，链接文件和原文件实际上是同一个文件。可以通过ls -i来查看一下，这<strong>两个文件的inode号是同一个</strong>，说明它们是同一个文件；而软链接建立的是一个指向，即链接文件内的内容是指向原文件的指针，它们是两个文件。</p>
+<p>软链接可以跨文件系统，硬链接不可以；软链接可以对一个不存在的文件名(filename)进行链接（当然此时如果你vi这个软链接文件，linux会自动新建一个文件名为filename的文件）,硬链接不可以（其文件必须存在，inode必须存在）；软链接可以对目录进行连接，硬链接不可以。两种链接都可以通过命令 ln 来创建。ln 默认创建的是硬链接。使用 -s 开关可以创建软链接。</p>
+<p>.</p>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/23/chandelier/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1139,104 +1221,6 @@ struct seminfo  *__buf;  /* Buffer for IPC_INFO (Linux-specific) */</code></pre>
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/31/e8-af-bb-e5-86-99-e9-94-81/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="tanwenbo">
-      <meta itemprop="description" content="enjoy share">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="hhyvs111">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/05/31/e8-af-bb-e5-86-99-e9-94-81/" class="post-title-link" itemprop="url">读写锁</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-05-31 07:10:12" itemprop="dateCreated datePublished" datetime="2018-05-31T07:10:12+08:00">2018-05-31</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="读写锁"><a href="#读写锁" class="headerlink" title="读写锁"></a>读写锁</h1><p><code>《Unix网络编程：卷2》``读写锁``posts</code></p>
-<blockquote>
-<p>新的概念，和之前的互斥锁有点不同。</p>
-</blockquote>
-<h2 id="1-概述"><a href="#1-概述" class="headerlink" title="1 概述"></a>1 概述</h2><p>读写锁，顾名思义。对读和写加锁，但其实不然。与互斥锁类似，不过读写锁有个特点，那就是<code>写独占</code>，<code>读共享</code>。</p>
-<p>规则如下：</p>
-<ul>
-<li>只要没有线程持有某个给定的读写锁<code>用于写</code>，那么任意数目的线程可以持有该读写锁<code>用于读</code>,也就是“写独占，读共享”；</li>
-<li>仅当没有线程持有某个给定的读写锁用于读或用于写时，才能分配该读写锁<code>用于写</code>。</li>
-</ul>
-<p>就是没有线程在修改数据，这个时候大家都可以读。只要没人在读或者在修改，那么线程才可以去修改它。</p>
-<blockquote>
-<p>个人认为读写锁在数据库的增删查改的时候很有必要！</p>
-</blockquote>
-<h2 id="2-获取与释放读写锁"><a href="#2-获取与释放读写锁" class="headerlink" title="2 获取与释放读写锁"></a>2 获取与释放读写锁</h2><h3 id="2-1-读出锁"><a href="#2-1-读出锁" class="headerlink" title="2.1 读出锁"></a>2.1 读出锁</h3><pre><code>#include &lt;pthread.h&gt;
-
-int pthread_rwlock_rdlock(pthread_rwlock_t *rwlock);</code></pre><p>如果对应的读写锁已有某个<code>写入者</code>持有，那么会阻塞调用线程。</p>
-<h3 id="2-2-写入锁"><a href="#2-2-写入锁" class="headerlink" title="2.2 写入锁"></a>2.2 写入锁</h3><pre><code>int pthread_rwlock_wrlock(pthread_rwlock_t *rwlock);</code></pre><p>如果对应的读写锁已由另一个<code>写入者</code>持有，或者已由一个或多个<code>读写者</code>持有，那就阻塞调用线程。</p>
-<p><strong>写的时候不能有人在读。</strong></p>
-<h3 id="2-3-释放锁"><a href="#2-3-释放锁" class="headerlink" title="2.3 释放锁"></a>2.3 释放锁</h3><pre><code>int pthread_rwlock_unlock(pthread_rwlock_t *rwptr);</code></pre><h3 id="2-4-尝试访问"><a href="#2-4-尝试访问" class="headerlink" title="2.4 尝试访问"></a>2.4 尝试访问</h3><p>如果不能马上取得，那么返回<code>EBUSY</code>错误。</p>
-<pre><code>int pthread_rwlock_tryrdlock(pthread_rwlock_t *rwlock);
-
-int pthread_rwlock_trywrlock(pthread_rwlock_t *rwlock);</code></pre><blockquote>
-<p>以上返回值都一样：成功返回0，失败返回错误号。</p>
-</blockquote>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1306,7 +1290,7 @@ int pthread_rwlock_trywrlock(pthread_rwlock_t *rwlock);</code></pre><blockquote>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">111</span>
+          <span class="site-state-item-count">112</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1319,7 +1303,7 @@ int pthread_rwlock_trywrlock(pthread_rwlock_t *rwlock);</code></pre><blockquote>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">71</span>
+        <span class="site-state-item-count">72</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
