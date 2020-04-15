@@ -182,7 +182,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-04-15 11:18:17 / 修改时间：11:52:34" itemprop="dateCreated datePublished" datetime="2020-04-15T11:18:17+08:00">2020-04-15</time>
+              <time title="创建时间：2020-04-15 11:18:17 / 修改时间：12:04:14" itemprop="dateCreated datePublished" datetime="2020-04-15T11:18:17+08:00">2020-04-15</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -205,31 +205,20 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>[toc]</p>
-<h1 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h1><p>迫于没钱，不能续费阿里云服务器，便有想法将阿里云上部署的WordPress博客迁移到github来。一来是不要钱，二来还能每天刷这个github的记录。</p>
+          <h1 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h1><p>迫于没钱，不能续费阿里云服务器，便有想法将阿里云上部署的WordPress博客迁移到github来。一来是不要钱，二来还能每天刷这个github的记录。</p>
 <blockquote>
 <p>很多内容直接复制的别的大佬的链接，我这里算是一个整合。</p>
 </blockquote>
 <h1 id="博客搭建"><a href="#博客搭建" class="headerlink" title="博客搭建"></a>博客搭建</h1><p>这里我参考的是<a href="https://mmmbo.com/2019/12/29/Hexo-Github-Pages-MWeb-Editor-blog/" target="_blank" rel="noopener">Hexo(macOS)+Pages(Github)+MWeb(Editor)构建博客系统</a></p>
 <p>如果是Mac用户可以直接参照这个来使用，方法很简单。</p>
-<h1 id="WordPress博客迁移"><a href="#WordPress博客迁移" class="headerlink" title="WordPress博客迁移"></a>WordPress博客迁移</h1><p>没想到这个迁移的过程如此简单，直接导出之后直接使用hexo的插件即可，这里参考<a href="https://tech-seeker.cn/2019/06/09/%E5%8D%9A%E5%AE%A2%E4%BB%8E-wordpress-%E8%BF%81%E7%A7%BB%E5%88%B0-github-pages/" target="_blank" rel="noopener">博客从 wordpress 迁移到 github pages</a><br>即可。</p>
-<h2 id="分类问题"><a href="#分类问题" class="headerlink" title="分类问题"></a>分类问题</h2><p>新搭建的系统是没有分类的，所以我用了next主题里自建的分类，要注意一下如果你新建好了相应的<code>categories</code>，在首页设置了这个分类的话是可以看到WordPress上的所有分类的，标签同理。</p>
-<h1 id="Apple全家桶编辑体验"><a href="#Apple全家桶编辑体验" class="headerlink" title="Apple全家桶编辑体验"></a>Apple全家桶编辑体验</h1><p>如果你用的是Mac，正好也有iOS设备，那么十分的推荐购买MWeb，作为移动端的md编辑器。可以通过iCloud实现多个苹果设备的同步，具体方法如下：</p>
-<h2 id="博客放在iCloud下"><a href="#博客放在iCloud下" class="headerlink" title="博客放在iCloud下"></a>博客放在iCloud下</h2><p>将<code>博客搭建</code>这里的步骤改一下，把这个博客的根目录放在iCloud下。这样一来就可以多设备访问了；</p>
-<h2 id="iOS设备设置对应的编辑"><a href="#iOS设备设置对应的编辑" class="headerlink" title="iOS设备设置对应的编辑"></a>iOS设备设置对应的编辑</h2><p>iOS的MWeb是免费的，可以直接下载使用，并使用iCloud同步。</p>
-<p>这里在应用里的网盘文档里新增加hexo里的source文件夹即可<br><img src="/images/4D76C812-BD14-47A6-9A77-DB98AE84D5CA_1_105_c.jpeg" alt="4D76C812-BD14-47A6-9A77-DB98AE84D5CA_1_105"></p>
-<p>然后就可以在iOS设备里编辑同一个文档了，如果没有及时的刷出来，那么就在<code>文件</code>app里找到对应的刷新即可。</p>
-<p><img src="/images/CFF97A4F-8916-4E1A-810A-106568EEC85E_1_105_c.jpeg" alt="CFF97A4F-8916-4E1A-810A-106568EEC85E_1_105"></p>
-<h1 id="MWeb配合Alfred"><a href="#MWeb配合Alfred" class="headerlink" title="MWeb配合Alfred"></a>MWeb配合Alfred</h1><p>最开始觉得整个过程其实是有点繁琐的，比如新建hexo文档和推送文档到github。这一系列过程要在不同的软件里来回切换。</p>
-<p>这里参考了<a href="https://www.jianshu.com/p/b1ea59daf404" target="_blank" rel="noopener">hexo+gitpages+mweb快速新建文章并发布博客更新（macOS）</a></p>
-<p>但是该教程有一个不足就是只能新建，还要自己去打开文档，所以我在这个命令里加了几行。</p>
-<h2 id="新的脚本"><a href="#新的脚本" class="headerlink" title="新的脚本"></a>新的脚本</h2><p>主要新增了两行内容，用起来更方便。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">if [ -f "$&#123;MHEXO_HOME&#125;" -o -z "$&#123;MHEXO_HOME&#125;" ];then</span><br><span class="line">   exit 1</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">export PATH=/usr/local/bin:$PATH</span><br><span class="line"></span><br><span class="line">cd "$&#123;MHEXO_HOME&#125;"</span><br><span class="line"></span><br><span class="line">para_arr=($1)</span><br><span class="line"></span><br><span class="line">case $&#123;para_arr[0]&#125; in</span><br><span class="line">    -n)</span><br><span class="line">        hexo new post $&#123;para_arr[1]&#125;</span><br><span class="line">        echo "new post $&#123;para_arr[1]&#125;"</span><br><span class="line">		   open -a /Applications/MWeb.app source/_posts/$&#123;para_arr[1]&#125;.md #新建文章之后使用MWeb自动打开这个文章，注意文档的名字不要重复</span><br><span class="line"></span><br><span class="line">        ;;</span><br><span class="line">    -d)</span><br><span class="line">	    hexo clean #在推送博客之前清空一下内容</span><br><span class="line">        hexo g -d</span><br><span class="line">        open "$MHEXO_URL"</span><br><span class="line">        echo "deploy done"</span><br><span class="line">        ;;</span><br><span class="line">    *)</span><br><span class="line">        open .</span><br><span class="line">        ;;</span><br><span class="line">esac</span><br></pre></td></tr></table></figure>
-
-<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>这一套流程算是比较完美的，后续如果想把博客发在别的平台也可以利用MWeb的发布功能，可以达到一文多发的功能。</p>
-<p>并且不仅可以在Mac上编辑博客，也可以同时在iOS设备上编辑，但是这里要注意不要同时编辑，可能会导致相互覆盖。</p>
-<p>作者打算等秒控键盘出来了就买一个iPad Pro 2020，让它利用上述流程成为真正的生产力工具。</p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/04/15/github%E5%8D%9A%E5%AE%A2%E4%BB%8E0%E5%88%B01%E5%85%A8%E7%BA%AA%E5%BD%95&&Apple%E5%85%A8%E5%AE%B6%E6%A1%B6%E5%8D%9A%E5%AE%A2%E4%BD%93%E9%AA%8C/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
