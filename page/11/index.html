@@ -157,6 +157,182 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/13/e6-8c-87-e5-90-91-e6-8c-87-e9-92-88-e7-9a-84-e5-bc-95-e7-94-a8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="tanwenbo">
+      <meta itemprop="description" content="enjoy share">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hhyvs111">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/04/13/e6-8c-87-e5-90-91-e6-8c-87-e9-92-88-e7-9a-84-e5-bc-95-e7-94-a8/" class="post-title-link" itemprop="url">指向指针的引用</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-04-13 16:59:14" itemprop="dateCreated datePublished" datetime="2018-04-13T16:59:14+08:00">2018-04-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h4 id="在前面的笔记我们有写道，引用的作用-amp-。"><a href="#在前面的笔记我们有写道，引用的作用-amp-。" class="headerlink" title="在前面的笔记我们有写道，引用的作用&amp;。"></a>在前面的笔记我们有写道，引用的作用&amp;。</h4><h5 id="就是给你引用的变量起了另外一个名字，对这个进行操作也会改变你所引用的变量。"><a href="#就是给你引用的变量起了另外一个名字，对这个进行操作也会改变你所引用的变量。" class="headerlink" title="就是给你引用的变量起了另外一个名字，对这个进行操作也会改变你所引用的变量。"></a>就是给你引用的变量起了另外一个名字，对这个进行操作也会改变你所引用的变量。</h5><p>引用本身不是一个对象，因此不能定义指向引用的指针。但指针是对象，所以存在对指针的引用。</p>
+<p>int i = 42; int *p; int *&amp;r = p;    //r是一个对指针p的引用 r = &i; //这里要注意为什么是空r = &amp;i，因为r也是一个指针，没有前置操作符的指针r = 某一个值，是指向操作，所以指向的东西要加&amp;。这里就是令P指向i。 *r = 0; //解引用r得到i，也就是p指向的对象，将i的值改为0；</p>
+<p>这里要理解r的类型到底是什么，最简单的方法是从右向左阅读r的定义（←阅读）。离变量名最近的符号（此例中是&amp;r的符号r）对变量的类型有最直接的影响，因此r是一个引用。</p>
+<p>声明符的其余部分用以确定r引用的类型是什么，此例中的符号*说明r引用的是一个指针。最后，声明的基本数据类型部分指出r引用的是一个int指针。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/13/const-e7-9a-84-e5-bc-95-e7-94-a8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="tanwenbo">
+      <meta itemprop="description" content="enjoy share">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hhyvs111">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/04/13/const-e7-9a-84-e5-bc-95-e7-94-a8/" class="post-title-link" itemprop="url">const的引用</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-04-13 16:58:51" itemprop="dateCreated datePublished" datetime="2018-04-13T16:58:51+08:00">2018-04-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h4 id="const的作用想必已经了解了，就是常量定义，不能去修改它。那么对const常量的引用有什么要注意的？"><a href="#const的作用想必已经了解了，就是常量定义，不能去修改它。那么对const常量的引用有什么要注意的？" class="headerlink" title="const的作用想必已经了解了，就是常量定义，不能去修改它。那么对const常量的引用有什么要注意的？"></a>const的作用想必已经了解了，就是常量定义，不能去修改它。那么对const常量的引用有什么要注意的？</h4><p>可以把引用绑定到const对象上，就像绑定到其他对象上一样，我们称之为<strong>对常量的引用</strong>。与普通引用不同的是，对常量的引用不能被用作修改它所房顶的对象。也就是说，<strong>你用a引用常量b，这个时候你不能通过a来改变b</strong>。</p>
+<pre><code>const int ci = 1024;
+const int &amp;r1 = ci;           //正确：引用及其对应的对象都是常量
+ri = 42;                         //错误，r1是对常量的引用，不能修改
+int &amp;r2 = ci;               //错误，试图让一个非常量引用指向一个常量对象</code></pre><p>反正const引用的使用要注意几点：</p>
+<ul>
+<li><p>const引用的值类型要一样，不过有时候也有特殊，比如有这样的情况:</p>
+<pre><code>double dval = 3.14;
+const int &amp;ri = dval;</code></pre></li>
+</ul>
+<pre><code>看上去好像不是一个类型，但是编译还是能通过，这是为什么呢？  
+因为为了确保让ri绑定一个整数，编译器把上述代码编程了如下形式：
+
+    const int temp = dval;          //由双精度浮点数生成一个临时的整型变量
+    const int &amp;ri = temp;          //让ri绑定这个临时量，ri的输出结果为3，对3.14取整了。
+
+
+这种情况下，ri绑定了一个**临时量**，就是编译器为了存放表达式求值结果而临时创造的。</code></pre><ul>
+<li><p>对const的引用可能引用一个并非const的对象，比如：</p>
+<pre><code>int i = 42;
+int &amp;r1 = i;                         //引用ri绑定对象i
+const int &amp;r2 = i;               //r2也绑定对象i，但是不允许通过r2修改i的值
+r1 = 0;                              //r1并非常量，i的值修改为0
+r2 = 0;                              //错误，r2是一个常量引用</code></pre></li>
+</ul>
+<pre><code>这个时候输出r2也会变为0。</code></pre><p>​</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/13/const-e6-8c-87-e9-92-88/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -900,182 +1076,6 @@ int main()
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/10/linux-e8-bf-9b-e7-a8-8b-e9-80-9a-e4-bf-a1-e4-b9-8b-e4-bf-a1-e5-8f-b7/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="tanwenbo">
-      <meta itemprop="description" content="enjoy share">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="hhyvs111">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/04/10/linux-e8-bf-9b-e7-a8-8b-e9-80-9a-e4-bf-a1-e4-b9-8b-e4-bf-a1-e5-8f-b7/" class="post-title-link" itemprop="url">linux进程通信之信号</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-04-10 12:08:52" itemprop="dateCreated datePublished" datetime="2018-04-10T12:08:52+08:00">2018-04-10</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="用于进程间的通信"><a href="#用于进程间的通信" class="headerlink" title="用于进程间的通信"></a>用于进程间的通信</h3><p>有以下两种：</p>
-<ul>
-<li>进程与进程之间通讯（父子进程间的通讯）</li>
-<li>系统与进程之间通讯（更适合）</li>
-</ul>
-<p>中断：信号可以是硬中断（ctrl C 等）也可以是软中断（sleep）。 总共有62种信号：</p>
-<ul>
-<li>31 非实时信号（不可靠信号）</li>
-<li>31 实时信号（可靠信号）</li>
-</ul>
-<h4 id="kill-l，查看系统有哪些信号。"><a href="#kill-l，查看系统有哪些信号。" class="headerlink" title="kill -l，查看系统有哪些信号。"></a>kill -l，查看系统有哪些信号。</h4><h4 id="信号的处理"><a href="#信号的处理" class="headerlink" title="信号的处理"></a>信号的处理</h4><p>大部分信号的默认处理，都是终止进程 自定义处理方式。SIGKILL, SIGSTOP，信号是不能处理</p>
-<h4 id="信号的应用"><a href="#信号的应用" class="headerlink" title="信号的应用"></a>信号的应用</h4><ul>
-<li>定时器， 程序中断下来，做定时器函数处理，循环处理</li>
-</ul>
-<p>#include&lt;stdio.h&gt; #include&lt;signal.h&gt; #include&lt;unistd.h&gt; #include &lt;sys/time.h&gt; void sigHandle(int s) {     printf(“dingshi\n”); } int main() {     signal(SIGALRM,sigHandle);    //SIGALRM     struct itimerval it;     it.it_interval.tv_sec = 1;    //设置间隔秒     it.it_interval.tv_usec = 0;    //设置间隔毫秒     //struct itimerval spti;     it.it_value.tv_sec = 1;        //设置多少秒后运行该定时器     it.it_value.tv_usec = 0;     setitimer(ITIMER_REAL, &amp;it, 0);         while(1);     return 0; }</p>
-<ul>
-<li>延时器，延时一段时间，去执行延时器处理函数，只会执行一次。alarm()，产生延时信号</li>
-</ul>
-<p>#include &lt;stdio.h&gt; #include &lt;signal.h&gt; #include &lt;unistd.h&gt; void sigHandle(int s) {     if(s == SIGALRM)     {         printf(“delay sig produced\n”);     } } int main() {     signal(SIGALRM,sigHandle);     alarm(5);     while(1) sleep(1);     return 0; }</p>
-<ul>
-<li>屏蔽中断信号</li>
-</ul>
-<p>#include&lt;stdio.h&gt; #include&lt;unistd.h&gt; #include&lt;signal.h&gt; int main() {     sigset_t sgset;        //信号容器     sigemptyset(&amp;sgset);        //置为空     sigaddset(&amp;sgset,SIGINT);        //将SIGINT加入信号集合     sigprocmask(SIG_BLOCK,&amp;sgset,0); //将sgset加入中断列表，这个时候按ctrl + c无效     int sum = 0;     for(int i = 0;i &lt; 9;i++)     {         sum += i;         sleep(1);     }     printf(“%d\n”,sum);     sigprocmask(SIG_UNBLOCK, &amp;sgset,0); //取消中断     return 0; }</p>
-<ul>
-<li>子进程向父进程传递信号</li>
-</ul>
-<p>#include &lt;stdio.h&gt; #include &lt;stdlib.h&gt; #include &lt;unistd.h&gt; #include &lt;signal.h&gt; int bstop = 0; void sigHandle(int s) {     if(bstop == 0)         bstop = 1;     else         bstop = 0; } int main() {     if(fork() &gt; 0) //大于0是父进程     {         signal(35,sigHandle); //接收到35的信号出发sighandle函数         while(1)         {             if(bstop ==1)                 pause();            //收到信号后暂停，停止输出             int num = 0;             for(int i =0;i &lt; 6;i ++)             {                 num = num + 10 + rand() %10;             }             system(“clear”);             printf(“%d\n”,num);             usleep(1000+ 300);         }     }     else     {         while(1)         {             getchar();        //回车发送信号             //send signal             kill(getppid(),35); //发送一个35的信号         }     }     return 0; }</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/06/tcp-ip-e5-9b-9b-e6-ac-a1-e6-8c-a5-e6-89-8b-e8-af-a6-e8-a7-a3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="tanwenbo">
-      <meta itemprop="description" content="enjoy share">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="hhyvs111">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/04/06/tcp-ip-e5-9b-9b-e6-ac-a1-e6-8c-a5-e6-89-8b-e8-af-a6-e8-a7-a3/" class="post-title-link" itemprop="url">TCP/IP四次挥手详解</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-04-06 08:45:04" itemprop="dateCreated datePublished" datetime="2018-04-06T08:45:04+08:00">2018-04-06</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" itemprop="url" rel="index"><span itemprop="name">计算机网络</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="前面讲到了连接的三次握手，这里讲一讲四次挥手，依旧上图！"><a href="#前面讲到了连接的三次握手，这里讲一讲四次挥手，依旧上图！" class="headerlink" title="前面讲到了连接的三次握手，这里讲一讲四次挥手，依旧上图！"></a>前面讲到了连接的三次握手，这里讲一讲四次挥手，依旧上图！</h3><p><img src="http://47.100.160.51/wordpress/wp-content/uploads/2018/04/ed14c8c99fdaa9debd5fd60fb46b797c.jpeg" alt=""></p>
-<h4 id="其中部分字符意思详解可以看三次握手里面的"><a href="#其中部分字符意思详解可以看三次握手里面的" class="headerlink" title="其中部分字符意思详解可以看三次握手里面的"></a>其中部分字符意思详解可以看三次握手里面的</h4><p>不过这里多了一个FIN字符，这是用来释放连接的。 那么看一看四次挥手的主要步骤 （1）第一次挥手：Client发送一个FIN，用来关闭Client到Server的数据传送，Client进入FIN_WAIT_1状态。 （2）第二次挥手：Server收到FIN后，发送一个ACK给Client，确认序号为收到序号+1（与SYN相同，一个FIN占用一个序号），Server进入CLOSE_WAIT状态。 （3）第三次挥手：Server发送一个FIN，用来关闭Server到Client的数据传送，Server进入LAST_ACK状态。 （4）第四次挥手：Client收到FIN后，Client进入TIME_WAIT状态，接着发送一个ACK给Server，确认序号为收到序号+1，Server进入CLOSED状态，完成四次挥手。</p>
-<h4 id="为什么要四次呢？"><a href="#为什么要四次呢？" class="headerlink" title="为什么要四次呢？"></a>为什么要四次呢？</h4><p>由于TCP连接时全双工的，因此，每个方向都必须要单独进行关闭，这一原则是当一方完成数据发送任务后，发送一个FIN来终止这一方向的连接，收到一个FIN只是意味着这一方向上没有数据流动了，即不会再收到数据了，但是在这个TCP连接上仍然能够发送数据，直到这一方向也发送了FIN。首先进行关闭的一方将执行主动关闭，而另一方则执行被动关闭，上图描述的即是如此。 <strong>那么为什么要等待2MS呢？</strong> Client端收到FIN报文后，”就知道可以关闭连接了，但是他还是不相信网络，怕Server端不知道要关闭，所以发送ACK后进入TIME_WAIT状态，如果Server端没有收到ACK则可以重传。“，Server端收到ACK后，”就知道可以断开连接了”。Client端等待了2MSL后依然没有收到回复，则证明Server端已正常关闭，那好，我Client端也可以关闭连接了。Ok，TCP连接就这样关闭了</p>
-<h4 id="前面的三次握手里面也有讲解，可以看一看"><a href="#前面的三次握手里面也有讲解，可以看一看" class="headerlink" title="前面的三次握手里面也有讲解，可以看一看"></a>前面的三次握手里面也有讲解，可以看一看</h4>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1145,7 +1145,7 @@ int main()
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">111</span>
+          <span class="site-state-item-count">113</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

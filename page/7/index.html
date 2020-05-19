@@ -157,6 +157,289 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/01/system-v-e4-bf-a1-e5-8f-b7-e9-87-8f/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="tanwenbo">
+      <meta itemprop="description" content="enjoy share">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hhyvs111">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/06/01/system-v-e4-bf-a1-e5-8f-b7-e9-87-8f/" class="post-title-link" itemprop="url">System V信号量</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-06-01 06:48:27" itemprop="dateCreated datePublished" datetime="2018-06-01T06:48:27+08:00">2018-06-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" itemprop="url" rel="index"><span itemprop="name">计算机网络</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="System-V信号量"><a href="#System-V信号量" class="headerlink" title="System V信号量"></a>System V信号量</h1><p><code>《Unix网络编程：卷2》``信号量``posts</code></p>
+<blockquote>
+<p>System V信号量和Posix信号量表面上区分是从函数命名方式上，前者没有下划线。后面再总结具体区分。</p>
+</blockquote>
+<h2 id="1-概述"><a href="#1-概述" class="headerlink" title="1 概述"></a>1 概述</h2><p>System V信号量比Posix信号量增加了另外一级复杂度：</p>
+<ul>
+<li>计数信号量集：一个或多个信号量（构成一个集合），其中每个都是<code>计数信号量</code>。一般讨论System V的是<strong>计数信号量集</strong>，而Posix是指单个<strong>计数信号量</strong>。</li>
+</ul>
+<p>semid_ds 信号量集结构如下（Linux下没有sem参数，但其实是有的）：</p>
+<pre><code>struct semid_ds {
+       struct ipc_perm sem_perm;  /* Ownership and permissions */
+       time_t          sem_otime; /* Last semop time */
+       time_t          sem_ctime; /* Last change time */
+       unsigned long   sem_nsems; /* No. of semaphores in set */
+   };</code></pre><blockquote>
+<p>ipc_perm之前有提到是访问权限。</p>
+</blockquote>
+<h4 id="man-semop结果："><a href="#man-semop结果：" class="headerlink" title="man semop结果："></a>man semop结果：</h4><p>Each semaphore in a System V semaphore set has the following associated values:</p>
+<pre><code>struct sem{
+       unsigned short  semval;   /* semaphore value */
+       unsigned short  semzcnt;  /* # waiting for zero */
+       unsigned short  semncnt;  /* # waiting for increase */
+       pid_t           sempid;   /* ID of process that did last op */
+    };</code></pre><h2 id="2-相关函数"><a href="#2-相关函数" class="headerlink" title="2 相关函数"></a>2 相关函数</h2><h3 id="2-1-semget"><a href="#2-1-semget" class="headerlink" title="2.1 semget"></a>2.1 semget</h3><pre><code>#include &lt;sys/types.h&gt;
+#include &lt;sys/ipc.h&gt;
+#include &lt;sys/sem.h&gt;
+
+int semget(key_t key, int nsems, int semflg);</code></pre><p>返回值是一个称为<code>信号量标识符</code>的整数，后面的函数会用到。</p>
+<ul>
+<li><code>nsems</code>是指定集合中的信号量数。</li>
+<li><code>semflg</code>就是之前的oflag，权限位。</li>
+</ul>
+<p>创建新信号集的时候，相应的semid_ds结构体有些成员会被初始化：</p>
+<pre><code>sem_perm.cuid  and  sem_perm.uid  are  set to the effective user ID of thecalling process.
+
+sem_perm.cgid and sem_perm.gid are set to the effective group  ID  of  thecalling process.
+
+The least significant 9 bits of sem_perm.mode are set to the least significant 9 bits of semflg.
+
+sem_nsems is set to the value of nsems.
+
+sem_otime is set to 0.
+
+sem_ctime is set to the current time.</code></pre><h3 id="2-2-semop"><a href="#2-2-semop" class="headerlink" title="2.2 semop"></a>2.2 semop</h3><pre><code>int semop(int semid, struct sembuf *sops, size_t nsops);
+
+int semtimedop(int semid, struct sembuf *sops, size_t nsops, const struct timespec *timeout);</code></pre><ul>
+<li><code>nops</code>表明sembuf结构体的个数，因为是指针形式保存的结构体，所以需要指明<code>个数</code>；</li>
+<li><code>sops</code>指向结构体数组首地址。</li>
+</ul>
+<p>主要看一下sembuf结构体：</p>
+<pre><code>struct sembuf{
+       unsigned short sem_num;  /* semaphore number */
+       short          sem_op;   /* semaphore operation */
+       short          sem_flg;  /* operation flags */
+}</code></pre><blockquote>
+<p>与单个信号量相关的几个值： <code>semval</code>：信号量的当前值，在文章开头信号量的结构中已提到。 <code>semncnt</code>：等待semval变为大于当前值的线程数。在文章开头信号量的结构中已提到。 <code>semzcnt</code>：等待semval变为0的线程数。在文章开头信号量的结构中已提到。 <code>semadj</code> ：指定信号量针对某个特定进程的调整值。只有sembuf结构的sem_flag指定为SEM_UNDO后，semadj才会随着sem_op而更新。讲简单一点：对某个进程，在指定SEM_UNDO后，对信号量semval值的修改都会反应到semadj上，当该进程终止的时候，内核会根据semadj的值，重新恢复信号量之前的值。</p>
+</blockquote>
+<ul>
+<li><code>sem_num</code>为信号量数组下标，直到nsems-1（semget指定的参数）；</li>
+<li><code>sem_op</code>有三类值：<ul>
+<li><strong>sem_op &gt; 0</strong>，将值加到semval上（sem结构体）；</li>
+<li><strong>sem_op &lt; 0</strong>，有多种情况：<ul>
+<li>如果semval大于或等于sem_op的值，那么<code>semval - sem_op</code>；</li>
+<li>如果semval小于sem_op的值，相应的信号量<code>semncnt</code>值加1，调用线程将阻塞，直到semval大于或等于sem_op的值。到时候线程将被解除阻塞，然后还要<code>semval - sem_op</code>，semncnt 减1。</li>
+</ul>
+</li>
+<li><strong>sem_op = 0</strong>，也有多种情况：<ul>
+<li>semval为0返回；</li>
+<li>semval不为0，相应信号量的<code>semzcnt</code>加1，阻塞线程直到semval为0（<strong>如果指定了IPC_NOWAIT则调用线程不会被投入睡眠</strong>）</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>（详细解析参考书籍230页）</p>
+<ul>
+<li><code>sem_flag</code>，信号量操作的属性标志：<ul>
+<li>如果为0，表示正常操作；</li>
+<li>如果为IPC_WAIT，使对信号量的操作时非阻塞的。即指定了该标志，调用线程在信号量的值不满足条件的情况下不会被阻塞，而是直接返回-1，并将errno设置为EAGAIN；</li>
+<li>如果为SEM_UNDO，那么将维护进程对信号量的调整值，<strong>以便进程结束时恢复信号量的状态</strong>。</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-3-semctl"><a href="#2-3-semctl" class="headerlink" title="2.3 semctl"></a>2.3 semctl</h3><pre><code>int semctl(int semid, int semnum, int cmd, ... /* union semun arg */);</code></pre><p><strong>对一个信号量执行各种控制操作。</strong></p>
+<ul>
+<li><p><code>semnum</code>为信号集内数组下标；</p>
+</li>
+<li><p><code>cmd</code>值参考书籍231页。</p>
+</li>
+<li><p><code>semun</code>，可选联合体，定义如下：</p>
+<p>union semun {</p>
+<pre><code>int              val;    /* Value for SETVAL */
+struct semid_ds *buf;    /* Buffer for IPC_STAT, IPC_SET */
+unsigned short  *array;  /* Array for GETALL, SETALL */
+struct seminfo  *__buf;  /* Buffer for IPC_INFO (Linux-specific) */</code></pre><p>};</p>
+</li>
+</ul>
+<p>seminfo具体结构在<code>man semctl</code>中有。Linux有在头文件定义该值。</p>
+<h2 id="3-区别"><a href="#3-区别" class="headerlink" title="3 区别"></a>3 区别</h2><p>主要总结一下Posix和System V信号量的区别（来自网上）。</p>
+<ul>
+<li>XSI system V的信号量是信号量集，可以包括多个信号灯（有个数组），每个操作可以同时操作多个信号灯； posix是单个信号灯，POSIX有名信号灯支持进程间通信，无名信号灯放在共享内存中时可以用于进程间通信。</li>
+<li>POSIX信号量在有些平台并没有被实现，比如：SUSE8，而SYSTEM V大多数LINUX/UNIX都已经实现。两者都可以用于进程和线程间通信。但一般来说，system v信号量用于 进程间同步、有名信号灯既可用于线程间的同步，又可以用于进程间的同步、posix无名用于同一个进程的不同线程间，如果无名信号量要用于进程间同步，信号量要放在共享内存中。</li>
+<li>POSIX有两种类型的信号量，有名信号量和无名信号量。有名信号量像system v信号量一样由一个名字标识。</li>
+<li>POSIX通过sem_open单一的调用就完成了信号量的创建、初始化和权限的设置，而system v要两步。也就是说posix 信号是多线程，多进程安全的，而system v不是，可能会出现问题。</li>
+<li>system V信号量通过一个int类型的值来标识自己（类似于调用open()返回的fd），而sem_open函数返回sem_t类型（长整形）作为posix信号量的标识值。</li>
+<li>对于System V信号量你可以控制每次自增或是自减的信号量计数，而在Posix里面，信号量计数每次只能自增或是自减1。</li>
+<li>Posix无名信号量提供一种非常驻的信号量机制。</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/31/e8-af-bb-e5-86-99-e9-94-81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="tanwenbo">
+      <meta itemprop="description" content="enjoy share">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hhyvs111">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/05/31/e8-af-bb-e5-86-99-e9-94-81/" class="post-title-link" itemprop="url">读写锁</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-05-31 07:10:12" itemprop="dateCreated datePublished" datetime="2018-05-31T07:10:12+08:00">2018-05-31</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="读写锁"><a href="#读写锁" class="headerlink" title="读写锁"></a>读写锁</h1><p><code>《Unix网络编程：卷2》``读写锁``posts</code></p>
+<blockquote>
+<p>新的概念，和之前的互斥锁有点不同。</p>
+</blockquote>
+<h2 id="1-概述"><a href="#1-概述" class="headerlink" title="1 概述"></a>1 概述</h2><p>读写锁，顾名思义。对读和写加锁，但其实不然。与互斥锁类似，不过读写锁有个特点，那就是<code>写独占</code>，<code>读共享</code>。</p>
+<p>规则如下：</p>
+<ul>
+<li>只要没有线程持有某个给定的读写锁<code>用于写</code>，那么任意数目的线程可以持有该读写锁<code>用于读</code>,也就是“写独占，读共享”；</li>
+<li>仅当没有线程持有某个给定的读写锁用于读或用于写时，才能分配该读写锁<code>用于写</code>。</li>
+</ul>
+<p>就是没有线程在修改数据，这个时候大家都可以读。只要没人在读或者在修改，那么线程才可以去修改它。</p>
+<blockquote>
+<p>个人认为读写锁在数据库的增删查改的时候很有必要！</p>
+</blockquote>
+<h2 id="2-获取与释放读写锁"><a href="#2-获取与释放读写锁" class="headerlink" title="2 获取与释放读写锁"></a>2 获取与释放读写锁</h2><h3 id="2-1-读出锁"><a href="#2-1-读出锁" class="headerlink" title="2.1 读出锁"></a>2.1 读出锁</h3><pre><code>#include &lt;pthread.h&gt;
+
+int pthread_rwlock_rdlock(pthread_rwlock_t *rwlock);</code></pre><p>如果对应的读写锁已有某个<code>写入者</code>持有，那么会阻塞调用线程。</p>
+<h3 id="2-2-写入锁"><a href="#2-2-写入锁" class="headerlink" title="2.2 写入锁"></a>2.2 写入锁</h3><pre><code>int pthread_rwlock_wrlock(pthread_rwlock_t *rwlock);</code></pre><p>如果对应的读写锁已由另一个<code>写入者</code>持有，或者已由一个或多个<code>读写者</code>持有，那就阻塞调用线程。</p>
+<p><strong>写的时候不能有人在读。</strong></p>
+<h3 id="2-3-释放锁"><a href="#2-3-释放锁" class="headerlink" title="2.3 释放锁"></a>2.3 释放锁</h3><pre><code>int pthread_rwlock_unlock(pthread_rwlock_t *rwptr);</code></pre><h3 id="2-4-尝试访问"><a href="#2-4-尝试访问" class="headerlink" title="2.4 尝试访问"></a>2.4 尝试访问</h3><p>如果不能马上取得，那么返回<code>EBUSY</code>错误。</p>
+<pre><code>int pthread_rwlock_tryrdlock(pthread_rwlock_t *rwlock);
+
+int pthread_rwlock_trywrlock(pthread_rwlock_t *rwlock);</code></pre><blockquote>
+<p>以上返回值都一样：成功返回0，失败返回错误号。</p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/30/posix-e6-b6-88-e6-81-af-e9-98-9f-e5-88-97/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1341,271 +1624,6 @@ main(int argc, char **argv)
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/24/e5-a5-97-e6-8e-a5-e5-ad-97-e9-80-89-e9-a1-b9/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="tanwenbo">
-      <meta itemprop="description" content="enjoy share">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="hhyvs111">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/05/24/e5-a5-97-e6-8e-a5-e5-ad-97-e9-80-89-e9-a1-b9/" class="post-title-link" itemprop="url">套接字选项</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-05-24 07:34:01" itemprop="dateCreated datePublished" datetime="2018-05-24T07:34:01+08:00">2018-05-24</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" itemprop="url" rel="index"><span itemprop="name">计算机网络</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="套接字选项"><a href="#套接字选项" class="headerlink" title="套接字选项"></a>套接字选项</h1><p><code>《Unix网络编程：卷1》``posts``SOCKET</code></p>
-<blockquote>
-<p>这一章主要介绍一下几个函数。</p>
-</blockquote>
-<h2 id="1-getsockopt函数和setsockopt函数"><a href="#1-getsockopt函数和setsockopt函数" class="headerlink" title="1 getsockopt函数和setsockopt函数"></a>1 getsockopt函数和setsockopt函数</h2><ul>
-<li><p>getsockopt()函数用于<code>获取</code>任意类型、任意状态套接口的选项当前值，并把结果存入optval。在不同协议层上存在选项，但往往是在最高的“套接口”层次上，设置选项影响套接口的操作，诸如操作的阻塞与否、包的选径方式、带外数据的传送等。</p>
-</li>
-<li><p>setsockopt()函数用于任意类型、任意状态套接口的<code>设置</code>选项值。尽管在不同协议层上存在选项，但本函数仅定义了最高的“套接口”层次上的选项。选项影响套接口的操作，诸如加急数据是否在普通数据流中接收，广播数据是否可以从套接口发送等等。</p>
-</li>
-</ul>
-<h3 id="1-1-函数原型"><a href="#1-1-函数原型" class="headerlink" title="1.1 函数原型"></a>1.1 函数原型</h3><pre><code>#include &lt;sys/types.h&gt;          /* See NOTES */
-#include &lt;sys/socket.h&gt;
-
-int getsockopt(int sockfd, int level, int optname,void *optval, socklen_t *optlen);
-int setsockopt(int sockfd, int level, int optname, const void *optval, socklen_t optlen);</code></pre><h3 id="1-2-参数详解"><a href="#1-2-参数详解" class="headerlink" title="1.2 参数详解"></a>1.2 参数详解</h3><ul>
-<li>sockfd：一个标识套接口的描述字。</li>
-<li>level：选项定义的层次。支持的层次仅有SOL_SOCKET和IPPROTO_TCP。</li>
-<li>optname：需获取的套接口选项。</li>
-<li>optval：指针，对于getsockopt()，指向返回选项值的缓冲。对于setsockopt()，指向包含新选项值的缓冲。</li>
-<li>optlen：指针，对于getsockopt()，作为入口参数时，选项值的最大长度。作为出口参数时，选项值的实际长度。对于setsockopt()，现选项的长度。</li>
-</ul>
-<h2 id="2-fcntl函数"><a href="#2-fcntl函数" class="headerlink" title="2 fcntl函数"></a>2 fcntl函数</h2><p>可执行各种描述符控制操作，比如设置非阻塞式I/O。</p>
-<h3 id="2-1-函数原型"><a href="#2-1-函数原型" class="headerlink" title="2.1 函数原型"></a>2.1 函数原型</h3><pre><code>#include &lt;unistd.h&gt;
-#include &lt;fcntl.h&gt;
-int fcntl(int fd, int cmd); 
-int fcntl(int fd, int cmd, long arg); 
-int fcntl(int fd, int cmd, struct flock *lock);</code></pre><p>返回：若成功则取决于cmd，若出错则为-1。 下列三个命令有特定返回值：</p>
-<ul>
-<li>F_DUPFD 返回新的文件描述符</li>
-<li>F_GETFD 返回相应标志</li>
-<li>F_GETFL , F_GETOWN 返回一个正的进程ID或负的进程组ID</li>
-</ul>
-<h3 id="2-2-参数详解"><a href="#2-2-参数详解" class="headerlink" title="2.2 参数详解"></a>2.2 参数详解</h3><p>主要看一下cmd的值：</p>
-<ul>
-<li>F_SETFL 设置文件状态标记</li>
-<li>F_GETFL 获得文件状态标记</li>
-<li>F_DUPFD 复制一个现有的描述符</li>
-<li>F_GETFD 获得文件描述符标记</li>
-<li>F_SETFD 设置文件描述符标记</li>
-<li>F_GETOWN 获得异步I/O所有权</li>
-<li>F_SETOWN 设置I/O所有权</li>
-</ul>
-<p>主要影响套接字描述符的两个标志是：</p>
-<ul>
-<li>O_NONBLOCK—非阻塞式I/O；</li>
-<li>O_ASYNC—信号驱动式I/O；</li>
-</ul>
-<h3 id="2-3-设置非阻塞"><a href="#2-3-设置非阻塞" class="headerlink" title="2.3 设置非阻塞"></a>2.3 设置非阻塞</h3><pre><code>int flags
-
-if((flags = fcntl(fd, F_GETFL, 0)) &lt; 0)
-    err_sys(&quot;F_GETFL error&quot;);
-flags |= O_NONBLOCK;
-if (fcntl(fd, F_SETFL, flags) &lt; 0)
-    err_sys(&quot;F_SETFL error&quot;);</code></pre><p>不能图方便而直接使用以下代码：</p>
-<pre><code>if(fcntl(fd, F_SETFL, O_NONBLOCK) &lt; 0)
-    err_sys(&quot;F_SETFL error&quot;);</code></pre><p>这段代码在设置非阻塞标志的同时也清楚了所有其他文件状态标志。</p>
-<h2 id="3-几个套接字有用的选项"><a href="#3-几个套接字有用的选项" class="headerlink" title="3 几个套接字有用的选项"></a>3 几个套接字有用的选项</h2><h3 id="3-1-SO-REUSEADDR"><a href="#3-1-SO-REUSEADDR" class="headerlink" title="3.1 SO_REUSEADDR"></a>3.1 SO_REUSEADDR</h3><p>四个不同的功能：</p>
-<ul>
-<li>允许启动一个监听服务器并捆绑其众所周知的端口；</li>
-<li>允许在同一端口上启动同一服务器的多个实例；</li>
-<li>允许单个进程捆绑同一端口到多个套接字上，只要每次捆绑指定不同的本地IP地址即可；</li>
-<li>运行完全重复的捆绑：当一个IP地址和端口已绑定到某个套接字上时，只有UDP支持将同样的IP地址和端口捆绑到另一个套接字上。</li>
-</ul>
-<p>使用实例：</p>
-<pre><code>Setsockopt(listenfd, SOL_SOCKET, SO_REUSEADDR, &amp;on, sizeof(on)); </code></pre><h3 id="3-2-SO-RCVBUF和SO-SNDBUF"><a href="#3-2-SO-RCVBUF和SO-SNDBUF" class="headerlink" title="3.2 SO_RCVBUF和SO_SNDBUF"></a>3.2 SO_RCVBUF和SO_SNDBUF</h3><p>更改套接字接收缓冲区和发送缓冲区的大小。 使用实例：</p>
-<pre><code>int n = 220 * 1024;
-Setsockopt(listenfd, SOL_SOCKET, SO_RCVBUF, &amp;on, sizeof(on));</code></pre>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/23/select-e5-87-bd-e6-95-b0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="tanwenbo">
-      <meta itemprop="description" content="enjoy share">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="hhyvs111">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/05/23/select-e5-87-bd-e6-95-b0/" class="post-title-link" itemprop="url">select函数</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-05-23 12:26:00" itemprop="dateCreated datePublished" datetime="2018-05-23T12:26:00+08:00">2018-05-23</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" itemprop="url" rel="index"><span itemprop="name">计算机网络</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="select函数"><a href="#select函数" class="headerlink" title="select函数"></a>select函数</h1><p><code>《Unix网络编程：卷1》``select``posts</code></p>
-<blockquote>
-<p>第六章主要讲的是I/O复用的2个函数，select和poll函数。现在主要看看select函数</p>
-</blockquote>
-<h2 id="1-函数原型"><a href="#1-函数原型" class="headerlink" title="1 函数原型"></a>1 函数原型</h2><pre><code>#include &lt;sys/select.h&gt;
-/* According to earlier standards */
-#include &lt;sys/time.h&gt;
-#include &lt;sys/types.h&gt;
-#include &lt;unistd.h&gt;
-
-int select(int nfds, fd_set *readfds, fd_set *writefds,
-          fd_set *exceptfds, struct timeval *timeout);</code></pre><p>该函数运行进程指示内核等待多个事件中的任何一个发生，并只在有一个或多个时间发生或经历一段指定的时间后才唤醒它。 简单说，使用select就可以实现<strong>非阻塞</strong>，一旦执行必然会有返回值，以返回值的不同来反映函数的执行情况。</p>
-<h2 id="2-参数解析"><a href="#2-参数解析" class="headerlink" title="2 参数解析"></a>2 参数解析</h2><blockquote>
-<p>这几个参数其实都不是很重要</p>
-</blockquote>
-<h3 id="2-1-nfds"><a href="#2-1-nfds" class="headerlink" title="2.1 nfds"></a>2.1 nfds</h3><p>是一个整数值，是指集合中所有文件描述符的范围，即所有文件描述符的最大值加1。每次循环，描述符0，1，2，···，一直到nfds-1都会被测试。</p>
-<blockquote>
-<p>怪不得有一个maxfdp1 = max(fileno(fp), sockfd) + 1的语句</p>
-</blockquote>
-<h3 id="2-2-readfds"><a href="#2-2-readfds" class="headerlink" title="2.2 *readfds"></a>2.2 *readfds</h3><p>指向fd_set结构的指针，监视文件描述符的<code>读变化</code>。如果集合中有一个文件可读，select就会返回一个大于0的值，表示有文件可读。如果没有那么根据timeout参数判断是否超时。超出返回0，错误返回负值。可以传入NULL值，表示不关心任何文件的读变化。</p>
-<h3 id="2-3-writefds"><a href="#2-3-writefds" class="headerlink" title="2.3 *writefds"></a>2.3 *writefds</h3><p>上同，改为<code>写变化</code>。</p>
-<h3 id="2-4-exceptfds"><a href="#2-4-exceptfds" class="headerlink" title="2.4 *exceptfds"></a>2.4 *exceptfds</h3><p>用来观察异常情况。</p>
-<blockquote>
-<p>上述三个参数都值—结果参数。调用select函数时，我们指定所关心的描述符的值，函数返回时，结果将指示哪些描述符已就绪。</p>
-</blockquote>
-<h3 id="2-5-timeout"><a href="#2-5-timeout" class="headerlink" title="2.5 *timeout"></a>2.5 *timeout</h3><p>告知内核等待所指定描述符中的任何一个就绪可花多长时间。</p>
-<h2 id="3-宏定义"><a href="#3-宏定义" class="headerlink" title="3 宏定义"></a>3 宏定义</h2><p>有几个宏定义需要了解一下。</p>
-<h3 id="3-1-FD-ZERO-fd-set-rset"><a href="#3-1-FD-ZERO-fd-set-rset" class="headerlink" title="3.1 FD_ZERO(fd_set *rset)"></a>3.1 FD_ZERO(fd_set *rset)</h3><p>初始化文件描述符集合。</p>
-<h3 id="3-2-FD-SET-int-fd-fd-set-fdset"><a href="#3-2-FD-SET-int-fd-fd-set-fdset" class="headerlink" title="3.2 FD_SET(int fd, fd_set *fdset)"></a>3.2 FD_SET(int fd, fd_set *fdset)</h3><p>将描述符放入集合。</p>
-<h3 id="3-3-FD-CLR-int-fd-fd-set-fdset"><a href="#3-3-FD-CLR-int-fd-fd-set-fdset" class="headerlink" title="3.3 FD_CLR(int fd, fd_set *fdset)"></a>3.3 FD_CLR(int fd, fd_set *fdset)</h3><p>将描述符移除集合。</p>
-<h3 id="3-4-FD-ISSET-int-fd-fd-set-fdset"><a href="#3-4-FD-ISSET-int-fd-fd-set-fdset" class="headerlink" title="3.4 FD_ISSET(int fd, fd_set *fdset)"></a>3.4 FD_ISSET(int fd, fd_set *fdset)</h3><p>判断描述符是否在集合中。</p>
-<h2 id="4-描述符就绪条件"><a href="#4-描述符就绪条件" class="headerlink" title="4 描述符就绪条件"></a>4 描述符就绪条件</h2><h3 id="4-1-套接字准备读"><a href="#4-1-套接字准备读" class="headerlink" title="4.1 套接字准备读"></a>4.1 套接字准备读</h3><p>满足以下任一情况则可读：</p>
-<ul>
-<li>该套接字接受缓冲区中的数据字节数大于等于套接字接收缓冲区低水位标记的当前大小；</li>
-<li>该连接的读半关闭（接收了FIN的TCP连接）；</li>
-<li>该套接字是一个监听套接字且已完成的连接数不为0；</li>
-<li>其上有一个套接字错误待处理。</li>
-</ul>
-<h3 id="4-2-套接字准备写"><a href="#4-2-套接字准备写" class="headerlink" title="4.2 套接字准备写"></a>4.2 套接字准备写</h3><p>满足以下任一情况则可写：</p>
-<ul>
-<li>该套接字发送缓冲区中的可用空间字节数大于等于套接字发送缓冲区低水位标记的当前大小，并且或者该套接字已连接，或者该套接字不需要连接（如UDP套接字）；</li>
-<li>该连接的写半部关闭，对这样的套接字进行写操作会产生<code>SIGPIPE</code>信号；</li>
-<li>使用非阻塞式connect的套接字已建立连接；</li>
-<li>其上只有一个套接字错误待处理。</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1675,7 +1693,7 @@ int select(int nfds, fd_set *readfds, fd_set *writefds,
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">111</span>
+          <span class="site-state-item-count">113</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
