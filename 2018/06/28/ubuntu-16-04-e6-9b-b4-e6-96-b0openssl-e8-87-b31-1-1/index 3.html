@@ -20,22 +20,21 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="计算广告基础广告有效性原理 定性地说，越靠前的阶段，其效果的改善对点击率的贡献越大；而越靠后的阶段，其效果的改善对转化率的贡献越大。 互联网广告的技术特点 技术和计算导向； 效果的可衡量性； 创意和投放方式的标准化； 媒体概念的多样化； 数据驱动的投放决策  关键词 广告点击与广告展现的比率称为点击率（Click Through Rate，CTR）； 转化次数与到达次数的比例称为转化率（Conve">
+  <meta name="description" content="Ubuntu 16.04 更新openssl至1.1.1 因为要用SM2国密算法，而Ubuntu自带的openssl不支持SM2。需要将openssl更新至1.1.1，网上的教程不齐就单独写一个。  1 查看版本先看看自己的版本是多少： openssl version一般是很旧的，不会是最新的。 2 下载并解压源码cd &#x2F;usr&#x2F;local&#x2F;src wget https:&#x2F;&#x2F;www.openssl">
 <meta property="og:type" content="article">
-<meta property="og:title" content="《计算广告》笔记-第二章-计算广告基础">
-<meta property="og:url" content="http://yoursite.com/2020/05/19/%E3%80%8A%E8%AE%A1%E7%AE%97%E5%B9%BF%E5%91%8A%E3%80%8B%E7%AC%94%E8%AE%B0%E7%AC%AC%E4%BA%8C%E7%AB%A0%E2%80%94%E2%80%94%E8%AE%A1%E7%AE%97%E5%B9%BF%E5%91%8A%E5%9F%BA%E7%A1%80/index.html">
+<meta property="og:title" content="Ubuntu 16.04 更新openssl至1.1.1">
+<meta property="og:url" content="http://yoursite.com/2018/06/28/ubuntu-16-04-e6-9b-b4-e6-96-b0openssl-e8-87-b31-1-1/index.html">
 <meta property="og:site_name" content="hhyvs111">
-<meta property="og:description" content="计算广告基础广告有效性原理 定性地说，越靠前的阶段，其效果的改善对点击率的贡献越大；而越靠后的阶段，其效果的改善对转化率的贡献越大。 互联网广告的技术特点 技术和计算导向； 效果的可衡量性； 创意和投放方式的标准化； 媒体概念的多样化； 数据驱动的投放决策  关键词 广告点击与广告展现的比率称为点击率（Click Through Rate，CTR）； 转化次数与到达次数的比例称为转化率（Conve">
-<meta property="og:image" content="http://yoursite.com/images/15898833604321.jpg">
-<meta property="og:image" content="http://yoursite.com/images/15898834877000.jpg">
-<meta property="article:published_time" content="2020-05-19T09:01:11.000Z">
-<meta property="article:modified_time" content="2020-05-19T10:40:11.379Z">
+<meta property="og:description" content="Ubuntu 16.04 更新openssl至1.1.1 因为要用SM2国密算法，而Ubuntu自带的openssl不支持SM2。需要将openssl更新至1.1.1，网上的教程不齐就单独写一个。  1 查看版本先看看自己的版本是多少： openssl version一般是很旧的，不会是最新的。 2 下载并解压源码cd &#x2F;usr&#x2F;local&#x2F;src wget https:&#x2F;&#x2F;www.openssl">
+<meta property="og:image" content="https://tanwenbo.top/wp-content/uploads/2018/06/0fbbaed39e0ac280463953f7d437e98b.png">
+<meta property="article:published_time" content="2018-06-27T17:02:47.000Z">
+<meta property="article:modified_time" content="2020-04-14T06:29:36.319Z">
 <meta property="article:author" content="tanwenbo">
-<meta property="article:tag" content="计算广告">
+<meta property="article:tag" content="SSL">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://yoursite.com/images/15898833604321.jpg">
+<meta name="twitter:image" content="https://tanwenbo.top/wp-content/uploads/2018/06/0fbbaed39e0ac280463953f7d437e98b.png">
 
-<link rel="canonical" href="http://yoursite.com/2020/05/19/%E3%80%8A%E8%AE%A1%E7%AE%97%E5%B9%BF%E5%91%8A%E3%80%8B%E7%AC%94%E8%AE%B0%E7%AC%AC%E4%BA%8C%E7%AB%A0%E2%80%94%E2%80%94%E8%AE%A1%E7%AE%97%E5%B9%BF%E5%91%8A%E5%9F%BA%E7%A1%80/">
+<link rel="canonical" href="http://yoursite.com/2018/06/28/ubuntu-16-04-e6-9b-b4-e6-96-b0openssl-e8-87-b31-1-1/">
 
 
 <script id="page-configurations">
@@ -48,7 +47,7 @@
   };
 </script>
 
-  <title>《计算广告》笔记-第二章-计算广告基础 | hhyvs111</title>
+  <title>Ubuntu 16.04 更新openssl至1.1.1 | hhyvs111</title>
   
 
 
@@ -164,7 +163,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/19/%E3%80%8A%E8%AE%A1%E7%AE%97%E5%B9%BF%E5%91%8A%E3%80%8B%E7%AC%94%E8%AE%B0%E7%AC%AC%E4%BA%8C%E7%AB%A0%E2%80%94%E2%80%94%E8%AE%A1%E7%AE%97%E5%B9%BF%E5%91%8A%E5%9F%BA%E7%A1%80/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/28/ubuntu-16-04-e6-9b-b4-e6-96-b0openssl-e8-87-b31-1-1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -177,7 +176,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          《计算广告》笔记-第二章-计算广告基础
+          Ubuntu 16.04 更新openssl至1.1.1
         </h1>
 
         <div class="post-meta">
@@ -186,17 +185,27 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-05-19 17:01:11 / 修改时间：18:40:11" itemprop="dateCreated datePublished" datetime="2020-05-19T17:01:11+08:00">2020-05-19</time>
+              <time title="创建时间：2018-06-28 01:02:47" itemprop="dateCreated datePublished" datetime="2018-06-28T01:02:47+08:00">2018-06-28</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">阅读笔记</span></a>
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">教程</span></a>
                 </span>
             </span>
 
@@ -211,28 +220,23 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="计算广告基础"><a href="#计算广告基础" class="headerlink" title="计算广告基础"></a>计算广告基础</h1><h2 id="广告有效性原理"><a href="#广告有效性原理" class="headerlink" title="广告有效性原理"></a>广告有效性原理</h2><p><img src="/images/15898833604321.jpg" alt=""></p>
-<p>定性地说，越靠前的阶段，其效果的改善对点击率的贡献越大；而越靠后的阶段，其效果的改善对转化率的贡献越大。</p>
-<h2 id="互联网广告的技术特点"><a href="#互联网广告的技术特点" class="headerlink" title="互联网广告的技术特点"></a>互联网广告的技术特点</h2><ul>
-<li>技术和计算导向；</li>
-<li>效果的可衡量性；</li>
-<li>创意和投放方式的标准化；</li>
-<li>媒体概念的多样化；</li>
-<li>数据驱动的投放决策</li>
-</ul>
-<h2 id="关键词"><a href="#关键词" class="headerlink" title="关键词"></a>关键词</h2><ul>
-<li>广告点击与广告展现的比率称为点击率（Click Through Rate，CTR）；</li>
-<li>转化次数与到达次数的比例称为转化率（Conversion Rate，CVR）</li>
-</ul>
-<a id="more"></a> 
-
-<h2 id="广告计费模式"><a href="#广告计费模式" class="headerlink" title="广告计费模式"></a>广告计费模式</h2><ul>
-<li><code>CPM 结算</code>，即按照千次展示结算。在大多数互联网品牌广告，特别是视频广告中，CPM 都是主流的结算方式。</li>
-<li><code>CPC 结算</code>，即按点击结算。这种方式最早产生于搜索广告，并很快为大多数效果类广告产品所普遍采用。</li>
-<li><code>CPS（cost per sale）/CPA（cost per action）/ROI 结算</code>，即按照销售订单数、转 化行为数或投入产出比来结算。</li>
-<li><code>CPT（cost per time）结算</code>，这是针对大品牌广告主特定的广告活动，将某个广 告位以独占式方式交给某广告主，并按独占的时间段收取费用的方式。</li>
-</ul>
-<p><img src="/images/15898834877000.jpg" alt=""></p>
+        <h1 id="Ubuntu-16-04-更新openssl至1-1-1"><a href="#Ubuntu-16-04-更新openssl至1-1-1" class="headerlink" title="Ubuntu 16.04 更新openssl至1.1.1"></a>Ubuntu 16.04 更新openssl至1.1.1</h1><blockquote>
+<p>因为要用SM2国密算法，而Ubuntu自带的openssl不支持SM2。需要将openssl更新至1.1.1，网上的教程不齐就单独写一个。</p>
+</blockquote>
+<h2 id="1-查看版本"><a href="#1-查看版本" class="headerlink" title="1 查看版本"></a>1 查看版本</h2><p>先看看自己的版本是多少：</p>
+<pre><code>openssl version</code></pre><p>一般是很旧的，不会是最新的。</p>
+<h2 id="2-下载并解压源码"><a href="#2-下载并解压源码" class="headerlink" title="2 下载并解压源码"></a>2 下载并解压源码</h2><pre><code>cd /usr/local/src
+wget https://www.openssl.org/source/openssl-1.1.1-pre8.tar.gz
+tar -zxf openssl-1.1.1-pre8.tar.gz</code></pre><h2 id="3-编译安装"><a href="#3-编译安装" class="headerlink" title="3 编译安装"></a>3 编译安装</h2><p>进入自己的安装目录进行编译</p>
+<pre><code>cd openssl-1.1.1-pre8
+./config
+make install</code></pre><h2 id="4-移除旧版本-Openssl"><a href="#4-移除旧版本-Openssl" class="headerlink" title="4 移除旧版本 Openssl"></a>4 移除旧版本 Openssl</h2><p>这个看你自己的目录，我的是在/usr/bin里。找不到可以用<code>find -name openssl</code>找一下</p>
+<pre><code>mv /usr/bin/openssl /tmp/</code></pre><p>再将编译好的软连接到源目录</p>
+<pre><code>ln -s /usr/local/bin/openssl /usr/bin/openssl</code></pre><h2 id="5-复制源码"><a href="#5-复制源码" class="headerlink" title="5 复制源码"></a>5 复制源码</h2><p>如果出现：</p>
+<pre><code>openssl: error while loading shared libraries: libssl.so.1.1: cannot open shared object file: No such file or directory</code></pre><p>那么将源码里的两个文件复制到系统目录：</p>
+<pre><code>cd /usr/local/src
+cp libssl.so.1.1 /lib/x86_64-linux-gnu
+libcrypto.so.1.1 /lib/x86_64-linux-gnu</code></pre><p>这个时候就升级成功了！ 输入<code>openssl version</code>： <img src="https://tanwenbo.top/wp-content/uploads/2018/06/0fbbaed39e0ac280463953f7d437e98b.png" alt=""> 参考： <a href="https://w3ctech.com/topic/1873" target="_blank" rel="noopener">https://w3ctech.com/topic/1873</a> <a href="https://sb.sb/blog/centos-upgrade-openssl/" target="_blank" rel="noopener">https://sb.sb/blog/centos-upgrade-openssl/</a></p>
 
     </div>
 
@@ -242,7 +246,7 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/%E8%AE%A1%E7%AE%97%E5%B9%BF%E5%91%8A/" rel="tag"># 计算广告</a>
+              <a href="/tags/SSL/" rel="tag"># SSL</a>
           </div>
 
         
@@ -251,12 +255,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/04/15/github%E5%8D%9A%E5%AE%A2%E4%BB%8E0%E5%88%B01%E5%85%A8%E7%BA%AA%E5%BD%95&&Apple%E5%85%A8%E5%AE%B6%E6%A1%B6%E5%8D%9A%E5%AE%A2%E4%BD%93%E9%AA%8C/" rel="prev" title="github博客从0到1全纪录&&Apple全家桶博客体验">
-      <i class="fa fa-chevron-left"></i> github博客从0到1全纪录&&Apple全家桶博客体验
+    <a href="/2018/06/10/linux-e4-b8-8bcore-dump-e8-b0-83-e8-af-95/" rel="prev" title="Linux下core dump调试">
+      <i class="fa fa-chevron-left"></i> Linux下core dump调试
     </a></div>
       <div class="post-nav-item">
-    <a href="/2020/05/19/%E3%80%8A%E8%AE%A1%E7%AE%97%E5%B9%BF%E5%91%8A%E3%80%8B%E7%AC%94%E8%AE%B0-%E7%AC%AC%E4%B8%80%E7%AB%A0-%E5%9C%A8%E7%BA%BF%E5%B9%BF%E5%91%8A%E7%BB%BC%E8%BF%B0/" rel="next" title="《计算广告》笔记-第一章-在线广告综述">
-      《计算广告》笔记-第一章-在线广告综述 <i class="fa fa-chevron-right"></i>
+    <a href="/2018/07/04/linux-e4-b8-8b-e7-bc-96-e5-86-99-e5-b0-8f-e8-84-9a-e6-9c-ac-e6-8f-90-e9-ab-98-e6-95-88-e7-8e-87/" rel="next" title="Linux下编写小脚本提高效率">
+      Linux下编写小脚本提高效率 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -316,7 +320,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#计算广告基础"><span class="nav-number">1.</span> <span class="nav-text">计算广告基础</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#广告有效性原理"><span class="nav-number">1.1.</span> <span class="nav-text">广告有效性原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#互联网广告的技术特点"><span class="nav-number">1.2.</span> <span class="nav-text">互联网广告的技术特点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关键词"><span class="nav-number">1.3.</span> <span class="nav-text">关键词</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#广告计费模式"><span class="nav-number">1.4.</span> <span class="nav-text">广告计费模式</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Ubuntu-16-04-更新openssl至1-1-1"><span class="nav-number">1.</span> <span class="nav-text">Ubuntu 16.04 更新openssl至1.1.1</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-查看版本"><span class="nav-number">1.1.</span> <span class="nav-text">1 查看版本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-下载并解压源码"><span class="nav-number">1.2.</span> <span class="nav-text">2 下载并解压源码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-编译安装"><span class="nav-number">1.3.</span> <span class="nav-text">3 编译安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-移除旧版本-Openssl"><span class="nav-number">1.4.</span> <span class="nav-text">4 移除旧版本 Openssl</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-复制源码"><span class="nav-number">1.5.</span> <span class="nav-text">5 复制源码</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
