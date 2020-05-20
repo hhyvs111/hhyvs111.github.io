@@ -157,6 +157,467 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/18/e5-90-ab-e6-9c-89-e5-8f-af-e5-8f-98-e5-bd-a2-e5-8f-82-e7-9a-84-e5-87-bd-e6-95-b0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="tanwenbo">
+      <meta itemprop="description" content="enjoy share">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hhyvs111">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/01/18/e5-90-ab-e6-9c-89-e5-8f-af-e5-8f-98-e5-bd-a2-e5-8f-82-e7-9a-84-e5-87-bd-e6-95-b0/" class="post-title-link" itemprop="url">含有可变形参的函数</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-01-18 09:21:15" itemprop="dateCreated datePublished" datetime="2019-01-18T09:21:15+08:00">2019-01-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="含有可变形参的参数"><a href="#含有可变形参的参数" class="headerlink" title="含有可变形参的参数"></a>含有可变形参的参数</h1><p>有时候我们无法提前预知应该向参数传递几个实参，为了编写能处理不同数量实参的函数，C++11新标准提供了两种主要的方法:如果所有的实参类型相同，可以传递一个名为<strong>initializer_list</strong>的标准库类型;如果实参的类型不同，我们可以编写一种特殊的函数，也就是所谓的可变参数模板，关于它的细节将在16.4节(第618页)介绍。</p>
+<blockquote>
+<p>就是类似vector，你不知道数组的长度就使用vector。</p>
+</blockquote>
+<pre><code>void error_msg (initializer_list&lt;string&gt; il)
+{
+    for (auto beg = il.begin() ; beg != il.end() ; + +beg)
+    cout &lt;&lt; *beg&lt;&lt;” ”;
+    cout &lt;&lt; endl ;
+}</code></pre><blockquote>
+<p>这个好像和什么vector没啥区别啊，但是为什么要特别用到呢？</p>
+</blockquote>
+<p>和vector不一样的是，initializer_list对象中的元素永远是常量值，我们无法改变initializer_list对象中元素的值。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/18/e5-bc-95-e7-94-a8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="tanwenbo">
+      <meta itemprop="description" content="enjoy share">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hhyvs111">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/01/18/e5-bc-95-e7-94-a8/" class="post-title-link" itemprop="url">引用</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-01-18 07:46:07" itemprop="dateCreated datePublished" datetime="2019-01-18T07:46:07+08:00">2019-01-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><blockquote>
+<p>这个东西用不好就是坑，用好了还是很强的。</p>
+</blockquote>
+<h2 id="传参"><a href="#传参" class="headerlink" title="传参"></a>传参</h2><p>传参就不说了，主要是避免一个问题——避免拷贝。有些数据较大的对象或者容器，如果传参的时候不用引用的话需要对其进行拷贝，这样的开销较大。应该使用引用值，直接对原数组进行操作，这样避免额外的开销，效率也会更快。</p>
+<pre><code>//比如对这个vector容器进行操作的时候，一般都是使用引用值。
+vector&lt;int&gt; test(vector&lt;int&gt; &amp; nums)
+{
+...
+}</code></pre><h2 id="常量"><a href="#常量" class="headerlink" title="常量"></a>常量</h2><p>有时候并不改变传入的参数的值，那么建议使用<strong>对常量的引用</strong></p>
+<pre><code>// 比较两个string的大小
+bool isShorter (const string &amp;s1, const string &amp;s2)
+[
+return s1.size() &lt; s2.size() ;
+]</code></pre><blockquote>
+<p>如果函数无须改变引用形参的值，最好将其声明为常量引用。</p>
+</blockquote>
+<h2 id="引用形参返回额外信息"><a href="#引用形参返回额外信息" class="headerlink" title="引用形参返回额外信息"></a>引用形参返回额外信息</h2><p>一个函数只能返回一个值，然而有时候函数需要同时返回多个值，引用形参为我们一次返回多个结果提供了有效途径。</p>
+<p>简单来说就是在传参的时候使用引用值，然后在函数体内改变这个引用的值，也就达到了一次返回多个值。</p>
+<pre><code>//返回s中c第一次出现的位置索引
+//引用形参occurs负责统计c出现的总次数
+string: :size_ type find_ char (const string &amp;S，char C,
+string: :size_ type &amp;occurs )
+{
+auto ret = s.size() ;
+//第一次出现的位置(如果有的话)
+occurs 
+= 0;
+//设置表示出现次数的形参的值
+for (decltype(ret) i = 0; i != s.size() ; ++i) {
+    if (s[i] == c) {
+      if (ret == s.size() )
+        ret = i;
+        . //记录c第一次出现的位置
+        ++occurs ;
+        . //将出现的次数加1
+        }
+    }
+return ret ;
+//出现次数通过occurs隐式地返回
+}</code></pre><p>当我们调用find_char函数时，必须传入三个实参:作为查找范围的一个string对象、要找的字符以及一个用于保存字符出现次数的size_ type (参见3.2.2节，第79页)对象。假设s是一个string对象，ctr是一个size_ type对象，则我们通过如下形式调用find char函数:</p>
+<pre><code>auto index = find char(s, &apos;o&apos;，ctr) ;</code></pre><p>调用完成后，如果string对象中确实存在o,那么ctr的值就是。出现的次数，index指向。第一次出现的位置;否则如果string对象中没有o，index等于s.size()而ctr等于0。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/18/e5-b1-80-e9-83-a8-e9-9d-99-e6-80-81-e5-af-b9-e8-b1-a1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="tanwenbo">
+      <meta itemprop="description" content="enjoy share">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hhyvs111">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/01/18/e5-b1-80-e9-83-a8-e9-9d-99-e6-80-81-e5-af-b9-e8-b1-a1/" class="post-title-link" itemprop="url">局部静态对象</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-01-18 07:16:13" itemprop="dateCreated datePublished" datetime="2019-01-18T07:16:13+08:00">2019-01-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="局部静态对象"><a href="#局部静态对象" class="headerlink" title="局部静态对象"></a>局部静态对象</h1><p>在程序的执行路径第一次经过对象定义局域时初始化，知道程序终止时才被销毁，在此期间即使对象所在的函数结束也不会对它有影响。</p>
+<pre><code>size_t count_calls ()
+f
+static size_t ctr = O; //调用结束后，这个值仍然有效
+return ++ctr;
+)
+int main()
+[
+for(sizeti=O;i!=10;++i)
+cout &lt;&lt; count calls () &lt;&lt; endl ;
+return O;
+)</code></pre><p>在控制流第一次经过ctr的定义之前，ctr被创建并初始化为0。每次调用将ctr加1并返回新值。每次执行count_calls函数时，变量ctr的值都已经存在并且等于函数上一次退出时ctr的值。因此，第二次调用时ctr的值是1，第三次调用时ctr的值是2，以此类推。</p>
+<blockquote>
+<p>反正就是静态局部变量初始化后再次调用该函数，crr不会重新初始化，而是继续用上次的值。</p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/17/try-e8-af-ad-e5-8f-a5-e5-9d-97-e5-92-8c-e5-bc-82-e5-b8-b8-e5-a4-84-e7-90-86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="tanwenbo">
+      <meta itemprop="description" content="enjoy share">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hhyvs111">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/01/17/try-e8-af-ad-e5-8f-a5-e5-9d-97-e5-92-8c-e5-bc-82-e5-b8-b8-e5-a4-84-e7-90-86/" class="post-title-link" itemprop="url">try语句块和异常处理</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-01-17 08:44:02" itemprop="dateCreated datePublished" datetime="2019-01-17T08:44:02+08:00">2019-01-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="try语句块和异常处理"><a href="#try语句块和异常处理" class="headerlink" title="try语句块和异常处理"></a>try语句块和异常处理</h1><ul>
+<li>try语句块和异常处理<ul>
+<li>定义<ul>
+<li>异常处理方式</li>
+</ul>
+</li>
+<li>throw表达式<ul>
+<li>cerr解释</li>
+</ul>
+</li>
+<li>try-catch</li>
+<li>标准异常<ul>
+<li>定义的异常类</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>这个东西一般比较少用到，好像以前在Java里经常用。</p>
+<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>异常是指存在于运行时的反常行为，这些行为超出了函数正常功能的范围。典型的异常包括失去数据库连接以及遇到意外输入等。处理反常行为可能是设计所有系统最难的一部分。</p>
+<h3 id="异常处理方式"><a href="#异常处理方式" class="headerlink" title="异常处理方式"></a>异常处理方式</h3><ul>
+<li>throw表达式；</li>
+<li>try语句块，也就是try-catch。try语句块中代码抛出的异常通常会被磨具个catch子句处理。因为catch子句“处理”异常，所以它们也被称作异常处理代码；</li>
+<li>一套异常类。</li>
+</ul>
+<p>下面详细介绍一下这几种方式。</p>
+<h2 id="throw表达式"><a href="#throw表达式" class="headerlink" title="throw表达式"></a>throw表达式</h2><p>一般业务代码中都要处理错误，输出一些信息，这样才能快速定位哪里出错了。比如下面这个代码检查它读入的记录是否是关于同一种书籍，如果不是，输出一条信息然后退出。</p>
+<pre><code>Sales_ item item1, item2;
+cin &gt;&gt; item1 &gt;&gt; item2;
+// 检查 item1 和 item2 是否表示同一种书籍
+if(item1.isbn() == item2. isbn()) {
+cout &lt;&lt; item1 + item2 &lt;&lt; endl ;
+return O; // success
+} else {
+cerr &lt;&lt; &quot;Data must refer to same ISBN&quot; &lt;&lt; endl ;
+//cerr 是一个ostream对象，关联到标准错误，通常写入到与标准输出相同的设备。
+return -1; // failed
+}</code></pre><h4 id="cerr解释"><a href="#cerr解释" class="headerlink" title="cerr解释"></a>cerr解释</h4><p>cerr不经过缓冲而直接输出，一般用于迅速输出出错信息，是标准错误，默认情况下被关联到标准输出流，但它不被缓冲，也就说错误消息可以直接发送到显示器，而无需等到缓冲区或者新的换行符时，才被显示。一般情况下不被重定向。</p>
+<blockquote>
+<p>这个东西很少见啊，又学习到了新的知识了。</p>
+</blockquote>
+<p>接上述代码，在真实的程序中，应该把对象相加的代码和用户交互的代码分离开来。此例中，我们改写程序似的检查完成和惠普不再直接输出一条信息，而是<strong>抛出一个异常</strong>：</p>
+<pre><code>//首先检查两条数据是否是关于同一种书籍的
+if (iteml. isbn() != item2 . isbn() )
+throw runtime_error (&quot;Data must refer to same ISBN&quot;) ;
+//如果程序执行到了这里，表示两个ISBN是相同的
+cout &lt;&lt; item1 + item2 &lt;&lt; endl ;</code></pre><blockquote>
+<p>但是这样做有什么用呢？是给后面的try-catch使用的？</p>
+</blockquote>
+<h2 id="try-catch"><a href="#try-catch" class="headerlink" title="try-catch"></a>try-catch</h2><p>try语句块的一开始是关键字try，随后紧跟着一个块。</p>
+<p>在之前的例子里，我们使用了一个throw表达式以避免把两个代表不同书籍的 Sales_item相加。我们假设执行Sales_item 对象加法的代码是与用户交互的代码分离开来的。其中与用户交互的代码负责处理发生的异常，它的形式可能如下所示:</p>
+<pre><code>while (cin &gt;&gt; item1 &gt;&gt; item2) {
+try {
+//执行添加两个Sales_ item对象的代码
+//如果添加失败，代码抛出一个runtime_ error异常
+    if (iteml. isbn() != item2 . isbn() )
+    throw runtime_error (&quot;Data must refer to same ISBN&quot;) ;
+    //如果程序执行到了这里，表示两个ISBN是相同的
+    cout &lt;&lt; item1 + item2 &lt;&lt; endl ;
+
+} catch (runtime_error err) {
+//提醒用户两个ISBN必须一致，询问是否重新输入
+    cout &lt;&lt; err.what ()&lt;&lt; &quot;\nTry Again? Enter y or n&quot; &lt;&lt; endl ;
+    char C;
+    cin &gt;&gt; C;
+    if(!cin || c ==&apos;n&apos; )
+        break; // 跳出while循环
+      }
+ }</code></pre><p>上面的<code>err.what()</code>就是这个runtime_error后面的字符串。</p>
+<p>给用户的提示信息中输出了err.what() 的返回值。我们知道err的类型是 runtime error, 因此能推断what是runtime error 类的一一个成员函数(参见1.5.2节，第20页)。每个标准库异常类都定义了名为what的成员函数，这些函数没有参数，返回值是C风格字符串(即const char*)。 其中， runtime error的what成员返回的是初始化–个具体对象时所用的string对象的副本。如果上一-节编写的代码抛出异常，则本节的catch子句输出：</p>
+<pre><code>Data must refer to same ISBN
+Try Again? Enter y or n</code></pre><h2 id="标准异常"><a href="#标准异常" class="headerlink" title="标准异常"></a>标准异常</h2><p>C++标准库定义了一-组类，用于报告标准库函数遇到的问题。这些异常类也可以在用户编写的程序中使用，它们分别定义在4个头文件中:</p>
+<ul>
+<li>exception头文件定义了最通用的异常类exception。它只报告异常的发生，不提供任何额外信息。</li>
+<li>stdexcept头文件定义了几种常用的异常类，详细信息在表5.1中列出。</li>
+<li>new头文件定义了bad_alloc异常类型，这种类型将在12.1.2节(第407页)详细介绍。</li>
+<li>type_info头文件定义了bad_cast异常类型，这种类型将在19.2节(第731页)详细介绍。</li>
+</ul>
+<h4 id="定义的异常类"><a href="#定义的异常类" class="headerlink" title="定义的异常类"></a><stdexcept>定义的异常类</h4><p>类</p>
+<p>解释</p>
+<p>exception</p>
+<p>最常见的问题</p>
+<p>runtime_error</p>
+<p>只有在运行时才能检测出的问题</p>
+<p>range_error</p>
+<p>运行时错误:生成的结果超出了有意义的值域范围</p>
+<p>overflow error</p>
+<p>运行时错误:计算上溢</p>
+<p>underflow_error</p>
+<p>运行时错误:计算下溢</p>
+<p>logic_error</p>
+<p>程序逻辑错误</p>
+<p>domain_error</p>
+<p>逻辑错误:参数对应的结果值不存在</p>
+<p>invalid_argument</p>
+<p>逻辑错误:无效参数</p>
+<p>length_error</p>
+<p>逻辑错误:试图创建一个超出该类型最大长度的对象</p>
+<p>out_of_range</p>
+<p>逻辑错误:使用一个超出有效范围的值</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/17/e8-8c-83-e5-9b-b4for-e8-af-ad-e5-8f-a5/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -773,533 +1234,6 @@ int *p3 = NULL;
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/19/c-e5-85-b3-e9-94-ae-e5-ad-97/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="tanwenbo">
-      <meta itemprop="description" content="enjoy share">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="hhyvs111">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/12/19/c-e5-85-b3-e9-94-ae-e5-ad-97/" class="post-title-link" itemprop="url">C++关键字</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-12-19 07:58:23" itemprop="dateCreated datePublished" datetime="2018-12-19T07:58:23+08:00">2018-12-19</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <pre><code>就是一些需要注意的关键字，不能用来命名的。看一看就好！</code></pre><p>alignas</p>
-<p>cont inue</p>
-<p>friend</p>
-<p>register</p>
-<p>true</p>
-<p>alignof</p>
-<p>decltype</p>
-<p>goto</p>
-<p>reinterpret_ cast</p>
-<p>try</p>
-<p>asm</p>
-<p>default</p>
-<p>if</p>
-<p>return</p>
-<p>typedef</p>
-<p>auto</p>
-<p>delete</p>
-<p>inline</p>
-<p>short</p>
-<p>typeid</p>
-<p>bool</p>
-<p>do</p>
-<p>int</p>
-<p>signed</p>
-<p>typename</p>
-<p>break</p>
-<p>double</p>
-<p>long</p>
-<p>sizeof</p>
-<p>union</p>
-<p>case</p>
-<p>dynamic_ cast</p>
-<p>mutable</p>
-<p>static</p>
-<p>unsigned</p>
-<p>catch</p>
-<p>else</p>
-<p>name. space</p>
-<p>static_ assert</p>
-<p>using</p>
-<p>char</p>
-<p>enum</p>
-<p>new</p>
-<p>static_ cast</p>
-<p>virtual</p>
-<p>char16_ t</p>
-<p>explicit</p>
-<p>noexcept</p>
-<p>struct</p>
-<p>void</p>
-<p>char32_ t</p>
-<p>export</p>
-<p>nullptr</p>
-<p>switch</p>
-<p>volatile</p>
-<p>class</p>
-<p>extern</p>
-<p>operator</p>
-<p>template</p>
-<p>wchar_ t</p>
-<p>cons t</p>
-<p>false</p>
-<p>private</p>
-<p>this</p>
-<p>while</p>
-<p>constexpr</p>
-<p>float</p>
-<p>protected</p>
-<p>thread_ local</p>
-<p>const_ cast</p>
-<p>for</p>
-<p>public </p>
-<p>throw</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/26/1-two-sum/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="tanwenbo">
-      <meta itemprop="description" content="enjoy share">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="hhyvs111">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/11/26/1-two-sum/" class="post-title-link" itemprop="url">1. Two Sum</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-11-26 11:17:40" itemprop="dateCreated datePublished" datetime="2018-11-26T11:17:40+08:00">2018-11-26</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p>要开始刷算法题了，昨天去头条笔试被吊打了，现在的自己原来这么菜。</p>
-<p>那么就从LeetCode开始刷吧。</p>
-</blockquote>
-<h2 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h2><p>Given an array of integers, return indices of the two numbers such that they add up to a specific target.</p>
-<p>You may assume that each input would have exactly one solution, and you may not use the same element twice.<br>Example:</p>
-<pre><code>Given nums = [2, 7, 11, 15], target = 9,
-Because nums[0] + nums[1] = 2 + 7 = 9,
-return [0, 1].</code></pre><h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>就是在数组里找两个数是否是相加等于这个目标值。</p>
-<p>直接想到的方法就是遍历，然后判断是否相等。</p>
-<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><pre><code>class Solution {
-public:
-    vector&lt;int&gt; twoSum(vector&lt;int&gt;&amp; nums, int target) {
-        vector&lt;int&gt; ans;
-        int size = nums.size();
-        for(int i = 0; i &lt; size; i++){
-            for(int j = i + 1 ;j &lt; size; j++){
-                if(nums[i] + nums[j] == target){
-                    ans.push_back(i);
-                    ans.push_back(j);
-                    return ans;
-                }
-            }
-        }
-    }
-};</code></pre><blockquote>
-<p>吗的，提交后虽然一次过，但是看了时间复杂度排行前面的真的是神仙代码，完全看不懂的节奏。。。</p>
-</blockquote>
-<p><img src="https://tanwenbo.top/wp-content/uploads/2018/11/15432025064317.jpg" alt="">￼</p>
-<p>看来需要学习的东西太多了。</p>
-<h2 id="另一种方法"><a href="#另一种方法" class="headerlink" title="另一种方法"></a>另一种方法</h2><p>我看排行第一的用的是HashMap。</p>
-<blockquote>
-<p>完全不知道HashMap原理，直接贴出来看看。</p>
-</blockquote>
-<pre><code>class Solution {
-public:
-    vector&lt;int&gt; twoSum(vector&lt;int&gt;&amp; nums, int target) {
-      std::unordered_map&lt;int, std::size_t&gt; tmp;  
-      for (std::size_t i = 0; i &lt; nums.size(); ++i) {
-        if (tmp.count(target - nums[i])) {
-            return {tmp[target - nums[i]], i};
-        }
-        tmp[nums[i]] = i;
-    }
-        return {0,0};
-
-    }
-};</code></pre><p>目前的知识还不足以了解这个解法，先填坑以后再来看吧。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/19/mojaveopengl/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="tanwenbo">
-      <meta itemprop="description" content="enjoy share">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="hhyvs111">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/11/19/mojaveopengl/" class="post-title-link" itemprop="url">Mojave+OpenGL绘制黑屏解决方法</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-11-19 17:19:42" itemprop="dateCreated datePublished" datetime="2018-11-19T17:19:42+08:00">2018-11-19</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/OpenGL/" itemprop="url" rel="index"><span itemprop="name">OpenGL</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/OpenGL/%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">教程</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h2><p>看来MacOS是真的要放弃OpenGL了，今天更新了一下新版<code>xcode</code>和<code>command line tool</code>。结果代码跑出来是黑屏的，然后要拖动（drag）一下标题才能绘制出来。<br><img src="https://tanwenbo.top/wp-content/uploads/2018/11/15426195038276.jpg" alt="">￼</p>
-<p>而且我的程序是绑定了鼠标操作的，意味着如果切换到代码运行界面，那么就无法拖动窗口。</p>
-<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p>最后在<code>Stack Overflow</code>上找到了解决方法。<a href="https://stackoverflow.com/questions/52509427/mac-mojave-opengl/52559723#52559723" target="_blank" rel="noopener">Mac Mojave + opengl</a></p>
-<p>主要方法就是在绘制循环里加入如下代码：</p>
-<pre><code>bool needDraw = true;
-    if (needDraw) {
-        glfwShowWindow(window);
-        glfwHideWindow(window);
-        glfwShowWindow(window);
-        needDraw = false;
-    }</code></pre><p>里面有几个方法，就这个有效果。</p>
-<p>这个网站还是很神奇的，可惜声望值不够不能点赞，尴尬。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/02/poly2tri/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="tanwenbo">
-      <meta itemprop="description" content="enjoy share">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="hhyvs111">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/11/02/poly2tri/" class="post-title-link" itemprop="url">使用Poly2tri对多边形进行剖分</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-11-02 16:35:23" itemprop="dateCreated datePublished" datetime="2018-11-02T16:35:23+08:00">2018-11-02</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/OpenGL/" itemprop="url" rel="index"><span itemprop="name">OpenGL</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p>之前有写一个如何使用耳切法的教程，但是效果还是不够理想。但是poly2tri切出来的效果很好，在这里写一下基本用法。我也是摸索了一会才搞懂的。<br>等搞懂了poly2tri算法的实现原理再在此文里补充。</p>
-</blockquote>
-<h2 id="0-原理"><a href="#0-原理" class="headerlink" title="0 原理"></a>0 原理</h2><blockquote>
-<p>待填坑。</p>
-</blockquote>
-<h2 id="1-源码下载"><a href="#1-源码下载" class="headerlink" title="1 源码下载"></a>1 源码下载</h2><p>这个就不多说了，直接上github地址<a href="https://github.com/greenm01/poly2tri" target="_blank" rel="noopener">poly2tri</a>。这个也是基于C的。</p>
-<h2 id="2-编译"><a href="#2-编译" class="headerlink" title="2 编译"></a>2 编译</h2><p>可以按照源码里的编译方法编译，但是我用的是CLion，就没那也编译了。直接把相关文件放入自己的项目里，然后写好<code>CMakeLists</code>就好了。</p>
-<h3 id="2-1-项目结构"><a href="#2-1-项目结构" class="headerlink" title="2.1 项目结构"></a>2.1 项目结构</h3><p><img src="https://tanwenbo.top/wp-content/uploads/2018/11/15411484431976.jpg" alt="">￼</p>
-<h3 id="2-2-CMakeLists"><a href="#2-2-CMakeLists" class="headerlink" title="2.2 CMakeLists"></a>2.2 CMakeLists</h3><pre><code>add_library( POLY2TRI  poly2tri/common/shapes.cc poly2tri/sweep/advancing_front.cc poly2tri/sweep/cdt.cc poly2tri/sweep/sweep_context.cc
-        poly2tri/sweep/sweep.cc
-        poly2tri/sweep/sweep_context.cc)
-set(LIBS ${LIBS} POLY2TRI)
-
-
-        add_executable(${NAME} ${SOURCE} includes/Delaunay.h includes/vertex.h
-                poly2tri/poly2tri.h poly2tri/sweep/cdt.h poly2tri/sweep/sweep_context.h poly2tri/sweep/sweep.h poly2tri/common/shapes.h  poly2tri/common/utils.h poly2tri/sweep/advancing_front.h
-                includes/mapbox/earcut.hpp)
-        target_link_libraries(${NAME} ${LIBS})</code></pre><blockquote>
-<p>有一些其他的内容是自己的项目相关的。</p>
-</blockquote>
-<h2 id="3-使用"><a href="#3-使用" class="headerlink" title="3 使用"></a>3 使用</h2><p>这里使用我参考了里面的Demo，但是因为我是macOS没有跑出来，所以参照代码在自己的项目里跑成功了。一开始也遇到了<code>耳切法</code>那个错误，就是点的插入顺序不对，具体可以看看<a href="(https://tanwenbo.top/course/er-qie-fa-shi-yong-zhi-nan.html)">耳切法使用指南</a>。</p>
-<h3 id="3-1-相关变量声明"><a href="#3-1-相关变量声明" class="headerlink" title="3.1 相关变量声明"></a>3.1 相关变量声明</h3><pre><code>// Constrained triangles，用来存放剖分好的理想三角
-vector&lt;Triangle*&gt; triangles;
-// Triangle map，完整剖分
-list&lt;Triangle*&gt; map;
-// Polylines，线的集合
-vector&lt; vector&lt;Point*&gt; &gt; polylines;
-//线
-vector&lt;p2t::Point*&gt; polyline;
-//调用类
-CDT* cdt;</code></pre><p>Point类型自己可以看一下源码，源码的是二维，我要用到三维数据我就直接在结构体里加了个<code>z值</code>。</p>
-<blockquote>
-<p>我的剖分步骤是先将三维投影到二维，然后剖分完毕后反投影回去。相关内容将来会发布。</p>
-</blockquote>
-<h3 id="3-2-剖分"><a href="#3-2-剖分" class="headerlink" title="3.2 剖分"></a>3.2 剖分</h3><pre><code> VERTEX *Merge = faultMerge(fault1_up, 10, fault2_up, 10);
- //将vertex的xy坐标输入到这个poly
- for(int i = 0;i &lt; 20; i++)
- {
-     double x = Merge[i].x;
-     double y = Merge[i].y;
-     double z = Merge[i].z;
-     Point *point = new Point(x,y);
-     point-&gt;z = z;
-
-     polyline.push_back(point);
-     cout &lt;&lt; &quot; double &quot;&lt;&lt; x&lt;&lt; &quot; &quot; &lt;&lt; y &lt;&lt;&quot; &quot;&lt;&lt; z &lt;&lt;endl;
- }
-
- //用完就删除
- delete [] Merge;
- //将这个polyline输入到polylines里去，后者应该是这个集合？
- polylines.push_back(polyline);
-
- cdt = new CDT(polyline);
-
-//开始剖分
- cdt-&gt;Triangulate();
-
- //map是完整的剖分（包含空洞的剖分）？
- map = cdt-&gt;GetMap();
- //获取三角，这个时候triangles里就是
- triangles = cdt-&gt;GetTriangles();</code></pre><p>这里我只输入了一个多边形，其他的情况暂时没有测试。</p>
-<h3 id="3-3-获取三角"><a href="#3-3-获取三角" class="headerlink" title="3.3 获取三角"></a>3.3 获取三角</h3><pre><code>void Poly2TriBind(unsigned int * PolyVAOs, unsigned int * PolyVBOs, vector&lt;Triangle*&gt; _triangle)
-{
-    glGenVertexArrays(_triangle.size(), PolyVAOs);
-    glGenBuffers(_triangle.size(), PolyVBOs);
-
-    //循环读取Polyl里的三角形顶点数据
-    float TraVertex[9];
-    for (int i = 0; i &lt; _triangle.size(); i++)
-    {
-            Triangle &amp;t = *_triangle[i];
-
-            Point &amp;a = *t.GetPoint(0);
-            Point &amp;b = *t.GetPoint(1);
-            Point &amp;c = *t.GetPoint(2);
-            //将顶点分配给这个float
-
-            TraVertex[0] = a.x;
-            TraVertex[1] = a.y;
-            TraVertex[2] = a.z;
-            TraVertex[3] = b.x;
-            TraVertex[4] = b.y;
-            TraVertex[5] = b.z;
-            TraVertex[6] = c.x;
-            TraVertex[7] = c.y;
-            TraVertex[8] = c.z;
-    }</code></pre><blockquote>
-<p>上述代码都是我项目里的部分代码。</p>
-</blockquote>
-<p>要注意这个三角访问，因为Point类用的是引用值，修改了三角里Point的值，与这个Point相关的三角也会变化。</p>
-<h2 id="4-效果"><a href="#4-效果" class="headerlink" title="4 效果"></a>4 效果</h2><p>我用了三种剖分方法，poly2tri是目前最好的，结果也是我想要的。</p>
-<h3 id="poly2tri"><a href="#poly2tri" class="headerlink" title="poly2tri"></a>poly2tri</h3><p>目前效果最好的算法，剖分结果就是Delaunay增量算法的非凸版本，简直完美。<br><img src="https://tanwenbo.top/wp-content/uploads/2018/11/15406231387483.jpg" alt="">￼</p>
-<h3 id="增量法"><a href="#增量法" class="headerlink" title="增量法"></a>增量法</h3><p><img src="https://tanwenbo.top/wp-content/uploads/2018/11/15406231601122.jpg" alt="">￼</p>
-<p>可以看到，这个算法就是在poly2tri上加了凸包，这是我第一次用的算法，本来还想着如何去除凸包。</p>
-<h3 id="耳切法"><a href="#耳切法" class="headerlink" title="耳切法"></a>耳切法</h3><p><img src="https://tanwenbo.top/wp-content/uploads/2018/11/15406231995468.jpg" alt="">￼</p>
-<p>结果不是很理想。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1369,7 +1303,7 @@ CDT* cdt;</code></pre><p>Point类型自己可以看一下源码，源码的是�
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">113</span>
+          <span class="site-state-item-count">117</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

@@ -20,22 +20,22 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="题意一个数组，代表股票当前价格，买入和买出。怎么操作能使收益最大？只有卖掉当前股票才能买。 Example 1: Input: [7,1,5,3,6,4] Output: 5 Explanation: Buy on day 2 (price &#x3D; 1) and sell on day 5 (price &#x3D; 6), profit &#x3D; 6-1 &#x3D; 5.              Not 7-1 &#x3D; 6,">
+  <meta name="description" content="计算广告基础广告有效性原理 定性地说，越靠前的阶段，其效果的改善对点击率的贡献越大；而越靠后的阶段，其效果的改善对转化率的贡献越大。 互联网广告的技术特点 技术和计算导向； 效果的可衡量性； 创意和投放方式的标准化； 媒体概念的多样化； 数据驱动的投放决策  关键词 广告点击与广告展现的比率称为点击率（Click Through Rate，CTR）； 转化次数与到达次数的比例称为转化率（Conve">
 <meta property="og:type" content="article">
-<meta property="og:title" content="121. Best Time to Buy and Sell Stock 股票最佳买卖 — 单次买卖">
-<meta property="og:url" content="http://yoursite.com/2019/03/22/121-best-time-to-buy-and-sell-stock-e8-82-a1-e7-a5-a8-e6-9c-80-e4-bd-b3-e4-b9-b0-e5-8d-96-e5-8d-95-e6-ac-a1-e4-b9-b0-e5-8d-96/index.html">
+<meta property="og:title" content="《计算广告》笔记-第二章-计算广告基础">
+<meta property="og:url" content="http://yoursite.com/2020/05/19/%E3%80%8A%E8%AE%A1%E7%AE%97%E5%B9%BF%E5%91%8A%E3%80%8B%E7%AC%94%E8%AE%B0-%E7%AC%AC%E4%BA%8C%E7%AB%A0-%E8%AE%A1%E7%AE%97%E5%B9%BF%E5%91%8A%E5%9F%BA%E7%A1%80/index.html">
 <meta property="og:site_name" content="hhyvs111">
-<meta property="og:description" content="题意一个数组，代表股票当前价格，买入和买出。怎么操作能使收益最大？只有卖掉当前股票才能买。 Example 1: Input: [7,1,5,3,6,4] Output: 5 Explanation: Buy on day 2 (price &#x3D; 1) and sell on day 5 (price &#x3D; 6), profit &#x3D; 6-1 &#x3D; 5.              Not 7-1 &#x3D; 6,">
-<meta property="article:published_time" content="2019-03-21T23:44:53.000Z">
-<meta property="article:modified_time" content="2020-04-14T06:29:36.320Z">
+<meta property="og:description" content="计算广告基础广告有效性原理 定性地说，越靠前的阶段，其效果的改善对点击率的贡献越大；而越靠后的阶段，其效果的改善对转化率的贡献越大。 互联网广告的技术特点 技术和计算导向； 效果的可衡量性； 创意和投放方式的标准化； 媒体概念的多样化； 数据驱动的投放决策  关键词 广告点击与广告展现的比率称为点击率（Click Through Rate，CTR）； 转化次数与到达次数的比例称为转化率（Conve">
+<meta property="og:image" content="http://yoursite.com/images/15898833604321.jpg">
+<meta property="og:image" content="http://yoursite.com/images/15898834877000.jpg">
+<meta property="article:published_time" content="2020-05-19T09:01:11.000Z">
+<meta property="article:modified_time" content="2020-05-19T10:40:11.379Z">
 <meta property="article:author" content="tanwenbo">
-<meta property="article:tag" content="LeetCode">
-<meta property="article:tag" content="DP">
-<meta property="article:tag" content="动态规划">
-<meta property="article:tag" content="数组">
+<meta property="article:tag" content="计算广告">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/images/15898833604321.jpg">
 
-<link rel="canonical" href="http://yoursite.com/2019/03/22/121-best-time-to-buy-and-sell-stock-e8-82-a1-e7-a5-a8-e6-9c-80-e4-bd-b3-e4-b9-b0-e5-8d-96-e5-8d-95-e6-ac-a1-e4-b9-b0-e5-8d-96/">
+<link rel="canonical" href="http://yoursite.com/2020/05/19/%E3%80%8A%E8%AE%A1%E7%AE%97%E5%B9%BF%E5%91%8A%E3%80%8B%E7%AC%94%E8%AE%B0-%E7%AC%AC%E4%BA%8C%E7%AB%A0-%E8%AE%A1%E7%AE%97%E5%B9%BF%E5%91%8A%E5%9F%BA%E7%A1%80/">
 
 
 <script id="page-configurations">
@@ -48,7 +48,7 @@
   };
 </script>
 
-  <title>121. Best Time to Buy and Sell Stock 股票最佳买卖 — 单次买卖 | hhyvs111</title>
+  <title>《计算广告》笔记-第二章-计算广告基础 | hhyvs111</title>
   
 
 
@@ -164,7 +164,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/22/121-best-time-to-buy-and-sell-stock-e8-82-a1-e7-a5-a8-e6-9c-80-e4-bd-b3-e4-b9-b0-e5-8d-96-e5-8d-95-e6-ac-a1-e4-b9-b0-e5-8d-96/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/19/%E3%80%8A%E8%AE%A1%E7%AE%97%E5%B9%BF%E5%91%8A%E3%80%8B%E7%AC%94%E8%AE%B0-%E7%AC%AC%E4%BA%8C%E7%AB%A0-%E8%AE%A1%E7%AE%97%E5%B9%BF%E5%91%8A%E5%9F%BA%E7%A1%80/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -177,7 +177,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          121. Best Time to Buy and Sell Stock 股票最佳买卖 — 单次买卖
+          《计算广告》笔记-第二章-计算广告基础
         </h1>
 
         <div class="post-meta">
@@ -186,23 +186,17 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2019-03-22 07:44:53" itemprop="dateCreated datePublished" datetime="2019-03-22T07:44:53+08:00">2019-03-22</time>
+              <time title="创建时间：2020-05-19 17:01:11 / 修改时间：18:40:11" itemprop="dateCreated datePublished" datetime="2020-05-19T17:01:11+08:00">2020-05-19</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+                  <a href="/categories/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">阅读笔记</span></a>
                 </span>
             </span>
 
@@ -217,56 +211,29 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h2><p>一个数组，代表股票当前价格，买入和买出。怎么操作能使收益最大？只有卖掉当前股票才能买。</p>
-<pre><code>Example 1:
-Input: [7,1,5,3,6,4]
-Output: 5
-Explanation: Buy on day 2 (price = 1) and sell on day 5 (price = 6), profit = 6-1 = 5.
-             Not 7-1 = 6, as selling price needs to be larger than buying price.
+        <h1 id="计算广告基础"><a href="#计算广告基础" class="headerlink" title="计算广告基础"></a>计算广告基础</h1><h2 id="广告有效性原理"><a href="#广告有效性原理" class="headerlink" title="广告有效性原理"></a>广告有效性原理</h2><p><img src="/images/15898833604321.jpg" alt=""></p>
+<p>定性地说，越靠前的阶段，其效果的改善对点击率的贡献越大；而越靠后的阶段，其效果的改善对转化率的贡献越大。</p>
+<h2 id="互联网广告的技术特点"><a href="#互联网广告的技术特点" class="headerlink" title="互联网广告的技术特点"></a>互联网广告的技术特点</h2><ul>
+<li>技术和计算导向；</li>
+<li>效果的可衡量性；</li>
+<li>创意和投放方式的标准化；</li>
+<li>媒体概念的多样化；</li>
+<li>数据驱动的投放决策</li>
+</ul>
+<h2 id="关键词"><a href="#关键词" class="headerlink" title="关键词"></a>关键词</h2><ul>
+<li>广告点击与广告展现的比率称为点击率（Click Through Rate，CTR）；</li>
+<li>转化次数与到达次数的比例称为转化率（Conversion Rate，CVR）</li>
+</ul>
+<a id="more"></a> 
 
-Example 2:
-Input: [7,6,4,3,1]
-Output: 0
-Explanation: In this case, no transaction is done, i.e. max profit = 0.</code></pre><h2 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h2><h3 id="菜鸡版"><a href="#菜鸡版" class="headerlink" title="菜鸡版"></a>菜鸡版</h3><p>因为只能买卖一次，求出最大的值，然后求出最小的值。当最小值出现的时候，如果最大值的下标小于最小值的下标，那么重置最大值</p>
-<pre><code>class Solution {
-public:
-    int maxProfit(vector&lt;int&gt;&amp; prices) {
-        if(prices.size() &lt;= 1) return 0;
-        int maxProfit = 0;
-        int minPrice = prices[0], maxPrice = 0;
-        int indexMax = 0, indexMin = 0;
-        for(int i = 0;i &lt; prices.size();i++)
-        {
-            if(prices[i] &gt; maxPrice)
-            {
-                maxPrice = prices[i];
-                indexMax = i;
-            }
-            if(prices[i] &lt; minPrice)
-            {
-                minPrice = prices[i];
-                indexMin = i;
-                //当最小值出现的时候，如果最大值的下标小于最小值的下标，那么重置最大值
-                if(indexMin &gt; indexMax)
-                    maxPrice = 0;
-            }
-            if(maxPrice - minPrice &gt; maxProfit)
-                maxProfit = maxPrice - minPrice;
-        }
-        return maxProfit;
-    }
-};</code></pre><h3 id="大佬版"><a href="#大佬版" class="headerlink" title="大佬版"></a>大佬版</h3><p>遍历一次数组，用一个变量记录遍历过数中的最小值，然后每次计算当前值和和这个最小值之间的差值作为利润，然后每次选较大的利润来更新，当遍历完成后当前利润即为所求。</p>
-<pre><code>class Solution {
-public:
-    int maxProfit(vector&lt;int&gt;&amp; prices) {
-        int res = 0, buy = INT_MAX;
-        for (int price : prices) {
-            buy = min(buy, price);
-            res = max(res, price - buy);
-        }
-        return res;
-    }
-};</code></pre>
+<h2 id="广告计费模式"><a href="#广告计费模式" class="headerlink" title="广告计费模式"></a>广告计费模式</h2><ul>
+<li><code>CPM 结算</code>，即按照千次展示结算。在大多数互联网品牌广告，特别是视频广告中，CPM 都是主流的结算方式。</li>
+<li><code>CPC 结算</code>，即按点击结算。这种方式最早产生于搜索广告，并很快为大多数效果类广告产品所普遍采用。</li>
+<li><code>CPS（cost per sale）/CPA（cost per action）/ROI 结算</code>，即按照销售订单数、转 化行为数或投入产出比来结算。</li>
+<li><code>CPT（cost per time）结算</code>，这是针对大品牌广告主特定的广告活动，将某个广 告位以独占式方式交给某广告主，并按独占的时间段收取费用的方式。</li>
+</ul>
+<p><img src="/images/15898834877000.jpg" alt=""></p>
+
     </div>
 
     
@@ -275,10 +242,7 @@ public:
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/LeetCode/" rel="tag"># LeetCode</a>
-              <a href="/tags/DP/" rel="tag"># DP</a>
-              <a href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" rel="tag"># 动态规划</a>
-              <a href="/tags/%E6%95%B0%E7%BB%84/" rel="tag"># 数组</a>
+              <a href="/tags/%E8%AE%A1%E7%AE%97%E5%B9%BF%E5%91%8A/" rel="tag"># 计算广告</a>
           </div>
 
         
@@ -287,12 +251,12 @@ public:
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2019/03/22/448-find-all-numbers-disappeared-in-an-array-e6-89-be-e5-87-ba-e6-95-b0-e7-bb-84-e9-87-8c-e6-b6-88-e5-a4-b1-e7-9a-84-e5-80-bc/" rel="prev" title="448. Find All Numbers Disappeared in an Array 找出数组里消失的值">
-      <i class="fa fa-chevron-left"></i> 448. Find All Numbers Disappeared in an Array 找出数组里消失的值
+    <a href="/2020/04/15/github%E5%8D%9A%E5%AE%A2%E4%BB%8E0%E5%88%B01%E5%85%A8%E7%BA%AA%E5%BD%95&&Apple%E5%85%A8%E5%AE%B6%E6%A1%B6%E5%8D%9A%E5%AE%A2%E4%BD%93%E9%AA%8C/" rel="prev" title="github博客从0到1全纪录&&Apple全家桶博客体验">
+      <i class="fa fa-chevron-left"></i> github博客从0到1全纪录&&Apple全家桶博客体验
     </a></div>
       <div class="post-nav-item">
-    <a href="/2019/03/22/70-climbing-stairs-e7-88-ac-e6-a5-bc-e6-a2-af/" rel="next" title="70. Climbing Stairs 爬楼梯">
-      70. Climbing Stairs 爬楼梯 <i class="fa fa-chevron-right"></i>
+    <a href="/2020/05/19/%E3%80%8A%E8%AE%A1%E7%AE%97%E5%B9%BF%E5%91%8A%E3%80%8B%E7%AC%94%E8%AE%B0-%E7%AC%AC%E4%B8%80%E7%AB%A0-%E5%9C%A8%E7%BA%BF%E5%B9%BF%E5%91%8A%E7%BB%BC%E8%BF%B0/" rel="next" title="《计算广告》笔记-第一章-在线广告综述">
+      《计算广告》笔记-第一章-在线广告综述 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -352,7 +316,7 @@ public:
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#题意"><span class="nav-number">1.</span> <span class="nav-text">题意</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#题解"><span class="nav-number">2.</span> <span class="nav-text">题解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#菜鸡版"><span class="nav-number">2.1.</span> <span class="nav-text">菜鸡版</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#大佬版"><span class="nav-number">2.2.</span> <span class="nav-text">大佬版</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#计算广告基础"><span class="nav-number">1.</span> <span class="nav-text">计算广告基础</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#广告有效性原理"><span class="nav-number">1.1.</span> <span class="nav-text">广告有效性原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#互联网广告的技术特点"><span class="nav-number">1.2.</span> <span class="nav-text">互联网广告的技术特点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关键词"><span class="nav-number">1.3.</span> <span class="nav-text">关键词</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#广告计费模式"><span class="nav-number">1.4.</span> <span class="nav-text">广告计费模式</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -366,20 +330,20 @@ public:
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">113</span>
+          <span class="site-state-item-count">117</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-count">15</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">71</span>
+        <span class="site-state-item-count">72</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

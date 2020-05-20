@@ -157,6 +157,421 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/16/e5-b8-b8-e7-94-a8-e7-bc-96-e7-a8-8b-e6-a8-a1-e5-9e-8b/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="tanwenbo">
+      <meta itemprop="description" content="enjoy share">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hhyvs111">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/02/16/e5-b8-b8-e7-94-a8-e7-bc-96-e7-a8-8b-e6-a8-a1-e5-9e-8b/" class="post-title-link" itemprop="url">常用编程模型</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-02-16 08:47:38" itemprop="dateCreated datePublished" datetime="2019-02-16T08:47:38+08:00">2019-02-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" itemprop="url" rel="index"><span itemprop="name">计算机网络</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <ul>
+<li>单线程服务器的常用编程模型<ul>
+<li>定义</li>
+<li>Reactor模型</li>
+<li>Proactor模型</li>
+</ul>
+</li>
+<li>多线程服务器的常用编程模型<ul>
+<li>one loop per thread<ul>
+<li>优点</li>
+</ul>
+</li>
+<li>线程池</li>
+</ul>
+</li>
+<li>进程间通信只用TCP<ul>
+<li>分布式中使用TCP长连接通信</li>
+</ul>
+</li>
+</ul>
+<h1 id="单线程服务器的常用编程模型"><a href="#单线程服务器的常用编程模型" class="headerlink" title="单线程服务器的常用编程模型"></a>单线程服务器的常用编程模型</h1><p>一般比较广泛的就是（非阻塞IO多路复用和）“non-blocking IO + IO multiplexing”，也就是Reactor模式。</p>
+<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>在非阻塞IO多路复用里，程序的基本结构是一个事件循环，以事件驱动和事件回调的方式实现业务逻辑。</p>
+<p>建议在Linux里使用epoll。</p>
+<p>基于事件驱动的编程模型也有其本质的缺点，它要求事件回调函数必须是<strong>非阻塞</strong>的。对于涉及网络IO的请求响应式协议，它容易割裂业务逻辑，使其散步于多个回调函数之中，相对不容易理解和维护。</p>
+<h2 id="Reactor模型"><a href="#Reactor模型" class="headerlink" title="Reactor模型"></a>Reactor模型</h2><p>Reactor模式是处理并发I/O比较常见的一种模式，用于同步I/O，中心思想是将所有要处理的I/O事件注册到一个中心I/O多路复用器上，同时主线程/进程阻塞在多路复用器上；一旦有I/O事件到来或是准备就绪(文件描述符或socket可读、写)，多路复用器返回并将事先注册的相应I/O事件分发到对应的处理器中。</p>
+<p>Reactor是一种事件驱动机制，和普通函数调用的不同之处在于：应用程序不是主动的调用某个API完成处理，而是恰恰相反，Reactor逆置了事件处理流程，应用程序需要提供相应的接口并注册到Reactor上，如果相应的事件发生，Reactor将主动调用应用程序注册的接口，这些接口又称为“回调函数”。用“好莱坞原则”来形容Reactor再合适不过了：不要打电话给我们，我们会打电话通知你。</p>
+<p>Reactor模式与Observer模式在某些方面极为相似：当一个主体发生改变时，所有依属体都得到通知。不过，观察者模式与单个事件源关联，而反应器模式则与多个事件源关联。</p>
+<h2 id="Proactor模型"><a href="#Proactor模型" class="headerlink" title="Proactor模型"></a>Proactor模型</h2><blockquote>
+<p>先不写了</p>
+</blockquote>
+<h1 id="多线程服务器的常用编程模型"><a href="#多线程服务器的常用编程模型" class="headerlink" title="多线程服务器的常用编程模型"></a>多线程服务器的常用编程模型</h1><p>此书选择的是非阻塞IO多路复用和one loop per thread方式来编写多线程C++网络服务程序。</p>
+<h2 id="one-loop-per-thread"><a href="#one-loop-per-thread" class="headerlink" title="one loop per thread"></a>one loop per thread</h2><p>这种模型下，程序的每个IO线程有一个event loop（或者叫Reactor），用于处理读写和定时时间。</p>
+<h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul>
+<li>线程数目基本固定，可以在程序启动的时候设置，不会频繁创建与销毁。</li>
+<li>可以很方便地在线程间调配负载。</li>
+<li>IO事件发生的线程是固定的，同一个TCP连接不必考虑事件并发。</li>
+</ul>
+<p>Event loop代表了线程的主循环，需要让哪个线程干活,就把timer或IO channel(如TCP连接)注册到哪个线程的loop里即可。对实时性有要求的connection可以单独用一个线程;数据量大的connection可以独占一个线程，并把数据处理任务分摊到另几个计算线程中(用线程池);其他次要的辅助性connections可以共享一个线程。</p>
+<p>对于non-trivial（有一定复杂度的）的服务端程序，一般会采用non-blocking IO + IO multiplexing,每个connection/acceptor都会注册到某个event loop.上，程序里有多个event loop，每个线程至多有一个event loop。 多线程程序对event loop提出了更高的要求，那就是“线程安全”。要允许一个线程往别的线程的loop里塞东西7，这个loop必须得是线程安全的。</p>
+<h2 id="线程池"><a href="#线程池" class="headerlink" title="线程池"></a>线程池</h2><p>对于没有IO而光有计算任务的线程，使用event loop有点浪费，用阻塞队列实现任务队列。</p>
+<pre><code>typedef boost:: function&lt;void()&gt; Functor;
+BlockingQueue&lt;Functor&gt; taskQueue; // 銭程安全的阻塞臥列
+void workerThread()
+{
+while (running) // running 変量是个全局柝志
+Functor task = taskQueue.take(); 1/ this blocks
+taskO); // 在戸品代碣中需要考慮昇常外理
+}</code></pre><p>实现线程池特别容易，下面是启动容量N的线程池</p>
+<pre><code>int N = num_ of_ _computing_ threads;
+for(int i=0;i&lt;N;++i)
+{
+    create_thread(&amp;workerThread); // 伪代码:启动线程
+}
+//使用起来也很简单:
+Foo foo; // Foo有calc() 成员函数
+boost::function&lt;void()&gt; task = boost::bind(&amp;Foo::calc, &amp;foo);
+taskQueue.post (task) ;
+//比方说主IO线程收到-一个新建连接，分配给某个子IO线程处理。</code></pre><p>上面十几行代码就实现了一个简单的固定数目的线程池，功能大概相当于Java中的ThreadPoolExecutor的某种“配置”。</p>
+<h1 id="进程间通信只用TCP"><a href="#进程间通信只用TCP" class="headerlink" title="进程间通信只用TCP"></a>进程间通信只用TCP</h1><p>为什么进程通信只用TCP？也就是Sockets，最大的好处在于：可以跨主机，具有伸缩性。</p>
+<p>在编程上，TCP sockets和pipe都是操作文件描述符，用来收发字节流，都可以read/write/fcntl/select/poll等。不同的是，TCP是双向的，Linux的pipe是单向的，进程间双向通信还得开两个文件描述符，不方便;而且进程要有父子关系才能用pipe，这些都限制了pipe的使用。在收发字节流这一通信模型下，没有比Sockets/TCP更自然的IPC了。当然，pipe也有一个经典应用场景，那就是写Reactor/event loop时用来异步唤醒select ( 或等价的poll/epoll_wait) 调用。</p>
+<h2 id="分布式中使用TCP长连接通信"><a href="#分布式中使用TCP长连接通信" class="headerlink" title="分布式中使用TCP长连接通信"></a>分布式中使用TCP长连接通信</h2><p>使用TCP长连接的好处有两点:</p>
+<ul>
+<li>容易定位分布式系统中的服务之间的依赖关系。只要在机器上运行netstat -tpna|grep:port就能立刻列出用到某服务的客户端地址( Foreign列),然后在客户端的机器上用netstat或lsof命令找出是哪个进程发起的连接。这样在迁移服务的时候能有效地防止出现outage。TCP短连接和UDP则不具备这一特性。</li>
+<li>通过接收和发送队列的长度也较容易定位网络或程序故障。在正常运行的时候，netstat 打印的Recv-Q和Send-Q都应该接近0，或者在0附近摆动。如果Recv-Q保持不变或持续增加，则通常意味着服务进程的处理速度变慢，可能发生了死锁或阻塞。如果Send-Q保持不变或持续增加，有可能是对方服务器太忙、来不及处理，也有可能是网络中间某个路由器或交换机故障造成丢包，甚至对方服务器掉线，这些因素都可能表现为数据发送不出去。</li>
+</ul>
+<p><img src="https://tanwenbo.top/wp-content/uploads/2019/02/bb25a222093a30cff4375e57bae60f62.png" alt=""></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/16/singleton/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="tanwenbo">
+      <meta itemprop="description" content="enjoy share">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hhyvs111">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/02/16/singleton/" class="post-title-link" itemprop="url">Singleton</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-02-16 06:57:37" itemprop="dateCreated datePublished" datetime="2019-02-16T06:57:37+08:00">2019-02-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Singleton-单例"><a href="#Singleton-单例" class="headerlink" title="Singleton 单例"></a>Singleton 单例</h1><p>单例模式是设计模式之一，和之前的观察者模式又是不一样的。</p>
+<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>单例模式，也叫单子模式，是一种常用的软件设计模式。在应用这个模式时，单例对象的类必须保证只有一个实例存在。许多时候整个系统只需要拥有一个的全局对象，这样有利于我们协调系统整体的行为。比如在某个服务器程序中，该服务器的配置信息存放在一个文件中，这些配置数据由一个单例对象统一读取，然后服务进程中的其他对象再通过这个单例对象获取这些配置信息。这种方式简化了在复杂环境下的配置管理。</p>
+<h2 id="实现思路"><a href="#实现思路" class="headerlink" title="实现思路"></a>实现思路</h2><p>一个类能返回对象一个引用(永远是同一个)和一个获得该实例的方法（必须是静态方法，通常使用getInstance这个名称）；当我们调用这个方法时，如果类持有的引用不为空就返回这个引用，如果类保持的引用为空就创建该类的实例并将实例的引用赋予该类保持的引用；同时我们还将该类的<code>构造函数</code>定义为<code>私有方法</code>，这样其他处的代码就无法通过调用该类的构造函数来实例化该类的对象，只有通过该类提供的<code>静态方法</code>来得到该类的唯一实例。</p>
+<pre><code>class SingleObject{
+private:
+    SingleObject(){}
+    static SingleObject instance = new SingleObject();
+public:
+    static SingleObject getInstance(){
+        return instace;
+    }
+ };</code></pre><h3 id="互斥锁"><a href="#互斥锁" class="headerlink" title="互斥锁"></a>互斥锁</h3><p>单例模式在多线程的应用场合下必须小心使用。如果当唯一实例尚未创建时，有两个线程同时调用创建方法，那么它们同时没有检测到唯一实例的存在，从而同时各自创建了一个实例，这样就有两个实例被构造出来，从而违反了单例模式中实例唯一的原则。 解决这个问题的办法是为指示类是否已经实例化的变量提供一个互斥锁(虽然这样会降低效率)。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/13/e7-ba-bf-e7-a8-8b-e5-90-8c-e6-ad-a5-e7-b2-be-e8-a6-81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="tanwenbo">
+      <meta itemprop="description" content="enjoy share">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hhyvs111">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/02/13/e7-ba-bf-e7-a8-8b-e5-90-8c-e6-ad-a5-e7-b2-be-e8-a6-81/" class="post-title-link" itemprop="url">线程同步精要</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-02-13 07:32:54" itemprop="dateCreated datePublished" datetime="2019-02-13T07:32:54+08:00">2019-02-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="线程同步精要"><a href="#线程同步精要" class="headerlink" title="线程同步精要"></a>线程同步精要</h1><h2 id="四项原则"><a href="#四项原则" class="headerlink" title="四项原则"></a>四项原则</h2><ol>
+<li>首要原则是尽量最低限度地共享对象，减少需要同步的场合。一个对象能不暴露给别的线程就不要暴露;如果要暴露，优先考虑immutable对象;实在不行 才暴露可修改的对象，并用同步措施来充分保护它。</li>
+<li>其次是使用高级的并发编程构件，如TaskQueue、Producer-Consumer Queue、CountDownLatch等等。</li>
+<li>最后不得已必须使用底层同步原语( primitives)时，只用非递归的互斥器和条件变量，慎用读写锁，不要用信号量。</li>
+<li>除了使用atomic整数之外，不自己编写lock-free代码3，也不要用“内核级’同步原语45。不凭空猜测“哪种做法性能会更好”，比如spin lock vs. mutex。</li>
+</ol>
+<h2 id="互斥器"><a href="#互斥器" class="headerlink" title="互斥器"></a>互斥器</h2><p>保护了临界区，任何一个时刻最多只能有一个线程再次mutex画出的临界区活动。保护共享数据原则：</p>
+<h4 id="主要原则"><a href="#主要原则" class="headerlink" title="主要原则"></a>主要原则</h4><ul>
+<li>使用RAII封装mutex的创建、销毁、加锁、解锁这四个操作。</li>
+</ul>
+<blockquote>
+<p>在C++中，这种在生命周期结束时释放资源的方法被称作资源获取即初始化（Resource Acquisition Is Initialization (RAII)）</p>
+</blockquote>
+<ul>
+<li><p>只用非递归的mutex（不可重入的mutex）；</p>
+</li>
+<li><p>不手工调用lock()和unlock()函数，一切交给栈上的Guard对象的构造和析构函数负责。Guard对象的生命期正好等于临界区(分析对象在什么时候析构 是C++程序员的基本功)。这样我们保证始终在同一个函数同一个scope里对某个mutex加锁和解锁。避免在foo()里加锁,然后跑到bar()里解锁;也避 免在不同的语句分支中分别加锁、解锁。这种做法被称为Scoped Locking</p>
+</li>
+<li><p>在每次构造Guard对象的时候，思考一路上(调用栈上)已经持有的锁，防止因加锁顺序不同而导致死锁( deadlock)。由于Guard对象是栈上对象，看函数调用栈就能分析用锁的情况,非常便利。</p>
+</li>
+</ul>
+<h4 id="次要原则"><a href="#次要原则" class="headerlink" title="次要原则"></a>次要原则</h4><ul>
+<li><p>不使用跨进程的mutex,进程间通信只用TCP sockets。</p>
+</li>
+<li><p>加锁、解锁在同一个线程，线程a不能去unlock线程b已经锁住的mutex</p>
+<p>(RAII自动保证)。</p>
+</li>
+<li><p>别忘了解锁(RAII自动保证)。</p>
+</li>
+<li><p>不重复解锁(RAII自动保证)。</p>
+</li>
+<li><p>必要的时候可以考虑用PTHREAD_ MUTEX_ ERRORCHECK来排错。</p>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/12/tcp-e7-bd-91-e7-bb-9c-e7-bc-96-e7-a8-8b-e6-9c-ac-e8-b4-a8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="tanwenbo">
+      <meta itemprop="description" content="enjoy share">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hhyvs111">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/02/12/tcp-e7-bd-91-e7-bb-9c-e7-bc-96-e7-a8-8b-e6-9c-ac-e8-b4-a8/" class="post-title-link" itemprop="url">TCP网络编程本质</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-02-12 08:35:46" itemprop="dateCreated datePublished" datetime="2019-02-12T08:35:46+08:00">2019-02-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" itemprop="url" rel="index"><span itemprop="name">计算机网络</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="TCP网络编程本质"><a href="#TCP网络编程本质" class="headerlink" title="TCP网络编程本质"></a>TCP网络编程本质</h1><p>基于事件的非阻塞网络编程是编写高性能并发网络服务程序的主流模式，头一次 使用这种方式编程通常需要转换思维模式。把原来“主动调用 recv(2) 来接收数据， 主动调用 accept(2) 来接受新连接，主动调用 send(2) 来发送数据”的思路换成“注 册一个收数据的回调，网络库收到数据会调用我，直接把数据提供给我，供我消费。 注册一个接受连接的回调， 网络库接受了新连接会回调我， 直接把新的连接对象传 给我，供我使用。需要发送数据的时候，只管往连接中写，网络库会负责无阻塞地发 送。” 本质处理事件</p>
+<ol>
+<li>连接的建立， 包括服务端接受（accept）新连接和客户端成功发起（connect） 连接。TCP 连接一旦建立，客户端和服务端是平等的，可以各自收发数据。</li>
+<li>连接的断开，包括主动断开（close、shutdown）和被动断开（read(2) 返回 0）。</li>
+<li>消息到达，文件描述符可读。这是最为重要的一个事件，对它的处理方式决定 了网络编程的风格（阻塞还是非阻塞，如何处理分包，应用层的缓冲如何设计， 等等）。</li>
+</ol>
+<p>3.5 消息发送完毕，这算半个。对于低流量的服务，可以不必关心这个事件；另外， 这里的“发送完毕”是指将数据写入操作系统的缓冲区，将由 TCP 协议栈负责 数据的发送与重传，不代表对方已经收到数据。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/04/e7-ba-bf-e7-a8-8b-e5-ae-89-e5-85-a8-e7-9a-84-e5-af-b9-e8-b1-a1-e7-94-9f-e5-91-bd-e6-9c-9f-e7-ae-a1-e7-90-86/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1103,467 +1518,6 @@ public:
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/18/e5-90-ab-e6-9c-89-e5-8f-af-e5-8f-98-e5-bd-a2-e5-8f-82-e7-9a-84-e5-87-bd-e6-95-b0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="tanwenbo">
-      <meta itemprop="description" content="enjoy share">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="hhyvs111">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/01/18/e5-90-ab-e6-9c-89-e5-8f-af-e5-8f-98-e5-bd-a2-e5-8f-82-e7-9a-84-e5-87-bd-e6-95-b0/" class="post-title-link" itemprop="url">含有可变形参的函数</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-01-18 09:21:15" itemprop="dateCreated datePublished" datetime="2019-01-18T09:21:15+08:00">2019-01-18</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="含有可变形参的参数"><a href="#含有可变形参的参数" class="headerlink" title="含有可变形参的参数"></a>含有可变形参的参数</h1><p>有时候我们无法提前预知应该向参数传递几个实参，为了编写能处理不同数量实参的函数，C++11新标准提供了两种主要的方法:如果所有的实参类型相同，可以传递一个名为<strong>initializer_list</strong>的标准库类型;如果实参的类型不同，我们可以编写一种特殊的函数，也就是所谓的可变参数模板，关于它的细节将在16.4节(第618页)介绍。</p>
-<blockquote>
-<p>就是类似vector，你不知道数组的长度就使用vector。</p>
-</blockquote>
-<pre><code>void error_msg (initializer_list&lt;string&gt; il)
-{
-    for (auto beg = il.begin() ; beg != il.end() ; + +beg)
-    cout &lt;&lt; *beg&lt;&lt;” ”;
-    cout &lt;&lt; endl ;
-}</code></pre><blockquote>
-<p>这个好像和什么vector没啥区别啊，但是为什么要特别用到呢？</p>
-</blockquote>
-<p>和vector不一样的是，initializer_list对象中的元素永远是常量值，我们无法改变initializer_list对象中元素的值。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/18/e5-bc-95-e7-94-a8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="tanwenbo">
-      <meta itemprop="description" content="enjoy share">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="hhyvs111">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/01/18/e5-bc-95-e7-94-a8/" class="post-title-link" itemprop="url">引用</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-01-18 07:46:07" itemprop="dateCreated datePublished" datetime="2019-01-18T07:46:07+08:00">2019-01-18</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><blockquote>
-<p>这个东西用不好就是坑，用好了还是很强的。</p>
-</blockquote>
-<h2 id="传参"><a href="#传参" class="headerlink" title="传参"></a>传参</h2><p>传参就不说了，主要是避免一个问题——避免拷贝。有些数据较大的对象或者容器，如果传参的时候不用引用的话需要对其进行拷贝，这样的开销较大。应该使用引用值，直接对原数组进行操作，这样避免额外的开销，效率也会更快。</p>
-<pre><code>//比如对这个vector容器进行操作的时候，一般都是使用引用值。
-vector&lt;int&gt; test(vector&lt;int&gt; &amp; nums)
-{
-...
-}</code></pre><h2 id="常量"><a href="#常量" class="headerlink" title="常量"></a>常量</h2><p>有时候并不改变传入的参数的值，那么建议使用<strong>对常量的引用</strong></p>
-<pre><code>// 比较两个string的大小
-bool isShorter (const string &amp;s1, const string &amp;s2)
-[
-return s1.size() &lt; s2.size() ;
-]</code></pre><blockquote>
-<p>如果函数无须改变引用形参的值，最好将其声明为常量引用。</p>
-</blockquote>
-<h2 id="引用形参返回额外信息"><a href="#引用形参返回额外信息" class="headerlink" title="引用形参返回额外信息"></a>引用形参返回额外信息</h2><p>一个函数只能返回一个值，然而有时候函数需要同时返回多个值，引用形参为我们一次返回多个结果提供了有效途径。</p>
-<p>简单来说就是在传参的时候使用引用值，然后在函数体内改变这个引用的值，也就达到了一次返回多个值。</p>
-<pre><code>//返回s中c第一次出现的位置索引
-//引用形参occurs负责统计c出现的总次数
-string: :size_ type find_ char (const string &amp;S，char C,
-string: :size_ type &amp;occurs )
-{
-auto ret = s.size() ;
-//第一次出现的位置(如果有的话)
-occurs 
-= 0;
-//设置表示出现次数的形参的值
-for (decltype(ret) i = 0; i != s.size() ; ++i) {
-    if (s[i] == c) {
-      if (ret == s.size() )
-        ret = i;
-        . //记录c第一次出现的位置
-        ++occurs ;
-        . //将出现的次数加1
-        }
-    }
-return ret ;
-//出现次数通过occurs隐式地返回
-}</code></pre><p>当我们调用find_char函数时，必须传入三个实参:作为查找范围的一个string对象、要找的字符以及一个用于保存字符出现次数的size_ type (参见3.2.2节，第79页)对象。假设s是一个string对象，ctr是一个size_ type对象，则我们通过如下形式调用find char函数:</p>
-<pre><code>auto index = find char(s, &apos;o&apos;，ctr) ;</code></pre><p>调用完成后，如果string对象中确实存在o,那么ctr的值就是。出现的次数，index指向。第一次出现的位置;否则如果string对象中没有o，index等于s.size()而ctr等于0。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/18/e5-b1-80-e9-83-a8-e9-9d-99-e6-80-81-e5-af-b9-e8-b1-a1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="tanwenbo">
-      <meta itemprop="description" content="enjoy share">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="hhyvs111">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/01/18/e5-b1-80-e9-83-a8-e9-9d-99-e6-80-81-e5-af-b9-e8-b1-a1/" class="post-title-link" itemprop="url">局部静态对象</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-01-18 07:16:13" itemprop="dateCreated datePublished" datetime="2019-01-18T07:16:13+08:00">2019-01-18</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="局部静态对象"><a href="#局部静态对象" class="headerlink" title="局部静态对象"></a>局部静态对象</h1><p>在程序的执行路径第一次经过对象定义局域时初始化，知道程序终止时才被销毁，在此期间即使对象所在的函数结束也不会对它有影响。</p>
-<pre><code>size_t count_calls ()
-f
-static size_t ctr = O; //调用结束后，这个值仍然有效
-return ++ctr;
-)
-int main()
-[
-for(sizeti=O;i!=10;++i)
-cout &lt;&lt; count calls () &lt;&lt; endl ;
-return O;
-)</code></pre><p>在控制流第一次经过ctr的定义之前，ctr被创建并初始化为0。每次调用将ctr加1并返回新值。每次执行count_calls函数时，变量ctr的值都已经存在并且等于函数上一次退出时ctr的值。因此，第二次调用时ctr的值是1，第三次调用时ctr的值是2，以此类推。</p>
-<blockquote>
-<p>反正就是静态局部变量初始化后再次调用该函数，crr不会重新初始化，而是继续用上次的值。</p>
-</blockquote>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/17/try-e8-af-ad-e5-8f-a5-e5-9d-97-e5-92-8c-e5-bc-82-e5-b8-b8-e5-a4-84-e7-90-86/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="tanwenbo">
-      <meta itemprop="description" content="enjoy share">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="hhyvs111">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/01/17/try-e8-af-ad-e5-8f-a5-e5-9d-97-e5-92-8c-e5-bc-82-e5-b8-b8-e5-a4-84-e7-90-86/" class="post-title-link" itemprop="url">try语句块和异常处理</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-01-17 08:44:02" itemprop="dateCreated datePublished" datetime="2019-01-17T08:44:02+08:00">2019-01-17</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="try语句块和异常处理"><a href="#try语句块和异常处理" class="headerlink" title="try语句块和异常处理"></a>try语句块和异常处理</h1><ul>
-<li>try语句块和异常处理<ul>
-<li>定义<ul>
-<li>异常处理方式</li>
-</ul>
-</li>
-<li>throw表达式<ul>
-<li>cerr解释</li>
-</ul>
-</li>
-<li>try-catch</li>
-<li>标准异常<ul>
-<li>定义的异常类</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<p>这个东西一般比较少用到，好像以前在Java里经常用。</p>
-<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>异常是指存在于运行时的反常行为，这些行为超出了函数正常功能的范围。典型的异常包括失去数据库连接以及遇到意外输入等。处理反常行为可能是设计所有系统最难的一部分。</p>
-<h3 id="异常处理方式"><a href="#异常处理方式" class="headerlink" title="异常处理方式"></a>异常处理方式</h3><ul>
-<li>throw表达式；</li>
-<li>try语句块，也就是try-catch。try语句块中代码抛出的异常通常会被磨具个catch子句处理。因为catch子句“处理”异常，所以它们也被称作异常处理代码；</li>
-<li>一套异常类。</li>
-</ul>
-<p>下面详细介绍一下这几种方式。</p>
-<h2 id="throw表达式"><a href="#throw表达式" class="headerlink" title="throw表达式"></a>throw表达式</h2><p>一般业务代码中都要处理错误，输出一些信息，这样才能快速定位哪里出错了。比如下面这个代码检查它读入的记录是否是关于同一种书籍，如果不是，输出一条信息然后退出。</p>
-<pre><code>Sales_ item item1, item2;
-cin &gt;&gt; item1 &gt;&gt; item2;
-// 检查 item1 和 item2 是否表示同一种书籍
-if(item1.isbn() == item2. isbn()) {
-cout &lt;&lt; item1 + item2 &lt;&lt; endl ;
-return O; // success
-} else {
-cerr &lt;&lt; &quot;Data must refer to same ISBN&quot; &lt;&lt; endl ;
-//cerr 是一个ostream对象，关联到标准错误，通常写入到与标准输出相同的设备。
-return -1; // failed
-}</code></pre><h4 id="cerr解释"><a href="#cerr解释" class="headerlink" title="cerr解释"></a>cerr解释</h4><p>cerr不经过缓冲而直接输出，一般用于迅速输出出错信息，是标准错误，默认情况下被关联到标准输出流，但它不被缓冲，也就说错误消息可以直接发送到显示器，而无需等到缓冲区或者新的换行符时，才被显示。一般情况下不被重定向。</p>
-<blockquote>
-<p>这个东西很少见啊，又学习到了新的知识了。</p>
-</blockquote>
-<p>接上述代码，在真实的程序中，应该把对象相加的代码和用户交互的代码分离开来。此例中，我们改写程序似的检查完成和惠普不再直接输出一条信息，而是<strong>抛出一个异常</strong>：</p>
-<pre><code>//首先检查两条数据是否是关于同一种书籍的
-if (iteml. isbn() != item2 . isbn() )
-throw runtime_error (&quot;Data must refer to same ISBN&quot;) ;
-//如果程序执行到了这里，表示两个ISBN是相同的
-cout &lt;&lt; item1 + item2 &lt;&lt; endl ;</code></pre><blockquote>
-<p>但是这样做有什么用呢？是给后面的try-catch使用的？</p>
-</blockquote>
-<h2 id="try-catch"><a href="#try-catch" class="headerlink" title="try-catch"></a>try-catch</h2><p>try语句块的一开始是关键字try，随后紧跟着一个块。</p>
-<p>在之前的例子里，我们使用了一个throw表达式以避免把两个代表不同书籍的 Sales_item相加。我们假设执行Sales_item 对象加法的代码是与用户交互的代码分离开来的。其中与用户交互的代码负责处理发生的异常，它的形式可能如下所示:</p>
-<pre><code>while (cin &gt;&gt; item1 &gt;&gt; item2) {
-try {
-//执行添加两个Sales_ item对象的代码
-//如果添加失败，代码抛出一个runtime_ error异常
-    if (iteml. isbn() != item2 . isbn() )
-    throw runtime_error (&quot;Data must refer to same ISBN&quot;) ;
-    //如果程序执行到了这里，表示两个ISBN是相同的
-    cout &lt;&lt; item1 + item2 &lt;&lt; endl ;
-
-} catch (runtime_error err) {
-//提醒用户两个ISBN必须一致，询问是否重新输入
-    cout &lt;&lt; err.what ()&lt;&lt; &quot;\nTry Again? Enter y or n&quot; &lt;&lt; endl ;
-    char C;
-    cin &gt;&gt; C;
-    if(!cin || c ==&apos;n&apos; )
-        break; // 跳出while循环
-      }
- }</code></pre><p>上面的<code>err.what()</code>就是这个runtime_error后面的字符串。</p>
-<p>给用户的提示信息中输出了err.what() 的返回值。我们知道err的类型是 runtime error, 因此能推断what是runtime error 类的一一个成员函数(参见1.5.2节，第20页)。每个标准库异常类都定义了名为what的成员函数，这些函数没有参数，返回值是C风格字符串(即const char*)。 其中， runtime error的what成员返回的是初始化–个具体对象时所用的string对象的副本。如果上一-节编写的代码抛出异常，则本节的catch子句输出：</p>
-<pre><code>Data must refer to same ISBN
-Try Again? Enter y or n</code></pre><h2 id="标准异常"><a href="#标准异常" class="headerlink" title="标准异常"></a>标准异常</h2><p>C++标准库定义了一-组类，用于报告标准库函数遇到的问题。这些异常类也可以在用户编写的程序中使用，它们分别定义在4个头文件中:</p>
-<ul>
-<li>exception头文件定义了最通用的异常类exception。它只报告异常的发生，不提供任何额外信息。</li>
-<li>stdexcept头文件定义了几种常用的异常类，详细信息在表5.1中列出。</li>
-<li>new头文件定义了bad_alloc异常类型，这种类型将在12.1.2节(第407页)详细介绍。</li>
-<li>type_info头文件定义了bad_cast异常类型，这种类型将在19.2节(第731页)详细介绍。</li>
-</ul>
-<h4 id="定义的异常类"><a href="#定义的异常类" class="headerlink" title="定义的异常类"></a><stdexcept>定义的异常类</h4><p>类</p>
-<p>解释</p>
-<p>exception</p>
-<p>最常见的问题</p>
-<p>runtime_error</p>
-<p>只有在运行时才能检测出的问题</p>
-<p>range_error</p>
-<p>运行时错误:生成的结果超出了有意义的值域范围</p>
-<p>overflow error</p>
-<p>运行时错误:计算上溢</p>
-<p>underflow_error</p>
-<p>运行时错误:计算下溢</p>
-<p>logic_error</p>
-<p>程序逻辑错误</p>
-<p>domain_error</p>
-<p>逻辑错误:参数对应的结果值不存在</p>
-<p>invalid_argument</p>
-<p>逻辑错误:无效参数</p>
-<p>length_error</p>
-<p>逻辑错误:试图创建一个超出该类型最大长度的对象</p>
-<p>out_of_range</p>
-<p>逻辑错误:使用一个超出有效范围的值</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1633,7 +1587,7 @@ Try Again? Enter y or n</code></pre><h2 id="标准异常"><a href="#标准异常
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">113</span>
+          <span class="site-state-item-count">117</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

@@ -157,6 +157,396 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/04/linux-e4-b8-8b-e7-bc-96-e5-86-99-e5-b0-8f-e8-84-9a-e6-9c-ac-e6-8f-90-e9-ab-98-e6-95-88-e7-8e-87/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="tanwenbo">
+      <meta itemprop="description" content="enjoy share">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hhyvs111">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/07/04/linux-e4-b8-8b-e7-bc-96-e5-86-99-e5-b0-8f-e8-84-9a-e6-9c-ac-e6-8f-90-e9-ab-98-e6-95-88-e7-8e-87/" class="post-title-link" itemprop="url">Linux下编写小脚本提高效率</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-07-04 01:07:57" itemprop="dateCreated datePublished" datetime="2018-07-04T01:07:57+08:00">2018-07-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Linux下编写小脚本提高效率"><a href="#Linux下编写小脚本提高效率" class="headerlink" title="Linux下编写小脚本提高效率"></a>Linux下编写小脚本提高效率</h1><blockquote>
+<p>比如我经常需要重启apache2，有时候命令行记不住，总是要去百度或者用上下键翻来翻去。那么可以编写脚本解决这个问题！</p>
+</blockquote>
+<h5 id="1）建一个文件夹存放脚本"><a href="#1）建一个文件夹存放脚本" class="headerlink" title="1）建一个文件夹存放脚本"></a>1）建一个文件夹存放脚本</h5><pre><code>root@ServerA:~# mkdir script</code></pre><h5 id="2）将该文件添加到PATH里（2和7选一个）"><a href="#2）将该文件添加到PATH里（2和7选一个）" class="headerlink" title="2）将该文件添加到PATH里（2和7选一个）"></a>2）将该文件添加到PATH里（2和7选一个）</h5><pre><code>root@ServerA:~# PATH=$PATH:/root/script</code></pre><h5 id="3）新建文件"><a href="#3）新建文件" class="headerlink" title="3）新建文件"></a>3）新建文件</h5><pre><code>root@ServerA:~# cd script
+root@ServerA:~/script# vim apR</code></pre><h5 id="4）将命令写入脚本并保存"><a href="#4）将命令写入脚本并保存" class="headerlink" title="4）将命令写入脚本并保存"></a>4）将命令写入脚本并保存</h5><pre><code>1 #!/bin/bash
+2 # This script can restart the apache2 server
+3 sudo /etc/init.d/apache2 restart</code></pre><h5 id="5）更改权限"><a href="#5）更改权限" class="headerlink" title="5）更改权限"></a>5）更改权限</h5><pre><code>root@ServerA:~/script# chmod u+x apR</code></pre><p>也可以更改这个文件夹的权限</p>
+<pre><code>root@ServerA:~/script# chmod -R 755 /root/script
+//—R 递归更改权限</code></pre><h5 id="6）运行脚本"><a href="#6）运行脚本" class="headerlink" title="6）运行脚本"></a>6）运行脚本</h5><pre><code>root@ServerA:~/script# ./apR
+[ ok ] Restarting apache2 (via systemctl): apache2.service.</code></pre><blockquote>
+<p>但是有个弊端，只能在script目录下运行脚本，那么需要解决这个问题</p>
+</blockquote>
+<h5 id="7）将脚本目录加入到环境变量"><a href="#7）将脚本目录加入到环境变量" class="headerlink" title="7）将脚本目录加入到环境变量"></a>7）将脚本目录加入到环境变量</h5><pre><code>root@ServerA:~# vim $HOME/.bashrc</code></pre><p>放在 /etc/profile随着系统更新会失效，6.6节有提到。 在里面加入：</p>
+<pre><code>export PATH=&quot;$PATH&quot;:/root/script/</code></pre><p><strong>保存，重启系统才能生效。</strong>或者 <code>source</code></p>
+<pre><code>root@ServerA:~# reboot
+root@ServerA:~# source /etc/profile</code></pre><h5 id="8）在任意界面运行脚本"><a href="#8）在任意界面运行脚本" class="headerlink" title="8）在任意界面运行脚本"></a>8）在任意界面运行脚本</h5><pre><code>root@ServerA:~# apR
+[ ok ] Restarting apache2 (via systemctl): apache2.service.</code></pre><p>还不用加<code>./</code>就能运行，很是方便。</p>
+<blockquote>
+<p>注意如果脚本里写了cd，那么脚本运行的时候会创建一个子shell然后子shell里cd到了目录。运行的时候加个<code>.</code> 即可在当前shell生效。</p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/28/ubuntu-16-04-e6-9b-b4-e6-96-b0openssl-e8-87-b31-1-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="tanwenbo">
+      <meta itemprop="description" content="enjoy share">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hhyvs111">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/06/28/ubuntu-16-04-e6-9b-b4-e6-96-b0openssl-e8-87-b31-1-1/" class="post-title-link" itemprop="url">Ubuntu 16.04 更新openssl至1.1.1</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-06-28 01:02:47" itemprop="dateCreated datePublished" datetime="2018-06-28T01:02:47+08:00">2018-06-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">教程</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Ubuntu-16-04-更新openssl至1-1-1"><a href="#Ubuntu-16-04-更新openssl至1-1-1" class="headerlink" title="Ubuntu 16.04 更新openssl至1.1.1"></a>Ubuntu 16.04 更新openssl至1.1.1</h1><blockquote>
+<p>因为要用SM2国密算法，而Ubuntu自带的openssl不支持SM2。需要将openssl更新至1.1.1，网上的教程不齐就单独写一个。</p>
+</blockquote>
+<h2 id="1-查看版本"><a href="#1-查看版本" class="headerlink" title="1 查看版本"></a>1 查看版本</h2><p>先看看自己的版本是多少：</p>
+<pre><code>openssl version</code></pre><p>一般是很旧的，不会是最新的。</p>
+<h2 id="2-下载并解压源码"><a href="#2-下载并解压源码" class="headerlink" title="2 下载并解压源码"></a>2 下载并解压源码</h2><pre><code>cd /usr/local/src
+wget https://www.openssl.org/source/openssl-1.1.1-pre8.tar.gz
+tar -zxf openssl-1.1.1-pre8.tar.gz</code></pre><h2 id="3-编译安装"><a href="#3-编译安装" class="headerlink" title="3 编译安装"></a>3 编译安装</h2><p>进入自己的安装目录进行编译</p>
+<pre><code>cd openssl-1.1.1-pre8
+./config
+make install</code></pre><h2 id="4-移除旧版本-Openssl"><a href="#4-移除旧版本-Openssl" class="headerlink" title="4 移除旧版本 Openssl"></a>4 移除旧版本 Openssl</h2><p>这个看你自己的目录，我的是在/usr/bin里。找不到可以用<code>find -name openssl</code>找一下</p>
+<pre><code>mv /usr/bin/openssl /tmp/</code></pre><p>再将编译好的软连接到源目录</p>
+<pre><code>ln -s /usr/local/bin/openssl /usr/bin/openssl</code></pre><h2 id="5-复制源码"><a href="#5-复制源码" class="headerlink" title="5 复制源码"></a>5 复制源码</h2><p>如果出现：</p>
+<pre><code>openssl: error while loading shared libraries: libssl.so.1.1: cannot open shared object file: No such file or directory</code></pre><p>那么将源码里的两个文件复制到系统目录：</p>
+<pre><code>cd /usr/local/src
+cp libssl.so.1.1 /lib/x86_64-linux-gnu
+libcrypto.so.1.1 /lib/x86_64-linux-gnu</code></pre><p>这个时候就升级成功了！ 输入<code>openssl version</code>： <img src="https://tanwenbo.top/wp-content/uploads/2018/06/0fbbaed39e0ac280463953f7d437e98b.png" alt=""> 参考： <a href="https://w3ctech.com/topic/1873" target="_blank" rel="noopener">https://w3ctech.com/topic/1873</a> <a href="https://sb.sb/blog/centos-upgrade-openssl/" target="_blank" rel="noopener">https://sb.sb/blog/centos-upgrade-openssl/</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/10/linux-e4-b8-8bcore-dump-e8-b0-83-e8-af-95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="tanwenbo">
+      <meta itemprop="description" content="enjoy share">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hhyvs111">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/06/10/linux-e4-b8-8bcore-dump-e8-b0-83-e8-af-95/" class="post-title-link" itemprop="url">Linux下core dump调试</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-06-10 01:14:02" itemprop="dateCreated datePublished" datetime="2018-06-10T01:14:02+08:00">2018-06-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Linux下core-dump调试"><a href="#Linux下core-dump调试" class="headerlink" title="Linux下core dump调试"></a>Linux下core dump调试</h1><p><code>linux``gdb``dump``posts</code></p>
+<h2 id="1-前言"><a href="#1-前言" class="headerlink" title="1 前言"></a>1 前言</h2><p>很多时候在跑代码的时候会碰到以下错误： <img src="http://tanwenbo.top/wp-content/uploads/2018/06/4621c5a223688d45d97243c2ef9f7812.png" alt=""> 然后有时候又不能快速定位错误的位置，这个时候就需要进行GDB的段错误调试。</p>
+<blockquote>
+<p>通常情况下，core文件会包含了程序运行时的内存，寄存器状态，堆栈指针，内存管理信息还有各种函数调用堆栈信息等，我们可以理解为是程序工作当前状态存储生成第一个文件，许多的程序出错的时候都会产生一个core文件，通过工具分析这个文件，我们可以定位到程序异常退出的时候对应的堆栈调用等信息，找出问题所在并进行及时解决。</p>
+</blockquote>
+<h2 id="2-准备工作"><a href="#2-准备工作" class="headerlink" title="2 准备工作"></a>2 准备工作</h2><h3 id="2-1-core文件大小"><a href="#2-1-core文件大小" class="headerlink" title="2.1 core文件大小"></a>2.1 core文件大小</h3><p>需要设置当前会话的ulimit，若为0则不会产生对应的coredump。</p>
+<h4 id="命令：ulimit-a"><a href="#命令：ulimit-a" class="headerlink" title="命令：ulimit -a"></a>命令：ulimit -a</h4><p><img src="http://tanwenbo.top/wp-content/uploads/2018/06/84f6e5f721663daad91a2bde5835960c.png" alt=""></p>
+<h4 id="命令：ulimit-c-unlimited"><a href="#命令：ulimit-c-unlimited" class="headerlink" title="命令：ulimit -c unlimited"></a>命令：ulimit -c unlimited</h4><p><img src="http://tanwenbo.top/wp-content/uploads/2018/06/9a751ff171123ad9b147b46e8a7a7f7c.png" alt=""> 这个时候如果产生了段错误，那么就会生成core文件。</p>
+<h3 id="2-2-core文件位置"><a href="#2-2-core文件位置" class="headerlink" title="2.2 core文件位置"></a>2.2 core文件位置</h3><blockquote>
+<p>第一次找了半天没找到core文件在哪，原来是自己没有设置好。</p>
+</blockquote>
+<p>core文件默认的存储位置与对应的可执行程序在同一目录下，文件名是core，大家可以通过下面的命令看到core文件的存在位置：</p>
+<h4 id="命令：cat-proc-sys-kernel-core-pattern"><a href="#命令：cat-proc-sys-kernel-core-pattern" class="headerlink" title="命令：cat /proc/sys/kernel/core_pattern"></a>命令：cat /proc/sys/kernel/core_pattern</h4><p><img src="http://tanwenbo.top/wp-content/uploads/2018/06/22ca1f20a1d7db5658b3eff093eee21b.png" alt=""> 可以看到当前产生的core文件保存在<code>/var/core/</code>文件目录下。也可以自行对其修改。</p>
+<h2 id="3-core调试"><a href="#3-core调试" class="headerlink" title="3 core调试"></a>3 core调试</h2><p>先写一个比较典型的<code>内存越界</code>错误的程序：</p>
+<pre><code>#include&lt;stdio.h&gt;
+
+int main()
+{
+    int *a = NULL;
+    printf(&quot;%d\n&quot;,*a);
+    return 0;
+}</code></pre><h3 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h3><p>在编译的时候要加<code>-g</code>选项！一般release版不要加-g选项，这样编译时间会很久。</p>
+<h3 id="编译运行"><a href="#编译运行" class="headerlink" title="编译运行"></a>编译运行</h3><p><img src="http://tanwenbo.top/wp-content/uploads/2018/06/b7452cc85f0aba1fde63810d5f15d192.png" alt=""> 可以看到有core dumped提示，那么这个时候可以用gdb进行调试。 但是请不要直接<code>gdb core文件</code>，会产生： <code>not in executable format: File format not recognized</code> 错误。</p>
+<blockquote>
+<p>有些教程是直接让你gdb core文件。</p>
+</blockquote>
+<p>需要这样： <code>gdb 执行文件 core文件</code></p>
+<pre><code>gdb error /var/core/core-1528593396-error-20168-18446744073709551615</code></pre><p>这个时候可以很明显的看到段错误的位置： <img src="http://tanwenbo.top/wp-content/uploads/2018/06/52c4b28adaf06f385ddf5ef89c524e6c.png" alt=""></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/06/e5-85-b1-e4-ba-ab-e5-86-85-e5-ad-98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="tanwenbo">
+      <meta itemprop="description" content="enjoy share">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hhyvs111">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/06/06/e5-85-b1-e4-ba-ab-e5-86-85-e5-ad-98/" class="post-title-link" itemprop="url">共享内存</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-06-06 01:57:34" itemprop="dateCreated datePublished" datetime="2018-06-06T01:57:34+08:00">2018-06-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="共享内存"><a href="#共享内存" class="headerlink" title="共享内存"></a>共享内存</h1><p><code>《Unix网络编程：卷2》``共享内存``posts</code></p>
+<blockquote>
+<p>这个已经在之前的代码里使用过了，的确很方便，需要认真学习。</p>
+</blockquote>
+<h2 id="1-概述"><a href="#1-概述" class="headerlink" title="1 概述"></a>1 概述</h2><p>共享内存区是IPC形式化中最快的。<strong>一旦这样的内存区映射到共享它的进程的地址空间，这些进程间数据的传递就不再涉及到内核。</strong></p>
+<p>使用共享内存可以大量减少系统开销。</p>
+<p>要注意，fork之后的子进程并不与父进程共享内存区。子进程会拷贝父进程的内存区，然后单独使用。</p>
+<h2 id="2-映射函数"><a href="#2-映射函数" class="headerlink" title="2 映射函数"></a>2 映射函数</h2><h3 id="2-1-mmap"><a href="#2-1-mmap" class="headerlink" title="2.1 mmap"></a>2.1 mmap</h3><p>mmp函数把一个<code>文件</code>或一个<code>Posix共享内存区</code>对象映射到调用进程的地址空间。</p>
+<pre><code>#include &lt;sys/mman.h&gt;
+void *mmap(void *addr, size_t length, int prot, int flags, int fd, off_t offset);</code></pre><ul>
+<li>addr指定描述符fd应被映射到的进程内空间的起始地址。通常为空，这样告诉内核自己去选择起始地址；</li>
+<li>len是映射到调用进程地址空间中的字节数。</li>
+<li>prot参数是读写权限，PORT_READ（数据可读）等等；</li>
+<li>flags参数指定改动是否对进程可见，如：<ul>
+<li>MAP_SHARED，变动是共享的；</li>
+<li>MAP_PRIVATE，变动是不共享的。</li>
+</ul>
+</li>
+</ul>
+<p><strong>父子进程之间共享内存区的方法之一是，父进程在调用fork前先指定MAP_SHARED调用mmap。</strong></p>
+<h3 id="2-2-mumap"><a href="#2-2-mumap" class="headerlink" title="2.2 mumap"></a>2.2 mumap</h3><p>从某个进程的地址空间删除一个映射关系。</p>
+<pre><code>int munmap(void *addr, size_t length);</code></pre><p>addr是mmap返回的地址，len是映射区的大小。</p>
+<h3 id="2-3-msync"><a href="#2-3-msync" class="headerlink" title="2.3 msync"></a>2.3 msync</h3><p>调用方msync实现硬盘的文件内容和内存映射区的内容一致。也就是说如果修改了内存映射到某个文件的内存区中内容，那么相应的内核会更新文件。</p>
+<pre><code>int msync(void *addr, size_t length, int flags);</code></pre><p>flags参数：</p>
+<ul>
+<li>MS_ASYNC，执行异步写，立即返回；</li>
+<li>MS_SYNC，执行同步写，要等到写操作完成后才返回；</li>
+<li>MS_INVALIDATE，最终副本不一致的文件数据的所有内存中副本都失效。</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/01/system-v-e4-bf-a1-e5-8f-b7-e9-87-8f/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1011,619 +1401,6 @@ mqd_t mq_open(const char *name, int oflag, mode_t mode,
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/27/e7-ba-bf-e7-a8-8b/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="tanwenbo">
-      <meta itemprop="description" content="enjoy share">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="hhyvs111">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/05/27/e7-ba-bf-e7-a8-8b/" class="post-title-link" itemprop="url">线程</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-05-27 02:42:19" itemprop="dateCreated datePublished" datetime="2018-05-27T02:42:19+08:00">2018-05-27</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" itemprop="url" rel="index"><span itemprop="name">计算机网络</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h1><p><code>《Unix网络编程：卷1》``线程``互斥锁``posts</code></p>
-<blockquote>
-<p>本书前面有些内容直接简略的翻了一下，没有细看。</p>
-</blockquote>
-<ul>
-<li><a href="#线程">线程</a><ul>
-<li><a href="#1-概述">1 概述</a></li>
-<li><a href="#2-线程的创建">2 线程的创建</a><ul>
-<li><a href="#21-函数原型">2.1 函数原型</a></li>
-<li><a href="#22-线程的属性">2.2 线程的属性</a></li>
-<li><a href="#23-函数传入线程">2.3 函数传入线程</a></li>
-</ul>
-</li>
-<li><a href="#3-线程主要函数">3 线程主要函数</a><ul>
-<li><a href="#31-pthreadjoin">3.1 pthread_join</a></li>
-<li><a href="#32-pthreadself">3.2 pthread_self</a></li>
-<li><a href="#33-pthreaddetach">3.3 pthread_detach</a></li>
-<li><a href="#34-pthreadexit">3.4 pthread_exit</a><ul>
-<li><a href="#具体实现例子可以看书">具体实现例子可以看书。</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href="#4-互斥锁">4 互斥锁</a><ul>
-<li><a href="#41-相关函数">4.1 相关函数</a></li>
-<li><a href="#42-初始化">4.2 初始化</a></li>
-<li><a href="#43-上锁解锁过程">4.3 上锁解锁过程</a></li>
-</ul>
-</li>
-<li><a href="#5-条件变量">5 条件变量</a><ul>
-<li><a href="#51-相关函数">5.1 相关函数</a></li>
-<li><a href="#52-函数解释">5.2 函数解释</a><ul>
-<li><a href="#1pthreadcondsignal-pthreadcondbroadcast">1）pthread_cond_signal() &amp; pthread_cond_broadcast()</a></li>
-<li><a href="#2pthreadcondwait-pthreadcondtimedwait">2）pthread_cond_wait() &amp; pthread_cond_timedwait()</a></li>
-</ul>
-</li>
-<li><a href="#53-生产者与消费者例子">5.3 生产者与消费者例子</a></li>
-<li><a href="#6-条件变量与互斥锁信号量的区别">6 条件变量与互斥锁、信号量的区别</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="1-概述"><a href="#1-概述" class="headerlink" title="1 概述"></a>1 概述</h2><p>多线程一直是计算机中一个重要的概念，有关于线程的基础概念就不再赘述。 之前写的多任务处理都是用的fork，但是fork的调用太浪费资源，而且父子进程之前通信需要花更多功夫。 线程有助于解决以上问题。 本章主要讲解一下在Unix中实现多线程、互斥锁和条件变量。</p>
-<h2 id="2-线程的创建"><a href="#2-线程的创建" class="headerlink" title="2 线程的创建"></a>2 线程的创建</h2><p>程序运行就会有一个主线程，其余线程由<code>pthread_create</code>函数创建。</p>
-<h3 id="2-1-函数原型"><a href="#2-1-函数原型" class="headerlink" title="2.1 函数原型"></a>2.1 函数原型</h3><p>#include &lt;pthread.h&gt;<br>    int pthread_create(pthread_t <em>thread, const pthread_attr_t *attr,<br>                              void *(</em>start_routine) (void *), void *arg); </p>
-<h3 id="2-2-线程的属性"><a href="#2-2-线程的属性" class="headerlink" title="2.2 线程的属性"></a>2.2 线程的属性</h3><p>每个线程都有许多属性：</p>
-<ul>
-<li>优先级</li>
-<li>初始栈大小</li>
-<li>是否应该成为一个守护进程</li>
-</ul>
-<p>可以通过pthread_attr_t变量指定这些属性，一般都置为空。</p>
-<h3 id="2-3-函数传入线程"><a href="#2-3-函数传入线程" class="headerlink" title="2.3 函数传入线程"></a>2.3 函数传入线程</h3><blockquote>
-<p>Unix中的线程和之前写过的QT&amp;&amp;C++中的线程不一样，前者是将函数放入线程中运行，后者是创建一个线程，在run函数里的内容就是在线程里跑的内容。</p>
-</blockquote>
-<p>创建一个线程时我们最后指定的参数是由该线程<code>执行的函数</code>以及<code>参数</code>。该线程通过调用这个函数开始执行，然后显式的终止（调用pthread_exit），或者隐式地终止（函数返回）。 要注意函数的唯一调用参数是指针<code>*arg</code>，如果需要传递多个参数则得打包成一个结构体。也可以将参数定义为全局变量，以便于函数使用。</p>
-<h2 id="3-线程主要函数"><a href="#3-线程主要函数" class="headerlink" title="3 线程主要函数"></a>3 线程主要函数</h2><h3 id="3-1-pthread-join"><a href="#3-1-pthread-join" class="headerlink" title="3.1 pthread_join"></a>3.1 pthread_join</h3><pre><code>#include &lt;pthread.h&gt;
-int pthread_join(pthread_t thread, void **retval);</code></pre><p>类似于进程里的waitpid，等待给定线程终止。如果该线程<strong>函数没有结束</strong>就<strong>调用了<code>pthread_join</code></strong>，调用者将会被阻塞。</p>
-<h3 id="3-2-pthread-self"><a href="#3-2-pthread-self" class="headerlink" title="3.2 pthread_self"></a>3.2 pthread_self</h3><pre><code>#include &lt;pthread.h&gt;
-pthread_t pthread_self(void);</code></pre><p>类似于getpid，获取自身线程ID。</p>
-<h3 id="3-3-pthread-detach"><a href="#3-3-pthread-detach" class="headerlink" title="3.3 pthread_detach"></a>3.3 pthread_detach</h3><pre><code>include &lt;pthread.h&gt;
-int pthread_detach(pthread_t thread);</code></pre><p>把指定线程转变为脱离状态。 结合join函数的问题来看，如果不希望调用者堵塞，可以在子线程中如下加入代码：</p>
-<pre><code>pthread_detach(pthread_self());
-//或者父线程调用
-pthread_detach(thread_id);
-//非阻塞，可立即返回</code></pre><p>这将该子线程的状态设置为detached,则该线程运行结束后会自动释放所有资源。</p>
-<h3 id="3-4-pthread-exit"><a href="#3-4-pthread-exit" class="headerlink" title="3.4 pthread_exit"></a>3.4 pthread_exit</h3><pre><code>#include &lt;pthread.h&gt;
-void pthread_exit(void *retval);</code></pre><p>终止线程的方法之一。 如果本线程未曾脱离（detach），它的线程ID和退出状态将一直留存到调用进程内的某个其他线程对它调用pthread_join。</p>
-<h4 id="具体实现例子可以看书。"><a href="#具体实现例子可以看书。" class="headerlink" title="具体实现例子可以看书。"></a>具体实现例子可以看书。</h4><h2 id="4-互斥锁"><a href="#4-互斥锁" class="headerlink" title="4 互斥锁"></a>4 互斥锁</h2><p>线程编程是<strong>并发编程</strong>或<strong>并行编程</strong>，多个线程可以并发的（并行的）运行且访问相同的变量。但是在某些情况，线程编程访问变量会出错。而进程则不会，因为父子进程之前除了描述符外不共享任何东西。 这个时候就需要使用互斥锁解决这个问题，可能有学过操作系统里银行家算法的想必对互斥锁不陌生。</p>
-<h3 id="4-1-相关函数"><a href="#4-1-相关函数" class="headerlink" title="4.1 相关函数"></a>4.1 相关函数</h3><pre><code>int pthread_mutex_lock(pthread_mutex_t *mutex);
-
-int pthread_mutex_trylock(pthread_mutex_t *mutex);
-
-int pthread_mutex_unlock(pthread_mutex_t *mutex);
-
-int pthread_mutex_destroy(pthread_mutex_t *mutex);</code></pre><p>*注意：如果对一个已经被另外线程锁住的互斥锁上锁，那么本线程将被阻塞，直到该互斥锁被解锁位置。</p>
-<h3 id="4-2-初始化"><a href="#4-2-初始化" class="headerlink" title="4.2 初始化"></a>4.2 初始化</h3><pre><code>pthread_mutex_t counter_mutex = PTHREAD_MUTEX_INITIALIZER;</code></pre><p>有些系统将PTHREAD_MUTEX_INITIALIZER定义为0。</p>
-<h3 id="4-3-上锁解锁过程"><a href="#4-3-上锁解锁过程" class="headerlink" title="4.3 上锁解锁过程"></a>4.3 上锁解锁过程</h3><p>书上的例子：</p>
-<pre><code>for (i = 0; i &lt; NLOOP; i++) {
-        Pthread_mutex_lock(&amp;counter_mutex);
-
-        val = counter;
-        printf(&quot;%d: %d\n&quot;, pthread_self(), val + 1);
-        counter = val + 1;
-
-        Pthread_mutex_unlock(&amp;counter_mutex);
-    }</code></pre><p>可见，lock和unlock之间的变量是互斥的，别的线程不能同时访问。</p>
-<h2 id="5-条件变量"><a href="#5-条件变量" class="headerlink" title="5 条件变量"></a>5 条件变量</h2><p>互斥锁适合与防止同时访问某个共享变量，但是我们需要另外某种在等待某个条件发生期间能让我们进入睡眠的东西。<strong>简单来说就是让主循环进入睡眠，知道某个线程通知它有事可做才醒来的方法。</strong> 条件变量结合互斥锁能够提供这个功能。互斥锁提供互斥机制，条件变量提供信号机制。</p>
-<h3 id="5-1-相关函数"><a href="#5-1-相关函数" class="headerlink" title="5.1 相关函数"></a>5.1 相关函数</h3><p>#include &lt;pthread.h&gt;<br>    //条件变量<br>    pthread_cond_t cond = PTHREAD_COND_INITIALIZER;</p>
-<pre><code>int pthread_cond_init(pthread_cond_t *cond, pthread_condattr_t *cond_attr);
-
-int pthread_cond_signal(pthread_cond_t *cond);
-
-int pthread_cond_broadcast(pthread_cond_t *cond);
-
-int pthread_cond_wait(pthread_cond_t *cond, pthread_mutex_t *mutex);
-
-int pthread_cond_timedwait(pthread_cond_t *cond,  pthread_mutex_t  *mutex,  const struct timespec *abstime);
-int pthread_cond_destroy(pthread_cond_t *cond); </code></pre><h3 id="5-2-函数解释"><a href="#5-2-函数解释" class="headerlink" title="5.2 函数解释"></a>5.2 函数解释</h3><p>初始化和销毁就不说了。</p>
-<blockquote>
-<p>以下内容来自<a href="https://blog.csdn.net/anonymalias/article/details/9174481" target="_blank" rel="noopener">Linux线程同步之条件变量</a></p>
-</blockquote>
-<h4 id="1）pthread-cond-signal-amp-pthread-cond-broadcast"><a href="#1）pthread-cond-signal-amp-pthread-cond-broadcast" class="headerlink" title="1）pthread_cond_signal() &amp; pthread_cond_broadcast()"></a>1）pthread_cond_signal() &amp; pthread_cond_broadcast()</h4><p>这两个函数都是用于向等待条件的线程发送唤醒信号，<code>pthread_cond_signal()</code>函数只会唤醒等待该条件的某个线程，<code>pthread_cond_broadcast()</code>会广播条件状态的改变，以唤醒等待该条件的所有线程。例如多个线程只读共享资源，这是可以将它们都唤醒。</p>
-<h4 id="2）pthread-cond-wait-amp-pthread-cond-timedwait"><a href="#2）pthread-cond-wait-amp-pthread-cond-timedwait" class="headerlink" title="2）pthread_cond_wait() &amp; pthread_cond_timedwait()"></a>2）pthread_cond_wait() &amp; pthread_cond_timedwait()</h4><p>函数用于等待条件被触发。该函数传入两个参数，一个条件变量一个互斥量，函数将条件变量和互斥量进行关联，互斥量对该条件进行保护，<code>传入的互斥量必须是已经锁住的</code>。调用pthread_cond_wait()函数后，会原子的执行以下两个动作：</p>
-<ul>
-<li><strong>将调用线程放到等待条件的线程列表上，即进入睡眠</strong>；</li>
-<li><strong>对互斥量进行解锁</strong>；</li>
-</ul>
-<p>pthread_cond_timedwait()函数和和pthread_cond_wait()的工作方式相似，只是多了一个等待时间。等待时间的结构为struct timespec。</p>
-<pre><code>struct timespec{  
-time_t  tv_sec    //Seconds.  
-long    tv_nsec   //Nanoseconds.  
-}; </code></pre><h3 id="5-3-生产者与消费者例子"><a href="#5-3-生产者与消费者例子" class="headerlink" title="5.3 生产者与消费者例子"></a>5.3 生产者与消费者例子</h3><p>#include <iostream><br>    #include <queue><br>    #include <cstdlib>  </p>
-<pre><code>#include &lt;unistd.h&gt;  
-#include &lt;pthread.h&gt;  
-
-using namespace std;  
-
-//把共享数据和它们的同步变量集合到一个结构中，这往往是一个较好的编程技巧。  
-struct{  
-    pthread_mutex_t mutex;  
-    pthread_cond_t cond;  
-    queue&lt;int&gt; product;  
-}sharedData = {PTHREAD_MUTEX_INITIALIZER, PTHREAD_COND_INITIALIZER};  
-
-void * produce(void *ptr)  
-{  
-    for (int i = 0; i &lt; 10; ++i)  
-    {  
-        pthread_mutex_lock(&amp;sharedData.mutex);  //生产的时候将product锁住
-
-        sharedData.product.push(i);  
-
-        pthread_mutex_unlock(&amp;sharedData.mutex);  
-
-        if (sharedData.product.size() == 1)     //生产了一个产品则唤醒消费线程
-            pthread_cond_signal(&amp;sharedData.cond);  
-
-        //sleep(1);  
-    }  
-}  
-
-void * consume(void *ptr)  
-{  
-    for (int i = 0; i &lt; 10;)  
-    {  
-        pthread_mutex_lock(&amp;sharedData.mutex);  
-
-        while(sharedData.product.empty())  //消费完了将进程放入睡眠状态
-            pthread_cond_wait(&amp;sharedData.cond, &amp;sharedData.mutex);  
-
-        ++i;  
-        cout&lt;&lt;&quot;consume:&quot;&lt;&lt;sharedData.product.front()&lt;&lt;endl;  
-        sharedData.product.pop();  
-
-        pthread_mutex_unlock(&amp;sharedData.mutex);  
-
-        //sleep(1);  
-    }  
-}  
-
-int main()  
-{  
-    pthread_t tid1, tid2;  
-
-    pthread_create(&amp;tid1, NULL, consume, NULL);  
-    pthread_create(&amp;tid2, NULL, produce, NULL);  
-
-    void *retVal;  
-
-    pthread_join(tid1, &amp;retVal);  
-    pthread_join(tid2, &amp;retVal);  
-
-    return 0;  
-} </code></pre><h3 id="6-条件变量与互斥锁、信号量的区别"><a href="#6-条件变量与互斥锁、信号量的区别" class="headerlink" title="6 条件变量与互斥锁、信号量的区别"></a>6 条件变量与互斥锁、信号量的区别</h3><ol>
-<li><p>互斥锁必须总是由给它上锁的线程解锁，信号量的挂出即不必由执行过它的等待操作的同一进程执行。一个线程可以等待某个给定信号灯，而另一个线程可以挂出该信号灯。</p>
-</li>
-<li><p>互斥锁要么锁住，要么被解开（二值状态，类型二值信号量）。</p>
-</li>
-<li><p>由于信号量有一个与之关联的状态（它的计数值），信号量挂出操作总是被记住。然而当向一个条件变量发送信号时，如果没有线程等待在该条件变量上，那么该信号将丢失。</p>
-</li>
-<li><p><strong>互斥锁是为了上锁而设计的</strong>，<strong>条件变量是为了等待而设计的</strong>，信号灯即可用于上锁，也可用于等待，因而可能导致更多的开销和更高的复杂性。</p>
-</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/26/e9-9d-9e-e9-98-bb-e5-a1-9e-e5-bc-8fi-o/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="tanwenbo">
-      <meta itemprop="description" content="enjoy share">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="hhyvs111">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/05/26/e9-9d-9e-e9-98-bb-e5-a1-9e-e5-bc-8fi-o/" class="post-title-link" itemprop="url">非阻塞式I/O</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-05-26 09:18:08" itemprop="dateCreated datePublished" datetime="2018-05-26T09:18:08+08:00">2018-05-26</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" itemprop="url" rel="index"><span itemprop="name">计算机网络</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="非阻塞式I-O"><a href="#非阻塞式I-O" class="headerlink" title="非阻塞式I/O"></a>非阻塞式I/O</h1><p><code>《Unix网络编程：卷1》``posts</code></p>
-<blockquote>
-<p>将I/O设置为非阻塞是提高传输效率的重要手段之一。</p>
-</blockquote>
-<h2 id="1-概述"><a href="#1-概述" class="headerlink" title="1 概述"></a>1 概述</h2><p>一开始的笔记有写到将套接字设置成<code>非阻塞式</code>，但是好像只是设置了，并没有应用。这一章主要讲一下如何实现非阻塞式I/O以提高效率。 可能阻塞的套接字调用可分以下四类：</p>
-<ul>
-<li>输入操作，包括read、readv、recv、recvfrom、和recvmsg；</li>
-<li>输出操作，包括write、writev、send、sendto和sendmsg；</li>
-<li>接收外来连接，即accept函数；</li>
-<li>发起外出连接，即connect函数。</li>
-</ul>
-<h2 id="2-非阻塞读写"><a href="#2-非阻塞读写" class="headerlink" title="2 非阻塞读写"></a>2 非阻塞读写</h2><p>书上第一个例子太冗长了，简单理解就是在读和写的两个缓冲区设置了几个指针，指示了当前<code>写容量</code>和<code>可读容量</code>，并对其进行操作。 主要是应用了<code>select</code>实现的非阻塞I/O。 简单一点的是使用多进程，一个进程专门用来读，一个进程用来写。但是要注意异步，用信号通知另一进程做相应的操作。</p>
-<h2 id="3-非阻塞connect"><a href="#3-非阻塞connect" class="headerlink" title="3 非阻塞connect"></a>3 非阻塞connect</h2><p>当在一个非阻塞的TCP套接字上调用connect时，connect将立即返回一个<code>EINPROGRESS</code>错误，不过已经发起的TCP三路握手继续进行。然后使用select检测是否成功。 具体代码看书353页。</p>
-<h2 id="4-非阻塞accept"><a href="#4-非阻塞accept" class="headerlink" title="4 非阻塞accept"></a>4 非阻塞accept</h2><h3 id="4-1-阻塞的accept"><a href="#4-1-阻塞的accept" class="headerlink" title="4.1 阻塞的accept"></a>4.1 阻塞的accept</h3><blockquote>
-<p>之前有个猜想，为什么服务器里的while循环没有一直运行，而是有连接才进行下一步操作。后来发现accept函数是阻塞的。</p>
-</blockquote>
-<p>来自man 2 accept里的资料：</p>
-<pre><code>If no pending connections are present on the queue, and the socket is not marked as nonblocking,  accept() blocks  the  caller until a connection is present.  If the socket is marked nonblocking and no pending connections are present on the queue, accept() fails with the error EAGAIN or EWOULDBLOCK.</code></pre><p>可见如果没有将套接字设置为<code>非阻塞</code>，那么accept会一直等待下一个连接，从而accept下面的语句就不会执行。</p>
-<h3 id="4-2-非阻塞"><a href="#4-2-非阻塞" class="headerlink" title="4.2 非阻塞"></a>4.2 非阻塞</h3><p>和很多非阻塞函数一样，要处理返回的错误信息，甚至可以忽略这些错误信息。 主要是使用select加非阻塞套接字实现非阻塞。 具体看书362页。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/26/e5-a5-97-e6-8e-a5-e5-ad-97-e5-92-8c-e6-a0-87-e5-87-86i-o/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="tanwenbo">
-      <meta itemprop="description" content="enjoy share">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="hhyvs111">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/05/26/e5-a5-97-e6-8e-a5-e5-ad-97-e5-92-8c-e6-a0-87-e5-87-86i-o/" class="post-title-link" itemprop="url">套接字和标准I/O</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-05-26 02:31:14" itemprop="dateCreated datePublished" datetime="2018-05-26T02:31:14+08:00">2018-05-26</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" itemprop="url" rel="index"><span itemprop="name">计算机网络</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="套接字和标准I-O"><a href="#套接字和标准I-O" class="headerlink" title="套接字和标准I/O"></a>套接字和标准I/O</h1><p><code>《Unix网络编程：卷1》``SOCKET``posts</code> 之前一直使用的Unix I/O，包括read，write这两个函数以及它们的变体（recv、send等）。下面使用标准I/O库（ANSI C）实现读取写入。</p>
-<h2 id="1-fdopen函数"><a href="#1-fdopen函数" class="headerlink" title="1 fdopen函数"></a>1 fdopen函数</h2><pre><code>#include &lt;stdio.h&gt;
-FILE *fdopen(int fd, const char *mode);</code></pre><p>返回值是文件流形式。 .0</p>
-<h3 id="1-1-模式"><a href="#1-1-模式" class="headerlink" title="1.1 模式"></a>1.1 模式</h3><p>fdopen有模式区分，比如：</p>
-<ul>
-<li>r，读</li>
-<li>r+，读和写</li>
-<li>w，写</li>
-<li>w+，写和读</li>
-<li>a，append，在文件末端写</li>
-<li>a+，可读，在文件末端写</li>
-</ul>
-<h3 id="1-2-例子"><a href="#1-2-例子" class="headerlink" title="1.2 例子"></a>1.2 例子</h3><pre><code>char        line[MAXLINE];
-    FILE        *fpin, *fpout;
-
-    fpin = Fdopen(sockfd, &quot;r&quot;);
-    fpout = Fdopen(sockfd, &quot;w&quot;);
-
-    while (Fgets(line, MAXLINE, fpin) != NULL)
-        Fputs(line, fpout);</code></pre><p>该例子是完全缓冲的，不能实时回显。</p>
-<h3 id="1-3-三类缓冲"><a href="#1-3-三类缓冲" class="headerlink" title="1.3 三类缓冲"></a>1.3 三类缓冲</h3><p>标准I/O函数库执行以下三类缓冲：</p>
-<h4 id="1）完全缓冲"><a href="#1）完全缓冲" class="headerlink" title="1）完全缓冲"></a>1）完全缓冲</h4><p>只在以下情况发生I/O：</p>
-<ul>
-<li>缓冲区满，通常为8192字节；</li>
-<li>进程显式调用fflush（之前有写过的将缓冲区写入的函数，还有类似的fseek）；</li>
-<li>进程调用exit。</li>
-</ul>
-<h4 id="2）行缓冲"><a href="#2）行缓冲" class="headerlink" title="2）行缓冲"></a>2）行缓冲</h4><p>只在以下情况发生I/O：</p>
-<ul>
-<li>碰到一个换行符；</li>
-<li>进程调用fflush；</li>
-<li>进程调用exit。</li>
-</ul>
-<h4 id="3）不缓冲"><a href="#3）不缓冲" class="headerlink" title="3）不缓冲"></a>3）不缓冲</h4><p>每次调用标准I/O输出函数都发生I/O。 标准I/O函数库的大多数Unix实现使用如下规则：</p>
-<ul>
-<li>标准错误输出（2）总是不缓冲；</li>
-<li>标准输入（0）和标准输出（1）完全缓冲，除非它们指代终端设备（行缓冲）；</li>
-<li>所有其他I/O流都是完全缓冲，除非它们指代中断设备（行缓冲）。</li>
-</ul>
-<h1 id="2-弊端"><a href="#2-弊端" class="headerlink" title="2 弊端"></a>2 弊端</h1><p>如上述问题所知，其实套接字上是不建议使用标准I/O。但是也有办法解决，比如：</p>
-<ul>
-<li>通过调用<code>setvbuf</code>迫使这个输出流变为行缓冲；</li>
-<li>在每次调用fputs之后通过调用<code>fflush</code>强制输出每个缓冲区的字符。</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/24/e5-9f-ba-e6-9c-acudp-e5-a5-97-e6-8e-a5-e5-ad-97-e7-bc-96-e7-a8-8b/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="tanwenbo">
-      <meta itemprop="description" content="enjoy share">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="hhyvs111">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/05/24/e5-9f-ba-e6-9c-acudp-e5-a5-97-e6-8e-a5-e5-ad-97-e7-bc-96-e7-a8-8b/" class="post-title-link" itemprop="url">基本UDP套接字编程</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-05-24 08:23:13" itemprop="dateCreated datePublished" datetime="2018-05-24T08:23:13+08:00">2018-05-24</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" itemprop="url" rel="index"><span itemprop="name">计算机网络</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="基本UDP套接字编程"><a href="#基本UDP套接字编程" class="headerlink" title="基本UDP套接字编程"></a>基本UDP套接字编程</h1><p><code>《Unix网络编程：卷1》``udp``posts</code></p>
-<blockquote>
-<p>udp的特性就不再介绍。</p>
-</blockquote>
-<h2 id="1-概述"><a href="#1-概述" class="headerlink" title="1 概述"></a>1 概述</h2><p>主要流程： <img src="http://tanwenbo.top/wp-content/uploads/2018/05/7350525fbd474325afe207f6950c3b42.png" alt=""></p>
-<h2 id="2-recvfrom和sendto函数"><a href="#2-recvfrom和sendto函数" class="headerlink" title="2 recvfrom和sendto函数"></a>2 recvfrom和sendto函数</h2><p>UDP不同于TCP，客户不需要与服务器建立连接，只需要指定目的地址就可以发送数据。发送数据使用sendto，接收使用recvfrom。这两个函数类似于标注的read和write。</p>
-<h2 id="2-1-函数原型"><a href="#2-1-函数原型" class="headerlink" title="2.1 函数原型"></a>2.1 函数原型</h2><pre><code>#include &lt;sys/socket.h&gt;
-ssize_t recvfrom(int sockfd, void *buf, size_t len, int flags,
-                        struct sockaddr *src_addr, socklen_t *addrlen);
-ssize_t sendto(int sockfd, const void *buf, size_t len, int flags,
-                      const struct sockaddr *dest_addr, socklen_t addrlen);</code></pre><h2 id="2-2-参数详解"><a href="#2-2-参数详解" class="headerlink" title="2.2 参数详解"></a>2.2 参数详解</h2><p>前三个参数就不再介绍了，等同与read和write函数的三个参数。</p>
-<h3 id="1）flags"><a href="#1）flags" class="headerlink" title="1）flags"></a>1）flags</h3><p>一般置为0.</p>
-<h3 id="2）src-addr和-addrlen"><a href="#2）src-addr和-addrlen" class="headerlink" title="2）src_addr和 addrlen"></a>2）src_addr和 addrlen</h3><ul>
-<li>recvfrom的最后两个参数类似与<code>accept</code>的最后两个参数：返回其中套接字地址结构的内容告诉我们是谁发送了数据报（UDP）或是谁发起了连接（TCP）。</li>
-<li>sendto的最后两个参数类似与<code>connect</code>的最后两个参数：调用时其中套接字地址结构被我们跳入数据报将发往（UDP）或与之建立连接（TCP）的协议地址。</li>
-</ul>
-<h2 id="3-例子"><a href="#3-例子" class="headerlink" title="3 例子"></a>3 例子</h2><p>服务端：</p>
-<pre><code>#include    &quot;unp.h&quot;
-
-int
-main(int argc, char **argv)
-{
-    int                 sockfd;
-    struct sockaddr_in  servaddr, cliaddr;
-
-    sockfd = Socket(AF_INET, SOCK_DGRAM, 0); //注意这里是SOCK_DGRAM,而TCP是SOCK_STREAM。
-
-    bzero(&amp;servaddr, sizeof(servaddr));
-    servaddr.sin_family      = AF_INET;
-    servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
-    servaddr.sin_port        = htons(SERV_PORT);
-
-    Bind(sockfd, (SA *) &amp;servaddr, sizeof(servaddr));
-
-    dg_echo(sockfd, (SA *) &amp;cliaddr, sizeof(cliaddr));//函数实现可看书
-}</code></pre><p>客户端：</p>
-<pre><code>#include    &quot;unp.h&quot;
-
-int
-main(int argc, char **argv)
-{
-    int                 sockfd;
-    struct sockaddr_in  servaddr;
-
-    if (argc != 2)
-        err_quit(&quot;usage: udpcli &lt;IPaddress&gt;&quot;);
-
-    bzero(&amp;servaddr, sizeof(servaddr));
-    servaddr.sin_family = AF_INET;
-    servaddr.sin_port = htons(SERV_PORT);
-    Inet_pton(AF_INET, argv[1], &amp;servaddr.sin_addr);
-
-    sockfd = Socket(AF_INET, SOCK_DGRAM, 0);
-
-    dg_cli(stdin, sockfd, (SA *) &amp;servaddr, sizeof(servaddr));
-
-    exit(0);
-}</code></pre>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1693,7 +1470,7 @@ main(int argc, char **argv)
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">113</span>
+          <span class="site-state-item-count">117</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
