@@ -157,6 +157,191 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/29/system-v-ipc/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="tanwenbo">
+      <meta itemprop="description" content="enjoy share">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hhyvs111">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/05/29/system-v-ipc/" class="post-title-link" itemprop="url">System V IPC</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-05-29 07:06:24" itemprop="dateCreated datePublished" datetime="2018-05-29T07:06:24+08:00">2018-05-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" itemprop="url" rel="index"><span itemprop="name">计算机网络</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="System-V-IPC"><a href="#System-V-IPC" class="headerlink" title="System V IPC"></a>System V IPC</h1><p><code>《Unix网络编程：卷2》``posts</code></p>
+<h2 id="1-概述"><a href="#1-概述" class="headerlink" title="1 概述"></a>1 概述</h2><p>也是是那种类型的IPC合称为System V IPC：</p>
+<ul>
+<li>System V消息队列</li>
+<li>System V信号量</li>
+<li>System V共享内存</li>
+</ul>
+<h2 id="2-System-V-IPC函数汇总"><a href="#2-System-V-IPC函数汇总" class="headerlink" title="2 System V IPC函数汇总"></a>2 System V IPC函数汇总</h2><p><img src="http://tanwenbo.top/wp-content/uploads/2018/05/126fe16571e51d287d6f57dedddc0cc7.png" alt=""></p>
+<h2 id="3-创建System-V-IPC键"><a href="#3-创建System-V-IPC键" class="headerlink" title="3 创建System V IPC键"></a>3 创建System V IPC键</h2><h3 id="3-1-ftok函数"><a href="#3-1-ftok函数" class="headerlink" title="3.1 ftok函数"></a>3.1 ftok函数</h3><pre><code>#include &lt;sys/types.h&gt;
+#include &lt;sys/ipc.h&gt;
+key_t ftok(const char *pathname, int proj_id);</code></pre><p>三种类型的System V IPC使用<code>key_t</code>作为它们的名字。这个时候就可以用该值创建相应的进程通信文件，比如：</p>
+<pre><code>int msgget(key_t key, int msgflg);</code></pre><p>flg位和Posix类似。</p>
+<h3 id="3-2-指定key"><a href="#3-2-指定key" class="headerlink" title="3.2 指定key"></a>3.2 指定key</h3><p>除了调用ftok函数，还可以指定key为<code>IPC_PRIVATE</code>，这将保证会创建一个新的、唯一的IPC对象。</p>
+<h2 id="4-IPC权限"><a href="#4-IPC权限" class="headerlink" title="4 IPC权限"></a>4 IPC权限</h2><p>ipc_perm结构（书22页）里也有mode值，权限规则如下： <img src="http://tanwenbo.top/wp-content/uploads/2018/05/c47466207e68e1bd4edf22d88a85c02a.png" alt=""></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/29/posix-ipc/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="tanwenbo">
+      <meta itemprop="description" content="enjoy share">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hhyvs111">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/05/29/posix-ipc/" class="post-title-link" itemprop="url">Posix IPC</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-05-29 06:46:08" itemprop="dateCreated datePublished" datetime="2018-05-29T06:46:08+08:00">2018-05-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" itemprop="url" rel="index"><span itemprop="name">计算机网络</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Posix-IPC"><a href="#Posix-IPC" class="headerlink" title="Posix IPC"></a>Posix IPC</h1><p><code>《Unix网络编程：卷2》``posts</code> 可移植作业系统接口（英语：Portable Operating System Interface，缩写为POSIX），是IEEE为要在各种UNIX操作系统上运行软件，而定义API的一系列互相关联的标准的总称</p>
+<h2 id="1-概述"><a href="#1-概述" class="headerlink" title="1 概述"></a>1 概述</h2><p>三种类型的IPC合成为“Posix IPC”：</p>
+<ul>
+<li>Posix消息队列</li>
+<li>Posix信号量</li>
+<li>Posix共享内存区</li>
+</ul>
+<p>三种类型都是有路径名标识的。</p>
+<h2 id="2-Posix-IPC函数汇总"><a href="#2-Posix-IPC函数汇总" class="headerlink" title="2 Posix IPC函数汇总"></a>2 Posix IPC函数汇总</h2><p><img src="http://tanwenbo.top/wp-content/uploads/2018/05/878738ca4e0f2416ed0418e249e8f6e5.png" alt=""> 比如mq_open函数原型：</p>
+<pre><code>#include &lt;fcntl.h&gt;           /* For O_* constants */
+#include &lt;sys/stat.h&gt;        /* For mode constants */
+#include &lt;mqueue.h&gt;
+
+mqd_t mq_open(const char *name, int oflag);
+mqd_t mq_open(const char *name, int oflag, mode_t mode,
+                     struct mq_attr *attr);</code></pre><h2 id="3-打开与创建IPC"><a href="#3-打开与创建IPC" class="headerlink" title="3 打开与创建IPC"></a>3 打开与创建IPC</h2><h3 id="3-1-oflag值"><a href="#3-1-oflag值" class="headerlink" title="3.1 oflag值"></a>3.1 oflag值</h3><p>类似于文件打开模式。 IPC也有各种模式： <img src="http://tanwenbo.top/wp-content/uploads/2018/05/66a1aa439a8784274a40c3e9ff6eca52.png" alt=""></p>
+<h3 id="3-2-mode值"><a href="#3-2-mode值" class="headerlink" title="3.2 mode值"></a>3.2 mode值</h3><p>可以看到open函数有mode_t值，主要是在创建的时候用，mode值如下： <img src="http://tanwenbo.top/wp-content/uploads/2018/05/0207c469a15b6eecd687ac6f9531bbe2.png" alt=""></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/27/e7-ba-bf-e7-a8-8b/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1270,198 +1455,6 @@ pit_t fork(void);</code></pre><p><strong>返回：在子进程中为0，在父�
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/22/3-e5-a5-97-e6-8e-a5-e5-ad-97-e7-bc-96-e7-a8-8b-e7-ae-80-e4-bb-8b/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="tanwenbo">
-      <meta itemprop="description" content="enjoy share">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="hhyvs111">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/05/22/3-e5-a5-97-e6-8e-a5-e5-ad-97-e7-bc-96-e7-a8-8b-e7-ae-80-e4-bb-8b/" class="post-title-link" itemprop="url">套接字编程简介</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-05-22 10:47:13" itemprop="dateCreated datePublished" datetime="2018-05-22T10:47:13+08:00">2018-05-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" itemprop="url" rel="index"><span itemprop="name">计算机网络</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="套接字编程简介"><a href="#套接字编程简介" class="headerlink" title="套接字编程简介"></a>套接字编程简介</h1><p><code>《Unix网络编程：卷1》``SOCKET``posts</code></p>
-<blockquote>
-<p>这一章主要是介绍一下套接字socket</p>
-</blockquote>
-<p>地址结构就不再介绍了，之前有介绍IPv4的结构体，主要是要注意一下<code>sockaddr</code>是<code>通用套接字地址结构</code>。</p>
-<h2 id="1-值—结果参数"><a href="#1-值—结果参数" class="headerlink" title="1 值—结果参数"></a>1 值—结果参数</h2><p>有趣的概念，<strong>套接字地址结构传递方式取决于该结构的传递方向</strong>。</p>
-<h3 id="1-1-进程→内核"><a href="#1-1-进程→内核" class="headerlink" title="1.1 进程→内核"></a>1.1 进程→内核</h3><p>有三个函数是从进程到内核传递套接字地址结构：</p>
-<ul>
-<li>bind</li>
-<li>connect</li>
-<li>sendto</li>
-</ul>
-<p>它们传递结构体的时候都是<code>引用</code>方式，因为要改变原本地址的值，不能按值传递。</p>
-<h3 id="1-2-内核→进程"><a href="#1-2-内核→进程" class="headerlink" title="1.2 内核→进程"></a>1.2 内核→进程</h3><p>有四个函数是从内核到进程传递套接字地址结构：</p>
-<ul>
-<li>accept</li>
-<li>recvfrom</li>
-<li>getsockname</li>
-<li>getpeername</li>
-</ul>
-<p>要注意这里传递的时候和上一个不一样，传递<strong>长度</strong>的时候也是<code>引用</code>。其原因在与： 当函数被调用时，结构大小是一个值，它告诉内核该结构的大小，这样内核在写该结构时不至于<strong>越界</strong>；当函数返回时，结构大小又是一个结果，它告诉<strong>进程</strong>内核在该结构究竟存储了多少信息。这种类型的的参数称为<code>值—结果</code>参数。</p>
-<pre><code>int accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen);</code></pre><p>可以看到accept函数第三个参数也是指针类型，所以结构体长度可能会改变。</p>
-<h2 id="2-字节排序函数"><a href="#2-字节排序函数" class="headerlink" title="2 字节排序函数"></a>2 字节排序函数</h2><p>这里主要介绍一下大端小端的概念。</p>
-<h3 id="2-1-大端"><a href="#2-1-大端" class="headerlink" title="2.1 大端"></a>2.1 大端</h3><p>将<strong>高序字节</strong>存储在<strong>起始地址</strong></p>
-<h3 id="2-2-小端"><a href="#2-2-小端" class="headerlink" title="2.2 小端"></a>2.2 小端</h3><p>将<strong>低序字节</strong>存储在<strong>起始地址</strong></p>
-<h3 id="2-3几个转换函数"><a href="#2-3几个转换函数" class="headerlink" title="2.3几个转换函数"></a>2.3几个转换函数</h3><pre><code>#include &lt;netinet/in.h&gt;
-uint16_t htons(uint16_t host16bitvalue)
-uint32_t htonl(uint32_t host32bitvalue)
-uint16_t ntohs(uint16_t host16bitvalue)
-uint32_t ntohl(uint32_t host32bitvalue)</code></pre><p>h代表<code>host</code>，n代表<code>network</code>，s代表<code>short</code>，l代表<code>long</code>。 前两个函数的作用是：将主机字节序转换为网络字节序；后两个则相反。</p>
-<h2 id="3-几个socket会用到的函数"><a href="#3-几个socket会用到的函数" class="headerlink" title="3 几个socket会用到的函数"></a>3 几个socket会用到的函数</h2><h3 id="3-1-bzero函数"><a href="#3-1-bzero函数" class="headerlink" title="3.1 bzero函数"></a>3.1 bzero函数</h3><p>函数原型：</p>
-<pre><code>#include &lt;strings.h&gt;
-void bzero(void *s, size_t n);</code></pre><p>主要是把目标字节串中指定数据的字节置为0，和memset的区别是少了一个参数，memset可以指定<code>要置的值</code>，如果只需要置为0那么可以用bzero函数</p>
-<h3 id="3-2-inet-pton函数"><a href="#3-2-inet-pton函数" class="headerlink" title="3.2 inet_pton函数"></a>3.2 inet_pton函数</h3><p>函数原型：</p>
-<pre><code>#include &lt;arpa/inet.h&gt;
-int inet_pton(int af, const char *src, void *dst);</code></pre><p>af参数为AF_INET或者AF_INET6，前面有说过是什么。这个函数的功能是将<code>“点分十进制”</code> －&gt; <code>“二进制整数”</code>，将字符串转换为二进制网络地址。</p>
-<blockquote>
-<p>还有一些read之类的就不介绍了，前面的笔记有</p>
-</blockquote>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/22/tcp-e8-bf-9e-e6-8e-a5-e7-9a-84-e5-bb-ba-e7-ab-8b-e5-92-8c-e7-bb-88-e6-ad-a2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="tanwenbo">
-      <meta itemprop="description" content="enjoy share">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="hhyvs111">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/05/22/tcp-e8-bf-9e-e6-8e-a5-e7-9a-84-e5-bb-ba-e7-ab-8b-e5-92-8c-e7-bb-88-e6-ad-a2/" class="post-title-link" itemprop="url">TCP连接的建立和终止</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-05-22 02:37:08" itemprop="dateCreated datePublished" datetime="2018-05-22T02:37:08+08:00">2018-05-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" itemprop="url" rel="index"><span itemprop="name">计算机网络</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="TCP连接的建立和终止"><a href="#TCP连接的建立和终止" class="headerlink" title="TCP连接的建立和终止"></a>TCP连接的建立和终止</h1><p><code>《Unix网络编程：卷1》``TCP``posts</code></p>
-<blockquote>
-<p>主要是看一下TCP连接在编程中的实际应用。</p>
-</blockquote>
-<h2 id="1-TCP三次握手"><a href="#1-TCP三次握手" class="headerlink" title="1 TCP三次握手"></a>1 TCP三次握手</h2><p>具体细节不再介绍，主要看一下函数的调用过程。 <img src="http://tanwenbo.top/wp-content/uploads/2018/05/4d0f2e4ef179df10bcb795a7bba5131a.png" alt=""> 之所以connect会有返回值就是TCP连接处理的过程，在等待的时候函数是阻塞的。</p>
-<h2 id="2-TCP四次挥手"><a href="#2-TCP四次挥手" class="headerlink" title="2 TCP四次挥手"></a>2 TCP四次挥手</h2><p>主要是<code>close</code>函数的调用，任意一端都可以调用<code>close函数</code>来关闭连接。 <img src="http://tanwenbo.top/wp-content/uploads/2018/05/d844a0241da48429c9cc70588b207a5e.png" alt=""></p>
-<h2 id="3-TCP连接分组交换"><a href="#3-TCP连接分组交换" class="headerlink" title="3 TCP连接分组交换"></a>3 TCP连接分组交换</h2><p>就是数据交换的过程，整合了<strong>三次握手</strong>和<strong>四次挥手</strong>。 <img src="http://tanwenbo.top/wp-content/uploads/2018/05/fbba266a4b4b6536ca26d45983af6fb9.png" alt=""></p>
-<h4 id="要注意，默认socket是不能同时读和写的，write的时候read会阻塞。但是可以设置非阻塞的socket来解决这个问题"><a href="#要注意，默认socket是不能同时读和写的，write的时候read会阻塞。但是可以设置非阻塞的socket来解决这个问题" class="headerlink" title="要注意，默认socket是不能同时读和写的，write的时候read会阻塞。但是可以设置非阻塞的socket来解决这个问题"></a>要注意，默认socket是不能同时读和写的，write的时候read会阻塞。但是可以设置非阻塞的socket来解决这个问题</h4>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1531,7 +1524,7 @@ int inet_pton(int af, const char *src, void *dst);</code></pre><p>af参数为AF_
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">117</span>
+          <span class="site-state-item-count">119</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

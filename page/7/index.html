@@ -157,6 +157,213 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/08/e9-98-bf-e9-87-8c-e4-ba-91-e6-9c-8d-e5-8a-a1-e5-99-a8ubuntu-e4-b8-8bapache2-e9-85-8d-e7-bd-aehttps/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="tanwenbo">
+      <meta itemprop="description" content="enjoy share">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hhyvs111">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/07/08/e9-98-bf-e9-87-8c-e4-ba-91-e6-9c-8d-e5-8a-a1-e5-99-a8ubuntu-e4-b8-8bapache2-e9-85-8d-e7-bd-aehttps/" class="post-title-link" itemprop="url">阿里云服务器Ubuntu下Apache2配置https</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-07-08 04:41:54" itemprop="dateCreated datePublished" datetime="2018-07-08T04:41:54+08:00">2018-07-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">教程</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="阿里云服务器Ubuntu下Apache2配置https"><a href="#阿里云服务器Ubuntu下Apache2配置https" class="headerlink" title="阿里云服务器Ubuntu下Apache2配置https"></a>阿里云服务器Ubuntu下Apache2配置https</h1><p><code>教程``posts``SSL</code></p>
+<blockquote>
+<p>最近把网站搬迁了，然后HTTPS也得弄一弄，本文主要是介绍一下阿里云服务器如何给自己的网站配置https</p>
+</blockquote>
+<h2 id="1-购买证书"><a href="#1-购买证书" class="headerlink" title="1 购买证书"></a>1 购买证书</h2><p>这个证书的下载比较鸡贼，阿里云把<code>免费</code>的给藏起来了，先点击这里： <img src="https://tanwenbo.top/wp-content/uploads/2018/07/46a4719e2209d86d7a51623d5db81f6b.png" alt=""> 然后再点击<code>增强型</code>，这个时候就会出现免费的证书选项了。 <img src="https://tanwenbo.top/wp-content/uploads/2018/07/fcc4c3dad4dcd1d16a05763a29558bce.png" alt=""> 然后点击免费的购买 <img src="https://tanwenbo.top/wp-content/uploads/2018/07/e2d175a99e807df317cc120ca94d1a77.png" alt=""></p>
+<h2 id="2-下载证书"><a href="#2-下载证书" class="headerlink" title="2 下载证书"></a>2 下载证书</h2><p>将证书里的四个文件放在<code>/etc/apache2/cert</code>，自己建一个cert文件夹。 <img src="https://tanwenbo.top/wp-content/uploads/2018/07/97497faa9a3642338ad192c149df0d76.png" alt=""></p>
+<h2 id="3-配置SSL"><a href="#3-配置SSL" class="headerlink" title="3 配置SSL"></a>3 配置SSL</h2><p>进入目录</p>
+<pre><code>cd /etc/apache2/sites-available</code></pre><p>编辑<code>default-ssl.conf</code>文件，修改域名和目录</p>
+<pre><code>ServerAdmin webmaster@localhost
+ServerName 你的域名:443
+DocumentRoot /var/www/html/你的网站目录</code></pre><p>然后在<code>SSLEngine on</code>的下面加入如下内容：</p>
+<pre><code>SSLProtocol all -SSLv2 -SSLv3
+SSLCipherSuite HIGH:!RC4:!MD5:!aNULL:!eNULL:!NULL:!DH:!EDH:!EXP:+MEDIUM
+SSLHonorCipherOrder on
+SSLCertificateFile  /etc/apache2/cert/public.pem
+SSLCertificateKeyFile /etc/apache2/cert/你的.key
+SSLCertificateChainFile /etc/apache2/cert/chain.pem</code></pre><h3 id="4-配置HTTPS"><a href="#4-配置HTTPS" class="headerlink" title="4 配置HTTPS"></a>4 配置HTTPS</h3><p>编辑<code>000-default.conf</code>，在<code>&lt;VirtualHost *:80&gt;&lt;/VirtualHost&gt;</code>标签内随便一个地方加入以下三行:</p>
+<pre><code>RewriteEngine on
+RewriteCond  %{HTTPS} !=on
+RewriteRule  ^(.*) https://%{SERVER_NAME}$1 [L,R]</code></pre><h3 id="5-重启"><a href="#5-重启" class="headerlink" title="5 重启"></a>5 重启</h3><p>记得载入模块：</p>
+<pre><code>a2ensite default-ssl
+#然后重启apache2
+sudo etc/init.d/apache2 restart</code></pre><h3 id="6-备注"><a href="#6-备注" class="headerlink" title="6 备注"></a>6 备注</h3><p>记得目录一定要对，然后看一下阿里云服务器是否开放了443这个端口，配置一下安全组规则。 推荐一个wordpress插件：<code>Really Simple SSL</code> 但是如果有时候你关闭了SSL，要访问http形式的网站，但这个时候你进不了网站，关不了这个插件，可以参考这个强制关闭该插件的方法：</p>
+<h4 id="进入wordpress目录"><a href="#进入wordpress目录" class="headerlink" title="进入wordpress目录"></a>进入wordpress目录</h4><pre><code>cd wp-content/plugins/really-simple-ssl</code></pre><h4 id="修改文件"><a href="#修改文件" class="headerlink" title="修改文件"></a>修改文件</h4><p>将改txt后缀改为php</p>
+<pre><code>mv force-deactivate.txt force-deactivate.php</code></pre><h4 id="用http访问该PHP"><a href="#用http访问该PHP" class="headerlink" title="用http访问该PHP"></a>用http访问该PHP</h4><pre><code>http://www.yourdomain.com/wp-content/plugins/really-simple-ssl/force-deactivate.php </code></pre><p>这个时候就可以卸载该插件关闭全站https了。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/07/e7-bd-91-e7-ab-99-e6-90-ac-e8-bf-81-e5-b0-8f-e8-ae-b0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="tanwenbo">
+      <meta itemprop="description" content="enjoy share">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hhyvs111">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/07/07/e7-bd-91-e7-ab-99-e6-90-ac-e8-bf-81-e5-b0-8f-e8-ae-b0/" class="post-title-link" itemprop="url">网站搬迁小记</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-07-07 09:01:09" itemprop="dateCreated datePublished" datetime="2018-07-07T09:01:09+08:00">2018-07-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">教程</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%99%E7%A8%8B/%E9%9A%8F%E7%AC%94/" itemprop="url" rel="index"><span itemprop="name">随笔</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="网站搬迁小记"><a href="#网站搬迁小记" class="headerlink" title="网站搬迁小记"></a>网站搬迁小记</h1><p><code>教程``posts</code></p>
+<blockquote>
+<p>服务器要到期了，而且是之前免费领的，续费尼玛贵的一P。重新买个学生机，不如放到导师的服务器上去。但是导师的服务器上已经有一个网站在运行，这个时候就需要利用的apache2的虚拟主机功能了。</p>
+</blockquote>
+<h3 id="1-准备工作"><a href="#1-准备工作" class="headerlink" title="1 准备工作"></a>1 准备工作</h3><h4 id="网站源码"><a href="#网站源码" class="headerlink" title="网站源码"></a>网站源码</h4><p>直接远程将网站源码从老服务器copy到导师的服务器，一开始用的Xftp下载，下载半天又慢，发现一个很牛批的命令。</p>
+<pre><code>scp  -r root@服务器的IP:/etc/apache2/cert /etc/apache2/</code></pre><p>远程传输，需要输入密码。</p>
+<h4 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h4><p>直接将数据库导出成压缩文件，具体看网上的教程。</p>
+<h3 id="2-配置apache2"><a href="#2-配置apache2" class="headerlink" title="2 配置apache2"></a>2 配置apache2</h3><p>系统都是Ubuntu 16.04，然后用的apache2，和网上的有些apache教程有点不一样 可以参考这一篇文章<a href="https://www.jianshu.com/p/35cd3a0b9634" target="_blank" rel="noopener">在ubuntu 16.04 下apache2 多站点的配置。</a> 但是有一点要注意，这篇文章里说的是本地的Ubuntu，我们的是云服务器，有单独的IP的。<code>127.0.0.1</code>不可靠。 下面是我的<code>000-default.conf</code>配置：</p>
+<pre><code>&lt;VirtualHost *:80&gt;
+    ServerAdmin webmaster@localhost
+    ServerName 服务器的IP（还没买域名） 
+    DocumentRoot /var/www/html/wordpress
+    #这个不是根目录，只是说可以重写罢了
+    &lt;Directory /var/www/html&gt;
+        Options FollowSymLinks
+        AllowOverride All
+  &lt;/Directory&gt;
+
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+&lt;/VirtualHost&gt;
+&lt;VirtualHost *:80&gt;
+    ServerAdmin webmaster@localhost
+    ServerName 我的域名
+    DocumentRoot /var/www/html/tanwenbo
+    &lt;Directory /var/www/&gt;
+        Options FollowSymLinks
+        AllowOverride All
+    &lt;/Directory&gt;
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+&lt;/VirtualHost&gt;</code></pre><p>这个时候<code>访问我的域名</code>可以直达我的网站，然后<code>访问服务器IP</code>可以直达导师的服务器。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/04/linux-e4-b8-8b-e7-bc-96-e5-86-99-e5-b0-8f-e8-84-9a-e6-9c-ac-e6-8f-90-e9-ab-98-e6-95-88-e7-8e-87/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1216,191 +1423,6 @@ fcntl(fd, F_SETFL, flags); </code></pre><h3 id="3-2-O-NONBLOCK的影响"><a href
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/29/system-v-ipc/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="tanwenbo">
-      <meta itemprop="description" content="enjoy share">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="hhyvs111">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/05/29/system-v-ipc/" class="post-title-link" itemprop="url">System V IPC</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-05-29 07:06:24" itemprop="dateCreated datePublished" datetime="2018-05-29T07:06:24+08:00">2018-05-29</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" itemprop="url" rel="index"><span itemprop="name">计算机网络</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="System-V-IPC"><a href="#System-V-IPC" class="headerlink" title="System V IPC"></a>System V IPC</h1><p><code>《Unix网络编程：卷2》``posts</code></p>
-<h2 id="1-概述"><a href="#1-概述" class="headerlink" title="1 概述"></a>1 概述</h2><p>也是是那种类型的IPC合称为System V IPC：</p>
-<ul>
-<li>System V消息队列</li>
-<li>System V信号量</li>
-<li>System V共享内存</li>
-</ul>
-<h2 id="2-System-V-IPC函数汇总"><a href="#2-System-V-IPC函数汇总" class="headerlink" title="2 System V IPC函数汇总"></a>2 System V IPC函数汇总</h2><p><img src="http://tanwenbo.top/wp-content/uploads/2018/05/126fe16571e51d287d6f57dedddc0cc7.png" alt=""></p>
-<h2 id="3-创建System-V-IPC键"><a href="#3-创建System-V-IPC键" class="headerlink" title="3 创建System V IPC键"></a>3 创建System V IPC键</h2><h3 id="3-1-ftok函数"><a href="#3-1-ftok函数" class="headerlink" title="3.1 ftok函数"></a>3.1 ftok函数</h3><pre><code>#include &lt;sys/types.h&gt;
-#include &lt;sys/ipc.h&gt;
-key_t ftok(const char *pathname, int proj_id);</code></pre><p>三种类型的System V IPC使用<code>key_t</code>作为它们的名字。这个时候就可以用该值创建相应的进程通信文件，比如：</p>
-<pre><code>int msgget(key_t key, int msgflg);</code></pre><p>flg位和Posix类似。</p>
-<h3 id="3-2-指定key"><a href="#3-2-指定key" class="headerlink" title="3.2 指定key"></a>3.2 指定key</h3><p>除了调用ftok函数，还可以指定key为<code>IPC_PRIVATE</code>，这将保证会创建一个新的、唯一的IPC对象。</p>
-<h2 id="4-IPC权限"><a href="#4-IPC权限" class="headerlink" title="4 IPC权限"></a>4 IPC权限</h2><p>ipc_perm结构（书22页）里也有mode值，权限规则如下： <img src="http://tanwenbo.top/wp-content/uploads/2018/05/c47466207e68e1bd4edf22d88a85c02a.png" alt=""></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/29/posix-ipc/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="tanwenbo">
-      <meta itemprop="description" content="enjoy share">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="hhyvs111">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/05/29/posix-ipc/" class="post-title-link" itemprop="url">Posix IPC</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-05-29 06:46:08" itemprop="dateCreated datePublished" datetime="2018-05-29T06:46:08+08:00">2018-05-29</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" itemprop="url" rel="index"><span itemprop="name">计算机网络</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="Posix-IPC"><a href="#Posix-IPC" class="headerlink" title="Posix IPC"></a>Posix IPC</h1><p><code>《Unix网络编程：卷2》``posts</code> 可移植作业系统接口（英语：Portable Operating System Interface，缩写为POSIX），是IEEE为要在各种UNIX操作系统上运行软件，而定义API的一系列互相关联的标准的总称</p>
-<h2 id="1-概述"><a href="#1-概述" class="headerlink" title="1 概述"></a>1 概述</h2><p>三种类型的IPC合成为“Posix IPC”：</p>
-<ul>
-<li>Posix消息队列</li>
-<li>Posix信号量</li>
-<li>Posix共享内存区</li>
-</ul>
-<p>三种类型都是有路径名标识的。</p>
-<h2 id="2-Posix-IPC函数汇总"><a href="#2-Posix-IPC函数汇总" class="headerlink" title="2 Posix IPC函数汇总"></a>2 Posix IPC函数汇总</h2><p><img src="http://tanwenbo.top/wp-content/uploads/2018/05/878738ca4e0f2416ed0418e249e8f6e5.png" alt=""> 比如mq_open函数原型：</p>
-<pre><code>#include &lt;fcntl.h&gt;           /* For O_* constants */
-#include &lt;sys/stat.h&gt;        /* For mode constants */
-#include &lt;mqueue.h&gt;
-
-mqd_t mq_open(const char *name, int oflag);
-mqd_t mq_open(const char *name, int oflag, mode_t mode,
-                     struct mq_attr *attr);</code></pre><h2 id="3-打开与创建IPC"><a href="#3-打开与创建IPC" class="headerlink" title="3 打开与创建IPC"></a>3 打开与创建IPC</h2><h3 id="3-1-oflag值"><a href="#3-1-oflag值" class="headerlink" title="3.1 oflag值"></a>3.1 oflag值</h3><p>类似于文件打开模式。 IPC也有各种模式： <img src="http://tanwenbo.top/wp-content/uploads/2018/05/66a1aa439a8784274a40c3e9ff6eca52.png" alt=""></p>
-<h3 id="3-2-mode值"><a href="#3-2-mode值" class="headerlink" title="3.2 mode值"></a>3.2 mode值</h3><p>可以看到open函数有mode_t值，主要是在创建的时候用，mode值如下： <img src="http://tanwenbo.top/wp-content/uploads/2018/05/0207c469a15b6eecd687ac6f9531bbe2.png" alt=""></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1470,7 +1492,7 @@ mqd_t mq_open(const char *name, int oflag, mode_t mode,
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">117</span>
+          <span class="site-state-item-count">119</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

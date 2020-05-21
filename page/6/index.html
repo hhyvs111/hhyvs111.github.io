@@ -157,6 +157,627 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/09/opengl-learn-4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="tanwenbo">
+      <meta itemprop="description" content="enjoy share">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hhyvs111">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/09/09/opengl-learn-4/" class="post-title-link" itemprop="url">OpenGL学习笔记第4篇——着色器</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-09-09 10:04:42" itemprop="dateCreated datePublished" datetime="2018-09-09T10:04:42+08:00">2018-09-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OpenGL/" itemprop="url" rel="index"><span itemprop="name">OpenGL</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OpenGL/%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">教程</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>前面学的着色器只是一点皮毛，感觉自己还是不需要学这么细，主要是为了完成论文。</p>
+</blockquote>
+<h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0 前言"></a>0 前言</h2><p>之前定义的两个着色器：</p>
+<ul>
+<li>顶点着色器；</li>
+<li>片段着色器。</li>
+</ul>
+<p>在代码里的具体实现是：</p>
+<pre><code>//定义一个顶点着色器
+const char *vertexShaderSource = &quot;#version 330 core\n&quot;
+                                 &quot;layout (location = 0) in vec3 aPos;\n&quot;
+                                 &quot;void main()\n&quot;
+                                 &quot;{\n&quot;
+                                 &quot;   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n&quot;
+                                 &quot;}\0&quot;;
+
+//定义一个片段着色器
+//这里可以改变颜色
+const char *fragmentShaderSource = &quot;#version 330 core\n&quot;
+                                   &quot;out vec4 FragColor;\n&quot;
+                                   &quot;void main()\n&quot;
+                                   &quot;{\n&quot;
+                                   &quot;   FragColor = vec4(0.5f, 0.5f, 0.2f, 1.0f);\n&quot;
+                                   &quot;}\n\0&quot;;</code></pre><p>第一次看到还觉得很奇怪，还可以这样定义一个变量。下面可以了解为什么这样定义！</p>
+<h2 id="1-GLSL"><a href="#1-GLSL" class="headerlink" title="1 GLSL"></a>1 GLSL</h2><p>着色器是使用一种叫GLSL的<code>类C语言</code>写成的，是为图形学计算量身定做的。</p>
+<blockquote>
+<p>使用 GLSL 有如下好处：</p>
+<ul>
+<li>具有跨平台的相容性，包括 Macintosh、Windows 和 Linux 等操作系统。</li>
+<li>所有支援 OpenGL 着色语言的绘图卡，都可以用来编写着色器。</li>
+<li>允许厂商为特定的绘图卡产生最佳化的代码。</li>
+</ul>
+</blockquote>
+<h3 id="1-1-着色器典型结构"><a href="#1-1-着色器典型结构" class="headerlink" title="1.1 着色器典型结构"></a>1.1 着色器典型结构</h3><pre><code>#version version_number
+in type in_variable_name;
+in type in_variable_name;
+
+out type out_variable_name;
+
+uniform type uniform_name;
+
+int main()
+{
+  // 处理输入并进行一些图形操作
+  ...
+  // 输出处理过的结果到输出变量
+  out_variable_name = weird_stuff_we_processed;
+}</code></pre><p>主要关注的是<code>IN</code>、<code>uniform</code>和<code>OUT</code>，</p>
+<ul>
+<li>IN就是着色器的<strong>输入</strong>；</li>
+<li>OUT就是着色器的<strong>输出</strong>；</li>
+<li>uniform<strong>全局变量</strong>。</li>
+</ul>
+<h3 id="1-2-uniform"><a href="#1-2-uniform" class="headerlink" title="1.2 uniform"></a>1.2 uniform</h3><p>Uniform是一种从CPU中的应用向GPU中的着色器发送数据的方式，但uniform和顶点属性有些不同。首先，uniform是全局的(Global)。全局意味着uniform变量必须在每个着色器程序对象中都是独一无二的，而且它可以被着色器程序的任意着色器在任意阶段访问。第二，无论你把uniform值设置成什么，uniform会一直保存它们的数据，直到它们被重置或更新。</p>
+<h2 id="2-数据类型"><a href="#2-数据类型" class="headerlink" title="2 数据类型"></a>2 数据类型</h2><p>主要的数据类型就是向量，一般是包含4个以内分量的容器，由数字和字母组成(n代表分量的数量）。</p>
+<p>类型</p>
+<p>含义</p>
+<p>vecn</p>
+<p>包含n个float分量的默认向量</p>
+<p>bvecn</p>
+<p>包含n个bool分量的向量</p>
+<p>ivecn</p>
+<p>包含n个int分量的向量</p>
+<p>大多数用vecn，因为<code>float</code>足够满足大多数要求了。</p>
+<p>一个向量的分量可以通过vec.x这种方式获取，这里x是指这个向量的第一个分量。你可以分别使用.x、.y、.z和.w来获取它们的第1、2、3、4个分量。</p>
+<blockquote>
+<p>太尼玛难了，从入门到放弃！</p>
+</blockquote>
+<h2 id="3-着色器类"><a href="#3-着色器类" class="headerlink" title="3 着色器类"></a>3 着色器类</h2><p>可以自己写一个类，然后读取着色器文件，这样就不用一直在cpp的开头定义了。</p>
+<h3 id="3-1-类开头"><a href="#3-1-类开头" class="headerlink" title="3.1 类开头"></a>3.1 类开头</h3><p>主要是一些文件处理，读取定义的着色器文件。</p>
+<pre><code>Shader(const char* vertexPath, const char* fragmentPath)
+{
+    // 1. 从文件路径中获取顶点/片段着色器
+    std::string vertexCode;
+    std::string fragmentCode;
+    std::ifstream vShaderFile;
+    std::ifstream fShaderFile;
+    // 保证ifstream对象可以抛出异常：
+    vShaderFile.exceptions (std::ifstream::failbit | std::ifstream::badbit);
+    fShaderFile.exceptions (std::ifstream::failbit | std::ifstream::badbit);
+    try 
+    {
+        // 打开文件
+        vShaderFile.open(vertexPath);
+        fShaderFile.open(fragmentPath);
+        std::stringstream vShaderStream, fShaderStream;
+        // 读取文件的缓冲内容到数据流中
+        vShaderStream &lt;&lt; vShaderFile.rdbuf();
+        fShaderStream &lt;&lt; fShaderFile.rdbuf();       
+        // 关闭文件处理器
+        vShaderFile.close();
+        fShaderFile.close();
+        // 转换数据流到string
+        vertexCode   = vShaderStream.str();
+        fragmentCode = fShaderStream.str();     
+    }
+    catch(std::ifstream::failure e)
+    {
+        std::cout &lt;&lt; &quot;ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ&quot; &lt;&lt; std::endl;
+    }
+    const char* vShaderCode = vertexCode.c_str();
+    const char* fShaderCode = fragmentCode.c_str();
+    [...]</code></pre><h3 id="3-2-编译着色器"><a href="#3-2-编译着色器" class="headerlink" title="3.2 编译着色器"></a>3.2 编译着色器</h3><p>一些编译的过程，直接集中到类里去了。</p>
+<pre><code>// 2. 编译着色器
+unsigned int vertex, fragment;
+int success;
+char infoLog[512];
+
+// 顶点着色器
+vertex = glCreateShader(GL_VERTEX_SHADER);
+glShaderSource(vertex, 1, &amp;vShaderCode, NULL);
+glCompileShader(vertex);
+// 打印编译错误（如果有的话）
+glGetShaderiv(vertex, GL_COMPILE_STATUS, &amp;success);
+if(!success)
+{
+    glGetShaderInfoLog(vertex, 512, NULL, infoLog);
+    std::cout &lt;&lt; &quot;ERROR::SHADER::VERTEX::COMPILATION_FAILED\n&quot; &lt;&lt; infoLog &lt;&lt; std::endl;
+};
+
+// 片段着色器也类似
+[...]
+
+// 着色器程序
+ID = glCreateProgram();
+glAttachShader(ID, vertex);
+glAttachShader(ID, fragment);
+glLinkProgram(ID);
+// 打印连接错误（如果有的话）
+glGetProgramiv(ID, GL_LINK_STATUS, &amp;success);
+if(!success)
+{
+    glGetProgramInfoLog(ID, 512, NULL, infoLog);
+    std::cout &lt;&lt; &quot;ERROR::SHADER::PROGRAM::LINKING_FAILED\n&quot; &lt;&lt; infoLog &lt;&lt; std::endl;
+}
+
+// 删除着色器，它们已经链接到我们的程序中了，已经不再需要了
+glDeleteShader(vertex);
+glDeleteShader(fragment);</code></pre><h3 id="3-3-使用着色器"><a href="#3-3-使用着色器" class="headerlink" title="3.3 使用着色器"></a>3.3 使用着色器</h3><p>这里的直接把<code>glUseProgram</code>做成<code>Use</code>方法。</p>
+<pre><code>void use() 
+{ 
+    glUseProgram(ID);
+}</code></pre><h3 id="3-4-文件"><a href="#3-4-文件" class="headerlink" title="3.4 文件"></a>3.4 文件</h3><p>创建2个文件命名为<code>shader.vs</code>和<code>shader.fs</code>，vs和fs就是后缀。</p>
+<h4 id="shader-vs"><a href="#shader-vs" class="headerlink" title="shader.vs"></a>shader.vs</h4><pre><code>#version 330 core
+layout (location = 0) in vec3 aPos;
+layout (location = 1) in vec3 aColor;
+
+out vec3 ourColor;
+
+void main()
+{
+    gl_Position = vec4(aPos, 1.0);
+    ourColor = aColor;
+}</code></pre><h4 id="shader-fs"><a href="#shader-fs" class="headerlink" title="shader.fs"></a>shader.fs</h4><pre><code>#version 330 core
+out vec4 FragColor;
+
+in vec3 ourColor;
+
+void main()
+{
+    FragColor = vec4(ourColor, 1.0f);
+}</code></pre><h3 id="3-5-使用"><a href="#3-5-使用" class="headerlink" title="3.5 使用"></a>3.5 使用</h3><p>使用的时候很简单，如果运行了没有显示那么记得加上文件的绝对路径。</p>
+<pre><code>Shader ourShader(&quot;path/to/shaders/shader.vs&quot;, &quot;path/to/shaders/shader.fs&quot;);
+...
+while(...)
+{
+    ourShader.use();
+    ourShader.setFloat(&quot;someUniform&quot;, 1.0f);
+    DrawStuff();
+}</code></pre><h2 id="4-运行"><a href="#4-运行" class="headerlink" title="4 运行"></a>4 运行</h2><p><img src="https://tanwenbo.top/wp-content/uploads/2018/09/15364905127795.jpg" alt="">￼</p>
+<p>教程地址：<a href="https://learnopengl-cn.github.io/01%20Getting%20started/05%20Shaders/#_5" target="_blank" rel="noopener">https://learnopengl-cn.github.io/01%20Getting%20started/05%20Shaders/#_5</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/08/opengl-learn-3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="tanwenbo">
+      <meta itemprop="description" content="enjoy share">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hhyvs111">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/09/08/opengl-learn-3/" class="post-title-link" itemprop="url">OpenGL学习笔记第3篇——三角形</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-09-08 15:46:59" itemprop="dateCreated datePublished" datetime="2018-09-08T15:46:59+08:00">2018-09-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OpenGL/" itemprop="url" rel="index"><span itemprop="name">OpenGL</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OpenGL/%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">教程</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>这一节有点难，看了半天，需要一些计算机图形学的知识才能看懂。<br>本笔记尽量简洁通俗的记录。</p>
+</blockquote>
+<h2 id="0-准备"><a href="#0-准备" class="headerlink" title="0 准备"></a>0 准备</h2><p>学习之前先记几个单词：</p>
+<ul>
+<li>顶点数组对象：Vertex Array Object，VAO</li>
+<li>顶点缓冲对象：Vertex Buffer Object，VBO</li>
+<li>索引缓冲对象：Element Buffer Object，EBO或Index Buffer Object，IBO</li>
+</ul>
+<h2 id="1-概念"><a href="#1-概念" class="headerlink" title="1 概念"></a>1 概念</h2><p>在OpenGL中，任何事物都在3D空间中，而屏幕和窗口却是2D像素数组，这导致OpenGL的大部分工作都是关于把3D坐标转变为适应你屏幕的2D像素。</p>
+<blockquote>
+<p>看到这里有点惊讶啊，还有这样的操作。</p>
+</blockquote>
+<h3 id="1-1-图形渲染管线"><a href="#1-1-图形渲染管线" class="headerlink" title="1.1 图形渲染管线"></a>1.1 图形渲染管线</h3><p>3D坐标转为2D坐标的处理过程是由OpenGL的图形渲染管线（Graphics Pipeline）管理的。<br>主要是两个过程组成：</p>
+<ul>
+<li>3D坐标转为2D坐标；</li>
+<li>2D坐标转换为实际的有颜色的像素。</li>
+</ul>
+<p>这些过程已经封装好了，所以不用过多去关注。且有并行执行的特性，也就是说如果GPU核心数越多，渲染的过程也就更快。</p>
+<h3 id="1-2-着色器"><a href="#1-2-着色器" class="headerlink" title="1.2 着色器"></a>1.2 着色器</h3><p>显卡上一般都有成千上万的小处理核心，它们在GPU上为每一个（渲染管线）阶段运行各自的小程序，从而在图形渲染管线中快速处理你的数据。这些小程序叫做着色器(Shader)。</p>
+<h2 id="2-渲染"><a href="#2-渲染" class="headerlink" title="2 渲染"></a>2 渲染</h2><p>渲染过程的抽象展示，蓝色部分代表的是我们可以自定义着色器的部分。<br><img src="https://tanwenbo.top/wp-content/uploads/2018/09/15363950059078.jpg" alt="">￼</p>
+<p>图形渲染管线包含很多部分，每个部分都将在转换顶点数据到最终像素这一过程中处理各自特定的阶段。对于大多数场合，我们只需要配置<strong>顶点着色器</strong>和<strong>片段着色器</strong>就行了。<strong>几何着色器</strong>是可选的，通常使用它默认的着色器就行了。</p>
+<h2 id="3-图元"><a href="#3-图元" class="headerlink" title="3 图元"></a>3 图元</h2><p>OpenGL里存在图元（Primitive）的概念，也就是<code>点</code>，<code>线</code>和<code>多边形</code>。一切图形都是由多个图元组成。</p>
+<p>且任何一个绘制指令的调用都将把图元传递给OpenGL。</p>
+<h3 id="3-1-常见图元"><a href="#3-1-常见图元" class="headerlink" title="3.1 常见图元"></a>3.1 常见图元</h3><p>类型</p>
+<p>说明</p>
+<p>GL_POINTS</p>
+<p>单个顶点集</p>
+<p>GL_LINES</p>
+<p>多组双顶点线段</p>
+<p>GL_POLYGON</p>
+<p>单个简单填充凸多边形</p>
+<p>GL_TRAINGLES</p>
+<p>多组独立填充三角形</p>
+<p>GL_QUADS</p>
+<p>多组独立填充四边形</p>
+<p>GL_LINE_STRIP</p>
+<p>不闭合折线</p>
+<p>GL_LINE_LOOP</p>
+<p>闭合折线</p>
+<p>GL_TRAINGLE_STRIP</p>
+<p>线型连续填充三角形串</p>
+<p>GL_TRAINGLE_FAN</p>
+<p>扇形连续填充三角形串</p>
+<p>GL_QUAD_STRIP</p>
+<p>连续填充四边形串</p>
+<h2 id="4-顶点输入"><a href="#4-顶点输入" class="headerlink" title="4 顶点输入"></a>4 顶点输入</h2><p>前面有说过OpenGL的数据都是3D的，所以其指定的所有坐标都是三维坐标（xyz），若要显示2D图形则将<code>z轴</code>的数据置为<code>0</code>。</p>
+<p>OpenGL不是简单地把所有的3D坐标变换为屏幕上的2D像素；OpenGL仅当3D坐标在3个轴（x、y和z）上都为-1.0到1.0的范围内时才处理它。</p>
+<p>我们希望渲染一个三角形，我们一共要指定三个顶点，每个顶点都有一个3D位置。我们会将它们以标准化设备坐标的形式（OpenGL的可见区域）定义为一个float数组。</p>
+<pre><code>float vertices[] = {
+    -0.5f, -0.5f, 0.0f,
+     0.5f, -0.5f, 0.0f,
+     0.0f,  0.5f, 0.0f
+};</code></pre><h3 id="4-1-缓存"><a href="#4-1-缓存" class="headerlink" title="4.1 缓存"></a>4.1 缓存</h3><p>前面有说着色器运行的速度基于显卡，顶点缓冲对象(Vertex Buffer Objects, <code>VBO</code>)用于存储我们定义的顶点数据。<code>VBO</code>会在GPU内存（显存）中储存大量顶点，然后在需要的时候一次性的发送一大批数据到显卡上。</p>
+<blockquote>
+<p>所以显存是显卡性能中十分重要的一个部分，显存越大发送的数据越多。</p>
+</blockquote>
+<p>当数据发送至显存中后，顶点着色器能立即访问顶点。</p>
+<p>OpenGL中的其它对象一样，这个缓冲有一个独一无二的ID，所以我们可以使用glGenBuffers函数和一个缓冲ID<strong>生成一个VBO对象</strong>：</p>
+<pre><code>unsigned int VBO;
+glGenBuffers(1, &amp;VBO);</code></pre><p>将新建的缓冲绑定到<code>GL_ARRAY_BUFFER</code>目标上：</p>
+<pre><code>glBindBuffer(GL_ARRAY_BUFFER, VBO);  </code></pre><p>然后我们可以调用glBufferData函数，它会把之前定义的顶点数据复制到缓冲的内存中：</p>
+<pre><code>glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);</code></pre><p>主要是了解一下第四个参数，其指定了我们希望显卡如何管理给定的数据。有三种形式：</p>
+<ul>
+<li>GL_STATIC_DRAW ：数据不会或几乎不会改变。</li>
+<li>GL_DYNAMIC_DRAW：数据会被改变很多。</li>
+<li>GL_STREAM_DRAW ：数据每次绘制时都会改变。</li>
+</ul>
+<h2 id="5-着色器"><a href="#5-着色器" class="headerlink" title="5 着色器"></a>5 着色器</h2><p>现在具体介绍一下3种我们需要处理的着色器</p>
+<h3 id="5-1-顶点着色器"><a href="#5-1-顶点着色器" class="headerlink" title="5.1 顶点着色器"></a>5.1 顶点着色器</h3><p>如果要渲染的话必须要写一个顶点着色器和片段着色器，那么就需要用着色器语言<code>GLSL</code>(OpenGL Shading Language)编写顶点着色器，然后就可以在程序中使用它了！</p>
+<pre><code>#version 330 core
+layout (location = 0) in vec3 aPos;
+
+void main()
+{
+    gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);
+}</code></pre><p>这是一个非常基础的GLSL着色器源码。</p>
+<p>这里引入了另一个重要的概念：向量（Vector）</p>
+<blockquote>
+<p>向量(Vector)</p>
+<p>在图形编程中我们经常会使用向量这个数学概念，因为它简明地表达了任意空间中的位置和方向，并且它有非常有用的数学属性。在GLSL中一个向量有最多4个分量，每个分量值都代表空间中的一个坐标，它们可以通过vec.x、vec.y、vec.z和vec.w来获取。注意vec.w分量不是用作表达空间中的位置的（我们处理的是3D不是4D），而是用在所谓透视除法(Perspective Division)上。我们会在后面的教程中更详细地讨论向量。</p>
+</blockquote>
+<h3 id="5-2-编译着色器"><a href="#5-2-编译着色器" class="headerlink" title="5.2 编译着色器"></a>5.2 编译着色器</h3><p>上面已经写了一个顶点着色器（存储在C的字符串中），为了OpenGL能使用它，必须在运行时动态编译它的源码。</p>
+<h4 id="创建着色器"><a href="#创建着色器" class="headerlink" title="创建着色器"></a>创建着色器</h4><pre><code>unsigned int vertexShader;
+vertexShader = glCreateShader(GL_VERTEX_SHADER);</code></pre><h4 id="添加着色器"><a href="#添加着色器" class="headerlink" title="添加着色器"></a>添加着色器</h4><pre><code>glShaderSource(vertexShader, 1, &amp;vertexShaderSource, NULL);
+glCompileShader(vertexShader);</code></pre><p>加入source后再编译。</p>
+<p>如果编译的时候没有检测到任何错误，顶点着色器就被编译成功了。</p>
+<h3 id="5-3-片段着色器"><a href="#5-3-片段着色器" class="headerlink" title="5.3 片段着色器"></a>5.3 片段着色器</h3><p>片段着色器的主要目的是计算一个像素的最终颜色，这也是所有OpenGL高级效果产生的地方。通常，片段着色器包含3D场景的数据（比如光照、阴影、光的颜色等等），这些数据可以被用来计算最终像素的颜色。</p>
+<blockquote>
+<p>在计算机图形中颜色被表示为有4个元素的数组：红色、绿色、蓝色和alpha(透明度)分量，通常缩写为RGBA。当在OpenGL或GLSL中定义一个颜色的时候，我们把颜色每个分量的强度设置在0.0到1.0之间。比如说我们设置红为1.0f，绿为1.0f，我们会得到两个颜色的混合色，即黄色。这三种颜色分量的不同调配可以生成超过1600万种不同的颜色！</p>
+</blockquote>
+<p>简单来说片段着色器就是设置渲染的颜色的，也没什么特别的东西。</p>
+<p>设置颜色的RGBA。</p>
+<pre><code>#version 330 core
+out vec4 FragColor;
+
+void main()
+{
+    FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);
+} </code></pre><h4 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h4><p>与顶点不一样的是用<code>GL_FRAGMENT_SHADER</code>作为着色器类型（顶点着色器<code>GL_VERTEX_SHADER</code>）。</p>
+<pre><code>unsigned int fragmentShader;
+fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+glShaderSource(fragmentShader, 1, &amp;fragmentShaderSource, NULL);
+glCompileShader(fragmentShader);</code></pre><h2 id="6-顶点数组对象"><a href="#6-顶点数组对象" class="headerlink" title="6 顶点数组对象"></a>6 顶点数组对象</h2><p>前面有提到的三个名词，上面的内容一直在介绍VBO（顶点缓冲对象），现在来了解一下VAO（顶点数组对象）。</p>
+<p><img src="https://tanwenbo.top/wp-content/uploads/2018/09/15364101061568.jpg" alt="">￼</p>
+<p>可以看到VAO就是VBO的集合。</p>
+<h2 id="7-索引缓冲对象"><a href="#7-索引缓冲对象" class="headerlink" title="7 索引缓冲对象"></a>7 索引缓冲对象</h2><p>索引缓冲对象(Element Buffer Object，EBO)，和顶点缓冲对象一样，EBO也是一个缓冲，专门用来储存索引。</p>
+<p>也就是VAO的索引：<br><img src="https://tanwenbo.top/wp-content/uploads/2018/09/15364104063147.jpg" alt="">￼</p>
+<blockquote>
+<p>具体代码就不贴了，可以看原文教程。</p>
+</blockquote>
+<h2 id="8-运行"><a href="#8-运行" class="headerlink" title="8 运行"></a>8 运行</h2><p>题目是三角形，那么运行一下。<br><img src="https://tanwenbo.top/wp-content/uploads/2018/09/15364579404714.jpg" alt="">￼</p>
+<p>三角形看起来不错，很平滑。</p>
+<h2 id="9-完整代码"><a href="#9-完整代码" class="headerlink" title="9 完整代码"></a>9 完整代码</h2><pre><code>#include &lt;glad/glad.h&gt;
+#include &lt;GLFW/glfw3.h&gt;
+
+#include &lt;iostream&gt;
+
+void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+void processInput(GLFWwindow *window);
+
+// settings
+const unsigned int SCR_WIDTH = 800;
+const unsigned int SCR_HEIGHT = 600;
+
+const char *vertexShaderSource = &quot;#version 330 core\n&quot;
+    &quot;layout (location = 0) in vec3 aPos;\n&quot;
+    &quot;void main()\n&quot;
+    &quot;{\n&quot;
+    &quot;   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n&quot;
+    &quot;}\0&quot;;
+const char *fragmentShaderSource = &quot;#version 330 core\n&quot;
+    &quot;out vec4 FragColor;\n&quot;
+    &quot;void main()\n&quot;
+    &quot;{\n&quot;
+    &quot;   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n&quot;
+    &quot;}\n\0&quot;;
+
+int main()
+{
+    // glfw: initialize and configure
+    // ------------------------------
+    glfwInit();
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+#ifdef __APPLE__
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // uncomment this statement to fix compilation on OS X
+#endif
+
+    // glfw window creation
+    // --------------------
+    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, &quot;LearnOpenGL&quot;, NULL, NULL);
+    if (window == NULL)
+    {
+        std::cout &lt;&lt; &quot;Failed to create GLFW window&quot; &lt;&lt; std::endl;
+        glfwTerminate();
+        return -1;
+    }
+    glfwMakeContextCurrent(window);
+    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+
+    // glad: load all OpenGL function pointers
+    // ---------------------------------------
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+    {
+        std::cout &lt;&lt; &quot;Failed to initialize GLAD&quot; &lt;&lt; std::endl;
+        return -1;
+    }
+
+
+    // build and compile our shader program
+    // ------------------------------------
+    // vertex shader
+    int vertexShader = glCreateShader(GL_VERTEX_SHADER);
+    glShaderSource(vertexShader, 1, &amp;vertexShaderSource, NULL);
+    glCompileShader(vertexShader);
+    // check for shader compile errors
+    int success;
+    char infoLog[512];
+    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &amp;success);
+    if (!success)
+    {
+        glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
+        std::cout &lt;&lt; &quot;ERROR::SHADER::VERTEX::COMPILATION_FAILED\n&quot; &lt;&lt; infoLog &lt;&lt; std::endl;
+    }
+    // fragment shader
+    int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+    glShaderSource(fragmentShader, 1, &amp;fragmentShaderSource, NULL);
+    glCompileShader(fragmentShader);
+    // check for shader compile errors
+    glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &amp;success);
+    if (!success)
+    {
+        glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
+        std::cout &lt;&lt; &quot;ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n&quot; &lt;&lt; infoLog &lt;&lt; std::endl;
+    }
+    // link shaders
+    int shaderProgram = glCreateProgram();
+    glAttachShader(shaderProgram, vertexShader);
+    glAttachShader(shaderProgram, fragmentShader);
+    glLinkProgram(shaderProgram);
+    // check for linking errors
+    glGetProgramiv(shaderProgram, GL_LINK_STATUS, &amp;success);
+    if (!success) {
+        glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
+        std::cout &lt;&lt; &quot;ERROR::SHADER::PROGRAM::LINKING_FAILED\n&quot; &lt;&lt; infoLog &lt;&lt; std::endl;
+    }
+    glDeleteShader(vertexShader);
+    glDeleteShader(fragmentShader);
+
+    // set up vertex data (and buffer(s)) and configure vertex attributes
+    // ------------------------------------------------------------------
+    float vertices[] = {
+        -0.5f, -0.5f, 0.0f, // left  
+         0.5f, -0.5f, 0.0f, // right 
+         0.0f,  0.5f, 0.0f  // top   
+    }; 
+
+    unsigned int VBO, VAO;
+    glGenVertexArrays(1, &amp;VAO);
+    glGenBuffers(1, &amp;VBO);
+    // bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
+    glBindVertexArray(VAO);
+
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    // note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute&apos;s bound vertex buffer object so afterwards we can safely unbind
+    glBindBuffer(GL_ARRAY_BUFFER, 0); 
+
+    // You can unbind the VAO afterwards so other VAO calls won&apos;t accidentally modify this VAO, but this rarely happens. Modifying other
+    // VAOs requires a call to glBindVertexArray anyways so we generally don&apos;t unbind VAOs (nor VBOs) when it&apos;s not directly necessary.
+    glBindVertexArray(0); 
+
+
+    // uncomment this call to draw in wireframe polygons.
+    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+    // render loop
+    // -----------
+    while (!glfwWindowShouldClose(window))
+    {
+        // input
+        // -----
+        processInput(window);
+
+        // render
+        // ------
+        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        // draw our first triangle
+        glUseProgram(shaderProgram);
+        glBindVertexArray(VAO); // seeing as we only have a single VAO there&apos;s no need to bind it every time, but we&apos;ll do so to keep things a bit more organized
+        glDrawArrays(GL_TRIANGLES, 0, 3);
+        // glBindVertexArray(0); // no need to unbind it every time 
+
+        // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
+        // -------------------------------------------------------------------------------
+        glfwSwapBuffers(window);
+        glfwPollEvents();
+    }
+
+    // optional: de-allocate all resources once they&apos;ve outlived their purpose:
+    // ------------------------------------------------------------------------
+    glDeleteVertexArrays(1, &amp;VAO);
+    glDeleteBuffers(1, &amp;VBO);
+
+    // glfw: terminate, clearing all previously allocated GLFW resources.
+    // ------------------------------------------------------------------
+    glfwTerminate();
+    return 0;
+}
+
+// process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
+// ---------------------------------------------------------------------------------------------------------
+void processInput(GLFWwindow *window)
+{
+    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+        glfwSetWindowShouldClose(window, true);
+}
+
+// glfw: whenever the window size changed (by OS or user resize) this callback function executes
+// ---------------------------------------------------------------------------------------------
+void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+{
+    // make sure the viewport matches the new window dimensions; note that width and 
+    // height will be significantly larger than specified on retina displays.
+    glViewport(0, 0, width, height);
+}</code></pre><h2 id="10-小结"><a href="#10-小结" class="headerlink" title="10 小结"></a>10 小结</h2><p>这一章对初学者来说还是有点难度的，很多名词都没听过。但是个人而言，学习了这一章的知识后对计算机<strong>显卡</strong>等方面的知识方面了解不少，也知道一个图形是怎么显示到屏幕上。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/08/mac-shi-yongclion-pei-zhiopenglglewgladglfw/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1228,213 +1849,6 @@ glBindObject(GL_WINDOW_TARGET, 0);</code></pre><p>这一小段代码展现了你
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/08/e9-98-bf-e9-87-8c-e4-ba-91-e6-9c-8d-e5-8a-a1-e5-99-a8ubuntu-e4-b8-8bapache2-e9-85-8d-e7-bd-aehttps/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="tanwenbo">
-      <meta itemprop="description" content="enjoy share">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="hhyvs111">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/07/08/e9-98-bf-e9-87-8c-e4-ba-91-e6-9c-8d-e5-8a-a1-e5-99-a8ubuntu-e4-b8-8bapache2-e9-85-8d-e7-bd-aehttps/" class="post-title-link" itemprop="url">阿里云服务器Ubuntu下Apache2配置https</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-07-08 04:41:54" itemprop="dateCreated datePublished" datetime="2018-07-08T04:41:54+08:00">2018-07-08</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">教程</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="阿里云服务器Ubuntu下Apache2配置https"><a href="#阿里云服务器Ubuntu下Apache2配置https" class="headerlink" title="阿里云服务器Ubuntu下Apache2配置https"></a>阿里云服务器Ubuntu下Apache2配置https</h1><p><code>教程``posts``SSL</code></p>
-<blockquote>
-<p>最近把网站搬迁了，然后HTTPS也得弄一弄，本文主要是介绍一下阿里云服务器如何给自己的网站配置https</p>
-</blockquote>
-<h2 id="1-购买证书"><a href="#1-购买证书" class="headerlink" title="1 购买证书"></a>1 购买证书</h2><p>这个证书的下载比较鸡贼，阿里云把<code>免费</code>的给藏起来了，先点击这里： <img src="https://tanwenbo.top/wp-content/uploads/2018/07/46a4719e2209d86d7a51623d5db81f6b.png" alt=""> 然后再点击<code>增强型</code>，这个时候就会出现免费的证书选项了。 <img src="https://tanwenbo.top/wp-content/uploads/2018/07/fcc4c3dad4dcd1d16a05763a29558bce.png" alt=""> 然后点击免费的购买 <img src="https://tanwenbo.top/wp-content/uploads/2018/07/e2d175a99e807df317cc120ca94d1a77.png" alt=""></p>
-<h2 id="2-下载证书"><a href="#2-下载证书" class="headerlink" title="2 下载证书"></a>2 下载证书</h2><p>将证书里的四个文件放在<code>/etc/apache2/cert</code>，自己建一个cert文件夹。 <img src="https://tanwenbo.top/wp-content/uploads/2018/07/97497faa9a3642338ad192c149df0d76.png" alt=""></p>
-<h2 id="3-配置SSL"><a href="#3-配置SSL" class="headerlink" title="3 配置SSL"></a>3 配置SSL</h2><p>进入目录</p>
-<pre><code>cd /etc/apache2/sites-available</code></pre><p>编辑<code>default-ssl.conf</code>文件，修改域名和目录</p>
-<pre><code>ServerAdmin webmaster@localhost
-ServerName 你的域名:443
-DocumentRoot /var/www/html/你的网站目录</code></pre><p>然后在<code>SSLEngine on</code>的下面加入如下内容：</p>
-<pre><code>SSLProtocol all -SSLv2 -SSLv3
-SSLCipherSuite HIGH:!RC4:!MD5:!aNULL:!eNULL:!NULL:!DH:!EDH:!EXP:+MEDIUM
-SSLHonorCipherOrder on
-SSLCertificateFile  /etc/apache2/cert/public.pem
-SSLCertificateKeyFile /etc/apache2/cert/你的.key
-SSLCertificateChainFile /etc/apache2/cert/chain.pem</code></pre><h3 id="4-配置HTTPS"><a href="#4-配置HTTPS" class="headerlink" title="4 配置HTTPS"></a>4 配置HTTPS</h3><p>编辑<code>000-default.conf</code>，在<code>&lt;VirtualHost *:80&gt;&lt;/VirtualHost&gt;</code>标签内随便一个地方加入以下三行:</p>
-<pre><code>RewriteEngine on
-RewriteCond  %{HTTPS} !=on
-RewriteRule  ^(.*) https://%{SERVER_NAME}$1 [L,R]</code></pre><h3 id="5-重启"><a href="#5-重启" class="headerlink" title="5 重启"></a>5 重启</h3><p>记得载入模块：</p>
-<pre><code>a2ensite default-ssl
-#然后重启apache2
-sudo etc/init.d/apache2 restart</code></pre><h3 id="6-备注"><a href="#6-备注" class="headerlink" title="6 备注"></a>6 备注</h3><p>记得目录一定要对，然后看一下阿里云服务器是否开放了443这个端口，配置一下安全组规则。 推荐一个wordpress插件：<code>Really Simple SSL</code> 但是如果有时候你关闭了SSL，要访问http形式的网站，但这个时候你进不了网站，关不了这个插件，可以参考这个强制关闭该插件的方法：</p>
-<h4 id="进入wordpress目录"><a href="#进入wordpress目录" class="headerlink" title="进入wordpress目录"></a>进入wordpress目录</h4><pre><code>cd wp-content/plugins/really-simple-ssl</code></pre><h4 id="修改文件"><a href="#修改文件" class="headerlink" title="修改文件"></a>修改文件</h4><p>将改txt后缀改为php</p>
-<pre><code>mv force-deactivate.txt force-deactivate.php</code></pre><h4 id="用http访问该PHP"><a href="#用http访问该PHP" class="headerlink" title="用http访问该PHP"></a>用http访问该PHP</h4><pre><code>http://www.yourdomain.com/wp-content/plugins/really-simple-ssl/force-deactivate.php </code></pre><p>这个时候就可以卸载该插件关闭全站https了。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/07/e7-bd-91-e7-ab-99-e6-90-ac-e8-bf-81-e5-b0-8f-e8-ae-b0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="tanwenbo">
-      <meta itemprop="description" content="enjoy share">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="hhyvs111">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/07/07/e7-bd-91-e7-ab-99-e6-90-ac-e8-bf-81-e5-b0-8f-e8-ae-b0/" class="post-title-link" itemprop="url">网站搬迁小记</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-07-07 09:01:09" itemprop="dateCreated datePublished" datetime="2018-07-07T09:01:09+08:00">2018-07-07</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-14 14:29:36" itemprop="dateModified" datetime="2020-04-14T14:29:36+08:00">2020-04-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">教程</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%95%99%E7%A8%8B/%E9%9A%8F%E7%AC%94/" itemprop="url" rel="index"><span itemprop="name">随笔</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="网站搬迁小记"><a href="#网站搬迁小记" class="headerlink" title="网站搬迁小记"></a>网站搬迁小记</h1><p><code>教程``posts</code></p>
-<blockquote>
-<p>服务器要到期了，而且是之前免费领的，续费尼玛贵的一P。重新买个学生机，不如放到导师的服务器上去。但是导师的服务器上已经有一个网站在运行，这个时候就需要利用的apache2的虚拟主机功能了。</p>
-</blockquote>
-<h3 id="1-准备工作"><a href="#1-准备工作" class="headerlink" title="1 准备工作"></a>1 准备工作</h3><h4 id="网站源码"><a href="#网站源码" class="headerlink" title="网站源码"></a>网站源码</h4><p>直接远程将网站源码从老服务器copy到导师的服务器，一开始用的Xftp下载，下载半天又慢，发现一个很牛批的命令。</p>
-<pre><code>scp  -r root@服务器的IP:/etc/apache2/cert /etc/apache2/</code></pre><p>远程传输，需要输入密码。</p>
-<h4 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h4><p>直接将数据库导出成压缩文件，具体看网上的教程。</p>
-<h3 id="2-配置apache2"><a href="#2-配置apache2" class="headerlink" title="2 配置apache2"></a>2 配置apache2</h3><p>系统都是Ubuntu 16.04，然后用的apache2，和网上的有些apache教程有点不一样 可以参考这一篇文章<a href="https://www.jianshu.com/p/35cd3a0b9634" target="_blank" rel="noopener">在ubuntu 16.04 下apache2 多站点的配置。</a> 但是有一点要注意，这篇文章里说的是本地的Ubuntu，我们的是云服务器，有单独的IP的。<code>127.0.0.1</code>不可靠。 下面是我的<code>000-default.conf</code>配置：</p>
-<pre><code>&lt;VirtualHost *:80&gt;
-    ServerAdmin webmaster@localhost
-    ServerName 服务器的IP（还没买域名） 
-    DocumentRoot /var/www/html/wordpress
-    #这个不是根目录，只是说可以重写罢了
-    &lt;Directory /var/www/html&gt;
-        Options FollowSymLinks
-        AllowOverride All
-  &lt;/Directory&gt;
-
-    ErrorLog ${APACHE_LOG_DIR}/error.log
-    CustomLog ${APACHE_LOG_DIR}/access.log combined
-
-&lt;/VirtualHost&gt;
-&lt;VirtualHost *:80&gt;
-    ServerAdmin webmaster@localhost
-    ServerName 我的域名
-    DocumentRoot /var/www/html/tanwenbo
-    &lt;Directory /var/www/&gt;
-        Options FollowSymLinks
-        AllowOverride All
-    &lt;/Directory&gt;
-        CustomLog ${APACHE_LOG_DIR}/access.log combined
-&lt;/VirtualHost&gt;</code></pre><p>这个时候<code>访问我的域名</code>可以直达我的网站，然后<code>访问服务器IP</code>可以直达导师的服务器。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1504,7 +1918,7 @@ sudo etc/init.d/apache2 restart</code></pre><h3 id="6-备注"><a href="#6-备注
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">117</span>
+          <span class="site-state-item-count">119</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
